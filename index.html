@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Card Combo Optimizer</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <header class="container header">
+    <div>
+      <h1>Card Combo Optimizer</h1>
+      <p class="subtle">
+        Optimize a long-term card setup from your spending profile.
+        <span class="subtle2">Special portal/merchant multipliers aren’t modeled in this MVP.</span>
+      </p>
+    </div>
+    <div id="status" class="status">Loading…</div>
+  </header>
+
+  <main class="container">
+    <section id="app" class="layout hidden">
+      <!-- Left: Inputs -->
+      <aside class="panel inputPanel">
+        <div class="panelHeader">
+          <h2>Your inputs</h2>
+          <div class="row">
+            <div class="field">
+              <label for="k">Number of cards</label>
+              <input id="k" type="number" min="1" max="5" value="3" />
+            </div>
+            <button id="runBtn" class="primary">Find best combo</button>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <h3 class="sectionTitle">Monthly spend (CAD)</h3>
+        <div id="spendTable"></div>
+
+        <details id="issuesWrap" class="issues hidden">
+          <summary>Data issues (excluded cards)</summary>
+          <div id="issues" class="issuesBody"></div>
+        </details>
+      </aside>
+
+      <!-- Right: Results -->
+      <section class="panel resultPanel">
+        <div class="panelHeader">
+          <h2>Results</h2>
+          <p class="subtle">Your best combo and what to use for each category.</p>
+        </div>
+        <div class="divider"></div>
+        <div id="result" class="resultEmpty">
+          Run the optimizer to see results.
+        </div>
+      </section>
+    </section>
+
+    <section id="fatal" class="panel hidden"></section>
+  </main>
+
+  <script type="module" src="./src/app.js"></script>
+  <script>
+    // Small UX improvement: if JS throws before app initializes, show fatal panel
+    window.addEventListener("error", (e) => {
+      const fatal = document.getElementById("fatal");
+      if (!fatal) return;
+      fatal.classList.remove("hidden");
+      fatal.textContent = "Error: " + (e?.message || "Unknown");
+    });
+  </script>
+</body>
+</html>

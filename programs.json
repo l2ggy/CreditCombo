@@ -1,0 +1,35 @@
+{
+  "meta": {
+    "currency": "CAD",
+    "value_unit": "cents_per_point",
+    "source_points_valuations": "Prince of Travel — Points Valuations",
+    "note": "For cashback programs we treat earn_rates as percent and value at face value."
+  },
+  "programs": [
+    { "program_id": "aeroplan", "program_name": "Aeroplan", "program_type": "points", "cents_per_point": 2.1 },
+    { "program_id": "amex_mr_ca", "program_name": "Amex Membership Rewards (Canada)", "program_type": "points", "cents_per_point": 2.2 },
+    { "program_id": "bmo_rewards", "program_name": "BMO Rewards", "program_type": "points", "cents_per_point": 0.67 },
+    { "program_id": "cibc_aventura", "program_name": "CIBC Aventura", "program_type": "points", "cents_per_point": 1.0 },
+    { "program_id": "marriott_bonvoy", "program_name": "Marriott Bonvoy", "program_type": "points", "cents_per_point": 0.8 },
+    { "program_id": "mbna_rewards", "program_name": "MBNA Rewards", "program_type": "points", "cents_per_point": 1.0 },
+    { "program_id": "rbc_avion", "program_name": "RBC Avion", "program_type": "points", "cents_per_point": 2.0 },
+    { "program_id": "scene_plus", "program_name": "Scene+", "program_type": "points", "cents_per_point": 1.0 },
+    { "program_id": "td_rewards", "program_name": "TD Rewards", "program_type": "points", "cents_per_point": 0.5 },
+    { "program_id": "air_miles", "program_name": "AIR MILES", "program_type": "points", "cents_per_point": 10.5 },
+    { "program_id": "westjet_rewards", "program_name": "WestJet Rewards", "program_type": "points", "cents_per_point": 1.0 },
+    { "program_id": "nb_a_la_carte", "program_name": "National Bank À la carte Rewards", "program_type": "points", "cents_per_point": 1.0 },
+
+    { "program_id": "bmo_cashback", "program_name": "BMO CashBack", "program_type": "cashback", "cents_per_point": 1.0 },
+    { "program_id": "cibc_dividend_cashback", "program_name": "CIBC Dividend Cash Back", "program_type": "cashback", "cents_per_point": 1.0 },
+    { "program_id": "rogers_cashback", "program_name": "Rogers Bank Cash Back", "program_type": "cashback", "cents_per_point": 1.0 },
+    { "program_id": "rbc_cashback", "program_name": "RBC Cash Back", "program_type": "cashback", "cents_per_point": 1.0 },
+    { "program_id": "scotia_cashback", "program_name": "Scotiabank Cash Back", "program_type": "cashback", "cents_per_point": 1.0 },
+    { "program_id": "simplii_cashback", "program_name": "Simplii Cash Back", "program_type": "cashback", "cents_per_point": 1.0 },
+    { "program_id": "tangerine_cashback", "program_name": "Tangerine Money-Back", "program_type": "cashback", "cents_per_point": 1.0 },
+    { "program_id": "td_cashback", "program_name": "TD Cash Back", "program_type": "cashback", "cents_per_point": 1.0 },
+    { "program_id": "desjardins_bonusdollars", "program_name": "Desjardins BonusDollars", "program_type": "cashback", "cents_per_point": 1.0 },
+    { "program_id": "ct_money", "program_name": "Canadian Tire Money (Triangle Rewards)", "program_type": "cashback", "cents_per_point": 1.0 },
+
+    { "program_id": "pc_optimum", "program_name": "PC Optimum", "program_type": "points", "cents_per_point": null }
+  ]
+}
