@@ -252,10 +252,10 @@ export function findBestCombo({ cards, programsMap, schema, k, annualSpend, valu
   const maxSize = Math.min(Number(k) || 0, cards.length);
   if (maxSize < 1) return best;
 
-  const candidateLimit = computeCandidateLimit(cards.length, maxSize);
-  const candidateCards = selectCandidateCards(cards, programsMap, schema, annualSpend, maxSize, candidateLimit, valuationMode);
-
   for (let size = 1; size <= maxSize; size++) {
+    const candidateLimit = computeCandidateLimit(cards.length, size);
+    const candidateCards = selectCandidateCards(cards, programsMap, schema, annualSpend, size, candidateLimit, valuationMode);
+
     for (const combo of combinations(candidateCards, size)) {
       const result = evaluateCombo(combo, annualSpend, schema, programsMap, valuationMode);
       if (result.net > best.net) best = result;
