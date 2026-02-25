@@ -62,3 +62,4 @@ tbody tr:last-child td{border-bottom:none}
 .issues summary{cursor:pointer;font-weight:700;color:var(--text)}
 .issues ul{margin:10px 0 0;padding-left:18px}
 .issues li{margin:5px 0;color:var(--muted)}
+.category-desc{margin-top:3px;font-size:12px;line-height:1.3}

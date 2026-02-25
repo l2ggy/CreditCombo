@@ -8,14 +8,17 @@ export function clampInt(n, lo, hi) {
   return Math.max(lo, Math.min(hi, n));
 }
 
-export function renderSpendTable(el, schema) {
+export function renderSpendTable(el, schema, categoryDescriptions = {}) {
   el.innerHTML = `
     <table>
       <thead><tr><th>Category</th><th>Monthly spend</th></tr></thead>
       <tbody>
         ${schema.map(cat => `
           <tr>
-            <td class="mono">${cat}</td>
+            <td>
+              <div class="mono">${cat}</div>
+              <div class="category-desc muted">${escapeHtml(categoryDescriptions[cat] || "")}</div>
+            </td>
             <td><input type="number" min="0" step="1" value="0" data-cat="${cat}" /></td>
           </tr>
         `).join("")}

@@ -27,6 +27,7 @@ export function normalizePrograms(programsJson) {
  */
 export function validateAndFilterCards(cardsJson, programsMap) {
   const schema = cardsJson?.meta?.category_schema_modeled ?? [];
+  const inclusionRules = cardsJson?.meta?.taxonomy_definition?.inclusion_rules ?? {};
   const rawCards = cardsJson?.cards ?? [];
 
   if (!Array.isArray(schema) || schema.length === 0) {
@@ -58,5 +59,9 @@ export function validateAndFilterCards(cardsJson, programsMap) {
     eligible.push(c);
   }
 
-  return { schema, eligibleCards: eligible, issues };
+  const categoryDescriptions = Object.fromEntries(
+    schema.map((cat) => [cat, inclusionRules?.[cat] ?? ""])
+  );
+
+  return { schema, categoryDescriptions, eligibleCards: eligible, issues };
 }
