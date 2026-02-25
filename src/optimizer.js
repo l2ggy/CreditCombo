@@ -186,9 +186,9 @@ function cardPotential(card, activeCats, annualSpend, programsMap) {
   return gross - fee;
 }
 
-function selectCandidateCards(cards, programsMap, schema, annualSpend, maxSize) {
-  const MAX_CANDIDATES = 28;
-  if (cards.length <= MAX_CANDIDATES) return cards;
+function selectCandidateCards(cards, programsMap, schema, annualSpend, maxSize, candidateLimit) {
+  const maxCandidates = Math.max(maxSize, candidateLimit);
+  if (cards.length <= maxCandidates) return cards;
 
   const activeCats = schema.filter(cat => (annualSpend?.[cat] || 0) > 0);
   const catsToUse = activeCats.length ? activeCats : schema;
@@ -204,7 +204,7 @@ function selectCandidateCards(cards, programsMap, schema, annualSpend, maxSize) 
 
   const rankedByPotential = [...cards]
     .sort((a, b) => cardPotential(b, catsToUse, annualSpend, programsMap) - cardPotential(a, catsToUse, annualSpend, programsMap));
-  for (const card of rankedByPotential.slice(0, MAX_CANDIDATES)) selectedIds.add(card.id);
+  for (const card of rankedByPotential.slice(0, maxCandidates)) selectedIds.add(card.id);
 
   const lowFeeCards = [...cards]
     .sort((a, b) => Number(a.annual_fee?.amount ?? 0) - Number(b.annual_fee?.amount ?? 0));
@@ -215,7 +215,31 @@ function selectCandidateCards(cards, programsMap, schema, annualSpend, maxSize) 
     .filter(Boolean)
     .sort((a, b) => cardPotential(b, catsToUse, annualSpend, programsMap) - cardPotential(a, catsToUse, annualSpend, programsMap));
 
-  return selectedCards.slice(0, MAX_CANDIDATES);
+  return selectedCards.slice(0, maxCandidates);
+}
+
+function nChooseK(n, k) {
+  if (k < 0 || k > n) return 0;
+  if (k === 0 || k === n) return 1;
+  const kk = Math.min(k, n - k);
+  let result = 1;
+  for (let i = 1; i <= kk; i++) result = (result * (n - kk + i)) / i;
+  return result;
+}
+
+function totalCombinationCount(n, maxSize) {
+  let total = 0;
+  for (let size = 1; size <= maxSize; size++) total += nChooseK(n, size);
+  return total;
+}
+
+function computeCandidateLimit(cardCount, maxSize) {
+  const TARGET_COMBOS = 80000;
+  let limit = Math.min(cardCount, 36);
+
+  while (limit > maxSize && totalCombinationCount(limit, maxSize) > TARGET_COMBOS) limit--;
+
+  return Math.max(maxSize, limit);
 }
 
 export function findBestCombo({ cards, programsMap, schema, k, annualSpend }) {
@@ -223,7 +247,8 @@ export function findBestCombo({ cards, programsMap, schema, k, annualSpend }) {
   const maxSize = Math.min(Number(k) || 0, cards.length);
   if (maxSize < 1) return best;
 
-  const candidateCards = selectCandidateCards(cards, programsMap, schema, annualSpend, maxSize);
+  const candidateLimit = computeCandidateLimit(cards.length, maxSize);
+  const candidateCards = selectCandidateCards(cards, programsMap, schema, annualSpend, maxSize, candidateLimit);
 
   for (let size = 1; size <= maxSize; size++) {
     for (const combo of combinations(candidateCards, size)) {
