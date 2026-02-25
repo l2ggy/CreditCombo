@@ -26,6 +26,10 @@ async function main() {
       <span class="muted">${eligibleCards.length} eligible cards · ${issues.length} excluded · ${programsMap.size} programs</span>
     `;
 
+    const maxSelectableCards = Math.max(1, Math.min(5, eligibleCards.length));
+    kInput.max = String(maxSelectableCards);
+    kInput.value = String(clampInt(kInput.value, 1, maxSelectableCards));
+
     renderSpendTable(spendTableEl, schema);
     renderIssues(issuesEl, issues);
     const issuesWrap = document.getElementById("issuesWrap");
@@ -41,7 +45,7 @@ async function main() {
       resultEl.classList.add("hidden");
       resultEl.textContent = "Computing…";
 
-      const k = clampInt(kInput.value, 1, 5);
+      const k = clampInt(kInput.value, 1, maxSelectableCards);
       const monthlySpend = readMonthlySpend(schema);
       const annualSpend = annualizeMonthlySpend(monthlySpend, schema);
 

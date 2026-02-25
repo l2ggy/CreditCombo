@@ -151,6 +151,7 @@ function valueWithWithinCardCaps(card, assignedForCard, schema, programsMap) {
 
 function* combinations(arr, k) {
   const n = arr.length;
+  if (k <= 0 || k > n) return;
   const idx = Array.from({ length: k }, (_, i) => i);
   while (true) {
     yield idx.map(i => arr[i]);
@@ -164,8 +165,9 @@ function* combinations(arr, k) {
 
 export function findBestCombo({ cards, programsMap, schema, k, annualSpend }) {
   let best = { combo: [], net: -1e18, gross: 0, fees: 0, assigned: null };
+  const maxSize = Math.min(Number(k) || 0, cards.length);
 
-  for (let size = 1; size <= k; size++) {
+  for (let size = 1; size <= maxSize; size++) {
     for (const combo of combinations(cards, size)) {
       const assigned = initialAssignment(combo, annualSpend, schema, programsMap);
       enforceCapsByRerouting(combo, assigned, schema, programsMap);
