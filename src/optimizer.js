@@ -23,7 +23,7 @@ function valuePerDollar(card, cat, programsMap) {
   const r = cardRate(card, cat);
   const { type, cpp } = programInfo(card, programsMap);
   if (type === "cashback") return r / 100.0;    // r is percent like 1.5 => 1.5%
-  return r * (cpp / 100.0);                     // points/$ * (cents/pt)/100
+  return r * (cpp / 100.0);                       // points/$ * (cents/pt)/100
 }
 
 function capAnnual(cap) {
@@ -151,6 +151,7 @@ function valueWithWithinCardCaps(card, assignedForCard, schema, programsMap) {
 
 function* combinations(arr, k) {
   const n = arr.length;
+  if (k <= 0 || k > n) return;
   const idx = Array.from({ length: k }, (_, i) => i);
   while (true) {
     yield idx.map(i => arr[i]);
@@ -162,21 +163,72 @@ function* combinations(arr, k) {
   }
 }
 
+function evaluateCombo(combo, annualSpend, schema, programsMap) {
+  const assigned = initialAssignment(combo, annualSpend, schema, programsMap);
+  enforceCapsByRerouting(combo, assigned, schema, programsMap);
+
+  let gross = 0;
+  for (const c of combo) gross += valueWithWithinCardCaps(c, assigned[c.id], schema, programsMap);
+
+  const fees = combo.reduce((s, c) => s + Number((c.annual_fee?.amount ?? 0)), 0);
+  const net = gross - fees;
+
+  return { combo, net, gross, fees, assigned };
+}
+
+function cardPotential(card, activeCats, annualSpend, programsMap) {
+  let gross = 0;
+  for (const cat of activeCats) {
+    const weight = Number(annualSpend?.[cat] ?? 0) || 1;
+    gross += weight * valuePerDollar(card, cat, programsMap);
+  }
+  const fee = Number(card.annual_fee?.amount ?? 0);
+  return gross - fee;
+}
+
+function selectCandidateCards(cards, programsMap, schema, annualSpend, maxSize) {
+  const MAX_CANDIDATES = 28;
+  if (cards.length <= MAX_CANDIDATES) return cards;
+
+  const activeCats = schema.filter(cat => (annualSpend?.[cat] || 0) > 0);
+  const catsToUse = activeCats.length ? activeCats : schema;
+  const perCategoryTake = Math.max(4, Math.min(8, maxSize + 2));
+
+  const byId = new Map(cards.map(card => [card.id, card]));
+  const selectedIds = new Set();
+
+  for (const cat of catsToUse) {
+    const ranked = [...cards].sort((a, b) => valuePerDollar(b, cat, programsMap) - valuePerDollar(a, cat, programsMap));
+    for (const card of ranked.slice(0, perCategoryTake)) selectedIds.add(card.id);
+  }
+
+  const rankedByPotential = [...cards]
+    .sort((a, b) => cardPotential(b, catsToUse, annualSpend, programsMap) - cardPotential(a, catsToUse, annualSpend, programsMap));
+  for (const card of rankedByPotential.slice(0, MAX_CANDIDATES)) selectedIds.add(card.id);
+
+  const lowFeeCards = [...cards]
+    .sort((a, b) => Number(a.annual_fee?.amount ?? 0) - Number(b.annual_fee?.amount ?? 0));
+  for (const card of lowFeeCards.slice(0, maxSize + 2)) selectedIds.add(card.id);
+
+  const selectedCards = [...selectedIds]
+    .map(id => byId.get(id))
+    .filter(Boolean)
+    .sort((a, b) => cardPotential(b, catsToUse, annualSpend, programsMap) - cardPotential(a, catsToUse, annualSpend, programsMap));
+
+  return selectedCards.slice(0, MAX_CANDIDATES);
+}
+
 export function findBestCombo({ cards, programsMap, schema, k, annualSpend }) {
   let best = { combo: [], net: -1e18, gross: 0, fees: 0, assigned: null };
+  const maxSize = Math.min(Number(k) || 0, cards.length);
+  if (maxSize < 1) return best;
 
-  for (let size = 1; size <= k; size++) {
-    for (const combo of combinations(cards, size)) {
-      const assigned = initialAssignment(combo, annualSpend, schema, programsMap);
-      enforceCapsByRerouting(combo, assigned, schema, programsMap);
+  const candidateCards = selectCandidateCards(cards, programsMap, schema, annualSpend, maxSize);
 
-      let gross = 0;
-      for (const c of combo) gross += valueWithWithinCardCaps(c, assigned[c.id], schema, programsMap);
-
-      const fees = combo.reduce((s, c) => s + Number((c.annual_fee?.amount ?? 0)), 0);
-      const net = gross - fees;
-
-      if (net > best.net) best = { combo, net, gross, fees, assigned };
+  for (let size = 1; size <= maxSize; size++) {
+    for (const combo of combinations(candidateCards, size)) {
+      const result = evaluateCombo(combo, annualSpend, schema, programsMap);
+      if (result.net > best.net) best = result;
     }
   }
 
