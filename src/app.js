@@ -1,12 +1,13 @@
 import { loadJson, normalizePrograms, validateAndFilterCards } from "./data.js";
 import { annualizeMonthlySpend, findBestCombo } from "./optimizer.js";
-import { clampInt, renderSpendTable, readMonthlySpend, renderIssues, renderResult } from "./ui.js";
+import { clampInt, renderSpendTable, readMonthlySpend, renderIssues, renderResult, renderCardCatalog } from "./ui.js";
 
 const statusEl = document.getElementById("status");
 const appEl = document.getElementById("app");
 const spendTableEl = document.getElementById("spendTable");
 const issuesEl = document.getElementById("issues");
 const resultEl = document.getElementById("result");
+const cardCatalogEl = document.getElementById("cardCatalog");
 const runBtn = document.getElementById("runBtn");
 
 const kInput = document.getElementById("k");
@@ -28,6 +29,7 @@ async function main() {
 
     renderSpendTable(spendTableEl, schema);
     renderIssues(issuesEl, issues);
+    renderCardCatalog(cardCatalogEl, eligibleCards, schema);
     const issuesWrap = document.getElementById("issuesWrap");
     if (issuesWrap) {
       if (issues.length) issuesWrap.classList.remove("hidden");

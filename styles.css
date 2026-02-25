@@ -62,3 +62,5 @@ tbody tr:last-child td{border-bottom:none}
 .issues summary{cursor:pointer;font-weight:700;color:var(--text)}
 .issues ul{margin:10px 0 0;padding-left:18px}
 .issues li{margin:5px 0;color:var(--muted)}
+.tableWrap{margin-top:10px;overflow-x:auto}
+.tableWrap table{min-width:800px}

@@ -58,6 +58,53 @@ export function renderIssues(el, issues) {
   `;
 }
 
+
+export function renderCardCatalog(el, cards, schema) {
+  if (!el) return;
+
+  const hasOther = !schema.includes("other") && cards.some(c => c?.earn_rates?.other != null);
+  const columns = hasOther ? [...schema, "other"] : [...schema];
+
+  const header = columns.map(cat => `<th class="mono">${escapeHtml(cat)}</th>`).join("");
+  const rows = cards.map((card) => {
+    const fee = Number(card?.annual_fee?.amount ?? 0);
+    const feeType = card?.annual_fee?.type ? ` / ${escapeHtml(card.annual_fee.type)}` : "";
+
+    const rates = columns.map((cat) => {
+      const raw = card?.earn_rates?.[cat];
+      const value = Number(raw);
+      const shown = Number.isFinite(value) ? `${value}x` : "—";
+      return `<td class="mono">${shown}</td>`;
+    }).join("");
+
+    return `
+      <tr>
+        <td><b>${escapeHtml(card.card_name ?? card.id ?? "Unknown")}</b></td>
+        <td>${escapeHtml(card.issuer ?? "—")} / ${escapeHtml(card.network ?? "—")}</td>
+        <td class="mono">${money(fee)}${feeType}</td>
+        ${rates}
+      </tr>
+    `;
+  }).join("");
+
+  el.classList.remove("muted");
+  el.innerHTML = `
+    <table>
+      <thead>
+        <tr>
+          <th>Card</th>
+          <th>Issuer / Network</th>
+          <th>Annual fee</th>
+          ${header}
+        </tr>
+      </thead>
+      <tbody>
+        ${rows || `<tr><td colspan="${3 + columns.length}" class="muted">No eligible cards available.</td></tr>`}
+      </tbody>
+    </table>
+  `;
+}
+
 export function renderResult(el, best, annualSpend, schema) {
   el.classList.remove("hidden");
 
