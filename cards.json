@@ -1792,6 +1792,785 @@
           "description": "Higher earn can apply at Loblaw-partner stores/shoppers."
         }
       ]
+    },
+    {
+      "id": "amex_simplycash",
+      "card_name": "SimplyCash\u00ae Card from American Express",
+      "issuer": "American Express",
+      "network": "American Express",
+      "rewards_program": "scotia_cashback",
+      "annual_fee": {
+        "amount": 0,
+        "type": "annual"
+      },
+      "earn_rates": {
+        "gas": 2,
+        "grocery": 2,
+        "other": 1.25
+      },
+      "caps": [],
+      "special_earn_rules": [
+        {
+          "type": "proxy_program",
+          "description": "Modeled as cashback-equivalent earn rates."
+        }
+      ]
+    },
+    {
+      "id": "amex_simplycash_preferred",
+      "card_name": "SimplyCash\u00ae Preferred Card from American Express",
+      "issuer": "American Express",
+      "network": "American Express",
+      "rewards_program": "scotia_cashback",
+      "annual_fee": {
+        "amount": 119.88,
+        "type": "annual"
+      },
+      "earn_rates": {
+        "gas": 4,
+        "grocery": 4,
+        "other": 2
+      },
+      "caps": [],
+      "special_earn_rules": [
+        {
+          "type": "proxy_program",
+          "description": "Modeled as cashback-equivalent earn rates."
+        }
+      ]
+    },
+    {
+      "id": "amex_bonvoy_business",
+      "card_name": "Marriott Bonvoy Business American Express Card",
+      "issuer": "American Express",
+      "network": "American Express",
+      "rewards_program": "marriott_bonvoy",
+      "annual_fee": {
+        "amount": 150,
+        "type": "annual"
+      },
+      "earn_rates": {
+        "gas": 3,
+        "dining": 3,
+        "travel_general": 3,
+        "other": 2
+      },
+      "caps": [],
+      "special_earn_rules": []
+    },
+    {
+      "id": "td_rewards_visa",
+      "card_name": "TD Rewards Visa Card",
+      "issuer": "TD",
+      "network": "Visa",
+      "rewards_program": "td_rewards",
+      "annual_fee": {
+        "amount": 0,
+        "type": "annual"
+      },
+      "earn_rates": {
+        "grocery": 2,
+        "dining": 2,
+        "other": 1
+      },
+      "caps": [],
+      "special_earn_rules": []
+    },
+    {
+      "id": "td_platinum_travel_visa",
+      "card_name": "TD Platinum Travel Visa Card",
+      "issuer": "TD",
+      "network": "Visa",
+      "rewards_program": "td_rewards",
+      "annual_fee": {
+        "amount": 89,
+        "type": "annual"
+      },
+      "earn_rates": {
+        "travel_general": 4,
+        "dining": 2,
+        "other": 1
+      },
+      "caps": [],
+      "special_earn_rules": []
+    },
+    {
+      "id": "td_aeroplan_business_vi",
+      "card_name": "TD Aeroplan Visa Business Infinite Card",
+      "issuer": "TD",
+      "network": "Visa",
+      "rewards_program": "aeroplan",
+      "annual_fee": {
+        "amount": 149,
+        "type": "annual"
+      },
+      "earn_rates": {
+        "gas": 1.5,
+        "dining": 1.5,
+        "travel_general": 1.5,
+        "other": 1
+      },
+      "caps": [],
+      "special_earn_rules": []
+    },
+    {
+      "id": "cibc_aventura_visa",
+      "card_name": "CIBC Aventura Visa Card",
+      "issuer": "CIBC",
+      "network": "Visa",
+      "rewards_program": "cibc_aventura",
+      "annual_fee": {
+        "amount": 0,
+        "type": "annual"
+      },
+      "earn_rates": {
+        "travel_general": 1,
+        "gas": 1,
+        "other": 1
+      },
+      "caps": [],
+      "special_earn_rules": []
+    },
+    {
+      "id": "cibc_aventura_gold",
+      "card_name": "CIBC Aventura Gold Visa Card",
+      "issuer": "CIBC",
+      "network": "Visa",
+      "rewards_program": "cibc_aventura",
+      "annual_fee": {
+        "amount": 139,
+        "type": "annual"
+      },
+      "earn_rates": {
+        "travel_general": 2,
+        "gas": 1.5,
+        "grocery": 1.5,
+        "other": 1
+      },
+      "caps": [],
+      "special_earn_rules": []
+    },
+    {
+      "id": "cibc_aventura_vip",
+      "card_name": "CIBC Aventura Visa Infinite Privilege Card",
+      "issuer": "CIBC",
+      "network": "Visa",
+      "rewards_program": "cibc_aventura",
+      "annual_fee": {
+        "amount": 499,
+        "type": "annual"
+      },
+      "earn_rates": {
+        "travel_general": 2,
+        "dining": 1.25,
+        "other": 1
+      },
+      "caps": [],
+      "special_earn_rules": []
+    },
+    {
+      "id": "cibc_costco_mastercard",
+      "card_name": "CIBC Costco Mastercard",
+      "issuer": "CIBC",
+      "network": "Mastercard",
+      "rewards_program": "cibc_dividend_cashback",
+      "annual_fee": {
+        "amount": 0,
+        "type": "annual"
+      },
+      "earn_rates": {
+        "gas": 3,
+        "dining": 2,
+        "other": 1
+      },
+      "caps": [],
+      "special_earn_rules": [
+        {
+          "type": "merchant_specific",
+          "description": "Additional Costco-specific reward conditions may apply."
+        }
+      ]
+    },
+    {
+      "id": "rbc_avion_business",
+      "card_name": "RBC Avion Visa Business",
+      "issuer": "RBC",
+      "network": "Visa",
+      "rewards_program": "rbc_avion",
+      "annual_fee": {
+        "amount": 120,
+        "type": "annual"
+      },
+      "earn_rates": {
+        "travel_general": 1.25,
+        "other": 1
+      },
+      "caps": [],
+      "special_earn_rules": []
+    },
+    {
+      "id": "rbc_ion_premium",
+      "card_name": "RBC ION+ Premium",
+      "issuer": "RBC",
+      "network": "Visa",
+      "rewards_program": "rbc_avion",
+      "annual_fee": {
+        "amount": 48,
+        "type": "annual"
+      },
+      "earn_rates": {
+        "grocery": 3,
+        "dining": 3,
+        "rideshare": 3,
+        "other": 1
+      },
+      "caps": [],
+      "special_earn_rules": []
+    },
+    {
+      "id": "scotia_scene_visa",
+      "card_name": "Scotiabank Scene+ Visa Card",
+      "issuer": "Scotiabank",
+      "network": "Visa",
+      "rewards_program": "scene_plus",
+      "annual_fee": {
+        "amount": 0,
+        "type": "annual"
+      },
+      "earn_rates": {
+        "entertainment": 2,
+        "grocery": 1,
+        "other": 1
+      },
+      "caps": [],
+      "special_earn_rules": []
+    },
+    {
+      "id": "scotia_passport_business_vi",
+      "card_name": "Scotiabank Passport Visa Infinite Business",
+      "issuer": "Scotiabank",
+      "network": "Visa",
+      "rewards_program": "scene_plus",
+      "annual_fee": {
+        "amount": 199,
+        "type": "annual"
+      },
+      "earn_rates": {
+        "travel_general": 3,
+        "dining": 2,
+        "other": 1
+      },
+      "caps": [],
+      "special_earn_rules": []
+    },
+    {
+      "id": "bmo_air_miles_business_we",
+      "card_name": "BMO AIR MILES World Elite Business Mastercard",
+      "issuer": "BMO",
+      "network": "Mastercard",
+      "rewards_program": "air_miles",
+      "annual_fee": {
+        "amount": 149,
+        "type": "annual"
+      },
+      "earn_rates": {
+        "gas": 0.12,
+        "other": 0.08
+      },
+      "caps": [],
+      "special_earn_rules": [
+        {
+          "type": "unit_nuance",
+          "description": "AIR MILES earn represented as Miles per $; model uses existing AIR MILES valuation."
+        }
+      ]
+    },
+    {
+      "id": "bmo_cashback_no_fee_mc",
+      "card_name": "BMO CashBack Mastercard (No Fee)",
+      "issuer": "BMO",
+      "network": "Mastercard",
+      "rewards_program": "bmo_cashback",
+      "annual_fee": {
+        "amount": 0,
+        "type": "annual"
+      },
+      "earn_rates": {
+        "grocery": 3,
+        "other": 0.5
+      },
+      "caps": [],
+      "special_earn_rules": []
+    },
+    {
+      "id": "nb_world_mastercard",
+      "card_name": "National Bank World Mastercard",
+      "issuer": "National Bank",
+      "network": "Mastercard",
+      "rewards_program": "nb_a_la_carte",
+      "annual_fee": {
+        "amount": 150,
+        "type": "annual"
+      },
+      "earn_rates": {
+        "travel_general": 2,
+        "other": 1
+      },
+      "caps": [],
+      "special_earn_rules": []
+    },
+    {
+      "id": "desjardins_cashback_we",
+      "card_name": "Desjardins Cash Back World Elite Mastercard",
+      "issuer": "Desjardins",
+      "network": "Mastercard",
+      "rewards_program": "desjardins_bonusdollars",
+      "annual_fee": {
+        "amount": 110,
+        "type": "annual"
+      },
+      "earn_rates": {
+        "grocery": 4,
+        "other": 1
+      },
+      "caps": [],
+      "special_earn_rules": []
+    },
+    {
+      "id": "triangle_mastercard",
+      "card_name": "Triangle Mastercard",
+      "issuer": "Canadian Tire Bank",
+      "network": "Mastercard",
+      "rewards_program": "ct_money",
+      "annual_fee": {
+        "amount": 0,
+        "type": "annual"
+      },
+      "earn_rates": {
+        "gas": 0.5,
+        "other": 0.5
+      },
+      "caps": [],
+      "special_earn_rules": [
+        {
+          "type": "merchant_specific",
+          "description": "Higher earn available at Canadian Tire family stores."
+        }
+      ]
+    },
+    {
+      "id": "pc_financial_mastercard",
+      "card_name": "PC Mastercard",
+      "issuer": "PC Financial",
+      "network": "Mastercard",
+      "rewards_program": "pc_optimum",
+      "annual_fee": {
+        "amount": 0,
+        "type": "annual"
+      },
+      "earn_rates": {
+        "grocery": 1,
+        "other": 1
+      },
+      "caps": [],
+      "special_earn_rules": [
+        {
+          "type": "merchant_specific",
+          "description": "Higher earn can apply at Loblaw-partner stores/shoppers."
+        }
+      ]
+    },
+    {
+      "id": "amex_business_gold_rewards",
+      "card_name": "Business Gold Rewards Card from American Express",
+      "issuer": "American Express",
+      "network": "American Express",
+      "rewards_program": "amex_mr_ca",
+      "annual_fee": {
+        "amount": 199,
+        "type": "annual"
+      },
+      "earn_rates": {
+        "travel_general": 2,
+        "gas": 2,
+        "other": 1
+      },
+      "caps": [],
+      "special_earn_rules": []
+    },
+    {
+      "id": "amex_business_platinum",
+      "card_name": "Business Platinum Card\u00ae from American Express",
+      "issuer": "American Express",
+      "network": "American Express",
+      "rewards_program": "amex_mr_ca",
+      "annual_fee": {
+        "amount": 799,
+        "type": "annual"
+      },
+      "earn_rates": {
+        "travel_general": 1.25,
+        "other": 1.25
+      },
+      "caps": [],
+      "special_earn_rules": []
+    },
+    {
+      "id": "amex_business_edge",
+      "card_name": "American Express\u00ae Business Edge\u2122 Card",
+      "issuer": "American Express",
+      "network": "American Express",
+      "rewards_program": "amex_mr_ca",
+      "annual_fee": {
+        "amount": 99,
+        "type": "annual"
+      },
+      "earn_rates": {
+        "gas": 3,
+        "dining": 3,
+        "other": 1
+      },
+      "caps": [],
+      "special_earn_rules": []
+    },
+    {
+      "id": "amex_aeroplan_card",
+      "card_name": "American Express Aeroplan Card",
+      "issuer": "American Express",
+      "network": "American Express",
+      "rewards_program": "aeroplan",
+      "annual_fee": {
+        "amount": 120,
+        "type": "annual"
+      },
+      "earn_rates": {
+        "grocery": 2,
+        "dining": 2,
+        "other": 1
+      },
+      "caps": [],
+      "special_earn_rules": []
+    },
+    {
+      "id": "amex_aeroplan_business_card",
+      "card_name": "American Express Aeroplan Business Card",
+      "issuer": "American Express",
+      "network": "American Express",
+      "rewards_program": "aeroplan",
+      "annual_fee": {
+        "amount": 199,
+        "type": "annual"
+      },
+      "earn_rates": {
+        "travel_general": 2,
+        "dining": 1.5,
+        "other": 1
+      },
+      "caps": [],
+      "special_earn_rules": []
+    },
+    {
+      "id": "cibc_dividend_platinum",
+      "card_name": "CIBC Dividend Platinum Visa Card",
+      "issuer": "CIBC",
+      "network": "Visa",
+      "rewards_program": "cibc_dividend_cashback",
+      "annual_fee": {
+        "amount": 99,
+        "type": "annual"
+      },
+      "earn_rates": {
+        "gas": 3,
+        "grocery": 2,
+        "dining": 1,
+        "other": 1
+      },
+      "caps": [],
+      "special_earn_rules": []
+    },
+    {
+      "id": "cibc_aventura_business",
+      "card_name": "CIBC Aventura Visa for Business",
+      "issuer": "CIBC",
+      "network": "Visa",
+      "rewards_program": "cibc_aventura",
+      "annual_fee": {
+        "amount": 120,
+        "type": "annual"
+      },
+      "earn_rates": {
+        "travel_general": 1.5,
+        "gas": 1,
+        "other": 1
+      },
+      "caps": [],
+      "special_earn_rules": []
+    },
+    {
+      "id": "rbc_business_cashback_mastercard",
+      "card_name": "RBC Business Cash Back Mastercard",
+      "issuer": "RBC",
+      "network": "Mastercard",
+      "rewards_program": "rbc_cashback",
+      "annual_fee": {
+        "amount": 0,
+        "type": "annual"
+      },
+      "earn_rates": {
+        "other": 1
+      },
+      "caps": [],
+      "special_earn_rules": []
+    },
+    {
+      "id": "rbc_visa_classic_low_rate",
+      "card_name": "RBC Visa Classic Low Rate Option",
+      "issuer": "RBC",
+      "network": "Visa",
+      "rewards_program": "rbc_cashback",
+      "annual_fee": {
+        "amount": 20,
+        "type": "annual"
+      },
+      "earn_rates": {
+        "other": 0.5
+      },
+      "caps": [],
+      "special_earn_rules": [
+        {
+          "type": "proxy_program",
+          "description": "Low-rate product modeled conservatively with baseline cashback proxy."
+        }
+      ]
+    },
+    {
+      "id": "scotia_american_express",
+      "card_name": "Scotiabank American Express Card",
+      "issuer": "Scotiabank",
+      "network": "American Express",
+      "rewards_program": "scene_plus",
+      "annual_fee": {
+        "amount": 0,
+        "type": "annual"
+      },
+      "earn_rates": {
+        "grocery": 3,
+        "gas": 3,
+        "dining": 1,
+        "other": 1
+      },
+      "caps": [],
+      "special_earn_rules": []
+    },
+    {
+      "id": "scotia_value_visa",
+      "card_name": "Scotia Value Visa Card",
+      "issuer": "Scotiabank",
+      "network": "Visa",
+      "rewards_program": "scotia_cashback",
+      "annual_fee": {
+        "amount": 29,
+        "type": "annual"
+      },
+      "earn_rates": {
+        "other": 0.5
+      },
+      "caps": [],
+      "special_earn_rules": [
+        {
+          "type": "proxy_program",
+          "description": "Low-rate product modeled conservatively with baseline cashback proxy."
+        }
+      ]
+    },
+    {
+      "id": "scotia_momentum_mastercard_no_fee",
+      "card_name": "Scotia Momentum Mastercard (No Fee)",
+      "issuer": "Scotiabank",
+      "network": "Mastercard",
+      "rewards_program": "scotia_cashback",
+      "annual_fee": {
+        "amount": 0,
+        "type": "annual"
+      },
+      "earn_rates": {
+        "gas": 1,
+        "grocery": 1,
+        "drugstore": 1,
+        "other": 0.5
+      },
+      "caps": [],
+      "special_earn_rules": []
+    },
+    {
+      "id": "bmo_rewards_business_mastercard",
+      "card_name": "BMO Rewards Business Mastercard",
+      "issuer": "BMO",
+      "network": "Mastercard",
+      "rewards_program": "bmo_rewards",
+      "annual_fee": {
+        "amount": 0,
+        "type": "annual"
+      },
+      "earn_rates": {
+        "travel_general": 1,
+        "other": 1
+      },
+      "caps": [],
+      "special_earn_rules": []
+    },
+    {
+      "id": "bmo_air_miles_business_mastercard",
+      "card_name": "BMO AIR MILES Business Mastercard",
+      "issuer": "BMO",
+      "network": "Mastercard",
+      "rewards_program": "air_miles",
+      "annual_fee": {
+        "amount": 0,
+        "type": "annual"
+      },
+      "earn_rates": {
+        "gas": 0.08,
+        "other": 0.05
+      },
+      "caps": [],
+      "special_earn_rules": [
+        {
+          "type": "unit_nuance",
+          "description": "AIR MILES earn represented as Miles per $; model uses existing AIR MILES valuation."
+        }
+      ]
+    },
+    {
+      "id": "mbna_rewards_platinum_business",
+      "card_name": "MBNA Rewards Platinum Plus for Business Mastercard",
+      "issuer": "MBNA",
+      "network": "Mastercard",
+      "rewards_program": "mbna_rewards",
+      "annual_fee": {
+        "amount": 0,
+        "type": "annual"
+      },
+      "earn_rates": {
+        "grocery": 1.5,
+        "dining": 1.5,
+        "recurring_bills": 1.5,
+        "other": 1
+      },
+      "caps": [],
+      "special_earn_rules": []
+    },
+    {
+      "id": "nb_platinum_mastercard",
+      "card_name": "National Bank Platinum Mastercard",
+      "issuer": "National Bank",
+      "network": "Mastercard",
+      "rewards_program": "nb_a_la_carte",
+      "annual_fee": {
+        "amount": 89,
+        "type": "annual"
+      },
+      "earn_rates": {
+        "travel_general": 1.5,
+        "other": 1
+      },
+      "caps": [],
+      "special_earn_rules": []
+    },
+    {
+      "id": "nb_syncro_mastercard",
+      "card_name": "National Bank Syncro Mastercard",
+      "issuer": "National Bank",
+      "network": "Mastercard",
+      "rewards_program": "nb_a_la_carte",
+      "annual_fee": {
+        "amount": 0,
+        "type": "annual"
+      },
+      "earn_rates": {
+        "other": 1
+      },
+      "caps": [],
+      "special_earn_rules": [
+        {
+          "type": "proxy_program",
+          "description": "Primarily low-rate product; modeled with baseline earn."
+        }
+      ]
+    },
+    {
+      "id": "desjardins_cashback_mastercard",
+      "card_name": "Desjardins Cash Back Mastercard",
+      "issuer": "Desjardins",
+      "network": "Mastercard",
+      "rewards_program": "desjardins_bonusdollars",
+      "annual_fee": {
+        "amount": 0,
+        "type": "annual"
+      },
+      "earn_rates": {
+        "other": 0.5
+      },
+      "caps": [],
+      "special_earn_rules": []
+    },
+    {
+      "id": "desjardins_odyssey_gold",
+      "card_name": "Desjardins Odyssey Gold Visa",
+      "issuer": "Desjardins",
+      "network": "Visa",
+      "rewards_program": "desjardins_bonusdollars",
+      "annual_fee": {
+        "amount": 110,
+        "type": "annual"
+      },
+      "earn_rates": {
+        "travel_general": 2,
+        "other": 1
+      },
+      "caps": [],
+      "special_earn_rules": []
+    },
+    {
+      "id": "simplii_cash_back_business_visa",
+      "card_name": "Simplii Financial Cash Back Business Visa",
+      "issuer": "Simplii",
+      "network": "Visa",
+      "rewards_program": "simplii_cashback",
+      "annual_fee": {
+        "amount": 0,
+        "type": "annual"
+      },
+      "earn_rates": {
+        "dining": 4,
+        "gas": 1.5,
+        "grocery": 1.5,
+        "drugstore": 1.5,
+        "other": 0.5
+      },
+      "caps": [],
+      "special_earn_rules": []
+    },
+    {
+      "id": "neo_mastercard",
+      "card_name": "Neo Mastercard",
+      "issuer": "Neo Financial",
+      "network": "Mastercard",
+      "rewards_program": "scotia_cashback",
+      "annual_fee": {
+        "amount": 0,
+        "type": "annual"
+      },
+      "earn_rates": {
+        "other": 1
+      },
+      "caps": [],
+      "special_earn_rules": [
+        {
+          "type": "proxy_program",
+          "description": "Neo earn rates vary by merchant/partner; modeled as a conservative baseline cashback proxy."
+        }
+      ]
     }
   ]
 }
