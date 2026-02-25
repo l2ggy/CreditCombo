@@ -20,7 +20,7 @@ async function main() {
     ]);
 
     const programsMap = normalizePrograms(programsJson);
-    const { schema, eligibleCards, issues } = validateAndFilterCards(cardsJson, programsMap);
+    const { schema, categoryDescriptions, eligibleCards, issues } = validateAndFilterCards(cardsJson, programsMap);
 
     statusEl.innerHTML = `
       <span class="badge good">Loaded</span>
@@ -31,7 +31,7 @@ async function main() {
     kInput.max = String(maxSelectableCards);
     kInput.value = String(clampInt(kInput.value, 1, maxSelectableCards));
 
-    renderSpendTable(spendTableEl, schema);
+    renderSpendTable(spendTableEl, schema, categoryDescriptions);
     renderIssues(issuesEl, issues);
     const issuesWrap = document.getElementById("issuesWrap");
     if (issuesWrap) {
