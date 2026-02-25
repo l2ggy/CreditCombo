@@ -1,4 +1,4 @@
-Card Combo Optimizer (MVP)
+CreditCombo (MVP)
 ========================
 
 A small static web app that recommends an “ideal” long‑term Canadian credit‑card combo (1–5 cards) based on your monthly spend by category. It loads card and rewards-program data from JSON files, estimates annual rewards value minus fees, and outputs simple “use this card for this category” instructions.
@@ -9,7 +9,7 @@ What it does
   - Number of cards to hold (1–5)
   - Monthly spend per category (from cards.json schema)
 - Computes:
-  - Best card set (up to k cards)
+  - Best card set (searches all set sizes from 1..k)
   - Estimated annual gross rewards value
   - Annual fees
   - Net value (gross − fees)
@@ -72,13 +72,19 @@ programs.json
 
 Optimizer notes
 --------------
-- Values are computed as:
-  - points programs: (points per $) * (cents per point) / 100
-  - cashback programs: (percent) / 100
-- Caps are handled by:
-  1) assigning each category to the best card in the combo
-  2) rerouting overflow in capped buckets to the next-best card where possible
-  3) if still over, valuing overflow at earn_rate_above_cap for that cap rule
+- Reward value per $ is computed as:
+  - points programs: `(points per $) * (cents per point) / 100`
+  - cashback programs: `(percent) / 100`
+- For each candidate combo, the optimizer:
+  1) assigns each category to the highest-value card in that combo,
+  2) enforces cap rules by rerouting overflow to the next-best card (iterative),
+  3) applies `earn_rate_above_cap` to any overflow that still remains on a capped card,
+  4) subtracts annual fees to get net value.
+- To keep runtime practical on large card sets, it narrows to a candidate pool before evaluating all combinations from size 1..k. The pool is built by combining:
+  - top cards per active spend category (high value-per-dollar in that category),
+  - top cards by overall weighted potential (using your spend mix and annual fees),
+  - a small set of lowest-fee cards (to preserve low-fee combo options),
+  then trimming that merged set to a size limit derived from a target max combination count.
 
 License / disclaimer
 --------------------
