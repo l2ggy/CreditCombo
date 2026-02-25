@@ -22,6 +22,16 @@ export function renderSpendTable(el, schema) {
       </tbody>
     </table>
   `;
+
+  el.querySelectorAll('input[data-cat]').forEach((inp) => {
+    inp.addEventListener("focus", () => {
+      if (inp.value === "0") inp.select();
+    });
+
+    inp.addEventListener("blur", () => {
+      if (inp.value.trim() === "") inp.value = "0";
+    });
+  });
 }
 
 export function readMonthlySpend(schema) {
