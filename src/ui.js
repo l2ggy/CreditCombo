@@ -58,7 +58,7 @@ export function renderIssues(el, issues) {
   `;
 }
 
-export function renderResult(el, best, annualSpend, schema) {
+export function renderResult(el, best, annualSpend, schema, valuationMode = "estimated") {
   el.classList.remove("hidden");
 
   if (!best.combo.length) {
@@ -95,7 +95,7 @@ export function renderResult(el, best, annualSpend, schema) {
     <h2>Best combo</h2>
     <ul>${comboList}</ul>
 
-    <h2>Estimated annual value</h2>
+    <h2>Annual value (${valuationMode === "minimum_guaranteed" ? "minimum guaranteed" : "estimated"})</h2>
     <table>
       <tbody>
         <tr><th>Gross rewards value</th><td>${money(best.gross)}</td></tr>
@@ -112,7 +112,7 @@ export function renderResult(el, best, annualSpend, schema) {
       </tbody>
     </table>
 
-    <p class="muted">Note: <span class="mono">special_earn_rules</span> are ignored in this MVP.</p>
+    <p class="muted">Mode: ${valuationMode === "minimum_guaranteed" ? "minimum guaranteed points redemption value" : "estimated points value"}. Note: <span class="mono">special_earn_rules</span> are ignored in this MVP.</p>
   `;
 }
 
