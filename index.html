@@ -24,19 +24,21 @@
       <aside class="panel inputPanel">
         <div class="panelHeader">
           <h2>Your inputs</h2>
-          <div class="row">
-            <div class="field">
-              <label for="k">Number of cards</label>
-              <input id="k" type="number" min="1" max="5" value="3" />
-            </div>
-            <button id="runBtn" class="primary">Find best combo</button>
-          </div>
         </div>
 
         <div class="divider"></div>
 
         <h3 class="sectionTitle">Monthly spend (CAD)</h3>
         <div id="spendTable"></div>
+
+        <div class="divider"></div>
+        <div class="row">
+          <div class="field">
+            <label for="k">Number of cards</label>
+            <input id="k" type="number" min="1" max="5" value="3" />
+          </div>
+          <button id="runBtn" class="primary">Find best combo</button>
+        </div>
 
         <details id="issuesWrap" class="issues hidden">
           <summary>Data issues (excluded cards)</summary>
