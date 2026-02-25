@@ -37,6 +37,13 @@
             <label for="k">Number of cards</label>
             <input id="k" type="number" min="1" max="5" value="3" />
           </div>
+          <div class="field">
+            <label for="valuationMode">Points valuation</label>
+            <select id="valuationMode">
+              <option value="estimated" selected>Estimated value</option>
+              <option value="minimum_guaranteed">Minimum guaranteed value</option>
+            </select>
+          </div>
           <button id="runBtn" class="primary">Find best combo</button>
         </div>
 
@@ -50,7 +57,7 @@
       <section class="panel resultPanel">
         <div class="panelHeader">
           <h2>Results</h2>
-          <p class="subtle">Your best combo and what to use for each category.</p>
+          <p class="subtle">Your best combo and what to use for each category (using your selected points valuation mode).</p>
         </div>
         <div class="divider"></div>
         <div id="result" class="resultEmpty">

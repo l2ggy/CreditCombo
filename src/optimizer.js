@@ -11,19 +11,27 @@ function cardRate(card, cat) {
   return 0;
 }
 
-function programInfo(card, programsMap) {
-  const p = programsMap.get(card.rewards_program);
-  // This should exist due to filtering, but keep it safe.
-  const type = p?.program_type ?? "points";
-  const cpp = type === "cashback" ? 1.0 : Number(p?.cents_per_point ?? 0);
+function pointsCpp(program, valuationMode) {
+  const estimated = Number(program?.cents_per_point ?? 0);
+  if (valuationMode !== "minimum_guaranteed") return estimated;
+
+  const minimum = program?.minimum_cents_per_point;
+  if (minimum == null) return estimated;
+  return Number(minimum);
+}
+
+function programInfo(card, programsMap, valuationMode) {
+  const program = programsMap.get(card.rewards_program);
+  const type = program?.program_type ?? "points";
+  const cpp = type === "cashback" ? 1.0 : pointsCpp(program, valuationMode);
   return { type, cpp };
 }
 
-function valuePerDollar(card, cat, programsMap) {
+function valuePerDollar(card, cat, programsMap, valuationMode) {
   const r = cardRate(card, cat);
-  const { type, cpp } = programInfo(card, programsMap);
-  if (type === "cashback") return r / 100.0;    // r is percent like 1.5 => 1.5%
-  return r * (cpp / 100.0);                       // points/$ * (cents/pt)/100
+  const { type, cpp } = programInfo(card, programsMap, valuationMode);
+  if (type === "cashback") return r / 100.0;
+  return r * (cpp / 100.0);
 }
 
 function capAnnual(cap) {
@@ -32,14 +40,14 @@ function capAnnual(cap) {
   return period === "monthly" ? amt * 12 : amt;
 }
 
-function nextBestCard(combo, current, cat, programsMap) {
-  const ranked = [...combo].sort((a, b) => valuePerDollar(b, cat, programsMap) - valuePerDollar(a, cat, programsMap));
+function nextBestCard(combo, current, cat, programsMap, valuationMode) {
+  const ranked = [...combo].sort((a, b) => valuePerDollar(b, cat, programsMap, valuationMode) - valuePerDollar(a, cat, programsMap, valuationMode));
   if (ranked.length <= 1) return null;
   if (ranked[0].id !== current.id) return ranked[0];
   return ranked[1];
 }
 
-function initialAssignment(combo, annualSpend, schema, programsMap) {
+function initialAssignment(combo, annualSpend, schema, programsMap, valuationMode) {
   const assigned = Object.fromEntries(combo.map(c => [c.id, Object.fromEntries(schema.map(cat => [cat, 0]))]));
 
   for (const cat of schema) {
@@ -48,14 +56,14 @@ function initialAssignment(combo, annualSpend, schema, programsMap) {
 
     let best = combo[0];
     for (const c of combo) {
-      if (valuePerDollar(c, cat, programsMap) > valuePerDollar(best, cat, programsMap)) best = c;
+      if (valuePerDollar(c, cat, programsMap, valuationMode) > valuePerDollar(best, cat, programsMap, valuationMode)) best = c;
     }
     assigned[best.id][cat] += amt;
   }
   return assigned;
 }
 
-function enforceCapsByRerouting(combo, assigned, schema, programsMap, passes = 8) {
+function enforceCapsByRerouting(combo, assigned, schema, programsMap, valuationMode, passes = 8) {
   for (let iter = 0; iter < passes; iter++) {
     let changed = false;
 
@@ -77,10 +85,10 @@ function enforceCapsByRerouting(combo, assigned, schema, programsMap, passes = 8
           const amtInCat = assigned[card.id][cat] || 0;
           if (amtInCat <= 0) continue;
 
-          const nb = nextBestCard(combo, card, cat, programsMap);
+          const nb = nextBestCard(combo, card, cat, programsMap, valuationMode);
           if (!nb) continue;
 
-          const loss = valuePerDollar(card, cat, programsMap) - valuePerDollar(nb, cat, programsMap);
+          const loss = valuePerDollar(card, cat, programsMap, valuationMode) - valuePerDollar(nb, cat, programsMap, valuationMode);
           moves.push({ loss, cat, amtInCat, nb });
         }
 
@@ -101,20 +109,18 @@ function enforceCapsByRerouting(combo, assigned, schema, programsMap, passes = 8
   }
 }
 
-function valueWithWithinCardCaps(card, assignedForCard, schema, programsMap) {
-  // base value
+function valueWithWithinCardCaps(card, assignedForCard, schema, programsMap, valuationMode) {
   let base = 0;
   for (const cat of schema) {
     const amt = assignedForCard[cat] || 0;
-    if (amt > 0) base += amt * valuePerDollar(card, cat, programsMap);
+    if (amt > 0) base += amt * valuePerDollar(card, cat, programsMap, valuationMode);
   }
 
   const caps = card.caps || [];
   if (!caps.length) return base;
 
-  // downgrade any still-overflowing cap buckets using earn_rate_above_cap
   let adj = 0;
-  const { type, cpp } = programInfo(card, programsMap);
+  const { type, cpp } = programInfo(card, programsMap, valuationMode);
 
   for (const cap of caps) {
     const cats = (cap.categories || []).filter(c => schema.includes(c));
@@ -129,12 +135,11 @@ function valueWithWithinCardCaps(card, assignedForCard, schema, programsMap) {
     const aboveRate = Number(cap.earn_rate_above_cap ?? 0);
     const aboveVPD = (type === "cashback") ? (aboveRate / 100.0) : (aboveRate * (cpp / 100.0));
 
-    // overflow from lowest-value categories first
     const parts = [];
     for (const cat of cats) {
       const amt = assignedForCard[cat] || 0;
       if (amt <= 0) continue;
-      parts.push({ cat, amt, normalVPD: valuePerDollar(card, cat, programsMap) });
+      parts.push({ cat, amt, normalVPD: valuePerDollar(card, cat, programsMap, valuationMode) });
     }
     parts.sort((a, b) => a.normalVPD - b.normalVPD);
 
@@ -163,12 +168,12 @@ function* combinations(arr, k) {
   }
 }
 
-function evaluateCombo(combo, annualSpend, schema, programsMap) {
-  const assigned = initialAssignment(combo, annualSpend, schema, programsMap);
-  enforceCapsByRerouting(combo, assigned, schema, programsMap);
+function evaluateCombo(combo, annualSpend, schema, programsMap, valuationMode) {
+  const assigned = initialAssignment(combo, annualSpend, schema, programsMap, valuationMode);
+  enforceCapsByRerouting(combo, assigned, schema, programsMap, valuationMode);
 
   let gross = 0;
-  for (const c of combo) gross += valueWithWithinCardCaps(c, assigned[c.id], schema, programsMap);
+  for (const c of combo) gross += valueWithWithinCardCaps(c, assigned[c.id], schema, programsMap, valuationMode);
 
   const fees = combo.reduce((s, c) => s + Number((c.annual_fee?.amount ?? 0)), 0);
   const net = gross - fees;
@@ -176,17 +181,17 @@ function evaluateCombo(combo, annualSpend, schema, programsMap) {
   return { combo, net, gross, fees, assigned };
 }
 
-function cardPotential(card, activeCats, annualSpend, programsMap) {
+function cardPotential(card, activeCats, annualSpend, programsMap, valuationMode) {
   let gross = 0;
   for (const cat of activeCats) {
     const weight = Number(annualSpend?.[cat] ?? 0) || 1;
-    gross += weight * valuePerDollar(card, cat, programsMap);
+    gross += weight * valuePerDollar(card, cat, programsMap, valuationMode);
   }
   const fee = Number(card.annual_fee?.amount ?? 0);
   return gross - fee;
 }
 
-function selectCandidateCards(cards, programsMap, schema, annualSpend, maxSize, candidateLimit) {
+function selectCandidateCards(cards, programsMap, schema, annualSpend, maxSize, candidateLimit, valuationMode) {
   const maxCandidates = Math.max(maxSize, candidateLimit);
   if (cards.length <= maxCandidates) return cards;
 
@@ -198,12 +203,12 @@ function selectCandidateCards(cards, programsMap, schema, annualSpend, maxSize, 
   const selectedIds = new Set();
 
   for (const cat of catsToUse) {
-    const ranked = [...cards].sort((a, b) => valuePerDollar(b, cat, programsMap) - valuePerDollar(a, cat, programsMap));
+    const ranked = [...cards].sort((a, b) => valuePerDollar(b, cat, programsMap, valuationMode) - valuePerDollar(a, cat, programsMap, valuationMode));
     for (const card of ranked.slice(0, perCategoryTake)) selectedIds.add(card.id);
   }
 
   const rankedByPotential = [...cards]
-    .sort((a, b) => cardPotential(b, catsToUse, annualSpend, programsMap) - cardPotential(a, catsToUse, annualSpend, programsMap));
+    .sort((a, b) => cardPotential(b, catsToUse, annualSpend, programsMap, valuationMode) - cardPotential(a, catsToUse, annualSpend, programsMap, valuationMode));
   for (const card of rankedByPotential.slice(0, maxCandidates)) selectedIds.add(card.id);
 
   const lowFeeCards = [...cards]
@@ -213,7 +218,7 @@ function selectCandidateCards(cards, programsMap, schema, annualSpend, maxSize, 
   const selectedCards = [...selectedIds]
     .map(id => byId.get(id))
     .filter(Boolean)
-    .sort((a, b) => cardPotential(b, catsToUse, annualSpend, programsMap) - cardPotential(a, catsToUse, annualSpend, programsMap));
+    .sort((a, b) => cardPotential(b, catsToUse, annualSpend, programsMap, valuationMode) - cardPotential(a, catsToUse, annualSpend, programsMap, valuationMode));
 
   return selectedCards.slice(0, maxCandidates);
 }
@@ -242,17 +247,17 @@ function computeCandidateLimit(cardCount, maxSize) {
   return Math.max(maxSize, limit);
 }
 
-export function findBestCombo({ cards, programsMap, schema, k, annualSpend }) {
+export function findBestCombo({ cards, programsMap, schema, k, annualSpend, valuationMode = "estimated" }) {
   let best = { combo: [], net: -1e18, gross: 0, fees: 0, assigned: null };
   const maxSize = Math.min(Number(k) || 0, cards.length);
   if (maxSize < 1) return best;
 
   const candidateLimit = computeCandidateLimit(cards.length, maxSize);
-  const candidateCards = selectCandidateCards(cards, programsMap, schema, annualSpend, maxSize, candidateLimit);
+  const candidateCards = selectCandidateCards(cards, programsMap, schema, annualSpend, maxSize, candidateLimit, valuationMode);
 
   for (let size = 1; size <= maxSize; size++) {
     for (const combo of combinations(candidateCards, size)) {
-      const result = evaluateCombo(combo, annualSpend, schema, programsMap);
+      const result = evaluateCombo(combo, annualSpend, schema, programsMap, valuationMode);
       if (result.net > best.net) best = result;
     }
   }

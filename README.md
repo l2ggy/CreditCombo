@@ -8,9 +8,10 @@ What it does
 - Prompts for:
   - Number of cards to hold (1–5)
   - Monthly spend per category (from cards.json schema)
+  - Points valuation mode: estimated vs minimum guaranteed redemption value
 - Computes:
   - Best card set (searches all set sizes from 1..k)
-  - Estimated annual gross rewards value
+  - Annual gross rewards value (based on selected valuation mode)
   - Annual fees
   - Net value (gross − fees)
   - Category-by-category usage instructions
@@ -28,6 +29,7 @@ Cards are excluded from optimization if:
 - rewards_program is missing, OR
 - rewards_program is not found in programs.json, OR
 - program_type is "points" and cents_per_point is null
+  (minimum_cents_per_point is used for minimum guaranteed mode and is populated for all current points programs)
 
 Excluded cards (and reasons) appear under “Data issues” in the UI.
 
@@ -68,13 +70,17 @@ programs.json
   - program_id
   - program_name
   - program_type: "points" | "cashback"
-  - cents_per_point (required for "points"; for cashback it can be 1.0)
+  - cents_per_point (required for "points"; cashback is always treated as face-value cashback, i.e. 1.0 cpp equivalent)
+  - minimum_cents_per_point (used in minimum guaranteed mode; populated for all current points programs)
+  - minimum_valuation_note (short rationale/source for the minimum floor)
 
 Optimizer notes
 --------------
 - Reward value per $ is computed as:
-  - points programs: `(points per $) * (cents per point) / 100`
-  - cashback programs: `(percent) / 100`
+  - points programs: `(points per $) * (effective cents per point) / 100`
+    - effective cpp = `cents_per_point` in estimated mode
+    - effective cpp = `minimum_cents_per_point` in minimum guaranteed mode (falls back to `cents_per_point` if a future program entry omits it)
+  - cashback programs: `(percent) / 100` (cashback is treated as a fixed 1.0 cpp equivalent)
 - For each candidate combo, the optimizer:
   1) assigns each category to the highest-value card in that combo,
   2) enforces cap rules by rerouting overflow to the next-best card (iterative),

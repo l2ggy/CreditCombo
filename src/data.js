@@ -12,7 +12,8 @@ export function normalizePrograms(programsJson) {
       program_id: p.program_id,
       program_name: p.program_name ?? p.program_id,
       program_type: p.program_type ?? "points",
-      cents_per_point: p.cents_per_point ?? null
+      cents_per_point: (p.program_type ?? "points") === "cashback" ? 1.0 : (p.cents_per_point ?? null),
+      minimum_cents_per_point: p.minimum_cents_per_point ?? null
     });
   }
   return map;
@@ -22,7 +23,7 @@ export function normalizePrograms(programsJson) {
  * Exclusion rules:
  * - If program_id missing => exclude card
  * - If program_type === "points" and cents_per_point is null => exclude card
- * - If cashback, we accept even with cents_per_point missing (we assume face value; earn_rates are %).
+ * - If cashback, we accept even with cents_per_point missing (cashback is treated as face value, i.e. fixed 1.0 cpp).
  */
 export function validateAndFilterCards(cardsJson, programsMap) {
   const schema = cardsJson?.meta?.category_schema_modeled ?? [];

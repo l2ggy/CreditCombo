@@ -8,6 +8,7 @@ const spendTableEl = document.getElementById("spendTable");
 const issuesEl = document.getElementById("issues");
 const resultEl = document.getElementById("result");
 const runBtn = document.getElementById("runBtn");
+const valuationModeEl = document.getElementById("valuationMode");
 
 const kInput = document.getElementById("k");
 
@@ -46,6 +47,9 @@ async function main() {
       resultEl.textContent = "Computing…";
 
       const k = clampInt(kInput.value, 1, maxSelectableCards);
+      const valuationMode = valuationModeEl?.value === "minimum_guaranteed"
+        ? "minimum_guaranteed"
+        : "estimated";
       const monthlySpend = readMonthlySpend(schema);
       const annualSpend = annualizeMonthlySpend(monthlySpend, schema);
 
@@ -54,10 +58,11 @@ async function main() {
         programsMap,
         schema,
         k,
-        annualSpend
+        annualSpend,
+        valuationMode
       });
 
-      renderResult(resultEl, best, annualSpend, schema);
+      renderResult(resultEl, best, annualSpend, schema, valuationMode);
       runBtn.disabled = false;
     });
 
