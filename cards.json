@@ -18,7 +18,49 @@
       "travel_general",
       "other"
     ],
-    "note": "Hyper-specific merchant/portal multipliers are not mapped into travel_general; see special_earn_rules."
+    "note": "Hyper-specific merchant/portal multipliers are not mapped into travel_general; see special_earn_rules.",
+    "taxonomy_definition": {
+      "standard_categories": [
+        "grocery",
+        "dining",
+        "gas",
+        "transit",
+        "rideshare",
+        "streaming",
+        "digital_media",
+        "utilities",
+        "recurring_bills",
+        "drugstore",
+        "entertainment",
+        "travel_general",
+        "other"
+      ],
+      "inclusion_rules": {
+        "grocery": "Supermarkets and qualifying grocers; excludes wholesale clubs unless issuer explicitly codes them as grocery.",
+        "dining": "Restaurants, cafes, bars, food delivery coded as dining.",
+        "gas": "Fuel stations and pay-at-pump transactions.",
+        "transit": "Public transit, parking, tolls, and commuting services that are not rideshare.",
+        "rideshare": "App-based ride-hailing services only.",
+        "streaming": "Subscription video/audio streaming services.",
+        "digital_media": "Digital app/software/game/music purchases not billed as streaming subscriptions.",
+        "utilities": "Home utilities and telecom billers when issuer separately rewards utility-type merchants.",
+        "recurring_bills": "Pre-authorized recurring bill payments not otherwise mapped to utilities/streaming/digital_media.",
+        "drugstore": "Pharmacies and drugstores.",
+        "entertainment": "Movies, events, and leisure admissions.",
+        "travel_general": "Non-portal travel spend (airlines, hotels, car rental, cruises, travel agencies) unless an issuer states portal-only acceleration.",
+        "other": "Base earn for all uncategorized eligible purchases."
+      },
+      "exclusion_rules": [
+        "Merchant-, chain-, portal-, or redemption-dependent bonuses are stored in special_earn_rules and not promoted into base earn_rates.",
+        "Program-value assumptions (e.g., Aeroplan cents-per-point) do not change earn multipliers in earn_rates."
+      ],
+      "tie_break_rules": [
+        "Use issuer merchant category coding (MCC) precedence when categories overlap.",
+        "If a transaction can map to rideshare or transit, rideshare wins only for app ride-hailing operators.",
+        "If a charge is both recurring and category-specific (e.g., streaming subscription), the specific category wins over recurring_bills.",
+        "If terms cite portal-only travel acceleration, keep baseline travel in travel_general and capture portal uplift in special_earn_rules."
+      ]
+    }
   },
   "cards": [
     {
@@ -73,7 +115,12 @@
         "other": 1
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [
+        {
+          "type": "merchant_specific",
+          "description": "American Express Travel bookings can have elevated Membership Rewards earn versus baseline travel."
+        }
+      ]
     },
     {
       "id": "scotia_gold_amex",
@@ -156,6 +203,10 @@
         {
           "type": "merchant_specific",
           "description": "Higher earn often includes Air Canada direct purchases; not mapped into travel_general."
+        },
+        {
+          "type": "merchant_specific",
+          "description": "Air Canada and Air Canada Vacations spend can have elevated Aeroplan earn compared with baseline categories."
         }
       ]
     },
@@ -192,6 +243,10 @@
         {
           "type": "merchant_specific",
           "description": "Air Canada purchase earn uplift exists on issuer terms; not mapped into travel_general."
+        },
+        {
+          "type": "merchant_specific",
+          "description": "Air Canada and Air Canada Vacations spend can have elevated Aeroplan earn compared with baseline categories."
         }
       ]
     },
@@ -210,7 +265,12 @@
         "other": 1
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [
+        {
+          "type": "merchant_specific",
+          "description": "RBC Avion travel portal and selected partner booking channels may offer earn differences vs. baseline spend."
+        }
+      ]
     },
     {
       "id": "bmo_ascend_we",
@@ -297,6 +357,10 @@
         {
           "type": "portal_specific",
           "description": "2x travel via CIBC Rewards Centre is portal-specific; not mapped into travel_general."
+        },
+        {
+          "type": "merchant_specific",
+          "description": "CIBC Rewards Centre / issuer travel portal bookings can have elevated Aventura earn versus baseline."
         }
       ]
     },
@@ -366,6 +430,10 @@
         {
           "type": "user_selectable_categories",
           "description": "2% cashback in up to 2 categories (or 3 if rewards deposited to Tangerine Savings). Categories are user-chosen; not hard-coded into earn_rates."
+        },
+        {
+          "type": "merchant_specific",
+          "description": "User-selectable 2% categories (typically up to 2, or 3 with a Tangerine savings account) are configurable and merchant-code dependent."
         }
       ]
     },
@@ -387,6 +455,10 @@
         {
           "type": "fx_currency_specific",
           "description": "3% cashback on purchases made in U.S. dollars (USD); not modeled as a normal spend category."
+        },
+        {
+          "type": "merchant_specific",
+          "description": "Additional effective value can apply when redeeming rewards against Rogers/Fido/Shaw purchases; kept out of base earn_rates."
         }
       ]
     },
@@ -652,6 +724,10 @@
         {
           "type": "category_out_of_schema",
           "description": "4x also covers digital gaming; consider adding a dedicated category later."
+        },
+        {
+          "type": "merchant_specific",
+          "description": "Travel booked through Expedia for TD can have higher earn than baseline categories; captured as portal-specific."
         }
       ],
       "sources": [
@@ -1057,6 +1133,10 @@
         {
           "type": "unit_nuance",
           "description": "Fuel earn is sometimes specified as cents-per-litre at Canadian Tire gas (not modeled)."
+        },
+        {
+          "type": "merchant_specific",
+          "description": "Triangle accelerated earn is partner-merchant specific (Canadian Tire family and selected partners) and not universal grocery earn."
         }
       ],
       "sources": [
@@ -1085,6 +1165,10 @@
         {
           "type": "merchant_specific",
           "description": "30 PC Optimum pts/$ at Loblaw’s grocery stores, Esso gas, and PC Travel."
+        },
+        {
+          "type": "merchant_specific",
+          "description": "Highest effective earn rates require shopping at Loblaw-banner stores and Shoppers Drug Mart; non-partner spend is lower and program-dependent."
         }
       ],
       "sources": [
@@ -1183,6 +1267,10 @@
         {
           "type": "merchant_specific",
           "description": "2 WestJet points per $ on eligible WestJet flights / WestJet Vacations / Sunwing Vacations (not mapped to travel_general)."
+        },
+        {
+          "type": "merchant_specific",
+          "description": "WestJet flights and WestJet Vacations bookings can earn above base rates; treated as merchant-specific."
         }
       ],
       "sources": [
@@ -1215,6 +1303,10 @@
         {
           "type": "category_out_of_schema",
           "description": "1.5x also covers digital games + digital subscriptions (not fully separated in schema)."
+        },
+        {
+          "type": "merchant_specific",
+          "description": "WestJet flights and WestJet Vacations bookings can earn above base rates; treated as merchant-specific."
         }
       ],
       "sources": [
@@ -1371,7 +1463,12 @@
         "other": 1
       },
       "caps": [],
-      "special_earn_rules": [],
+      "special_earn_rules": [
+        {
+          "type": "merchant_specific",
+          "description": "RBC Avion travel portal and selected partner booking channels may offer earn differences vs. baseline spend."
+        }
+      ],
       "sources": [
         "turn18view1"
       ]
@@ -1409,7 +1506,12 @@
         "other": 1
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [
+        {
+          "type": "merchant_specific",
+          "description": "American Express Travel bookings can have elevated Membership Rewards earn versus baseline travel."
+        }
+      ]
     },
     {
       "id": "amex_aeroplan_reserve",
@@ -1431,6 +1533,10 @@
         {
           "type": "merchant_specific",
           "description": "Higher earn can apply on eligible Air Canada purchases."
+        },
+        {
+          "type": "merchant_specific",
+          "description": "Air Canada and Air Canada Vacations spend can have elevated Aeroplan earn compared with baseline categories."
         }
       ]
     },
@@ -1454,6 +1560,10 @@
         {
           "type": "merchant_specific",
           "description": "Higher earn can apply on eligible Air Canada purchases."
+        },
+        {
+          "type": "merchant_specific",
+          "description": "Air Canada and Air Canada Vacations spend can have elevated Aeroplan earn compared with baseline categories."
         }
       ]
     },
@@ -1473,7 +1583,12 @@
         "other": 1
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [
+        {
+          "type": "merchant_specific",
+          "description": "Air Canada and Air Canada Vacations spend can have elevated Aeroplan earn compared with baseline categories."
+        }
+      ]
     },
     {
       "id": "td_aeroplan_vip",
@@ -1492,7 +1607,12 @@
         "other": 1.25
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [
+        {
+          "type": "merchant_specific",
+          "description": "Air Canada and Air Canada Vacations spend can have elevated Aeroplan earn compared with baseline categories."
+        }
+      ]
     },
     {
       "id": "cibc_aeroplan_visa",
@@ -1510,7 +1630,12 @@
         "other": 1
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [
+        {
+          "type": "merchant_specific",
+          "description": "Air Canada and Air Canada Vacations spend can have elevated Aeroplan earn compared with baseline categories."
+        }
+      ]
     },
     {
       "id": "cibc_aeroplan_vip",
@@ -1529,7 +1654,12 @@
         "other": 1
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [
+        {
+          "type": "merchant_specific",
+          "description": "Air Canada and Air Canada Vacations spend can have elevated Aeroplan earn compared with baseline categories."
+        }
+      ]
     },
     {
       "id": "rbc_avion_vip",
@@ -1546,7 +1676,12 @@
         "other": 1.25
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [
+        {
+          "type": "merchant_specific",
+          "description": "RBC Avion travel portal and selected partner booking channels may offer earn differences vs. baseline spend."
+        }
+      ]
     },
     {
       "id": "rbc_signature_rewards_visa",
@@ -1725,6 +1860,10 @@
         {
           "type": "user_selectable",
           "description": "Typically 2% applies to selected categories only."
+        },
+        {
+          "type": "merchant_specific",
+          "description": "User-selectable 2% categories (typically up to 2, or 3 with a Tangerine savings account) are configurable and merchant-code dependent."
         }
       ]
     },
@@ -1746,6 +1885,10 @@
         {
           "type": "foreign_currency_bonus",
           "description": "Additional rewards may apply to USD purchases/redemptions."
+        },
+        {
+          "type": "merchant_specific",
+          "description": "Additional effective value can apply when redeeming rewards against Rogers/Fido/Shaw purchases; kept out of base earn_rates."
         }
       ]
     },
@@ -1768,6 +1911,10 @@
         {
           "type": "merchant_specific",
           "description": "Higher earn available at Canadian Tire family stores."
+        },
+        {
+          "type": "merchant_specific",
+          "description": "Triangle earn rates are partner-merchant specific (Canadian Tire family and selected partners)."
         }
       ]
     },
@@ -1790,6 +1937,10 @@
         {
           "type": "merchant_specific",
           "description": "Higher earn can apply at Loblaw-partner stores/shoppers."
+        },
+        {
+          "type": "merchant_specific",
+          "description": "Elevated earn applies at Loblaw-banner stores and Shoppers Drug Mart; base everywhere else remains lower."
         }
       ]
     },
@@ -1874,7 +2025,12 @@
         "other": 1
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [
+        {
+          "type": "merchant_specific",
+          "description": "Travel booked through Expedia for TD can have higher earn than baseline categories; captured as portal-specific."
+        }
+      ]
     },
     {
       "id": "td_platinum_travel_visa",
@@ -1892,7 +2048,12 @@
         "other": 1
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [
+        {
+          "type": "merchant_specific",
+          "description": "Travel booked through Expedia for TD can have higher earn than baseline categories; captured as portal-specific."
+        }
+      ]
     },
     {
       "id": "td_aeroplan_business_vi",
@@ -1911,7 +2072,12 @@
         "other": 1
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [
+        {
+          "type": "merchant_specific",
+          "description": "Air Canada and Air Canada Vacations spend can have elevated Aeroplan earn compared with baseline categories."
+        }
+      ]
     },
     {
       "id": "cibc_aventura_visa",
@@ -1929,7 +2095,12 @@
         "other": 1
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [
+        {
+          "type": "merchant_specific",
+          "description": "CIBC Rewards Centre / issuer travel portal bookings can have elevated Aventura earn versus baseline."
+        }
+      ]
     },
     {
       "id": "cibc_aventura_gold",
@@ -1948,7 +2119,12 @@
         "other": 1
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [
+        {
+          "type": "merchant_specific",
+          "description": "CIBC Rewards Centre / issuer travel portal bookings can have elevated Aventura earn versus baseline."
+        }
+      ]
     },
     {
       "id": "cibc_aventura_vip",
@@ -1966,7 +2142,12 @@
         "other": 1
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [
+        {
+          "type": "merchant_specific",
+          "description": "CIBC Rewards Centre / issuer travel portal bookings can have elevated Aventura earn versus baseline."
+        }
+      ]
     },
     {
       "id": "cibc_costco_mastercard",
@@ -1988,6 +2169,10 @@
         {
           "type": "merchant_specific",
           "description": "Additional Costco-specific reward conditions may apply."
+        },
+        {
+          "type": "merchant_specific",
+          "description": "Costco gas and Costco.ca spend can have differentiated earn rates compared with non-Costco transactions."
         }
       ]
     },
@@ -2006,7 +2191,12 @@
         "other": 1
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [
+        {
+          "type": "merchant_specific",
+          "description": "RBC Avion travel portal and selected partner booking channels may offer earn differences vs. baseline spend."
+        }
+      ]
     },
     {
       "id": "rbc_ion_premium",
@@ -2155,6 +2345,10 @@
         {
           "type": "merchant_specific",
           "description": "Higher earn available at Canadian Tire family stores."
+        },
+        {
+          "type": "merchant_specific",
+          "description": "Triangle earn rates are partner-merchant specific (Canadian Tire family and selected partners)."
         }
       ]
     },
@@ -2177,6 +2371,10 @@
         {
           "type": "merchant_specific",
           "description": "Higher earn can apply at Loblaw-partner stores/shoppers."
+        },
+        {
+          "type": "merchant_specific",
+          "description": "Elevated earn applies at Loblaw-banner stores and Shoppers Drug Mart; base everywhere else remains lower."
         }
       ]
     },
@@ -2213,7 +2411,12 @@
         "other": 1.25
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [
+        {
+          "type": "merchant_specific",
+          "description": "American Express Travel bookings can have elevated Membership Rewards earn versus baseline travel."
+        }
+      ]
     },
     {
       "id": "amex_business_edge",
@@ -2249,7 +2452,12 @@
         "other": 1
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [
+        {
+          "type": "merchant_specific",
+          "description": "Air Canada and Air Canada Vacations spend can have elevated Aeroplan earn compared with baseline categories."
+        }
+      ]
     },
     {
       "id": "amex_aeroplan_business_card",
@@ -2267,7 +2475,12 @@
         "other": 1
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [
+        {
+          "type": "merchant_specific",
+          "description": "Air Canada and Air Canada Vacations spend can have elevated Aeroplan earn compared with baseline categories."
+        }
+      ]
     },
     {
       "id": "cibc_dividend_platinum",
@@ -2304,7 +2517,12 @@
         "other": 1
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [
+        {
+          "type": "merchant_specific",
+          "description": "CIBC Rewards Centre / issuer travel portal bookings can have elevated Aventura earn versus baseline."
+        }
+      ]
     },
     {
       "id": "rbc_business_cashback_mastercard",
@@ -2569,6 +2787,10 @@
         {
           "type": "proxy_program",
           "description": "Neo earn rates vary by merchant/partner; modeled as a conservative baseline cashback proxy."
+        },
+        {
+          "type": "merchant_specific",
+          "description": "Neo earn can vary by merchant-specific boosted offers and partner network promotions."
         }
       ]
     },
@@ -2593,6 +2815,10 @@
         {
           "type": "merchant_specific",
           "description": "Card offers higher earn on Expedia For TD purchases; mapped categories exclude travel-portal-specific multipliers."
+        },
+        {
+          "type": "merchant_specific",
+          "description": "Travel booked through Expedia for TD can have higher earn than baseline categories; captured as portal-specific."
         }
       ]
     },
@@ -2617,6 +2843,10 @@
         {
           "type": "merchant_specific",
           "description": "Costco in-warehouse/Costco.ca earn differs from general categories; simplified mapping keeps dining/gas/transit multipliers and baseline other earn."
+        },
+        {
+          "type": "merchant_specific",
+          "description": "Costco gas and Costco.ca spend can have differentiated earn rates compared with non-Costco transactions."
         }
       ]
     },
@@ -2797,6 +3027,10 @@
         {
           "type": "merchant_specific",
           "description": "Walmart.ca/app purchases can earn higher than in-store earn; simplified with grocery and base other mapping."
+        },
+        {
+          "type": "merchant_specific",
+          "description": "Higher earn tiers may apply at Walmart channels versus non-Walmart merchants depending on current program terms."
         }
       ]
     },
@@ -2819,6 +3053,10 @@
         {
           "type": "merchant_specific",
           "description": "Walmart.ca/app purchases can earn higher than in-store earn; simplified with grocery and base other mapping."
+        },
+        {
+          "type": "merchant_specific",
+          "description": "Higher earn tiers may apply at Walmart channels versus non-Walmart merchants depending on current program terms."
         }
       ]
     },
@@ -2836,7 +3074,12 @@
         "other": 1.5
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [
+        {
+          "type": "merchant_specific",
+          "description": "Additional effective value can apply when redeeming rewards against Rogers/Fido/Shaw purchases; kept out of base earn_rates."
+        }
+      ]
     },
     {
       "id": "rogers_platinum_mastercard",
@@ -2852,7 +3095,12 @@
         "other": 1
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [
+        {
+          "type": "merchant_specific",
+          "description": "Additional effective value can apply when redeeming rewards against Rogers/Fido/Shaw purchases; kept out of base earn_rates."
+        }
+      ]
     },
     {
       "id": "fido_mastercard",
@@ -2868,7 +3116,12 @@
         "other": 1
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [
+        {
+          "type": "merchant_specific",
+          "description": "Additional effective value can apply when redeeming rewards against Rogers/Fido/Shaw purchases; kept out of base earn_rates."
+        }
+      ]
     },
     {
       "id": "chatr_mastercard",
@@ -2884,7 +3137,12 @@
         "other": 1
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [
+        {
+          "type": "merchant_specific",
+          "description": "Additional effective value can apply when redeeming rewards against Rogers/Fido/Shaw purchases; kept out of base earn_rates."
+        }
+      ]
     },
     {
       "id": "manulife_moneyplus_visa_infinite",
