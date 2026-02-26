@@ -1,5 +1,6 @@
 :root{
   --bg:#0b0f14; --panel:#101826; --text:#e8eef7; --muted:#a9b4c2; --border:#243041; --accent:#6aa9ff;
+  --space-1:6px; --space-2:10px; --space-3:14px; --space-4:18px;
 }
 
 *{box-sizing:border-box}
@@ -12,12 +13,12 @@ body{
 .muted{color:var(--muted)}
 .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:13px}
 
-.siteHeader{display:grid;gap:10px}
-.topNav{display:flex;justify-content:flex-end;gap:14px;align-items:center;flex-wrap:wrap}
+.siteHeader{display:grid;gap:var(--space-2)}
+.topNav{display:flex;justify-content:flex-end;gap:var(--space-3);align-items:center;flex-wrap:wrap}
 .header{display:flex;justify-content:space-between;gap:12px;align-items:flex-end}
-h1{margin:0 0 6px;font-size:26px}
+h1{margin:0 0 var(--space-1);font-size:26px}
 h2{margin:0;font-size:18px}
-h3{margin:14px 0 10px;font-size:14px;color:var(--muted)}
+h3{margin:var(--space-3) 0 var(--space-2);font-size:14px;color:var(--muted)}
 
 .status{
   display:inline-flex;align-items:center;flex-wrap:wrap;column-gap:8px;row-gap:3px;
@@ -30,34 +31,58 @@ h3{margin:14px 0 10px;font-size:14px;color:var(--muted)}
 }
 
 .panel{
-  border:1px solid var(--border);border-radius:14px;padding:14px;background:var(--panel)
+  border:1px solid var(--border);border-radius:14px;padding:var(--space-3);background:var(--panel)
 }
-.divider{height:1px;background:var(--border);margin:14px 0}
+.divider{height:1px;background:var(--border);margin:var(--space-3) 0}
 
-.layout{display:grid;grid-template-columns:1.1fr .9fr;gap:14px;align-items:start}
+.layout{display:grid;grid-template-columns:1.1fr .9fr;gap:var(--space-3);align-items:start}
 @media (max-width:900px){.layout{grid-template-columns:1fr}.header{flex-direction:column;align-items:flex-start}}
 
-.panelHeader{display:flex;justify-content:space-between;gap:10px;align-items:flex-end}
+.panelHeader{display:flex;justify-content:space-between;gap:var(--space-2);align-items:flex-end}
 .panelHeader-result{flex-direction:column;align-items:flex-start}
 .panelHeader-result .subtle{margin:4px 0 0;max-width:62ch}
-.row{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap}
 
-label{display:block;font-size:12px;color:var(--muted);margin:0 0 6px}
+.inputPanel .panelHeader,
+.inputPanel .sectionTitle,
+.inputPanel .divider,
+.inputPanel .row,
+.inputPanel .issues{
+  padding-inline:var(--space-2);
+}
+
+.row{display:flex;gap:var(--space-2);flex-wrap:wrap;align-items:stretch}
+
+label{display:block;font-size:12px;color:var(--muted);margin:0 0 var(--space-1)}
 input[type="number"]{
-  width:170px;padding:10px;border-radius:12px;border:1px solid var(--border);
+  width:100%;padding:var(--space-2);border-radius:12px;border:1px solid var(--border);
   background:transparent;color:var(--text);outline:none
 }
 
-input[type="number"].spend-input{
-  width:10ch;
-}
+input[type="number"].spend-input{max-width:10ch}
 
 input[type="number"]:focus{border-color:var(--accent)}
 
 
-.field-slider{min-width:220px}
+.field{width:100%}
+.row > .field-slider,
+.row > .field-select{
+  flex:1 1 280px;
+}
+.row > .field-slider label,
+.row > .field-select label{
+  min-height:20px;
+  display:flex;
+  align-items:center;
+}
+.row > .field-slider input[type="range"],
+.row > .field-select select{
+  min-height:42px;
+}
+.row > .field-checkbox,
+.row > button{
+  flex:1 1 100%;
+}
 .field-full{flex-basis:100%}
-.field-checkbox{min-width:220px}
 .checkboxLabel{display:flex;align-items:center;gap:8px;margin:0;cursor:pointer;color:var(--text);font-size:13px}
 .checkboxLabel input[type="checkbox"]{width:16px;height:16px;accent-color:var(--accent);cursor:pointer}
 .value-pill{
@@ -68,11 +93,11 @@ input[type="number"]:focus{border-color:var(--accent)}
 }
 
 input[type="range"]{
-  width:220px;accent-color:var(--accent);cursor:pointer
+  width:100%;accent-color:var(--accent);cursor:pointer
 }
 
 select{
-  min-width:220px;padding:10px 36px 10px 10px;border-radius:12px;border:1px solid var(--border);
+  width:100%;padding:var(--space-2) 36px var(--space-2) var(--space-2);border-radius:12px;border:1px solid var(--border);
   background:
     linear-gradient(45deg, transparent 50%, var(--muted) 50%) calc(100% - 20px) calc(50% - 2px)/6px 6px no-repeat,
     linear-gradient(135deg, var(--muted) 50%, transparent 50%) calc(100% - 14px) calc(50% - 2px)/6px 6px no-repeat,
@@ -92,7 +117,7 @@ select[multiple]{padding:8px;background:transparent;appearance:auto;min-width:32
 .lockedChipRemove{border:none;background:transparent;color:var(--muted);padding:0;line-height:1;font-size:16px;cursor:pointer}
 .lockedChipRemove:hover{color:var(--text)}
 button{
-  padding:10px 14px;border-radius:12px;border:1px solid var(--accent);
+  width:100%;padding:var(--space-2) var(--space-3);border-radius:12px;border:1px solid var(--accent);
   background:transparent;color:var(--text);font-weight:700;cursor:pointer
 }
 button.primary{background:var(--accent);border-color:var(--accent);color:#06101f}
@@ -102,14 +127,14 @@ table{
   width:100%;border-collapse:collapse;border:1px solid var(--border);border-radius:14px;overflow:hidden
 }
 thead th{
-  text-align:left;padding:10px;font-size:12px;color:var(--muted);
+  text-align:left;padding:var(--space-2);font-size:12px;color:var(--muted);
   border-bottom:1px solid var(--border)
 }
-tbody td{padding:10px;border-bottom:1px solid var(--border);vertical-align:top}
+tbody td{padding:var(--space-2);border-bottom:1px solid var(--border);vertical-align:top}
 tbody tr:last-child td{border-bottom:none}
 
 .issues{
-  margin-top:12px;border:1px solid var(--border);border-radius:14px;padding:10px 12px;background:transparent
+  margin-top:12px;border:1px solid var(--border);border-radius:14px;padding:var(--space-2) 12px;background:transparent
 }
 .issues summary{cursor:pointer;font-weight:700;color:var(--text)}
 .issues ul{margin:10px 0 0;padding-left:18px}
@@ -148,7 +173,7 @@ tbody tr:last-child td{border-bottom:none}
 }
 
 input[type="search"]{
-  width:100%;padding:10px;border-radius:12px;border:1px solid var(--border);
+  width:100%;padding:var(--space-2);border-radius:12px;border:1px solid var(--border);
   background:transparent;color:var(--text);outline:none
 }
 input[type="search"]:focus{border-color:var(--accent)}
