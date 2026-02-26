@@ -212,3 +212,13 @@ input[type="search"]:focus{border-color:var(--accent)}
 @media (max-width:560px){
   .browserFilterGrid{grid-template-columns:1fr}
 }
+
+button.secondary{background:transparent;border-color:var(--border);color:var(--text)}
+button.secondary:hover{border-color:var(--accent)}
+.browserCardActions{margin-top:12px;display:flex;justify-content:flex-end}
+.compareGrid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.compareSide{min-height:320px}
+.compareSide.dragOver{outline:2px dashed var(--accent)}
+.queueRow{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:8px 0;border-bottom:1px solid var(--border)}
+.queueRow:last-child{border-bottom:none}
+@media (max-width:1000px){.compareGrid{grid-template-columns:1fr}}

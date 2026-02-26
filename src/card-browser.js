@@ -1,4 +1,5 @@
 import { loadJson, normalizePrograms } from "./data.js";
+import { addToComparisonQueue, readComparisonQueue } from "./compare-queue.js";
 
 const state = {
   cards: [],
@@ -15,6 +16,8 @@ const els = {
   summary: document.getElementById("browserSummary"),
   fatal: document.getElementById("browserFatal")
 };
+
+let queueSet = new Set();
 
 function formatCurrency(value) {
   return new Intl.NumberFormat("en-CA", { style: "currency", currency: "CAD", maximumFractionDigits: 0 }).format(value);
@@ -167,6 +170,9 @@ function renderCards() {
           ${capMarkup(card.caps)}
         </section>
       </div>
+      <div class="browserCardActions">
+        <button type="button" class="secondary queueBtn" data-queue-card-id="${card.id}">${queueSet.has(card.id) ? "Queued for compare" : "Add to comparison queue"}</button>
+      </div>
     </article>
   `).join("");
 }
@@ -175,6 +181,13 @@ function registerEvents() {
   [els.searchInput, els.issuerFilter, els.programFilter, els.sortBy].forEach((el) => {
     el.addEventListener("input", renderCards);
     el.addEventListener("change", renderCards);
+  });
+
+  els.cardsList.addEventListener("click", (event) => {
+    const btn = event.target.closest("[data-queue-card-id]");
+    if (!btn) return;
+    queueSet = new Set(addToComparisonQueue(btn.dataset.queueCardId));
+    renderCards();
   });
 }
 
@@ -186,6 +199,7 @@ async function init() {
     ]);
 
     state.programs = normalizePrograms(programsJson);
+    queueSet = new Set(readComparisonQueue());
     state.cards = cardsJson?.cards ?? [];
 
     const issuers = [...new Set(state.cards.map((c) => c.issuer))].sort((a, b) => a.localeCompare(b));

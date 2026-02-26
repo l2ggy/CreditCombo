@@ -127,3 +127,52 @@ function escapeHtml(s) {
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
 }
+
+
+export function renderComparisonResult(el, left, right, schema) {
+  el.classList.remove("hidden");
+  const leftBest = left?.best;
+  const rightBest = right?.best;
+  if (!leftBest?.combo?.length || !rightBest?.combo?.length) {
+    el.innerHTML = '<span class="muted">Run both sides to compare combos.</span>';
+    return;
+  }
+
+  const delta = rightBest.net - leftBest.net;
+  const winner = delta > 0 ? "Right" : delta < 0 ? "Left" : "Tie";
+  const rows = schema
+    .map((cat) => {
+      const leftCard = topCardForCategory(leftBest, cat);
+      const rightCard = topCardForCategory(rightBest, cat);
+      return `<tr><td class="mono">${escapeHtml(cat)}</td><td>${leftCard}</td><td>${rightCard}</td></tr>`;
+    })
+    .join("");
+
+  el.innerHTML = `
+    <h2>Comparison</h2>
+    <table>
+      <thead><tr><th></th><th>Left</th><th>Right</th></tr></thead>
+      <tbody>
+        <tr><th>Cards</th><td>${leftBest.combo.length}</td><td>${rightBest.combo.length}</td></tr>
+        <tr><th>Gross</th><td>${money(leftBest.gross)}</td><td>${money(rightBest.gross)}</td></tr>
+        <tr><th>Fees</th><td>${money(leftBest.fees)}</td><td>${money(rightBest.fees)}</td></tr>
+        <tr><th>Net</th><td>${money(leftBest.net)}</td><td>${money(rightBest.net)}</td></tr>
+      </tbody>
+    </table>
+    <p><strong>${winner} side</strong> by <span class="mono">${money(Math.abs(delta))}</span> annual net value.</p>
+    <h3>Primary card by category</h3>
+    <table>
+      <thead><tr><th>Category</th><th>Left side</th><th>Right side</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+  `;
+}
+
+function topCardForCategory(best, cat) {
+  const parts = best.combo
+    .map((card) => ({ card, amt: Number(best.assigned?.[card.id]?.[cat] || 0) }))
+    .filter((item) => item.amt > 0)
+    .sort((a, b) => b.amt - a.amt);
+  if (!parts.length) return '<span class="muted">n/a</span>';
+  return escapeHtml(parts[0].card.card_name);
+}
