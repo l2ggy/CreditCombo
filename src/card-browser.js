@@ -2,7 +2,8 @@ import { loadJson } from "./data.js";
 
 const state = {
   cards: [],
-  filteredCards: []
+  filteredCards: [],
+  programsById: new Map()
 };
 
 const els = {
@@ -77,13 +78,21 @@ function sortCards(cards) {
   return sorted;
 }
 
-function earnRateMarkup(earnRates) {
+function formatPercent(value) {
+  const minimumFractionDigits = value % 1 === 0 ? 0 : 1;
+  return `${value.toFixed(minimumFractionDigits)}%`;
+}
+
+function earnRateMarkup(earnRates, centsPerPoint = 1) {
   const entries = Object.entries(earnRates || {});
   if (!entries.length) return "<li class=\"muted\">No earn rates available</li>";
 
   return entries
     .sort((a, b) => b[1] - a[1])
-    .map(([category, rate]) => `<li><span class="mono">${category}</span><strong>${rate}×</strong></li>`)
+    .map(([category, rate]) => {
+      const effectiveCashbackPercent = Number(rate) * Number(centsPerPoint || 0);
+      return `<li><span class="mono">${category}</span><strong>${rate}×</strong> <span class="muted">(${formatPercent(effectiveCashbackPercent)} effective cashback)</span></li>`;
+    })
     .join("");
 }
 
@@ -123,7 +132,7 @@ function renderCards() {
       <div class="browserCardBody">
         <section>
           <h4>Earn rates</h4>
-          <ul class="browserRateList">${earnRateMarkup(card.earn_rates)}</ul>
+          <ul class="browserRateList">${earnRateMarkup(card.earn_rates, state.programsById.get(card.rewards_program)?.cents_per_point ?? 1)}</ul>
         </section>
         <section>
           <h4>Caps</h4>
@@ -143,8 +152,12 @@ function registerEvents() {
 
 async function init() {
   try {
-    const cardsJson = await loadJson("./cards.json");
+    const [cardsJson, programsJson] = await Promise.all([
+      loadJson("./cards.json"),
+      loadJson("./programs.json")
+    ]);
     state.cards = cardsJson?.cards ?? [];
+    state.programsById = new Map((programsJson?.programs ?? []).map((program) => [program.program_id, program]));
 
     const issuers = [...new Set(state.cards.map((c) => c.issuer))].sort((a, b) => a.localeCompare(b));
     const programs = [...new Set(state.cards.map((c) => c.rewards_program))].sort((a, b) => a.localeCompare(b));
