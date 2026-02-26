@@ -181,8 +181,8 @@ function registerEvents() {
 async function init() {
   try {
     const [cardsJson, programsJson] = await Promise.all([
-      loadJson("./cards.json"),
-      loadJson("./programs.json")
+      loadJson("./data/cards.json"),
+      loadJson("./data/programs.json")
     ]);
 
     state.programs = normalizePrograms(programsJson);

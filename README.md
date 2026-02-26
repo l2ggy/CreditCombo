@@ -7,7 +7,7 @@ What it does
 ------------
 - Prompts for:
   - Number of cards to hold (1–5)
-  - Monthly spend per category (from cards.json schema)
+  - Monthly spend per category (from data/cards.json schema)
   - Points valuation mode: estimated vs minimum guaranteed redemption value
 - Computes:
   - Best card set (searches all set sizes from 1..k)
@@ -27,7 +27,7 @@ Eligibility rules for cards
 ---------------------------
 Cards are excluded from optimization if:
 - rewards_program is missing, OR
-- rewards_program is not found in programs.json, OR
+- rewards_program is not found in data/programs.json, OR
 - program_type is "points" and cents_per_point is null
   (minimum_cents_per_point is used for minimum guaranteed mode and is populated for all current points programs)
 
@@ -38,8 +38,9 @@ Project structure
 your-folder/
   index.html
   styles.css
-  cards.json
-  programs.json
+  data/
+    cards.json
+    programs.json
   src/
     app.js        # bootstraps UI, loads data, runs optimizer
     data.js       # fetch + normalization + card eligibility filtering
@@ -60,14 +61,14 @@ This works because `versions upload` versions a Worker script (`main`), while th
 
 Run locally
 -----------
-1) Put index.html, styles.css, cards.json, programs.json in the same folder.
+1) Keep data files in ./data (cards.json and programs.json) beside index.html and styles.css.
 2) Start a static server:
    npx serve .
 3) Open the local URL shown in the terminal.
 
 Data format (high level)
 ------------------------
-cards.json
+data/cards.json
 - meta.category_schema_modeled: list of categories (strings)
 - cards[] items include:
   - id, card_name, issuer, network
@@ -77,7 +78,7 @@ cards.json
   - caps: optional list of cap rules
   - special_earn_rules: optional list (ignored by optimizer for now)
 
-programs.json
+data/programs.json
 - programs[] items include:
   - program_id
   - program_name
