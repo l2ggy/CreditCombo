@@ -30,6 +30,8 @@ async function main() {
 
     const programsMap = normalizePrograms(programsJson);
     const { schema, categoryDescriptions, eligibleCards, issues } = validateAndFilterCards(cardsJson, programsMap);
+    const eligibleCardIdSet = new Set(eligibleCards.map((card) => card.id));
+    const eligibleCardsById = new Map(eligibleCards.map((card) => [card.id, card]));
 
     statusEl.innerHTML = `
       <span class="badge good">Loaded</span>
@@ -40,8 +42,7 @@ async function main() {
 
     function selectedLockedCardIds() {
       if (!enableLockedCardsEl?.checked) return [];
-      const allowedIds = new Set(eligibleCards.map((card) => card.id));
-      return [...lockedCardIds].filter((id) => allowedIds.has(id));
+      return [...lockedCardIds].filter((id) => eligibleCardIdSet.has(id));
     }
 
     function unlockedCandidateCards() {
@@ -52,9 +53,8 @@ async function main() {
     }
 
     function sanitizeLockedCardSelection() {
-      const allowedIds = new Set(eligibleCards.map((card) => card.id));
       for (const id of [...lockedCardIds]) {
-        if (!allowedIds.has(id)) lockedCardIds.delete(id);
+        if (!eligibleCardIdSet.has(id)) lockedCardIds.delete(id);
       }
     }
 
@@ -72,18 +72,12 @@ async function main() {
       return maxAdditionalCards;
     }
 
-    function cardsById(cards) {
-      return new Map(cards.map((card) => [card.id, card]));
-    }
-
-
     function lockedCardThumbMarkup(card, className = "lockedCardThumb") {
       return `<img class="${className}" src="./assets/cards/${escapeHtml(card.id)}.webp" alt="${escapeHtml(card.card_name)}" loading="lazy" decoding="async" onerror="this.remove()" />`;
     }
 
     function renderLockedCardPicks() {
       if (!lockedCardPicksEl) return;
-      const byId = cardsById(eligibleCards);
       const ids = selectedLockedCardIds();
       if (!ids.length) {
         lockedCardPicksEl.innerHTML = "No locked cards selected.";
@@ -92,7 +86,7 @@ async function main() {
 
       lockedCardPicksEl.innerHTML = ids
         .map((id) => {
-          const card = byId.get(id);
+          const card = eligibleCardsById.get(id);
           const label = card ? `${card.card_name} (${card.issuer})` : id;
           return `<span class="lockedChip">${card ? lockedCardThumbMarkup(card) : ""}<span>${escapeHtml(label)}</span> <button type="button" class="lockedChipRemove" data-remove-id="${id}" aria-label="Remove ${escapeHtml(label)}">×</button></span>`;
         })

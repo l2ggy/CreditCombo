@@ -39,12 +39,16 @@ export function renderSpendTable(el, schema, categoryDescriptions = {}) {
 
 export function readMonthlySpend(schema) {
   const spend = {};
-  document.querySelectorAll("input[data-cat]").forEach(inp => {
+  const schemaSet = new Set(schema);
+
+  document.querySelectorAll("input[data-cat]").forEach((inp) => {
     const cat = inp.dataset.cat;
-    if (!schema.includes(cat)) return;
-    const v = Number(inp.value);
-    spend[cat] = Number.isFinite(v) && v >= 0 ? v : 0;
+    if (!schemaSet.has(cat)) return;
+
+    const value = Number(inp.value);
+    spend[cat] = Number.isFinite(value) && value >= 0 ? value : 0;
   });
+
   return spend;
 }
 
