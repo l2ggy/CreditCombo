@@ -192,14 +192,21 @@ tbody tr:last-child td{border-bottom:none}
 .spendMeta{min-width:0;overflow:hidden}
 .spendCat{display:block;font-size:12px;line-height:1.2}
 
-.spendRow .category-desc{
-  margin-top:2px;
+.spendDesc{margin-top:2px}
+.spendDesc summary{
+  cursor:pointer;
+  list-style:none;
   font-size:10px;
   line-height:1.2;
-  display:-webkit-box;
-  -webkit-line-clamp:2;
-  -webkit-box-orient:vertical;
-  overflow:hidden;
+  color:var(--muted);
+}
+.spendDesc summary::-webkit-details-marker{display:none}
+.spendDesc summary::after{content:" ▾";font-size:10px;color:var(--muted)}
+.spendDesc[open] summary::after{content:" ▴"}
+.spendDescBody{
+  margin-top:4px;
+  font-size:10px;
+  line-height:1.25;
 }
 
 .spendRow input[type="number"].spend-input{
@@ -212,23 +219,47 @@ tbody tr:last-child td{border-bottom:none}
 
 .useGrid{
   display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
+  grid-template-columns:repeat(var(--use-cols, 1),minmax(0,1fr));
   gap:8px;
 }
 .useTile{
   display:grid;
-  gap:8px;
-  align-content:start;
-  min-height:96px;
-  padding:10px;
+  gap:6px;
+  justify-items:center;
+  align-content:center;
+  min-height:92px;
+  padding:8px;
   border:1px solid var(--border);
   border-radius:10px;
   background:color-mix(in srgb,var(--panel) 75%, transparent);
+  text-align:center;
 }
-.useCategory{font-size:12px;line-height:1.2}
-.useCards{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.useCardThumb{display:inline-flex;align-items:center;justify-content:center}
-.useThumbImage{width:auto;height:auto;max-width:38px;max-height:38px;border-radius:10%;border:1px solid var(--border);display:block}
+.useCategory{font-size:12px;line-height:1.2;text-align:center}
+.useCards{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:4px;
+  width:100%;
+}
+.useCards.useCards-1{grid-template-columns:minmax(0,1fr)}
+.useCards.useCards-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.useCards.useCards-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.useCardThumb{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  aspect-ratio:1/1;
+  min-width:0;
+}
+.useThumbImage{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  padding:2px;
+  border-radius:10%;
+  border:1px solid var(--border);
+  display:block;
+}
 
 .issues{
   margin-top:12px;border:1px solid var(--border);border-radius:14px;padding:var(--space-2) 12px;background:transparent
@@ -297,7 +328,6 @@ tbody tr:last-child td{border-bottom:none}
   .headerActions{width:100%;justify-content:space-between}
   .footerContent{align-items:flex-start}
   .spendGrid{grid-template-columns:1fr}
-  .useGrid{grid-template-columns:1fr}
 }
 
 @media (max-width:560px){

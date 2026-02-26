@@ -15,7 +15,7 @@ export function renderSpendTable(el, schema, categoryDescriptions = {}) {
         <label class="spendRow" for="spend-${cat}">
           <span class="spendMeta">
             <span class="mono spendCat">${cat}</span>
-            <span class="category-desc muted" title="${escapeHtml(categoryDescriptions[cat] || "")}">${escapeHtml(compactDescription(categoryDescriptions[cat] || ""))}</span>
+            ${spendDescriptionMarkup(categoryDescriptions[cat] || "")}
           </span>
           <input id="spend-${cat}" class="spend-input" type="number" min="0" step="1" value="0" data-cat="${cat}" aria-label="Monthly spend for ${cat}" />
         </label>
@@ -109,10 +109,12 @@ export function renderResult(el, best, annualSpend, schema, valuationMode = "est
     instructions.push(`
       <div class="useTile" role="listitem">
         <div class="mono useCategory">${escapeHtml(cat)}</div>
-        <div class="useCards">${thumbs}</div>
+        <div class="useCards useCards-${alloc.length}">${thumbs}</div>
       </div>
     `);
   }
+
+  const useCols = Math.min(4, Math.max(1, instructions.length));
 
   el.innerHTML = `
     <h2>Best combo</h2>
@@ -128,7 +130,7 @@ export function renderResult(el, best, annualSpend, schema, valuationMode = "est
     </table>
 
     <h2>Which card to use</h2>
-    <div class="useGrid" role="list" aria-label="Card to use by category">
+    <div class="useGrid" role="list" aria-label="Card to use by category" style="--use-cols:${useCols}">
       ${instructions.join("") || `<p class="muted">No spend entered.</p>`}
     </div>
 
@@ -137,13 +139,22 @@ export function renderResult(el, best, annualSpend, schema, valuationMode = "est
 }
 
 
+
+function spendDescriptionMarkup(desc) {
+  const clean = String(desc || "").trim().replace(/\s+/g, " ");
+  if (!clean) return "";
+
+  const concise = compactDescription(clean);
+  return `<details class="spendDesc"><summary>${escapeHtml(concise)}</summary><div class="spendDescBody muted">${escapeHtml(clean)}</div></details>`;
+}
+
 function compactDescription(desc) {
   const clean = String(desc || "").trim().replace(/\s+/g, " ");
   if (!clean) return "";
 
   const firstClause = clean.split(/[.;:]/)[0].trim();
   const concise = firstClause || clean;
-  return concise.length > 44 ? concise.slice(0, 41).trimEnd() + "…" : concise;
+  return concise.length > 28 ? concise.slice(0, 25).trimEnd() + "…" : concise;
 }
 
 function escapeHtml(s) {
