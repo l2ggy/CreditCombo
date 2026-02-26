@@ -96,6 +96,7 @@ select[multiple]{padding:8px;background:transparent;appearance:auto;min-width:32
 .thumbFrame{width:44px;height:44px;display:inline-flex;align-items:center;justify-content:center;flex:0 0 44px}
 .resultCardThumb{width:auto;height:auto;max-width:44px;max-height:44px;border-radius:5px;border:1px solid var(--border);display:block}
 .instructionCardThumb,.lockedCardThumb{width:auto;height:auto;max-width:20px;max-height:20px;border-radius:4px;border:1px solid var(--border);display:block}
+.instructionCardThumb{height:1.45em;max-height:28px;max-width:28px;vertical-align:middle}
 .instructionCard{display:inline-flex;align-items:center;gap:5px;white-space:nowrap;line-height:1.2}
 .lockedOption{display:flex;align-items:center;gap:8px}
 .lockedChip{display:inline-flex;align-items:center;gap:6px}
