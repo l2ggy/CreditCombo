@@ -38,7 +38,35 @@ input[type="number"]{
   width:170px;padding:10px;border-radius:12px;border:1px solid var(--border);
   background:transparent;color:var(--text);outline:none
 }
+
+input[type="number"].spend-input{
+  width:10ch;
+}
+
 input[type="number"]:focus{border-color:var(--accent)}
+
+
+.field-slider{min-width:220px}
+.value-pill{
+  display:inline-flex;align-items:center;justify-content:center;
+  min-width:1.9em;padding:2px 8px;margin-left:6px;border-radius:999px;
+  border:1px solid var(--border);background:color-mix(in srgb,var(--accent) 22%, transparent);
+  color:var(--text);font-weight:700;font-size:12px
+}
+
+input[type="range"]{
+  width:220px;accent-color:var(--accent);cursor:pointer
+}
+
+select{
+  min-width:220px;padding:10px 36px 10px 10px;border-radius:12px;border:1px solid var(--border);
+  background:
+    linear-gradient(45deg, transparent 50%, var(--muted) 50%) calc(100% - 20px) calc(50% - 2px)/6px 6px no-repeat,
+    linear-gradient(135deg, var(--muted) 50%, transparent 50%) calc(100% - 14px) calc(50% - 2px)/6px 6px no-repeat,
+    transparent;
+  color:var(--text);outline:none;appearance:none
+}
+select:focus{border-color:var(--accent)}
 button{
   padding:10px 14px;border-radius:12px;border:1px solid var(--accent);
   background:transparent;color:var(--text);font-weight:700;cursor:pointer
