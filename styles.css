@@ -56,6 +56,9 @@ input[type="number"]:focus{border-color:var(--accent)}
 
 
 .field-slider{min-width:220px}
+.field-checkbox{min-width:220px}
+.checkboxLabel{display:flex;align-items:center;gap:8px;margin:0;cursor:pointer;color:var(--text);font-size:13px}
+.checkboxLabel input[type="checkbox"]{width:16px;height:16px;accent-color:var(--accent);cursor:pointer}
 .value-pill{
   display:inline-flex;align-items:center;justify-content:center;
   min-width:1.9em;padding:2px 8px;margin-left:6px;border-radius:999px;
