@@ -91,6 +91,7 @@ function formatEarnPercentRange(multiplierRate, rewardsProgram) {
   const minimumPercent = (multiplierRate * guaranteedCentsPerPoint).toFixed(1);
   const estimatedPercent = (multiplierRate * estimatedCentsPerPoint).toFixed(1);
 
+  if (minimumPercent === estimatedPercent) return estimatedPercent;
   return `${minimumPercent}-${estimatedPercent}`;
 }
 
