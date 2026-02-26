@@ -58,7 +58,10 @@ input[type="number"]{
   background:transparent;color:var(--text);outline:none
 }
 
-input[type="number"].spend-input{max-width:10ch}
+input[type="number"].spend-input{
+  max-width:14ch;
+  min-width:calc(6ch + (2 * var(--space-2)) + 2px);
+}
 
 input[type="number"]:focus{border-color:var(--accent)}
 
