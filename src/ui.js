@@ -107,7 +107,7 @@ export function renderResult(el, best, annualSpend, schema, valuationMode = "est
     }).join("");
 
     instructions.push(`
-      <div class="useRow">
+      <div class="useTile" role="listitem">
         <div class="mono useCategory">${escapeHtml(cat)}</div>
         <div class="useCards">${thumbs}</div>
       </div>

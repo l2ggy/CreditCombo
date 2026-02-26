@@ -210,21 +210,25 @@ tbody tr:last-child td{border-bottom:none}
 }
 
 
-.useGrid{display:grid;gap:8px}
-.useRow{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-  padding:8px 10px;
+.useGrid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:8px;
+}
+.useTile{
+  display:grid;
+  gap:8px;
+  align-content:start;
+  min-height:96px;
+  padding:10px;
   border:1px solid var(--border);
   border-radius:10px;
   background:color-mix(in srgb,var(--panel) 75%, transparent);
 }
 .useCategory{font-size:12px;line-height:1.2}
-.useCards{display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.useCards{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .useCardThumb{display:inline-flex;align-items:center;justify-content:center}
-.useThumbImage{width:auto;height:auto;max-width:28px;max-height:28px;border-radius:10%;border:1px solid var(--border);display:block}
+.useThumbImage{width:auto;height:auto;max-width:38px;max-height:38px;border-radius:10%;border:1px solid var(--border);display:block}
 
 .issues{
   margin-top:12px;border:1px solid var(--border);border-radius:14px;padding:var(--space-2) 12px;background:transparent
@@ -293,6 +297,7 @@ tbody tr:last-child td{border-bottom:none}
   .headerActions{width:100%;justify-content:space-between}
   .footerContent{align-items:flex-start}
   .spendGrid{grid-template-columns:1fr}
+  .useGrid{grid-template-columns:1fr}
 }
 
 @media (max-width:560px){
