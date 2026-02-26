@@ -47,9 +47,14 @@
 
         <div class="divider"></div>
         <div class="row">
+          <div class="field">
+            <label for="lockedCards">Cards you already have (lock into combo)</label>
+            <select id="lockedCards" multiple size="8"></select>
+            <div class="muted fieldHint">Hold Ctrl/Cmd to select multiple cards.</div>
+          </div>
           <div class="field field-slider">
-            <label for="k">Number of cards <span id="kValue" class="value-pill">3</span></label>
-            <input id="k" type="range" min="1" max="5" value="3" step="1" />
+            <label for="k">Additional cards to add <span id="kValue" class="value-pill">2</span></label>
+            <input id="k" type="range" min="0" max="5" value="2" step="1" />
           </div>
           <div class="field">
             <label for="valuationMode">Points valuation <a class="infoBadge" href="./valuations.html" aria-label="Learn how rewards valuations work" title="How valuation modes work">i</a></label>
