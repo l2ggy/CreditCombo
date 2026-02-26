@@ -5,108 +5,37 @@
     "source_points_valuations": "Prince of Travel — Points Valuations",
     "note": "For cashback programs we treat earn_rates as percent and value at face value.",
     "last_verified": "2026-02-25",
-    "source_minimum_valuations": "Issuer base redemption options and program terms (conservative planning floors)"
+    "source_minimum_valuations": "Issuer base redemption options and program terms (conservative planning floors)",
+    "programs_sort_order": "programs[] are sorted by program_type (asc), program_name (asc), then program_id (asc); keep this order when adding/updating programs."
   },
   "programs": [
     {
-      "program_id": "aeroplan",
-      "program_name": "Aeroplan",
-      "program_type": "points",
-      "cents_per_point": 2.1,
-      "minimum_cents_per_point": 1.0,
-      "minimum_valuation_note": "Conservative planning floor for guaranteed-value-like redemptions; flight redemptions can be higher."
-    },
-    {
-      "program_id": "amex_mr_ca",
-      "program_name": "Amex Membership Rewards (Canada)",
-      "program_type": "points",
-      "cents_per_point": 2.2,
-      "minimum_cents_per_point": 1.0,
-      "minimum_valuation_note": "Statement credit redemption floor (approximate)."
-    },
-    {
-      "program_id": "bmo_rewards",
-      "program_name": "BMO Rewards",
-      "program_type": "points",
-      "cents_per_point": 0.67,
-      "minimum_cents_per_point": 0.67,
-      "minimum_valuation_note": "Conservative floor aligned with base BMO Rewards redemption value."
-    },
-    {
-      "program_id": "cibc_aventura",
-      "program_name": "CIBC Aventura",
-      "program_type": "points",
+      "program_id": "atb_cashback",
+      "program_name": "ATB Cash Rewards",
+      "program_type": "cashback",
       "cents_per_point": 1.0,
       "minimum_cents_per_point": 1.0,
-      "minimum_valuation_note": "Base redemption value floor used for conservative planning."
+      "minimum_valuation_note": "Cashback redemptions are valued at face value, so the minimum equals the base valuation."
     },
     {
-      "program_id": "marriott_bonvoy",
-      "program_name": "Marriott Bonvoy",
-      "program_type": "points",
-      "cents_per_point": 0.8,
-      "minimum_cents_per_point": 0.5,
-      "minimum_valuation_note": "Conservative floor for low-end Bonvoy redemptions; many hotel redemptions are higher."
-    },
-    {
-      "program_id": "mbna_rewards",
-      "program_name": "MBNA Rewards",
-      "program_type": "points",
+      "program_id": "amazon_rewards",
+      "program_name": "Amazon Rewards",
+      "program_type": "cashback",
       "cents_per_point": 1.0,
       "minimum_cents_per_point": 1.0,
-      "minimum_valuation_note": "Cash-back/statement style redemption floor."
-    },
-    {
-      "program_id": "rbc_avion",
-      "program_name": "RBC Avion",
-      "program_type": "points",
-      "cents_per_point": 2.0,
-      "minimum_cents_per_point": 1.0,
-      "minimum_valuation_note": "Conservative floor for non-optimized redemptions."
-    },
-    {
-      "program_id": "scene_plus",
-      "program_name": "Scene+",
-      "program_type": "points",
-      "cents_per_point": 1.0,
-      "minimum_cents_per_point": 1.0,
-      "minimum_valuation_note": "Fixed-value style redemption floor."
-    },
-    {
-      "program_id": "td_rewards",
-      "program_name": "TD Rewards",
-      "program_type": "points",
-      "cents_per_point": 0.5,
-      "minimum_cents_per_point": 0.5,
-      "minimum_valuation_note": "Base fixed-value travel redemption floor."
-    },
-    {
-      "program_id": "air_miles",
-      "program_name": "AIR MILES",
-      "program_type": "points",
-      "cents_per_point": 10.5,
-      "minimum_cents_per_point": 10.5,
-      "minimum_valuation_note": "Cash Miles floor: 95 miles = $10."
-    },
-    {
-      "program_id": "westjet_rewards",
-      "program_name": "WestJet Rewards",
-      "program_type": "points",
-      "cents_per_point": 1.0,
-      "minimum_cents_per_point": 1.0,
-      "minimum_valuation_note": "WestJet dollars are fixed at $1 per 100 dollars."
-    },
-    {
-      "program_id": "nb_a_la_carte",
-      "program_name": "National Bank À la carte Rewards",
-      "program_type": "points",
-      "cents_per_point": 1.0,
-      "minimum_cents_per_point": 1.0,
-      "minimum_valuation_note": "Conservative floor for base redemption value."
+      "minimum_valuation_note": "Cashback redemptions are valued at face value, so the minimum equals the base valuation."
     },
     {
       "program_id": "bmo_cashback",
       "program_name": "BMO CashBack",
+      "program_type": "cashback",
+      "cents_per_point": 1.0,
+      "minimum_cents_per_point": 1.0,
+      "minimum_valuation_note": "Cashback redemptions are valued at face value, so the minimum equals the base valuation."
+    },
+    {
+      "program_id": "brim_cashback",
+      "program_name": "Brim Rewards (cashback redemption)",
       "program_type": "cashback",
       "cents_per_point": 1.0,
       "minimum_cents_per_point": 1.0,
@@ -121,58 +50,12 @@
       "minimum_valuation_note": "Cashback redemptions are valued at face value, so the minimum equals the base valuation."
     },
     {
-      "program_id": "rogers_cashback",
-      "program_name": "Rogers Bank Cash Back",
+      "program_id": "canadian_non_rewards",
+      "program_name": "Canadian Non-Rewards Credit Products",
       "program_type": "cashback",
       "cents_per_point": 1.0,
-      "minimum_cents_per_point": 1.0,
-      "minimum_valuation_note": "Cashback redemptions are valued at face value, so the minimum equals the base valuation."
-    },
-    {
-      "program_id": "rbc_cashback",
-      "program_name": "RBC Cash Back",
-      "program_type": "cashback",
-      "cents_per_point": 1.0,
-      "minimum_cents_per_point": 1.0,
-      "minimum_valuation_note": "Cashback redemptions are valued at face value, so the minimum equals the base valuation."
-    },
-    {
-      "program_id": "scotia_cashback",
-      "program_name": "Scotiabank Cash Back",
-      "program_type": "cashback",
-      "cents_per_point": 1.0,
-      "minimum_cents_per_point": 1.0,
-      "minimum_valuation_note": "Cashback redemptions are valued at face value, so the minimum equals the base valuation."
-    },
-    {
-      "program_id": "simplii_cashback",
-      "program_name": "Simplii Cash Back",
-      "program_type": "cashback",
-      "cents_per_point": 1.0,
-      "minimum_cents_per_point": 1.0,
-      "minimum_valuation_note": "Cashback redemptions are valued at face value, so the minimum equals the base valuation."
-    },
-    {
-      "program_id": "tangerine_cashback",
-      "program_name": "Tangerine Money-Back",
-      "program_type": "cashback",
-      "cents_per_point": 1.0,
-      "minimum_cents_per_point": 1.0,
-      "minimum_valuation_note": "Cashback redemptions are valued at face value, so the minimum equals the base valuation."
-    },
-    {
-      "program_id": "td_cashback",
-      "program_name": "TD Cash Back",
-      "program_type": "cashback",
-      "cents_per_point": 1.0,
-      "minimum_cents_per_point": 1.0,
-      "minimum_valuation_note": "Cashback redemptions are valued at face value, so the minimum equals the base valuation."
-    },
-    {
-      "program_id": "desjardins_bonusdollars",
-      "program_name": "Desjardins BonusDollars",
-      "program_type": "cashback",
-      "cents_per_point": 1.0,
+      "valuation_status": "no_rewards_earn",
+      "valuation_note": "Product does not provide ongoing rewards earn on purchases.",
       "minimum_cents_per_point": 1.0,
       "minimum_valuation_note": "Cashback redemptions are valued at face value, so the minimum equals the base valuation."
     },
@@ -185,18 +68,26 @@
       "minimum_valuation_note": "Cashback redemptions are valued at face value, so the minimum equals the base valuation."
     },
     {
-      "program_id": "pc_optimum",
-      "program_name": "PC Optimum",
-      "program_type": "points",
-      "cents_per_point": 0.1,
-      "valuation_status": "minimum_guaranteed_redemption_value_confirmed",
-      "valuation_note": "Confirmed minimum base redemption: 10,000 points = $10 CAD (0.1 cents/point).",
-      "minimum_cents_per_point": 0.1,
-      "minimum_valuation_note": "Confirmed minimum base redemption: 10,000 points = $10 CAD (0.1 cents/point)."
+      "program_id": "capital_one_non_rewards",
+      "program_name": "Capital One Non-Rewards Products",
+      "program_type": "cashback",
+      "cents_per_point": 1.0,
+      "valuation_status": "no_rewards_earn",
+      "valuation_note": "Product line does not provide rewards points/cashback earn on purchases.",
+      "minimum_cents_per_point": 1.0,
+      "minimum_valuation_note": "Cashback redemptions are valued at face value, so the minimum equals the base valuation."
     },
     {
-      "program_id": "brim_cashback",
-      "program_name": "Brim Rewards (cashback redemption)",
+      "program_id": "desjardins_bonusdollars",
+      "program_name": "Desjardins BonusDollars",
+      "program_type": "cashback",
+      "cents_per_point": 1.0,
+      "minimum_cents_per_point": 1.0,
+      "minimum_valuation_note": "Cashback redemptions are valued at face value, so the minimum equals the base valuation."
+    },
+    {
+      "program_id": "eq_cashback",
+      "program_name": "EQ Bank Cash Back",
       "program_type": "cashback",
       "cents_per_point": 1.0,
       "minimum_cents_per_point": 1.0,
@@ -211,16 +102,8 @@
       "minimum_valuation_note": "Cashback redemptions are valued at face value, so the minimum equals the base valuation."
     },
     {
-      "program_id": "walmart_cashback",
-      "program_name": "Walmart Rewards",
-      "program_type": "cashback",
-      "cents_per_point": 1.0,
-      "minimum_cents_per_point": 1.0,
-      "minimum_valuation_note": "Cashback redemptions are valued at face value, so the minimum equals the base valuation."
-    },
-    {
-      "program_id": "manulife_cashback",
-      "program_name": "ManulifeMONEY+ Cash Back",
+      "program_id": "koho_cashback",
+      "program_name": "KOHO Cash Back",
       "program_type": "cashback",
       "cents_per_point": 1.0,
       "minimum_cents_per_point": 1.0,
@@ -237,132 +120,16 @@
       "minimum_valuation_note": "Cashback redemptions are valued at face value, so the minimum equals the base valuation."
     },
     {
-      "program_id": "capital_one_non_rewards",
-      "program_name": "Capital One Non-Rewards Products",
-      "program_type": "cashback",
-      "cents_per_point": 1.0,
-      "valuation_status": "no_rewards_earn",
-      "valuation_note": "Product line does not provide rewards points/cashback earn on purchases.",
-      "minimum_cents_per_point": 1.0,
-      "minimum_valuation_note": "Cashback redemptions are valued at face value, so the minimum equals the base valuation."
-    },
-    {
-      "program_id": "canadian_non_rewards",
-      "program_name": "Canadian Non-Rewards Credit Products",
-      "program_type": "cashback",
-      "cents_per_point": 1.0,
-      "valuation_status": "no_rewards_earn",
-      "valuation_note": "Product does not provide ongoing rewards earn on purchases.",
-      "minimum_cents_per_point": 1.0,
-      "minimum_valuation_note": "Cashback redemptions are valued at face value, so the minimum equals the base valuation."
-    },
-    {
-      "program_id": "more_rewards",
-      "program_name": "More Rewards",
-      "program_type": "points",
-      "cents_per_point": 0.43,
-      "minimum_cents_per_point": 0.15,
-      "minimum_valuation_note": "Finly reward conversion values: Travel ~0.43 cpp; store ~0.30 cpp; grocery floor ~0.15 cpp.",
-      "valuation_note": "Finly reward conversion values: Travel ~0.43 cpp; store ~0.30 cpp; grocery floor ~0.15 cpp."
-    },
-    {
-      "program_id": "viporter",
-      "program_name": "VIPorter",
-      "program_type": "points",
-      "cents_per_point": 1.5,
-      "minimum_cents_per_point": 1.5,
-      "minimum_valuation_note": "Finly reward conversion value for Porter travel is 1.5 cpp (fixed).",
-      "valuation_note": "Finly reward conversion value for Porter travel is 1.5 cpp (fixed)."
-    },
-    {
-      "program_id": "asia_miles",
-      "program_name": "Asia Miles",
-      "program_type": "points",
-      "cents_per_point": 1.4,
-      "minimum_cents_per_point": 1.0,
-      "minimum_valuation_note": "Finly reward conversion values show ~1.0-1.4 cpp depending on redemption option.",
-      "valuation_note": "Finly reward conversion values show ~1.0-1.4 cpp depending on redemption option."
-    },
-    {
-      "program_id": "capital_one_smart_rewards",
-      "program_name": "Capital One Smart Rewards",
-      "program_type": "points",
-      "cents_per_point": 0.25,
-      "minimum_cents_per_point": 0.25,
-      "minimum_valuation_note": "Finly conversion values show 0.25 cpp for statement credits and gift cards.",
-      "valuation_note": "Finly conversion values show 0.25 cpp for statement credits and gift cards."
-    },
-    {
-      "program_id": "meridian_rewards",
-      "program_name": "Meridian Rewards",
-      "program_type": "points",
-      "cents_per_point": 1.0,
-      "minimum_cents_per_point": 1.0,
-      "minimum_valuation_note": "Finly conversion values indicate approximately 1.0 cpp for travel/cash/gift card style redemptions.",
-      "valuation_note": "Finly conversion values indicate approximately 1.0 cpp for travel/cash/gift card style redemptions."
-    },
-    {
-      "program_id": "wealthsimple_cashback",
-      "program_name": "Wealthsimple Cash Back",
-      "program_type": "cashback",
-      "cents_per_point": 1.0,
-      "minimum_cents_per_point": 1.0,
-      "minimum_valuation_note": "Cashback redemptions are valued at face value, so the minimum equals the base valuation."
-    },
-    {
-      "program_id": "rbc_avios",
-      "program_name": "RBC Avios / British Airways Executive Club",
-      "program_type": "points",
-      "cents_per_point": 1.7,
-      "minimum_cents_per_point": 0.88,
-      "minimum_valuation_note": "Finly Avios conversion values range roughly 0.88-1.7 cpp depending on redemption.",
-      "valuation_note": "Finly Avios conversion values range roughly 0.88-1.7 cpp depending on redemption."
-    },
-    {
-      "program_id": "atb_rewards",
-      "program_name": "ATB Rewards",
-      "program_type": "points",
-      "cents_per_point": 0.5,
-      "minimum_cents_per_point": 0.5,
-      "minimum_valuation_note": "Finly conversion values indicate approximately 0.5 cpp for reward redemptions.",
-      "valuation_note": "Finly conversion values indicate approximately 0.5 cpp for reward redemptions."
-    },
-    {
-      "program_id": "koho_cashback",
-      "program_name": "KOHO Cash Back",
-      "program_type": "cashback",
-      "cents_per_point": 1.0,
-      "minimum_cents_per_point": 1.0,
-      "minimum_valuation_note": "Cashback redemptions are valued at face value, so the minimum equals the base valuation."
-    },
-    {
-      "program_id": "moi_rewards",
-      "program_name": "Moi Rewards",
-      "program_type": "points",
-      "cents_per_point": 0.8,
-      "minimum_cents_per_point": 0.8,
-      "minimum_valuation_note": "Finly conversion values indicate approximately 0.8 cpp valuation.",
-      "valuation_note": "Finly conversion values indicate approximately 0.8 cpp valuation."
-    },
-    {
-      "program_id": "zolve_cashback",
-      "program_name": "Zolve Cash Back",
-      "program_type": "cashback",
-      "cents_per_point": 1.0,
-      "minimum_cents_per_point": 1.0,
-      "minimum_valuation_note": "Cashback redemptions are valued at face value, so the minimum equals the base valuation."
-    },
-    {
-      "program_id": "neo_cashback",
-      "program_name": "Neo Cash Back",
-      "program_type": "cashback",
-      "cents_per_point": 1.0,
-      "minimum_cents_per_point": 1.0,
-      "minimum_valuation_note": "Cashback redemptions are valued at face value, so the minimum equals the base valuation."
-    },
-    {
       "program_id": "mbna_smart_cashback",
       "program_name": "MBNA Smart Cash Back",
+      "program_type": "cashback",
+      "cents_per_point": 1.0,
+      "minimum_cents_per_point": 1.0,
+      "minimum_valuation_note": "Cashback redemptions are valued at face value, so the minimum equals the base valuation."
+    },
+    {
+      "program_id": "manulife_cashback",
+      "program_name": "ManulifeMONEY+ Cash Back",
       "program_type": "cashback",
       "cents_per_point": 1.0,
       "minimum_cents_per_point": 1.0,
@@ -385,24 +152,56 @@
       "minimum_valuation_note": "Cashback redemptions are valued at face value, so the minimum equals the base valuation."
     },
     {
-      "program_id": "amazon_rewards",
-      "program_name": "Amazon Rewards",
+      "program_id": "neo_cashback",
+      "program_name": "Neo Cash Back",
       "program_type": "cashback",
       "cents_per_point": 1.0,
       "minimum_cents_per_point": 1.0,
       "minimum_valuation_note": "Cashback redemptions are valued at face value, so the minimum equals the base valuation."
     },
     {
-      "program_id": "atb_cashback",
-      "program_name": "ATB Cash Rewards",
+      "program_id": "rbc_cashback",
+      "program_name": "RBC Cash Back",
       "program_type": "cashback",
       "cents_per_point": 1.0,
       "minimum_cents_per_point": 1.0,
       "minimum_valuation_note": "Cashback redemptions are valued at face value, so the minimum equals the base valuation."
     },
     {
-      "program_id": "eq_cashback",
-      "program_name": "EQ Bank Cash Back",
+      "program_id": "rogers_cashback",
+      "program_name": "Rogers Bank Cash Back",
+      "program_type": "cashback",
+      "cents_per_point": 1.0,
+      "minimum_cents_per_point": 1.0,
+      "minimum_valuation_note": "Cashback redemptions are valued at face value, so the minimum equals the base valuation."
+    },
+    {
+      "program_id": "scotia_cashback",
+      "program_name": "Scotiabank Cash Back",
+      "program_type": "cashback",
+      "cents_per_point": 1.0,
+      "minimum_cents_per_point": 1.0,
+      "minimum_valuation_note": "Cashback redemptions are valued at face value, so the minimum equals the base valuation."
+    },
+    {
+      "program_id": "simplii_cashback",
+      "program_name": "Simplii Cash Back",
+      "program_type": "cashback",
+      "cents_per_point": 1.0,
+      "minimum_cents_per_point": 1.0,
+      "minimum_valuation_note": "Cashback redemptions are valued at face value, so the minimum equals the base valuation."
+    },
+    {
+      "program_id": "td_cashback",
+      "program_name": "TD Cash Back",
+      "program_type": "cashback",
+      "cents_per_point": 1.0,
+      "minimum_cents_per_point": 1.0,
+      "minimum_valuation_note": "Cashback redemptions are valued at face value, so the minimum equals the base valuation."
+    },
+    {
+      "program_id": "tangerine_cashback",
+      "program_name": "Tangerine Money-Back",
       "program_type": "cashback",
       "cents_per_point": 1.0,
       "minimum_cents_per_point": 1.0,
@@ -415,6 +214,208 @@
       "cents_per_point": 1.0,
       "minimum_cents_per_point": 1.0,
       "minimum_valuation_note": "Cashback redemptions are valued at face value, so the minimum equals the base valuation."
+    },
+    {
+      "program_id": "walmart_cashback",
+      "program_name": "Walmart Rewards",
+      "program_type": "cashback",
+      "cents_per_point": 1.0,
+      "minimum_cents_per_point": 1.0,
+      "minimum_valuation_note": "Cashback redemptions are valued at face value, so the minimum equals the base valuation."
+    },
+    {
+      "program_id": "wealthsimple_cashback",
+      "program_name": "Wealthsimple Cash Back",
+      "program_type": "cashback",
+      "cents_per_point": 1.0,
+      "minimum_cents_per_point": 1.0,
+      "minimum_valuation_note": "Cashback redemptions are valued at face value, so the minimum equals the base valuation."
+    },
+    {
+      "program_id": "zolve_cashback",
+      "program_name": "Zolve Cash Back",
+      "program_type": "cashback",
+      "cents_per_point": 1.0,
+      "minimum_cents_per_point": 1.0,
+      "minimum_valuation_note": "Cashback redemptions are valued at face value, so the minimum equals the base valuation."
+    },
+    {
+      "program_id": "air_miles",
+      "program_name": "AIR MILES",
+      "program_type": "points",
+      "cents_per_point": 10.5,
+      "minimum_cents_per_point": 10.5,
+      "minimum_valuation_note": "Cash Miles floor: 95 miles = $10."
+    },
+    {
+      "program_id": "atb_rewards",
+      "program_name": "ATB Rewards",
+      "program_type": "points",
+      "cents_per_point": 0.5,
+      "minimum_cents_per_point": 0.5,
+      "minimum_valuation_note": "Finly conversion values indicate approximately 0.5 cpp for reward redemptions.",
+      "valuation_note": "Finly conversion values indicate approximately 0.5 cpp for reward redemptions."
+    },
+    {
+      "program_id": "aeroplan",
+      "program_name": "Aeroplan",
+      "program_type": "points",
+      "cents_per_point": 2.1,
+      "minimum_cents_per_point": 1.0,
+      "minimum_valuation_note": "Conservative planning floor for guaranteed-value-like redemptions; flight redemptions can be higher."
+    },
+    {
+      "program_id": "amex_mr_ca",
+      "program_name": "Amex Membership Rewards (Canada)",
+      "program_type": "points",
+      "cents_per_point": 2.2,
+      "minimum_cents_per_point": 1.0,
+      "minimum_valuation_note": "Statement credit redemption floor (approximate)."
+    },
+    {
+      "program_id": "asia_miles",
+      "program_name": "Asia Miles",
+      "program_type": "points",
+      "cents_per_point": 1.4,
+      "minimum_cents_per_point": 1.0,
+      "minimum_valuation_note": "Finly reward conversion values show ~1.0-1.4 cpp depending on redemption option.",
+      "valuation_note": "Finly reward conversion values show ~1.0-1.4 cpp depending on redemption option."
+    },
+    {
+      "program_id": "bmo_rewards",
+      "program_name": "BMO Rewards",
+      "program_type": "points",
+      "cents_per_point": 0.67,
+      "minimum_cents_per_point": 0.67,
+      "minimum_valuation_note": "Conservative floor aligned with base BMO Rewards redemption value."
+    },
+    {
+      "program_id": "cibc_aventura",
+      "program_name": "CIBC Aventura",
+      "program_type": "points",
+      "cents_per_point": 1.0,
+      "minimum_cents_per_point": 1.0,
+      "minimum_valuation_note": "Base redemption value floor used for conservative planning."
+    },
+    {
+      "program_id": "capital_one_smart_rewards",
+      "program_name": "Capital One Smart Rewards",
+      "program_type": "points",
+      "cents_per_point": 0.25,
+      "minimum_cents_per_point": 0.25,
+      "minimum_valuation_note": "Finly conversion values show 0.25 cpp for statement credits and gift cards.",
+      "valuation_note": "Finly conversion values show 0.25 cpp for statement credits and gift cards."
+    },
+    {
+      "program_id": "mbna_rewards",
+      "program_name": "MBNA Rewards",
+      "program_type": "points",
+      "cents_per_point": 1.0,
+      "minimum_cents_per_point": 1.0,
+      "minimum_valuation_note": "Cash-back/statement style redemption floor."
+    },
+    {
+      "program_id": "marriott_bonvoy",
+      "program_name": "Marriott Bonvoy",
+      "program_type": "points",
+      "cents_per_point": 0.8,
+      "minimum_cents_per_point": 0.5,
+      "minimum_valuation_note": "Conservative floor for low-end Bonvoy redemptions; many hotel redemptions are higher."
+    },
+    {
+      "program_id": "meridian_rewards",
+      "program_name": "Meridian Rewards",
+      "program_type": "points",
+      "cents_per_point": 1.0,
+      "minimum_cents_per_point": 1.0,
+      "minimum_valuation_note": "Finly conversion values indicate approximately 1.0 cpp for travel/cash/gift card style redemptions.",
+      "valuation_note": "Finly conversion values indicate approximately 1.0 cpp for travel/cash/gift card style redemptions."
+    },
+    {
+      "program_id": "moi_rewards",
+      "program_name": "Moi Rewards",
+      "program_type": "points",
+      "cents_per_point": 0.8,
+      "minimum_cents_per_point": 0.8,
+      "minimum_valuation_note": "Finly conversion values indicate approximately 0.8 cpp valuation.",
+      "valuation_note": "Finly conversion values indicate approximately 0.8 cpp valuation."
+    },
+    {
+      "program_id": "more_rewards",
+      "program_name": "More Rewards",
+      "program_type": "points",
+      "cents_per_point": 0.43,
+      "minimum_cents_per_point": 0.15,
+      "minimum_valuation_note": "Finly reward conversion values: Travel ~0.43 cpp; store ~0.30 cpp; grocery floor ~0.15 cpp.",
+      "valuation_note": "Finly reward conversion values: Travel ~0.43 cpp; store ~0.30 cpp; grocery floor ~0.15 cpp."
+    },
+    {
+      "program_id": "nb_a_la_carte",
+      "program_name": "National Bank À la carte Rewards",
+      "program_type": "points",
+      "cents_per_point": 1.0,
+      "minimum_cents_per_point": 1.0,
+      "minimum_valuation_note": "Conservative floor for base redemption value."
+    },
+    {
+      "program_id": "pc_optimum",
+      "program_name": "PC Optimum",
+      "program_type": "points",
+      "cents_per_point": 0.1,
+      "valuation_status": "minimum_guaranteed_redemption_value_confirmed",
+      "valuation_note": "Confirmed minimum base redemption: 10,000 points = $10 CAD (0.1 cents/point).",
+      "minimum_cents_per_point": 0.1,
+      "minimum_valuation_note": "Confirmed minimum base redemption: 10,000 points = $10 CAD (0.1 cents/point)."
+    },
+    {
+      "program_id": "rbc_avion",
+      "program_name": "RBC Avion",
+      "program_type": "points",
+      "cents_per_point": 2.0,
+      "minimum_cents_per_point": 1.0,
+      "minimum_valuation_note": "Conservative floor for non-optimized redemptions."
+    },
+    {
+      "program_id": "rbc_avios",
+      "program_name": "RBC Avios / British Airways Executive Club",
+      "program_type": "points",
+      "cents_per_point": 1.7,
+      "minimum_cents_per_point": 0.88,
+      "minimum_valuation_note": "Finly Avios conversion values range roughly 0.88-1.7 cpp depending on redemption.",
+      "valuation_note": "Finly Avios conversion values range roughly 0.88-1.7 cpp depending on redemption."
+    },
+    {
+      "program_id": "scene_plus",
+      "program_name": "Scene+",
+      "program_type": "points",
+      "cents_per_point": 1.0,
+      "minimum_cents_per_point": 1.0,
+      "minimum_valuation_note": "Fixed-value style redemption floor."
+    },
+    {
+      "program_id": "td_rewards",
+      "program_name": "TD Rewards",
+      "program_type": "points",
+      "cents_per_point": 0.5,
+      "minimum_cents_per_point": 0.5,
+      "minimum_valuation_note": "Base fixed-value travel redemption floor."
+    },
+    {
+      "program_id": "viporter",
+      "program_name": "VIPorter",
+      "program_type": "points",
+      "cents_per_point": 1.5,
+      "minimum_cents_per_point": 1.5,
+      "minimum_valuation_note": "Finly reward conversion value for Porter travel is 1.5 cpp (fixed).",
+      "valuation_note": "Finly reward conversion value for Porter travel is 1.5 cpp (fixed)."
+    },
+    {
+      "program_id": "westjet_rewards",
+      "program_name": "WestJet Rewards",
+      "program_type": "points",
+      "cents_per_point": 1.0,
+      "minimum_cents_per_point": 1.0,
+      "minimum_valuation_note": "WestJet dollars are fixed at $1 per 100 dollars."
     }
   ]
 }
