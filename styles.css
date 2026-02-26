@@ -127,7 +127,11 @@ tbody tr:last-child td{border-bottom:none}
   background:color-mix(in srgb,var(--panel) 65%, transparent);
   display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap
 }
-.footerText{margin:0;max-width:72ch}
+.footerText{
+  margin:0;
+  flex:1 1 auto;
+  min-width:0;
+}
 .infoBadge{
   display:inline-flex;align-items:center;justify-content:center;
   width:18px;height:18px;margin-left:6px;border-radius:999px;
