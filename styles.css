@@ -61,6 +61,12 @@ input[type="number"]:focus{border-color:var(--accent)}
   color:var(--text);font-weight:700;font-size:12px
 }
 
+.value-pill-input{
+  width:4.5em;
+  text-align:center;
+  padding:2px 8px;
+}
+
 input[type="range"]{
   width:220px;accent-color:var(--accent);cursor:pointer
 }

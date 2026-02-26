@@ -11,7 +11,7 @@ const runBtn = document.getElementById("runBtn");
 const valuationModeEl = document.getElementById("valuationMode");
 
 const kInput = document.getElementById("k");
-const kValueEl = document.getElementById("kValue");
+const kValueInputEl = document.getElementById("kValue");
 
 async function main() {
   try {
@@ -28,14 +28,18 @@ async function main() {
       <span class="muted">${eligibleCards.length} eligible cards · ${issues.length} excluded · ${programsMap.size} programs</span>
     `;
 
-    const maxSelectableCards = Math.max(1, Math.min(5, eligibleCards.length));
+    const maxSelectableCards = Math.max(1, eligibleCards.length);
     kInput.max = String(maxSelectableCards);
     kInput.value = String(clampInt(kInput.value, 1, maxSelectableCards));
+    if (kValueInputEl) kValueInputEl.max = String(maxSelectableCards);
 
     const comboCache = new Map();
 
-    function updateKValue() {
-      if (kValueEl) kValueEl.textContent = String(kInput.value);
+    function syncCardCountInputs(rawValue = kInput.value) {
+      const k = clampInt(rawValue, 1, maxSelectableCards);
+      kInput.value = String(k);
+      if (kValueInputEl) kValueInputEl.value = String(k);
+      return k;
     }
 
     function currentValuationMode() {
@@ -69,9 +73,7 @@ async function main() {
       resultEl.classList.add("hidden");
       resultEl.textContent = "Computing…";
 
-      const k = clampInt(kInput.value, 1, maxSelectableCards);
-      kInput.value = String(k);
-      updateKValue();
+      const k = syncCardCountInputs(kInput.value);
 
       const valuationMode = currentValuationMode();
       const monthlySpend = readMonthlySpend(schema);
@@ -98,11 +100,15 @@ async function main() {
       else issuesWrap.classList.add("hidden");
     }
 
-    updateKValue();
+    syncCardCountInputs(kInput.value);
     appEl.classList.remove("hidden");
 
     runBtn.addEventListener("click", runOptimizer);
     kInput.addEventListener("input", runOptimizer);
+    kValueInputEl?.addEventListener("change", () => {
+      syncCardCountInputs(kValueInputEl.value);
+      runOptimizer();
+    });
     valuationModeEl?.addEventListener("change", runOptimizer);
 
   } catch (e) {
