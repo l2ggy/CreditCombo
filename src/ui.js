@@ -61,6 +61,18 @@ export function renderIssues(el, issues) {
   `;
 }
 
+
+function cardThumbMarkup(card, className = "resultCardThumb", withFrame = true) {
+  const image = `<img class="${className}" src="./assets/cards/${escapeHtml(card.id)}.webp" alt="${escapeHtml(card.card_name)}" loading="lazy" decoding="async" onerror="this.remove()" />`;
+  if (!withFrame) return image;
+  return `<span class="thumbFrame">${image}</span>`;
+}
+
+function instructionLineMarkup(card, amount = null) {
+  const amountPart = amount == null ? "" : ` <span class="mono">(${money(amount)})</span>`;
+  return `<span class="instructionCard">${cardThumbMarkup(card, "instructionCardThumb", false)}<span>${escapeHtml(card.card_name)}${amountPart}</span></span>`;
+}
+
 export function renderResult(el, best, annualSpend, schema, valuationMode = "estimated") {
   el.classList.remove("hidden");
 
@@ -71,9 +83,13 @@ export function renderResult(el, best, annualSpend, schema, valuationMode = "est
 
   const comboList = best.combo.map(c => {
     const fee = Number(c.annual_fee?.amount ?? 0);
-    return `<li><b>${escapeHtml(c.card_name)}</b> <span class="muted">(${escapeHtml(c.issuer)})</span>
-            — <span class="mono">${escapeHtml(c.network)}</span>
-            — fee <span class="mono">${money(fee)}/yr</span></li>`;
+    return `<li class="resultCardItem">${cardThumbMarkup(c)}
+      <div>
+        <b>${escapeHtml(c.card_name)}</b> <span class="muted">(${escapeHtml(c.issuer)})</span>
+        — <span class="mono">${escapeHtml(c.network)}</span>
+        — fee <span class="mono">${money(fee)}/yr</span>
+      </div>
+    </li>`;
   }).join("");
 
   const instructions = [];
@@ -87,9 +103,9 @@ export function renderResult(el, best, annualSpend, schema, valuationMode = "est
       .sort((a, b) => b.amt - a.amt);
 
     if (alloc.length === 1) {
-      instructions.push(`<tr><td class="mono">${escapeHtml(cat)}</td><td>${escapeHtml(alloc[0].c.card_name)}</td></tr>`);
+      instructions.push(`<tr><td class="mono">${escapeHtml(cat)}</td><td>${instructionLineMarkup(alloc[0].c)}</td></tr>`);
     } else {
-      const parts = alloc.slice(0, 3).map(x => `${escapeHtml(x.c.card_name)} (${money(x.amt)})`).join(", ");
+      const parts = alloc.slice(0, 3).map(x => instructionLineMarkup(x.c, x.amt)).join('<span class="muted">, </span>');
       instructions.push(`<tr><td class="mono">${escapeHtml(cat)}</td><td>split → ${parts}</td></tr>`);
     }
   }
