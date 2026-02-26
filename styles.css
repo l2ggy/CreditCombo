@@ -98,3 +98,40 @@ tbody tr:last-child td{border-bottom:none}
 .issues ul{margin:10px 0 0;padding-left:18px}
 .issues li{margin:5px 0;color:var(--muted)}
 .category-desc{margin-top:3px;font-size:12px;line-height:1.3}
+
+.subtle{color:var(--muted)}
+.subtle2{display:block;font-size:13px;margin-top:2px}
+
+.headerActions{display:flex;align-items:center;gap:12px}
+.textLink{color:var(--accent);font-weight:600;text-decoration:none}
+.textLink:hover{text-decoration:underline}
+
+input[type="search"]{
+  width:100%;padding:10px;border-radius:12px;border:1px solid var(--border);
+  background:transparent;color:var(--text);outline:none
+}
+input[type="search"]:focus{border-color:var(--accent)}
+
+.browserLayout{display:grid;gap:14px}
+.browserControls{position:sticky;top:10px}
+.browserFilterGrid{display:grid;grid-template-columns:repeat(4,minmax(170px,1fr));gap:10px}
+.browserCards{display:grid;gap:12px}
+.browserCardTop{display:flex;justify-content:space-between;gap:14px;align-items:flex-start}
+.browserCardTitle{margin:0 0 4px;font-size:17px}
+.browserFee{display:flex;flex-direction:column;align-items:flex-end;gap:2px}
+.browserCardBody{display:grid;grid-template-columns:1.1fr .9fr;gap:16px;margin-top:12px}
+.browserCardBody h4{margin:0 0 8px;font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.browserRateList{list-style:none;padding:0;margin:0;display:grid;gap:7px}
+.browserRateList li{display:flex;justify-content:space-between;gap:8px;padding-bottom:6px;border-bottom:1px solid var(--border)}
+.browserRateList li:last-child{border-bottom:none}
+.browserCardBody ul{margin:0;padding-left:18px;display:grid;gap:6px}
+
+@media (max-width:900px){
+  .browserFilterGrid{grid-template-columns:1fr 1fr}
+  .browserCardBody{grid-template-columns:1fr}
+  .headerActions{width:100%;justify-content:space-between}
+}
+
+@media (max-width:560px){
+  .browserFilterGrid{grid-template-columns:1fr}
+}
