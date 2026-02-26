@@ -28,10 +28,10 @@ function formatMultiplier(value, significantDigits = 2) {
   const absValue = Math.abs(numericValue);
   const order = Math.floor(Math.log10(absValue));
   const scale = 10 ** (significantDigits - 1 - order);
-  const truncatedValue = Math.trunc(numericValue * scale) / scale;
+  const roundedValue = Math.round(numericValue * scale) / scale;
   const fractionDigits = Math.max(0, significantDigits - 1 - order);
 
-  return truncatedValue.toFixed(fractionDigits).replace(/\.?0+$/, "");
+  return roundedValue.toFixed(fractionDigits).replace(/\.?0+$/, "");
 }
 
 function annualFeeAmount(card) {
