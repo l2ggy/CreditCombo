@@ -120,6 +120,15 @@ select[multiple]{padding:8px;background:transparent;appearance:auto;min-width:32
 .lockedChip{display:inline-flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid var(--border);border-radius:10px;background:color-mix(in srgb,var(--accent) 12%, transparent);color:var(--text);font-size:12px;line-height:1.25}
 .lockedChipRemove{display:inline-flex;align-items:center;justify-content:center;width:auto;min-width:20px;min-height:20px;border:none;background:transparent;color:var(--muted);padding:0;line-height:1;font-size:15px;font-weight:700;cursor:pointer}
 .lockedChipRemove:hover{color:var(--text)}
+
+.resultCardItem{display:flex;align-items:center;gap:10px}
+.thumbFrame{width:44px;height:44px;display:inline-flex;align-items:center;justify-content:center;flex:0 0 44px}
+.resultCardThumb{width:auto;height:auto;max-width:44px;max-height:44px;border-radius:10%;border:1px solid var(--border);display:block}
+.instructionCardThumb,.lockedCardThumb{width:auto;height:auto;max-width:20px;max-height:20px;border-radius:10%;border:1px solid var(--border);display:block}
+.instructionCardThumb{height:1.75em;width:auto;max-height:none;max-width:42px;vertical-align:middle;object-fit:contain}
+.instructionCard{display:inline-flex;align-items:center;gap:4px;white-space:nowrap;line-height:1.2}
+.lockedOption{display:flex;align-items:center;gap:8px}
+.lockedChip{display:inline-flex;align-items:center;gap:6px}
 button{
   width:100%;padding:var(--space-2) var(--space-3);border-radius:12px;border:1px solid var(--accent);
   background:transparent;color:var(--text);font-weight:700;cursor:pointer
@@ -191,6 +200,8 @@ input[type="search"]:focus{border-color:var(--accent)}
 .browserFilterGrid{display:grid;grid-template-columns:repeat(4,minmax(170px,1fr));gap:10px}
 .browserCards{display:grid;gap:12px}
 .browserCardTop{display:flex;justify-content:space-between;gap:14px;align-items:flex-start}
+.browserCardHeading{display:flex;align-items:flex-start;gap:12px;min-width:0}
+.browserCardThumb{width:auto;height:auto;max-width:72px;max-height:72px;border-radius:10%;border:1px solid var(--border);display:block;flex:0 0 auto}
 .browserCardTitle{margin:0 0 4px;font-size:17px}
 .browserFee{display:flex;flex-direction:column;align-items:flex-end;gap:2px}
 .browserCardBody{display:grid;grid-template-columns:1.1fr .9fr;gap:16px;margin-top:12px}
