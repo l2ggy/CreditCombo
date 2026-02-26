@@ -2,8 +2,7 @@ import { loadJson } from "./data.js";
 
 const state = {
   cards: [],
-  filteredCards: [],
-  earnRateCategories: []
+  filteredCards: []
 };
 
 const els = {
@@ -78,29 +77,18 @@ function sortCards(cards) {
   return sorted;
 }
 
-function collectEarnRateCategories(cards) {
-  const categories = new Set();
+function earnRateMarkup(earnRates) {
+  const entries = Object.entries(earnRates || {});
+  if (!entries.length) return '<p class="muted">No earn rates available.</p>';
 
-  for (const card of cards) {
-    for (const category of Object.keys(card.earn_rates || {})) {
-      categories.add(category);
-    }
-  }
-
-  return [...categories].sort((a, b) => {
-    if (a === "other") return 1;
-    if (b === "other") return -1;
-    return a.localeCompare(b);
+  const sortedEntries = entries.sort((a, b) => {
+    if (a[0] === "other") return 1;
+    if (b[0] === "other") return -1;
+    return a[0].localeCompare(b[0]);
   });
-}
 
-function earnRateMarkup(earnRates, categories) {
-  if (!categories.length) return '<p class="muted">No earn rates available.</p>';
-
-  const otherRate = earnRates?.other;
-  const headers = categories.map((category) => `<th class="mono">${category}</th>`).join("");
-  const cells = categories.map((category) => {
-    const rate = earnRates?.[category] ?? otherRate;
+  const headers = sortedEntries.map(([category]) => `<th class="mono">${category}</th>`).join("");
+  const cells = sortedEntries.map(([, rate]) => {
     const value = Number.isFinite(Number(rate)) ? `${Number(rate)}×` : "n/a";
     return `<td><strong>${value}</strong></td>`;
   }).join("");
@@ -131,7 +119,6 @@ function capMarkup(caps) {
 
 function renderCards() {
   state.filteredCards = sortCards(state.cards.filter(cardMatches));
-  state.earnRateCategories = collectEarnRateCategories(state.filteredCards);
 
   els.summary.textContent = `Showing ${state.filteredCards.length} of ${state.cards.length} cards.`;
 
@@ -156,7 +143,7 @@ function renderCards() {
       <div class="browserCardBody">
         <section>
           <h4>Earn rates</h4>
-          ${earnRateMarkup(card.earn_rates, state.earnRateCategories)}
+          ${earnRateMarkup(card.earn_rates)}
         </section>
         <section>
           <h4>Caps</h4>
