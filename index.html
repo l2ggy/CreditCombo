@@ -13,17 +13,22 @@
   <link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
-  <header class="container header">
-    <div>
-      <h1>CreditCombo</h1>
-      <p class="subtle">
-        Optimize a long-term card setup from your spending profile.
-        <span class="subtle2">Special portal/merchant multipliers aren’t modeled in this MVP.</span>
-      </p>
-    </div>
-    <div class="headerActions">
+  <header class="container siteHeader">
+    <nav class="topNav" aria-label="Primary">
       <a class="textLink" href="./cards.html">Browse all cards</a>
-      <div id="status" class="status">Loading…</div>
+      <a class="textLink" href="./valuations.html">Rewards valuation guide</a>
+    </nav>
+    <div class="header">
+      <div>
+        <h1>CreditCombo</h1>
+        <p class="subtle">
+          Optimize a long-term card setup from your spending profile.
+          <span class="subtle2">Special portal/merchant multipliers aren’t modeled in this MVP.</span>
+        </p>
+      </div>
+      <div class="headerActions">
+        <div id="status" class="status">Loading…</div>
+      </div>
     </div>
   </header>
 
@@ -47,7 +52,7 @@
             <input id="k" type="range" min="1" max="5" value="3" step="1" />
           </div>
           <div class="field">
-            <label for="valuationMode">Points valuation</label>
+            <label for="valuationMode">Points valuation <a class="infoBadge" href="./valuations.html" aria-label="Learn how rewards valuations work" title="How valuation modes work">i</a></label>
             <select id="valuationMode">
               <option value="estimated" selected>Estimated value</option>
               <option value="minimum_guaranteed">Minimum guaranteed value</option>
