@@ -120,6 +120,14 @@ tbody tr:last-child td{border-bottom:none}
 .subtle2{display:block;font-size:13px;margin-top:2px}
 
 .headerActions{display:flex;align-items:center;gap:12px}
+
+.siteFooter{padding-top:0;padding-bottom:28px}
+.footerContent{
+  border:1px solid var(--border);border-radius:14px;padding:14px;
+  background:color-mix(in srgb,var(--panel) 65%, transparent);
+  display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap
+}
+.footerText{margin:0;max-width:72ch}
 .infoBadge{
   display:inline-flex;align-items:center;justify-content:center;
   width:18px;height:18px;margin-left:6px;border-radius:999px;
@@ -128,6 +136,16 @@ tbody tr:last-child td{border-bottom:none}
 .infoBadge:hover{border-color:var(--accent);text-decoration:none}
 .textLink{color:var(--accent);font-weight:600;text-decoration:none}
 .textLink:hover{text-decoration:underline}
+.contactBtn{
+  display:inline-flex;align-items:center;justify-content:center;
+  padding:8px 12px;border-radius:10px;border:1px solid var(--accent);
+  color:var(--text);font-weight:700;text-decoration:none;
+  background:color-mix(in srgb,var(--accent) 18%, transparent)
+}
+.contactBtn:hover{
+  background:color-mix(in srgb,var(--accent) 28%, transparent);
+  text-decoration:none
+}
 
 input[type="search"]{
   width:100%;padding:10px;border-radius:12px;border:1px solid var(--border);
@@ -155,6 +173,7 @@ input[type="search"]:focus{border-color:var(--accent)}
   .browserCardBody{grid-template-columns:1fr}
   .topNav{justify-content:flex-start}
   .headerActions{width:100%;justify-content:space-between}
+  .footerContent{align-items:flex-start}
 }
 
 @media (max-width:560px){
