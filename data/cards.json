@@ -683,46 +683,6 @@
       ]
     },
     {
-      "id": "bmo_air_miles_mastercard",
-      "card_name": "BMO® AIR MILES®† Mastercard®*",
-      "issuer": "BMO",
-      "network": "Mastercard",
-      "rewards_program": "air_miles",
-      "annual_fee": {
-        "amount": 0,
-        "type": "annual"
-      },
-      "earn_rates": {
-        "grocery": 0.08,
-        "other": 0.04
-      },
-      "caps": [
-        {
-          "scope": "shared",
-          "categories": [
-            "grocery"
-          ],
-          "cap_amount": 500,
-          "cap_period": "monthly",
-          "earn_rate_above_cap": 0.04,
-          "notes": "2 miles per $25 on eligible grocery purchases up to $500 per statement cycle (modeled as monthly)."
-        }
-      ],
-      "special_earn_rules": [
-        {
-          "type": "merchant_specific",
-          "description": "2x miles also applies to wholesale clubs / membership-based retailers / alcohol retailers with separate $500 statement-cycle caps (not mapped)."
-        },
-        {
-          "type": "merchant_specific",
-          "description": "3x miles at participating AIR MILES partners (3 miles per $25)."
-        }
-      ],
-      "sources": [
-        "https://www.bmo.com/main/personal/credit-cards/bmo-air-miles-mastercard/"
-      ]
-    },
-    {
       "id": "bmo_ascend_world_elite_business_mastercard",
       "card_name": "BMO® Ascend World Elite®* Business Mastercard®*",
       "issuer": "BMO",
