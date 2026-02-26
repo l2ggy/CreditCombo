@@ -260,7 +260,9 @@ export function findBestCombo({ cards, programsMap, schema, k, annualSpend, valu
 
   if (!lockedCards.length && maxAdditionalCount < 1) return best;
 
-  best = evaluateCombo(lockedCards, annualSpend, schema, programsMap, valuationMode);
+  if (lockedCards.length) {
+    best = evaluateCombo(lockedCards, annualSpend, schema, programsMap, valuationMode);
+  }
 
   for (let additionalCount = 1; additionalCount <= maxAdditionalCount; additionalCount++) {
     const candidateLimit = computeCandidateLimit(unlockedCards.length, additionalCount);
