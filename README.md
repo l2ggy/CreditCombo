@@ -46,6 +46,18 @@ your-folder/
     optimizer.js  # combo search + cap handling + scoring
     ui.js         # rendering + input helpers
 
+
+Deploy on Cloudflare Workers
+----------------------------
+Use one Worker + static assets for both production and previews.
+Worker entrypoint: `src/worker.js`.
+
+
+- Production: `npx wrangler deploy`
+- Branch previews: `npx wrangler versions upload --preview-alias <branch-name>`
+
+This works because `versions upload` versions a Worker script (`main`), while the Worker serves your static files through the `ASSETS` binding.
+
 Run locally
 -----------
 1) Put index.html, styles.css, cards.json, programs.json in the same folder.

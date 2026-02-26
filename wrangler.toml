@@ -1,0 +1,7 @@
+name = "credit-combo"
+main = "src/worker.js"
+compatibility_date = "2026-02-26"
+
+[assets]
+directory = "."
+binding = "ASSETS"
