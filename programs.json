@@ -213,6 +213,152 @@
       "cents_per_point": 1.0,
       "valuation_status": "no_rewards_earn",
       "valuation_note": "Product line does not provide rewards points/cashback earn on purchases."
+    },
+    {
+      "program_id": "canadian_non_rewards",
+      "program_name": "Canadian Non-Rewards Credit Products",
+      "program_type": "cashback",
+      "cents_per_point": 1.0,
+      "valuation_status": "no_rewards_earn",
+      "valuation_note": "Product does not provide ongoing rewards earn on purchases."
+    },
+    {
+      "program_id": "more_rewards",
+      "program_name": "More Rewards",
+      "program_type": "points",
+      "cents_per_point": 0.43,
+      "minimum_cents_per_point": 0.15,
+      "minimum_valuation_note": "Finly reward conversion values: Travel ~0.43 cpp; store ~0.30 cpp; grocery floor ~0.15 cpp.",
+      "valuation_note": "Finly reward conversion values: Travel ~0.43 cpp; store ~0.30 cpp; grocery floor ~0.15 cpp."
+    },
+    {
+      "program_id": "viporter",
+      "program_name": "VIPorter",
+      "program_type": "points",
+      "cents_per_point": 1.5,
+      "minimum_cents_per_point": 1.5,
+      "minimum_valuation_note": "Finly reward conversion value for Porter travel is 1.5 cpp (fixed).",
+      "valuation_note": "Finly reward conversion value for Porter travel is 1.5 cpp (fixed)."
+    },
+    {
+      "program_id": "asia_miles",
+      "program_name": "Asia Miles",
+      "program_type": "points",
+      "cents_per_point": 1.4,
+      "minimum_cents_per_point": 1.0,
+      "minimum_valuation_note": "Finly reward conversion values show ~1.0-1.4 cpp depending on redemption option.",
+      "valuation_note": "Finly reward conversion values show ~1.0-1.4 cpp depending on redemption option."
+    },
+    {
+      "program_id": "capital_one_smart_rewards",
+      "program_name": "Capital One Smart Rewards",
+      "program_type": "points",
+      "cents_per_point": 0.25,
+      "minimum_cents_per_point": 0.25,
+      "minimum_valuation_note": "Finly conversion values show 0.25 cpp for statement credits and gift cards.",
+      "valuation_note": "Finly conversion values show 0.25 cpp for statement credits and gift cards."
+    },
+    {
+      "program_id": "meridian_rewards",
+      "program_name": "Meridian Rewards",
+      "program_type": "points",
+      "cents_per_point": 1.0,
+      "minimum_cents_per_point": 1.0,
+      "minimum_valuation_note": "Finly conversion values indicate approximately 1.0 cpp for travel/cash/gift card style redemptions.",
+      "valuation_note": "Finly conversion values indicate approximately 1.0 cpp for travel/cash/gift card style redemptions."
+    },
+    {
+      "program_id": "wealthsimple_cashback",
+      "program_name": "Wealthsimple Cash Back",
+      "program_type": "cashback",
+      "cents_per_point": 1.0
+    },
+    {
+      "program_id": "rbc_avios",
+      "program_name": "RBC Avios / British Airways Executive Club",
+      "program_type": "points",
+      "cents_per_point": 1.7,
+      "minimum_cents_per_point": 0.88,
+      "minimum_valuation_note": "Finly Avios conversion values range roughly 0.88-1.7 cpp depending on redemption.",
+      "valuation_note": "Finly Avios conversion values range roughly 0.88-1.7 cpp depending on redemption."
+    },
+    {
+      "program_id": "atb_rewards",
+      "program_name": "ATB Rewards",
+      "program_type": "points",
+      "cents_per_point": 0.5,
+      "minimum_cents_per_point": 0.5,
+      "minimum_valuation_note": "Finly conversion values indicate approximately 0.5 cpp for reward redemptions.",
+      "valuation_note": "Finly conversion values indicate approximately 0.5 cpp for reward redemptions."
+    },
+    {
+      "program_id": "koho_cashback",
+      "program_name": "KOHO Cash Back",
+      "program_type": "cashback",
+      "cents_per_point": 1.0
+    },
+    {
+      "program_id": "moi_rewards",
+      "program_name": "Moi Rewards",
+      "program_type": "points",
+      "cents_per_point": 0.8,
+      "minimum_cents_per_point": 0.8,
+      "minimum_valuation_note": "Finly conversion values indicate approximately 0.8 cpp valuation.",
+      "valuation_note": "Finly conversion values indicate approximately 0.8 cpp valuation."
+    },
+    {
+      "program_id": "zolve_cashback",
+      "program_name": "Zolve Cash Back",
+      "program_type": "cashback",
+      "cents_per_point": 1.0
+    },
+    {
+      "program_id": "neo_cashback",
+      "program_name": "Neo Cash Back",
+      "program_type": "cashback",
+      "cents_per_point": 1.0
+    },
+    {
+      "program_id": "mbna_smart_cashback",
+      "program_name": "MBNA Smart Cash Back",
+      "program_type": "cashback",
+      "cents_per_point": 1.0
+    },
+    {
+      "program_id": "meridian_cashback",
+      "program_name": "Meridian Cash Back",
+      "program_type": "cashback",
+      "cents_per_point": 1.0
+    },
+    {
+      "program_id": "nb_echo_cashback",
+      "program_name": "National Bank ECHO Cashback",
+      "program_type": "cashback",
+      "cents_per_point": 1.0
+    },
+    {
+      "program_id": "amazon_rewards",
+      "program_name": "Amazon Rewards",
+      "program_type": "cashback",
+      "cents_per_point": 1.0
+    },
+    {
+      "program_id": "atb_cashback",
+      "program_name": "ATB Cash Rewards",
+      "program_type": "cashback",
+      "cents_per_point": 1.0
+    },
+    {
+      "program_id": "eq_cashback",
+      "program_name": "EQ Bank Cash Back",
+      "program_type": "cashback",
+      "cents_per_point": 1.0
+    },
+    {
+      "program_id": "tims_rewards",
+      "program_name": "Tims Rewards",
+      "program_type": "cashback",
+      "cents_per_point": 1.0
     }
   ]
 }
