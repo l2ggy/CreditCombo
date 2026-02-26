@@ -60,7 +60,8 @@
         "If a charge is both recurring and category-specific (e.g., streaming subscription), the specific category wins over bills.",
         "If terms cite portal-only travel acceleration, keep baseline travel in travel and capture portal uplift in special_earn_rules."
       ]
-    }
+    },
+    "cards_sort_order": "cards[] are sorted by issuer (asc), network (asc), card_name (asc), then id (asc); keep this order when adding/updating cards."
   },
   "cards": [
     {
