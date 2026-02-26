@@ -53,7 +53,8 @@ h3{margin:var(--space-3) 0 var(--space-2);font-size:14px;color:var(--muted)}
 .row{display:flex;gap:var(--space-2);flex-wrap:wrap;align-items:stretch}
 
 label{display:block;font-size:12px;color:var(--muted);margin:0 0 var(--space-1)}
-input[type="number"]{
+input[type="number"],
+input[type="search"]{
   width:100%;padding:var(--space-2);border-radius:12px;border:1px solid var(--border);
   background:transparent;color:var(--text);outline:none
 }
@@ -63,7 +64,8 @@ input[type="number"].spend-input{
   min-width:calc(6ch + (2 * var(--space-2)) + 2px);
 }
 
-input[type="number"]:focus{border-color:var(--accent)}
+input[type="number"]:focus,
+input[type="search"]:focus{border-color:var(--accent)}
 
 
 .row > .field-slider,
@@ -113,11 +115,11 @@ select[multiple]{padding:8px;background:transparent;appearance:auto;min-width:32
 .fieldHint{margin-top:6px;font-size:12px}
 
 .lockedOptions{margin-top:8px;border:1px solid var(--border);border-radius:10px;max-height:220px;overflow:auto;background:color-mix(in srgb,var(--panel) 80%, transparent)}
-.lockedOption{display:block;width:100%;text-align:left;padding:8px 10px;border:none;border-bottom:1px solid var(--border);background:transparent;color:var(--text);cursor:pointer}
+.lockedOption{display:flex;align-items:center;gap:8px;width:100%;text-align:left;padding:8px 10px;border:none;border-bottom:1px solid var(--border);background:transparent;color:var(--text);cursor:pointer}
 .lockedOption:last-child{border-bottom:none}
 .lockedOption:hover{background:color-mix(in srgb,var(--accent) 14%, transparent)}
 .lockedPicks{margin-top:10px;display:flex;flex-wrap:wrap;gap:8px}
-.lockedChip{display:inline-flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid var(--border);border-radius:10px;background:color-mix(in srgb,var(--accent) 12%, transparent);color:var(--text);font-size:12px;line-height:1.25}
+.lockedChip{display:inline-flex;align-items:center;gap:6px;padding:8px 10px;border:1px solid var(--border);border-radius:10px;background:color-mix(in srgb,var(--accent) 12%, transparent);color:var(--text);font-size:12px;line-height:1.25}
 .lockedChipRemove{display:inline-flex;align-items:center;justify-content:center;width:auto;min-width:20px;min-height:20px;border:none;background:transparent;color:var(--muted);padding:0;line-height:1;font-size:15px;font-weight:700;cursor:pointer}
 .lockedChipRemove:hover{color:var(--text)}
 
@@ -127,8 +129,6 @@ select[multiple]{padding:8px;background:transparent;appearance:auto;min-width:32
 .instructionCardThumb,.lockedCardThumb{width:auto;height:auto;max-width:20px;max-height:20px;border-radius:10%;border:1px solid var(--border);display:block}
 .instructionCardThumb{height:1.75em;width:auto;max-height:none;max-width:42px;vertical-align:middle;object-fit:contain}
 .instructionCard{display:inline-flex;align-items:center;gap:4px;white-space:nowrap;line-height:1.2}
-.lockedOption{display:flex;align-items:center;gap:8px}
-.lockedChip{display:inline-flex;align-items:center;gap:6px}
 button{
   width:100%;padding:var(--space-2) var(--space-3);border-radius:12px;border:1px solid var(--accent);
   background:transparent;color:var(--text);font-weight:700;cursor:pointer
@@ -188,12 +188,6 @@ tbody tr:last-child td{border-bottom:none}
   background:color-mix(in srgb,var(--accent) 28%, transparent);
   text-decoration:none
 }
-
-input[type="search"]{
-  width:100%;padding:var(--space-2);border-radius:12px;border:1px solid var(--border);
-  background:transparent;color:var(--text);outline:none
-}
-input[type="search"]:focus{border-color:var(--accent)}
 
 .browserLayout{display:grid;gap:14px}
 .browserControls{position:static}

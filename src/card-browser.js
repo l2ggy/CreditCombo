@@ -76,20 +76,15 @@ function cardMatches(card) {
 }
 
 function sortCards(cards) {
-  const sortBy = els.sortBy.value;
-  const sorted = [...cards];
+  const sorters = {
+    annualFeeAsc: (a, b) => annualFeeAmount(a) - annualFeeAmount(b) || a.card_name.localeCompare(b.card_name),
+    annualFeeDesc: (a, b) => annualFeeAmount(b) - annualFeeAmount(a) || a.card_name.localeCompare(b.card_name),
+    issuer: (a, b) => a.issuer.localeCompare(b.issuer) || a.card_name.localeCompare(b.card_name),
+    name: (a, b) => a.card_name.localeCompare(b.card_name)
+  };
 
-  if (sortBy === "annualFeeAsc") {
-    sorted.sort((a, b) => annualFeeAmount(a) - annualFeeAmount(b) || a.card_name.localeCompare(b.card_name));
-  } else if (sortBy === "annualFeeDesc") {
-    sorted.sort((a, b) => annualFeeAmount(b) - annualFeeAmount(a) || a.card_name.localeCompare(b.card_name));
-  } else if (sortBy === "issuer") {
-    sorted.sort((a, b) => a.issuer.localeCompare(b.issuer) || a.card_name.localeCompare(b.card_name));
-  } else {
-    sorted.sort((a, b) => a.card_name.localeCompare(b.card_name));
-  }
-
-  return sorted;
+  const sorter = sorters[els.sortBy.value] ?? sorters.name;
+  return [...cards].sort(sorter);
 }
 
 function formatEarnPercentRange(multiplierRate, rewardsProgram) {
