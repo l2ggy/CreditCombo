@@ -20,6 +20,20 @@ function formatCurrency(value) {
   return new Intl.NumberFormat("en-CA", { style: "currency", currency: "CAD", maximumFractionDigits: 0 }).format(value);
 }
 
+function formatMultiplier(value, significantDigits = 2) {
+  const numericValue = Number(value);
+  if (!Number.isFinite(numericValue)) return String(value);
+  if (numericValue === 0) return "0";
+
+  const absValue = Math.abs(numericValue);
+  const order = Math.floor(Math.log10(absValue));
+  const scale = 10 ** (significantDigits - 1 - order);
+  const truncatedValue = Math.trunc(numericValue * scale) / scale;
+  const fractionDigits = Math.max(0, significantDigits - 1 - order);
+
+  return truncatedValue.toFixed(fractionDigits).replace(/\.?0+$/, "");
+}
+
 function annualFeeAmount(card) {
   return Number(card?.annual_fee?.amount ?? 0);
 }
@@ -104,7 +118,7 @@ function earnRateMarkup(earnRates, rewardsProgram) {
     .map(([category, rate]) => {
       const earnPercent = formatEarnPercentRange(rate, rewardsProgram);
       const percentMarkup = earnPercent == null ? "" : `<span class="browserEarnPercent">(${earnPercent}%)</span>`;
-      return `<li><span class="mono">${category}</span><strong>${rate}× ${percentMarkup}</strong></li>`;
+      return `<li><span class="mono">${category}</span><strong>${formatMultiplier(rate)}× ${percentMarkup}</strong></li>`;
     })
     .join("");
 }
@@ -115,7 +129,8 @@ function capMarkup(caps) {
   return `<ul>${caps.map((cap) => {
     const categories = (cap.categories || []).join(", ") || "multiple categories";
     const limit = formatCurrency(Number(cap.cap_amount ?? 0));
-    return `<li><span class="mono">${categories}</span> capped at <strong>${limit}</strong> per ${cap.cap_period || "period"} (above cap: ${cap.earn_rate_above_cap ?? "n/a"}×)</li>`;
+    const aboveCapRate = cap.earn_rate_above_cap == null ? "n/a" : formatMultiplier(cap.earn_rate_above_cap);
+    return `<li><span class="mono">${categories}</span> capped at <strong>${limit}</strong> per ${cap.cap_period || "period"} (above cap: ${aboveCapRate}×)</li>`;
   }).join("")}</ul>`;
 }
 
