@@ -731,7 +731,7 @@
         }
       ],
       "sources": [
-        "turn1view1"
+        "https://www.td.com/ca/en/personal-banking/products/credit-cards/travel-rewards/first-class-travel-visa-infinite-card"
       ]
     },
     {
@@ -811,7 +811,7 @@
         }
       ],
       "sources": [
-        "turn13view0"
+        "https://www.td.com/ca/en/personal-banking/products/credit-cards/cash-back-rewards/cash-back-visa-infinite-card"
       ]
     },
     {
@@ -866,7 +866,7 @@
         }
       ],
       "sources": [
-        "turn6view2"
+        "https://www.td.com/ca/en/personal-banking/products/credit-cards/cash-back-rewards/cash-back-visa-card"
       ]
     },
     {
@@ -931,7 +931,7 @@
         }
       ],
       "sources": [
-        "turn7view0"
+        "https://www.bmo.com/main/personal/credit-cards/bmo-eclipse-visa-infinite/"
       ]
     },
     {
@@ -975,7 +975,7 @@
         }
       ],
       "sources": [
-        "turn8view0"
+        "https://www.bmo.com/main/personal/credit-cards/bmo-eclipse-visa-infinite-privilege/"
       ]
     },
     {
@@ -1002,7 +1002,7 @@
         }
       ],
       "sources": [
-        "turn18view0"
+        "https://www.bmo.com/main/personal/credit-cards/bmo-eclipse-rise-visa/"
       ]
     },
     {
@@ -1038,7 +1038,7 @@
         }
       ],
       "sources": [
-        "turn6view3"
+        "https://www.nbc.ca/personal/mastercard-credit-cards/world-elite.html"
       ]
     },
     {
@@ -1084,7 +1084,7 @@
       ],
       "special_earn_rules": [],
       "sources": [
-        "turn19view3"
+        "https://www.simplii.com/en/credit-cards/cash-back-visa.html"
       ]
     },
     {
@@ -1107,7 +1107,7 @@
       "caps": [],
       "special_earn_rules": [],
       "sources": [
-        "turn19view4"
+        "https://www.desjardins.com/ca/personal/loans-credit/credit-cards/odyssey-world-elite-mastercard/index.jsp"
       ]
     },
     {
@@ -1140,7 +1140,7 @@
         }
       ],
       "sources": [
-        "turn4search3"
+        "https://triangle.canadiantire.ca/en/credit-cards/triangle-world-elite-mastercard.html"
       ]
     },
     {
@@ -1172,7 +1172,7 @@
         }
       ],
       "sources": [
-        "turn6view4"
+        "https://www.pcfinancial.ca/en/credit-cards/world-elite/"
       ]
     },
     {
@@ -1201,8 +1201,7 @@
         }
       ],
       "sources": [
-        "turn14view0",
-        "turn11search2"
+        "https://www.bmo.com/main/personal/credit-cards/bmo-air-miles-world-elite-mastercard/"
       ]
     },
     {
@@ -1242,7 +1241,7 @@
         }
       ],
       "sources": [
-        "turn15view0"
+        "https://www.bmo.com/main/personal/credit-cards/bmo-air-miles-mastercard/"
       ]
     },
     {
@@ -1274,8 +1273,7 @@
         }
       ],
       "sources": [
-        "turn10view0",
-        "turn9view0"
+        "https://www.rbcroyalbank.com/credit-cards/travel/westjet-rbc-world-elite-mastercard.html"
       ]
     },
     {
@@ -1310,7 +1308,7 @@
         }
       ],
       "sources": [
-        "turn12view0"
+        "https://www.rbcroyalbank.com/credit-cards/travel/westjet-rbc-mastercard.html"
       ]
     },
     {
@@ -1343,8 +1341,7 @@
         }
       ],
       "sources": [
-        "turn12view1",
-        "turn6view7"
+        "https://www.rbcroyalbank.com/credit-cards/rewards/rbc-ion-visa.html"
       ]
     },
     {
@@ -1384,7 +1381,7 @@
       ],
       "special_earn_rules": [],
       "sources": [
-        "turn19view0"
+        "https://www.rbcroyalbank.com/credit-cards/cash-back/rbc-cashback-mastercard.html"
       ]
     },
     {
@@ -1413,7 +1410,7 @@
       ],
       "special_earn_rules": [],
       "sources": [
-        "turn19view1"
+        "https://www.rbcroyalbank.com/credit-cards/cash-back/cash-back-preferred-world-elite-mastercard.html"
       ]
     },
     {
@@ -1445,8 +1442,7 @@
       ],
       "special_earn_rules": [],
       "sources": [
-        "turn19view2",
-        "turn16search12"
+        "https://www.bmo.com/main/personal/credit-cards/bmo-cashback-mastercard/"
       ]
     },
     {
@@ -1470,7 +1466,7 @@
         }
       ],
       "sources": [
-        "turn18view1"
+        "https://www.rbcroyalbank.com/credit-cards/travel/rbc-avion-visa-platinum.html"
       ]
     },
     {
@@ -1830,16 +1826,13 @@
         "type": "annual"
       },
       "earn_rates": {
-        "grocery": 2,
-        "dining": 2,
-        "gas": 2,
         "other": 0.5
       },
       "caps": [],
       "special_earn_rules": [
         {
-          "type": "user_selectable",
-          "description": "Typically 2% applies to selected categories only."
+          "type": "user_selectable_categories",
+          "description": "2% cashback in up to 2 categories (or 3 if rewards deposited to Tangerine Savings). Categories are user-chosen; not hard-coded into earn_rates."
         },
         {
           "type": "merchant_specific",
@@ -1909,18 +1902,17 @@
         "type": "annual"
       },
       "earn_rates": {
-        "grocery": 2,
         "other": 1
       },
       "caps": [],
       "special_earn_rules": [
         {
           "type": "merchant_specific",
-          "description": "Higher earn can apply at Loblaw-partner stores/shoppers."
+          "description": "Higher earn applies at Loblaw-banner stores, Shoppers Drug Mart, Esso/Mobil, and PC Travel partner channels; these are merchant-specific and excluded from base earn_rates."
         },
         {
           "type": "merchant_specific",
-          "description": "Elevated earn applies at Loblaw-banner stores and Shoppers Drug Mart; base everywhere else remains lower."
+          "description": "Base non-partner spend is modeled at 10 PC Optimum points per $1."
         }
       ]
     },
@@ -2324,18 +2316,17 @@
         "type": "annual"
       },
       "earn_rates": {
-        "grocery": 1,
         "other": 1
       },
       "caps": [],
       "special_earn_rules": [
         {
           "type": "merchant_specific",
-          "description": "Higher earn can apply at Loblaw-partner stores/shoppers."
+          "description": "Higher earn applies at Loblaw-banner stores, Shoppers Drug Mart, Esso/Mobil, and PC Travel partner channels; these are merchant-specific and excluded from base earn_rates."
         },
         {
           "type": "merchant_specific",
-          "description": "Elevated earn applies at Loblaw-banner stores and Shoppers Drug Mart; base everywhere else remains lower."
+          "description": "Base non-partner spend is modeled at 10 PC Optimum points per $1."
         }
       ]
     },
@@ -3923,13 +3914,23 @@
         "type": "annual"
       },
       "earn_rates": {
-        "grocery": 30,
-        "drugstore": 45,
-        "gas": 7,
-        "other": 10
+        "other": 1
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [
+        {
+          "type": "merchant_specific",
+          "description": "Higher earn applies at Loblaw-banner stores, Shoppers Drug Mart, Esso/Mobil, and PC Travel partner channels; these are merchant-specific and excluded from base earn_rates."
+        },
+        {
+          "type": "merchant_specific",
+          "description": "Cardholder subscription/perk-linked accelerated earn structures are not modeled as universal category earn rates."
+        },
+        {
+          "type": "merchant_specific",
+          "description": "Base non-partner spend is modeled at 10 PC Optimum points per $1."
+        }
+      ]
     },
     {
       "id": "bmo_viporter_mastercard",
