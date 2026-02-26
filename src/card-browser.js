@@ -78,12 +78,21 @@ function sortCards(cards) {
   return sorted;
 }
 
-function formatEarnPercent(multiplierRate, rewardsProgram) {
+function formatEarnPercentRange(multiplierRate, rewardsProgram) {
   const program = state.programs.get(rewardsProgram);
-  const centsPerPoint = Number(program?.cents_per_point);
-  if (!Number.isFinite(centsPerPoint)) return null;
+  const estimatedCentsPerPoint = Number(program?.cents_per_point);
+  if (!Number.isFinite(estimatedCentsPerPoint)) return null;
 
-  return (multiplierRate * centsPerPoint).toFixed(1);
+  const minimumCentsPerPoint = Number(program?.minimum_cents_per_point);
+  const guaranteedCentsPerPoint = Number.isFinite(minimumCentsPerPoint)
+    ? minimumCentsPerPoint
+    : estimatedCentsPerPoint;
+
+  const minimumPercent = (multiplierRate * guaranteedCentsPerPoint).toFixed(1);
+  const estimatedPercent = (multiplierRate * estimatedCentsPerPoint).toFixed(1);
+
+  if (minimumPercent === estimatedPercent) return estimatedPercent;
+  return `${minimumPercent}-${estimatedPercent}`;
 }
 
 function earnRateMarkup(earnRates, rewardsProgram) {
@@ -93,7 +102,7 @@ function earnRateMarkup(earnRates, rewardsProgram) {
   return entries
     .sort((a, b) => b[1] - a[1])
     .map(([category, rate]) => {
-      const earnPercent = formatEarnPercent(rate, rewardsProgram);
+      const earnPercent = formatEarnPercentRange(rate, rewardsProgram);
       const percentMarkup = earnPercent == null ? "" : `<span class="browserEarnPercent">(${earnPercent}%)</span>`;
       return `<li><span class="mono">${category}</span><strong>${rate}× ${percentMarkup}</strong></li>`;
     })
