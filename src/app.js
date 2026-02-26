@@ -75,6 +75,14 @@ async function main() {
 
       const valuationMode = currentValuationMode();
       const monthlySpend = readMonthlySpend(schema);
+      const hasSpend = schema.some((cat) => (monthlySpend[cat] || 0) > 0);
+      if (!hasSpend) {
+        resultEl.classList.remove("hidden");
+        resultEl.innerHTML = `<span class="muted">Enter monthly spend in at least one category to generate card recommendations.</span>`;
+        runBtn.disabled = false;
+        return;
+      }
+
       const annualSpend = annualizeMonthlySpend(monthlySpend, schema);
       const best = getBestCombo(k, annualSpend, valuationMode, monthlySpend);
 
