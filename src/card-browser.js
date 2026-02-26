@@ -134,6 +134,11 @@ function capMarkup(caps) {
   }).join("")}</ul>`;
 }
 
+function cardThumbnailMarkup(cardId, cardName) {
+  const imageSrc = `./assets/cards/${cardId}.webp`;
+  return `<img class="browserCardThumb" src="${imageSrc}" alt="${cardName}" loading="lazy" decoding="async" onerror="this.remove()" />`;
+}
+
 function renderCards() {
   state.filteredCards = sortCards(state.cards.filter(cardMatches));
 
@@ -147,9 +152,12 @@ function renderCards() {
   els.cardsList.innerHTML = state.filteredCards.map((card) => `
     <article class="panel browserCard">
       <div class="browserCardTop">
-        <div>
-          <h3 class="browserCardTitle">${card.card_name}</h3>
-          <p class="subtle">${card.issuer} · ${card.network} · <span class="mono">${card.rewards_program}</span></p>
+        <div class="browserCardHeading">
+          ${cardThumbnailMarkup(card.id, card.card_name)}
+          <div>
+            <h3 class="browserCardTitle">${card.card_name}</h3>
+            <p class="subtle">${card.issuer} · ${card.network} · <span class="mono">${card.rewards_program}</span></p>
+          </div>
         </div>
         <div class="browserFee">
           <span class="muted">Annual fee</span>
