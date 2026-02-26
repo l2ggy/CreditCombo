@@ -122,9 +122,9 @@ input[type="search"]:focus{border-color:var(--accent)}
 .browserCardBody{display:grid;grid-template-columns:1.1fr .9fr;gap:16px;margin-top:12px}
 .browserCardBody h4{margin:0 0 8px;font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
 .browserRateList{list-style:none;padding:0;margin:0;display:grid;gap:7px}
-.browserRateList li{display:flex;justify-content:space-between;gap:8px;padding-bottom:6px;border-bottom:1px solid var(--border)}
+.browserRateList li{display:flex;align-items:baseline;justify-content:flex-start;gap:10px;padding-bottom:4px;border-bottom:1px solid var(--border)}
 .browserRateList li:last-child{border-bottom:none}
-.browserEffectiveRate{color:var(--text);font-weight:700}
+.browserRateValue{display:inline-flex;align-items:baseline;gap:2px}
 .browserCardBody ul{margin:0;padding-left:18px;display:grid;gap:6px}
 
 @media (max-width:900px){
