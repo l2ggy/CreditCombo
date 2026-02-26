@@ -10,20 +10,17 @@ export function clampInt(n, lo, hi) {
 
 export function renderSpendTable(el, schema, categoryDescriptions = {}) {
   el.innerHTML = `
-    <table>
-      <thead><tr><th>Category</th><th>Monthly spend</th></tr></thead>
-      <tbody>
-        ${schema.map(cat => `
-          <tr>
-            <td>
-              <div class="mono">${cat}</div>
-              <div class="category-desc muted">${escapeHtml(categoryDescriptions[cat] || "")}</div>
-            </td>
-            <td><input class="spend-input" type="number" min="0" step="1" value="0" data-cat="${cat}" /></td>
-          </tr>
-        `).join("")}
-      </tbody>
-    </table>
+    <div class="spendGrid" role="group" aria-label="Monthly spend by category">
+      ${schema.map(cat => `
+        <label class="spendRow" for="spend-${cat}">
+          <span class="spendMeta">
+            <span class="mono spendCat">${cat}</span>
+            <span class="category-desc muted" title="${escapeHtml(categoryDescriptions[cat] || "")}">${escapeHtml(compactDescription(categoryDescriptions[cat] || ""))}</span>
+          </span>
+          <input id="spend-${cat}" class="spend-input" type="number" min="0" step="1" value="0" data-cat="${cat}" aria-label="Monthly spend for ${cat}" />
+        </label>
+      `).join("")}
+    </div>
   `;
 
   el.querySelectorAll('input[data-cat]').forEach((inp) => {
@@ -137,6 +134,16 @@ export function renderResult(el, best, annualSpend, schema, valuationMode = "est
 
     <p class="muted">Mode: ${valuationMode === "minimum_guaranteed" ? "minimum guaranteed points redemption value" : "estimated points value"}. Note: <span class="mono">special_earn_rules</span> are ignored in this MVP.</p>
   `;
+}
+
+
+function compactDescription(desc) {
+  const clean = String(desc || "").trim().replace(/\s+/g, " ");
+  if (!clean) return "";
+
+  const firstClause = clean.split(/[.;:]/)[0].trim();
+  const concise = firstClause || clean;
+  return concise.length > 44 ? concise.slice(0, 41).trimEnd() + "…" : concise;
 }
 
 function escapeHtml(s) {

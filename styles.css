@@ -42,12 +42,35 @@ h3{margin:var(--space-3) 0 var(--space-2);font-size:14px;color:var(--muted)}
 .panelHeader-result{flex-direction:column;align-items:flex-start}
 .panelHeader-result .subtle{margin:4px 0 0;max-width:62ch}
 
+.inputPanel{
+  padding:12px;
+}
+
 .inputPanel .panelHeader,
 .inputPanel .sectionTitle,
 .inputPanel .divider,
 .inputPanel .row,
-.inputPanel .issues{
-  padding-inline:var(--space-2);
+.inputPanel .issues,
+.inputPanel #spendTable{
+  padding-inline:8px;
+}
+
+.inputPanel .panelHeader h2,
+.inputPanel .sectionTitle{
+  line-height:1.15;
+  margin-block:0;
+}
+
+.inputPanel .sectionTitle{
+  margin-bottom:6px;
+}
+
+.inputPanel .divider{
+  margin-block:10px;
+}
+
+.inputPanel .row{
+  gap:8px;
 }
 
 .row{display:flex;gap:var(--space-2);flex-wrap:wrap;align-items:stretch}
@@ -87,6 +110,8 @@ input[type="search"]:focus{border-color:var(--accent)}
 .row > button{
   flex:1 1 100%;
 }
+
+
 .field-full{flex-basis:100%;width:100%}
 #lockedCardsPanel{margin-top:var(--space-1)}
 .checkboxLabel{display:flex;align-items:center;gap:var(--space-1);margin:0;cursor:pointer;color:var(--text);font-size:13px}
@@ -145,6 +170,43 @@ thead th{
 }
 tbody td{padding:var(--space-2);border-bottom:1px solid var(--border);vertical-align:top}
 tbody tr:last-child td{border-bottom:none}
+
+.spendGrid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:8px;
+}
+
+.spendRow{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 92px;
+  align-items:center;
+  gap:8px;
+  margin:0;
+  padding:8px;
+  border:1px solid var(--border);
+  border-radius:10px;
+  background:color-mix(in srgb,var(--panel) 75%, transparent);
+}
+
+.spendMeta{min-width:0}
+.spendCat{display:block;font-size:12px;line-height:1.2}
+
+.spendRow .category-desc{
+  margin-top:2px;
+  font-size:10px;
+  line-height:1.2;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.spendRow input[type="number"].spend-input{
+  min-width:0;
+  max-width:none;
+  width:100%;
+  padding:6px 8px;
+}
 
 .issues{
   margin-top:12px;border:1px solid var(--border);border-radius:14px;padding:var(--space-2) 12px;background:transparent
@@ -212,6 +274,7 @@ tbody tr:last-child td{border-bottom:none}
   .topNav{justify-content:flex-start}
   .headerActions{width:100%;justify-content:space-between}
   .footerContent{align-items:flex-start}
+  .spendGrid{grid-template-columns:1fr}
 }
 
 @media (max-width:560px){
