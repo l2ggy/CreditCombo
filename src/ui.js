@@ -61,6 +61,11 @@ export function renderIssues(el, issues) {
   `;
 }
 
+
+function cardThumbMarkup(card, className = "resultCardThumb") {
+  return `<img class="${className}" src="./assets/cards/${escapeHtml(card.id)}.webp" alt="${escapeHtml(card.card_name)}" loading="lazy" decoding="async" onerror="this.remove()" />`;
+}
+
 export function renderResult(el, best, annualSpend, schema, valuationMode = "estimated") {
   el.classList.remove("hidden");
 
@@ -71,9 +76,13 @@ export function renderResult(el, best, annualSpend, schema, valuationMode = "est
 
   const comboList = best.combo.map(c => {
     const fee = Number(c.annual_fee?.amount ?? 0);
-    return `<li><b>${escapeHtml(c.card_name)}</b> <span class="muted">(${escapeHtml(c.issuer)})</span>
-            — <span class="mono">${escapeHtml(c.network)}</span>
-            — fee <span class="mono">${money(fee)}/yr</span></li>`;
+    return `<li class="resultCardItem">${cardThumbMarkup(c)}
+      <div>
+        <b>${escapeHtml(c.card_name)}</b> <span class="muted">(${escapeHtml(c.issuer)})</span>
+        — <span class="mono">${escapeHtml(c.network)}</span>
+        — fee <span class="mono">${money(fee)}/yr</span>
+      </div>
+    </li>`;
   }).join("");
 
   const instructions = [];

@@ -75,6 +75,11 @@ async function main() {
       return new Map(cards.map((card) => [card.id, card]));
     }
 
+
+    function lockedCardThumbMarkup(card, className = "lockedCardThumb") {
+      return `<img class="${className}" src="./assets/cards/${escapeHtml(card.id)}.webp" alt="${escapeHtml(card.card_name)}" loading="lazy" decoding="async" onerror="this.remove()" />`;
+    }
+
     function renderLockedCardPicks() {
       if (!lockedCardPicksEl) return;
       const byId = cardsById(eligibleCards);
@@ -88,7 +93,7 @@ async function main() {
         .map((id) => {
           const card = byId.get(id);
           const label = card ? `${card.card_name} (${card.issuer})` : id;
-          return `<span class="lockedChip">${escapeHtml(label)} <button type="button" class="lockedChipRemove" data-remove-id="${id}" aria-label="Remove ${escapeHtml(label)}">×</button></span>`;
+          return `<span class="lockedChip">${card ? lockedCardThumbMarkup(card) : ""}<span>${escapeHtml(label)}</span> <button type="button" class="lockedChipRemove" data-remove-id="${id}" aria-label="Remove ${escapeHtml(label)}">×</button></span>`;
         })
         .join(" ");
     }
@@ -116,7 +121,7 @@ async function main() {
 
       lockedCardOptionsEl.classList.remove("hidden");
       lockedCardOptionsEl.innerHTML = matches
-        .map((card) => `<button type="button" class="lockedOption" data-card-id="${card.id}">${escapeHtml(card.card_name)} <span class="muted">(${escapeHtml(card.issuer)})</span></button>`)
+        .map((card) => `<button type="button" class="lockedOption" data-card-id="${card.id}">${lockedCardThumbMarkup(card)}<span>${escapeHtml(card.card_name)} <span class="muted">(${escapeHtml(card.issuer)})</span></span></button>`)
         .join("");
     }
 
