@@ -131,6 +131,7 @@ function capMarkup(caps) {
 
 function renderCards() {
   state.filteredCards = sortCards(state.cards.filter(cardMatches));
+  state.earnRateCategories = collectEarnRateCategories(state.filteredCards);
 
   els.summary.textContent = `Showing ${state.filteredCards.length} of ${state.cards.length} cards.`;
 
@@ -177,7 +178,6 @@ async function init() {
   try {
     const cardsJson = await loadJson("./cards.json");
     state.cards = cardsJson?.cards ?? [];
-    state.earnRateCategories = collectEarnRateCategories(state.cards);
 
     const issuers = [...new Set(state.cards.map((c) => c.issuer))].sort((a, b) => a.localeCompare(b));
     const programs = [...new Set(state.cards.map((c) => c.rewards_program))].sort((a, b) => a.localeCompare(b));
