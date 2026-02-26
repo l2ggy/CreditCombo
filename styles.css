@@ -124,6 +124,7 @@ input[type="search"]:focus{border-color:var(--accent)}
 .browserRateList{list-style:none;padding:0;margin:0;display:grid;gap:7px}
 .browserRateList li{display:flex;justify-content:space-between;gap:8px;padding-bottom:6px;border-bottom:1px solid var(--border)}
 .browserRateList li:last-child{border-bottom:none}
+.browserEffectiveRate{color:var(--text);font-weight:700}
 .browserCardBody ul{margin:0;padding-left:18px;display:grid;gap:6px}
 
 @media (max-width:900px){

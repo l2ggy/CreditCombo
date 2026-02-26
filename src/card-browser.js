@@ -91,7 +91,7 @@ function earnRateMarkup(earnRates, centsPerPoint = 1) {
     .sort((a, b) => b[1] - a[1])
     .map(([category, rate]) => {
       const effectiveCashbackPercent = Number(rate) * Number(centsPerPoint || 0);
-      return `<li><span class="mono">${category}</span><strong>${rate}x (${formatPercent(effectiveCashbackPercent)})</strong></li>`;
+      return `<li><span class="mono">${category}</span><strong>${rate}x</strong> <span class="browserEffectiveRate">(${formatPercent(effectiveCashbackPercent)})</span></li>`;
     })
     .join("");
 }
