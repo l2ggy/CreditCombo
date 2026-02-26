@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <title>CreditCombo · Card Browser</title>
+  <link rel="icon" href="/icons/favicon.ico" sizes="any" />
+  <link rel="icon" href="/icons/favicon-32x32.png" sizes="32x32" type="image/png" />
+  <link rel="icon" href="/icons/favicon.svg" sizes="any" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" sizes="180x180" />
+  <link rel="manifest" href="/icons/site.webmanifest" />
+  <meta name="theme-color" content="#1e3a8a" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <header class="container header">
+    <div>
+      <h1>Card browser</h1>
+      <p class="subtle">Explore every modeled card and compare details quickly.</p>
+    </div>
+    <a class="textLink" href="./index.html">← Back to optimizer</a>
+  </header>
+
+  <main class="container browserLayout">
+    <section class="panel browserControls">
+      <div class="panelHeader">
+        <h2>Filters</h2>
+      </div>
+      <div class="divider"></div>
+      <div class="browserFilterGrid">
+        <div class="field">
+          <label for="searchInput">Search cards</label>
+          <input id="searchInput" type="search" placeholder="Card name, issuer, network..." />
+        </div>
+        <div class="field">
+          <label for="issuerFilter">Issuer</label>
+          <select id="issuerFilter"></select>
+        </div>
+        <div class="field">
+          <label for="programFilter">Rewards program</label>
+          <select id="programFilter"></select>
+        </div>
+        <div class="field">
+          <label for="sortBy">Sort by</label>
+          <select id="sortBy">
+            <option value="name">Card name (A–Z)</option>
+            <option value="annualFeeAsc">Annual fee (low to high)</option>
+            <option value="annualFeeDesc">Annual fee (high to low)</option>
+            <option value="issuer">Issuer (A–Z)</option>
+          </select>
+        </div>
+      </div>
+      <p id="browserSummary" class="subtle"></p>
+    </section>
+
+    <section id="cardsList" class="browserCards"></section>
+    <section id="browserFatal" class="panel hidden"></section>
+  </main>
+
+  <script type="module" src="./src/card-browser.js"></script>
+</body>
+</html>
