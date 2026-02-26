@@ -108,61 +108,81 @@
       "program_id": "bmo_cashback",
       "program_name": "BMO CashBack",
       "program_type": "cashback",
-      "cents_per_point": 1.0
+      "cents_per_point": 1.0,
+      "minimum_cents_per_point": 1.0,
+      "minimum_valuation_note": "Cashback redemptions are valued at face value, so the minimum equals the base valuation."
     },
     {
       "program_id": "cibc_dividend_cashback",
       "program_name": "CIBC Dividend Cash Back",
       "program_type": "cashback",
-      "cents_per_point": 1.0
+      "cents_per_point": 1.0,
+      "minimum_cents_per_point": 1.0,
+      "minimum_valuation_note": "Cashback redemptions are valued at face value, so the minimum equals the base valuation."
     },
     {
       "program_id": "rogers_cashback",
       "program_name": "Rogers Bank Cash Back",
       "program_type": "cashback",
-      "cents_per_point": 1.0
+      "cents_per_point": 1.0,
+      "minimum_cents_per_point": 1.0,
+      "minimum_valuation_note": "Cashback redemptions are valued at face value, so the minimum equals the base valuation."
     },
     {
       "program_id": "rbc_cashback",
       "program_name": "RBC Cash Back",
       "program_type": "cashback",
-      "cents_per_point": 1.0
+      "cents_per_point": 1.0,
+      "minimum_cents_per_point": 1.0,
+      "minimum_valuation_note": "Cashback redemptions are valued at face value, so the minimum equals the base valuation."
     },
     {
       "program_id": "scotia_cashback",
       "program_name": "Scotiabank Cash Back",
       "program_type": "cashback",
-      "cents_per_point": 1.0
+      "cents_per_point": 1.0,
+      "minimum_cents_per_point": 1.0,
+      "minimum_valuation_note": "Cashback redemptions are valued at face value, so the minimum equals the base valuation."
     },
     {
       "program_id": "simplii_cashback",
       "program_name": "Simplii Cash Back",
       "program_type": "cashback",
-      "cents_per_point": 1.0
+      "cents_per_point": 1.0,
+      "minimum_cents_per_point": 1.0,
+      "minimum_valuation_note": "Cashback redemptions are valued at face value, so the minimum equals the base valuation."
     },
     {
       "program_id": "tangerine_cashback",
       "program_name": "Tangerine Money-Back",
       "program_type": "cashback",
-      "cents_per_point": 1.0
+      "cents_per_point": 1.0,
+      "minimum_cents_per_point": 1.0,
+      "minimum_valuation_note": "Cashback redemptions are valued at face value, so the minimum equals the base valuation."
     },
     {
       "program_id": "td_cashback",
       "program_name": "TD Cash Back",
       "program_type": "cashback",
-      "cents_per_point": 1.0
+      "cents_per_point": 1.0,
+      "minimum_cents_per_point": 1.0,
+      "minimum_valuation_note": "Cashback redemptions are valued at face value, so the minimum equals the base valuation."
     },
     {
       "program_id": "desjardins_bonusdollars",
       "program_name": "Desjardins BonusDollars",
       "program_type": "cashback",
-      "cents_per_point": 1.0
+      "cents_per_point": 1.0,
+      "minimum_cents_per_point": 1.0,
+      "minimum_valuation_note": "Cashback redemptions are valued at face value, so the minimum equals the base valuation."
     },
     {
       "program_id": "ct_money",
       "program_name": "Canadian Tire Money (Triangle Rewards)",
       "program_type": "cashback",
-      "cents_per_point": 1.0
+      "cents_per_point": 1.0,
+      "minimum_cents_per_point": 1.0,
+      "minimum_valuation_note": "Cashback redemptions are valued at face value, so the minimum equals the base valuation."
     },
     {
       "program_id": "pc_optimum",
@@ -178,25 +198,33 @@
       "program_id": "brim_cashback",
       "program_name": "Brim Rewards (cashback redemption)",
       "program_type": "cashback",
-      "cents_per_point": 1.0
+      "cents_per_point": 1.0,
+      "minimum_cents_per_point": 1.0,
+      "minimum_valuation_note": "Cashback redemptions are valued at face value, so the minimum equals the base valuation."
     },
     {
       "program_id": "home_trust_cashback",
       "program_name": "Home Trust Cash Back",
       "program_type": "cashback",
-      "cents_per_point": 1.0
+      "cents_per_point": 1.0,
+      "minimum_cents_per_point": 1.0,
+      "minimum_valuation_note": "Cashback redemptions are valued at face value, so the minimum equals the base valuation."
     },
     {
       "program_id": "walmart_cashback",
       "program_name": "Walmart Rewards",
       "program_type": "cashback",
-      "cents_per_point": 1.0
+      "cents_per_point": 1.0,
+      "minimum_cents_per_point": 1.0,
+      "minimum_valuation_note": "Cashback redemptions are valued at face value, so the minimum equals the base valuation."
     },
     {
       "program_id": "manulife_cashback",
       "program_name": "ManulifeMONEY+ Cash Back",
       "program_type": "cashback",
-      "cents_per_point": 1.0
+      "cents_per_point": 1.0,
+      "minimum_cents_per_point": 1.0,
+      "minimum_valuation_note": "Cashback redemptions are valued at face value, so the minimum equals the base valuation."
     },
     {
       "program_id": "mbna_non_rewards",
@@ -204,7 +232,9 @@
       "program_type": "cashback",
       "cents_per_point": 1.0,
       "valuation_status": "no_rewards_earn",
-      "valuation_note": "Product line does not provide rewards points/cashback earn on purchases."
+      "valuation_note": "Product line does not provide rewards points/cashback earn on purchases.",
+      "minimum_cents_per_point": 1.0,
+      "minimum_valuation_note": "Cashback redemptions are valued at face value, so the minimum equals the base valuation."
     },
     {
       "program_id": "capital_one_non_rewards",
@@ -212,7 +242,9 @@
       "program_type": "cashback",
       "cents_per_point": 1.0,
       "valuation_status": "no_rewards_earn",
-      "valuation_note": "Product line does not provide rewards points/cashback earn on purchases."
+      "valuation_note": "Product line does not provide rewards points/cashback earn on purchases.",
+      "minimum_cents_per_point": 1.0,
+      "minimum_valuation_note": "Cashback redemptions are valued at face value, so the minimum equals the base valuation."
     },
     {
       "program_id": "canadian_non_rewards",
@@ -220,7 +252,9 @@
       "program_type": "cashback",
       "cents_per_point": 1.0,
       "valuation_status": "no_rewards_earn",
-      "valuation_note": "Product does not provide ongoing rewards earn on purchases."
+      "valuation_note": "Product does not provide ongoing rewards earn on purchases.",
+      "minimum_cents_per_point": 1.0,
+      "minimum_valuation_note": "Cashback redemptions are valued at face value, so the minimum equals the base valuation."
     },
     {
       "program_id": "more_rewards",
@@ -271,7 +305,9 @@
       "program_id": "wealthsimple_cashback",
       "program_name": "Wealthsimple Cash Back",
       "program_type": "cashback",
-      "cents_per_point": 1.0
+      "cents_per_point": 1.0,
+      "minimum_cents_per_point": 1.0,
+      "minimum_valuation_note": "Cashback redemptions are valued at face value, so the minimum equals the base valuation."
     },
     {
       "program_id": "rbc_avios",
@@ -295,7 +331,9 @@
       "program_id": "koho_cashback",
       "program_name": "KOHO Cash Back",
       "program_type": "cashback",
-      "cents_per_point": 1.0
+      "cents_per_point": 1.0,
+      "minimum_cents_per_point": 1.0,
+      "minimum_valuation_note": "Cashback redemptions are valued at face value, so the minimum equals the base valuation."
     },
     {
       "program_id": "moi_rewards",
@@ -310,55 +348,73 @@
       "program_id": "zolve_cashback",
       "program_name": "Zolve Cash Back",
       "program_type": "cashback",
-      "cents_per_point": 1.0
+      "cents_per_point": 1.0,
+      "minimum_cents_per_point": 1.0,
+      "minimum_valuation_note": "Cashback redemptions are valued at face value, so the minimum equals the base valuation."
     },
     {
       "program_id": "neo_cashback",
       "program_name": "Neo Cash Back",
       "program_type": "cashback",
-      "cents_per_point": 1.0
+      "cents_per_point": 1.0,
+      "minimum_cents_per_point": 1.0,
+      "minimum_valuation_note": "Cashback redemptions are valued at face value, so the minimum equals the base valuation."
     },
     {
       "program_id": "mbna_smart_cashback",
       "program_name": "MBNA Smart Cash Back",
       "program_type": "cashback",
-      "cents_per_point": 1.0
+      "cents_per_point": 1.0,
+      "minimum_cents_per_point": 1.0,
+      "minimum_valuation_note": "Cashback redemptions are valued at face value, so the minimum equals the base valuation."
     },
     {
       "program_id": "meridian_cashback",
       "program_name": "Meridian Cash Back",
       "program_type": "cashback",
-      "cents_per_point": 1.0
+      "cents_per_point": 1.0,
+      "minimum_cents_per_point": 1.0,
+      "minimum_valuation_note": "Cashback redemptions are valued at face value, so the minimum equals the base valuation."
     },
     {
       "program_id": "nb_echo_cashback",
       "program_name": "National Bank ECHO Cashback",
       "program_type": "cashback",
-      "cents_per_point": 1.0
+      "cents_per_point": 1.0,
+      "minimum_cents_per_point": 1.0,
+      "minimum_valuation_note": "Cashback redemptions are valued at face value, so the minimum equals the base valuation."
     },
     {
       "program_id": "amazon_rewards",
       "program_name": "Amazon Rewards",
       "program_type": "cashback",
-      "cents_per_point": 1.0
+      "cents_per_point": 1.0,
+      "minimum_cents_per_point": 1.0,
+      "minimum_valuation_note": "Cashback redemptions are valued at face value, so the minimum equals the base valuation."
     },
     {
       "program_id": "atb_cashback",
       "program_name": "ATB Cash Rewards",
       "program_type": "cashback",
-      "cents_per_point": 1.0
+      "cents_per_point": 1.0,
+      "minimum_cents_per_point": 1.0,
+      "minimum_valuation_note": "Cashback redemptions are valued at face value, so the minimum equals the base valuation."
     },
     {
       "program_id": "eq_cashback",
       "program_name": "EQ Bank Cash Back",
       "program_type": "cashback",
-      "cents_per_point": 1.0
+      "cents_per_point": 1.0,
+      "minimum_cents_per_point": 1.0,
+      "minimum_valuation_note": "Cashback redemptions are valued at face value, so the minimum equals the base valuation."
     },
     {
       "program_id": "tims_rewards",
       "program_name": "Tims Rewards",
       "program_type": "cashback",
-      "cents_per_point": 1.0
+      "cents_per_point": 1.0,
+      "minimum_cents_per_point": 1.0,
+      "minimum_valuation_note": "Cashback redemptions are valued at face value, so the minimum equals the base valuation."
     }
   ]
 }
