@@ -256,18 +256,22 @@ export function findBestCombo({ cards, programsMap, schema, k, annualSpend, valu
 
   const additionalAllowedIds = additionalCardIds ? new Set(additionalCardIds) : null;
   const unlockedCards = cards.filter((card) => !lockedIds.has(card.id) && (!additionalAllowedIds || additionalAllowedIds.has(card.id)));
-  const additionalCount = Math.max(0, Math.min(Number(k) || 0, unlockedCards.length));
+  const maxAdditionalCount = Math.max(0, Math.min(Number(k) || 0, unlockedCards.length));
 
-  if (lockedCards.length + additionalCount < 1) return best;
+  if (!lockedCards.length && maxAdditionalCount < 1) return best;
 
-  if (additionalCount === 0) return evaluateCombo(lockedCards, annualSpend, schema, programsMap, valuationMode);
+  best = evaluateCombo(lockedCards, annualSpend, schema, programsMap, valuationMode);
 
-  const candidateLimit = computeCandidateLimit(unlockedCards.length, additionalCount);
-  const candidateUnlockedCards = selectCandidateCards(unlockedCards, programsMap, schema, annualSpend, additionalCount, candidateLimit, valuationMode);
+  for (let additionalCount = 1; additionalCount <= maxAdditionalCount; additionalCount++) {
+    const candidateLimit = computeCandidateLimit(unlockedCards.length, additionalCount);
+    const candidateUnlockedCards = selectCandidateCards(unlockedCards, programsMap, schema, annualSpend, additionalCount, candidateLimit, valuationMode);
 
-  for (const combo of combinations(candidateUnlockedCards, additionalCount)) {
-    const result = evaluateCombo([...lockedCards, ...combo], annualSpend, schema, programsMap, valuationMode);
-    if (result.net > best.net) best = result;
+    for (const combo of combinations(candidateUnlockedCards, additionalCount)) {
+      const result = evaluateCombo([...lockedCards, ...combo], annualSpend, schema, programsMap, valuationMode);
+      const sameNet = Math.abs(result.net - best.net) <= 1e-9;
+      const fewerCards = result.combo.length < best.combo.length;
+      if (result.net > best.net || (sameNet && fewerCards)) best = result;
+    }
   }
 
   return best;
