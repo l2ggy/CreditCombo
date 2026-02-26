@@ -247,18 +247,30 @@ function computeCandidateLimit(cardCount, maxSize) {
   return Math.max(maxSize, limit);
 }
 
-export function findBestCombo({ cards, programsMap, schema, k, annualSpend, valuationMode = "estimated" }) {
+export function findBestCombo({ cards, programsMap, schema, k, annualSpend, valuationMode = "estimated", lockedCardIds = [], additionalCardIds = null }) {
   let best = { combo: [], net: -1e18, gross: 0, fees: 0, assigned: null };
-  const maxSize = Math.min(Number(k) || 0, cards.length);
-  if (maxSize < 1) return best;
 
-  for (let size = 1; size <= maxSize; size++) {
-    const candidateLimit = computeCandidateLimit(cards.length, size);
-    const candidateCards = selectCandidateCards(cards, programsMap, schema, annualSpend, size, candidateLimit, valuationMode);
+  const byId = new Map(cards.map((card) => [card.id, card]));
+  const lockedCards = [...new Set(lockedCardIds)].map((id) => byId.get(id)).filter(Boolean);
+  const lockedIds = new Set(lockedCards.map((card) => card.id));
 
-    for (const combo of combinations(candidateCards, size)) {
-      const result = evaluateCombo(combo, annualSpend, schema, programsMap, valuationMode);
-      if (result.net > best.net) best = result;
+  const additionalAllowedIds = additionalCardIds ? new Set(additionalCardIds) : null;
+  const unlockedCards = cards.filter((card) => !lockedIds.has(card.id) && (!additionalAllowedIds || additionalAllowedIds.has(card.id)));
+  const maxAdditionalCount = Math.max(0, Math.min(Number(k) || 0, unlockedCards.length));
+
+  if (!lockedCards.length && maxAdditionalCount < 1) return best;
+
+  best = evaluateCombo(lockedCards, annualSpend, schema, programsMap, valuationMode);
+
+  for (let additionalCount = 1; additionalCount <= maxAdditionalCount; additionalCount++) {
+    const candidateLimit = computeCandidateLimit(unlockedCards.length, additionalCount);
+    const candidateUnlockedCards = selectCandidateCards(unlockedCards, programsMap, schema, annualSpend, additionalCount, candidateLimit, valuationMode);
+
+    for (const combo of combinations(candidateUnlockedCards, additionalCount)) {
+      const result = evaluateCombo([...lockedCards, ...combo], annualSpend, schema, programsMap, valuationMode);
+      const sameNet = Math.abs(result.net - best.net) <= 1e-9;
+      const fewerCards = result.combo.length < best.combo.length;
+      if (result.net > best.net || (sameNet && fewerCards)) best = result;
     }
   }
 
