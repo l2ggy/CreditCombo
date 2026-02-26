@@ -2,6 +2,9 @@ const ROOT_ICON_REWRITES = {
   "/favicon.ico": "/icons/favicon.ico",
   "/apple-touch-icon.png": "/icons/apple-touch-icon.png",
   "/apple-touch-icon-precomposed.png": "/icons/apple-touch-icon.png",
+  "/site.webmanifest": "/icons/site.webmanifest",
+  "/icon-192.png": "/icons/icon-192.png",
+  "/icon-512.png": "/icons/icon-512.png",
 };
 
 export default {
