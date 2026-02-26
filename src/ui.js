@@ -63,7 +63,12 @@ export function renderIssues(el, issues) {
 
 
 function cardThumbMarkup(card, className = "resultCardThumb") {
-  return `<img class="${className}" src="./assets/cards/${escapeHtml(card.id)}.webp" alt="${escapeHtml(card.card_name)}" loading="lazy" decoding="async" onerror="this.remove()" />`;
+  return `<span class="thumbFrame"><img class="${className}" src="./assets/cards/${escapeHtml(card.id)}.webp" alt="${escapeHtml(card.card_name)}" loading="lazy" decoding="async" onerror="this.closest('.thumbFrame')?.remove()" /></span>`;
+}
+
+function instructionLineMarkup(card, amount = null) {
+  const amountPart = amount == null ? "" : ` <span class="mono">(${money(amount)})</span>`;
+  return `<span class="instructionCard">${cardThumbMarkup(card, "instructionCardThumb")}<span>${escapeHtml(card.card_name)}${amountPart}</span></span>`;
 }
 
 export function renderResult(el, best, annualSpend, schema, valuationMode = "estimated") {
@@ -96,9 +101,9 @@ export function renderResult(el, best, annualSpend, schema, valuationMode = "est
       .sort((a, b) => b.amt - a.amt);
 
     if (alloc.length === 1) {
-      instructions.push(`<tr><td class="mono">${escapeHtml(cat)}</td><td>${escapeHtml(alloc[0].c.card_name)}</td></tr>`);
+      instructions.push(`<tr><td class="mono">${escapeHtml(cat)}</td><td>${instructionLineMarkup(alloc[0].c)}</td></tr>`);
     } else {
-      const parts = alloc.slice(0, 3).map(x => `${escapeHtml(x.c.card_name)} (${money(x.amt)})`).join(", ");
+      const parts = alloc.slice(0, 3).map(x => instructionLineMarkup(x.c, x.amt)).join('<span class="muted">, </span>');
       instructions.push(`<tr><td class="mono">${escapeHtml(cat)}</td><td>split → ${parts}</td></tr>`);
     }
   }

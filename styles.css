@@ -93,7 +93,10 @@ select[multiple]{padding:8px;background:transparent;appearance:auto;min-width:32
 .lockedChipRemove:hover{color:var(--text)}
 
 .resultCardItem{display:flex;align-items:center;gap:10px}
-.resultCardThumb,.lockedCardThumb{width:auto;height:auto;max-width:32px;max-height:32px;border-radius:4px;border:1px solid var(--border);display:block;flex:0 0 auto}
+.thumbFrame{width:44px;height:44px;display:inline-flex;align-items:center;justify-content:center;flex:0 0 44px}
+.resultCardThumb{width:auto;height:auto;max-width:44px;max-height:44px;border-radius:5px;border:1px solid var(--border);display:block}
+.instructionCardThumb,.lockedCardThumb{width:auto;height:auto;max-width:24px;max-height:24px;border-radius:4px;border:1px solid var(--border);display:block}
+.instructionCard{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
 .lockedOption{display:flex;align-items:center;gap:8px}
 .lockedChip{display:inline-flex;align-items:center;gap:6px}
 button{
