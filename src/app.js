@@ -18,6 +18,7 @@ const lockedCardPicksEl = document.getElementById("lockedCardPicks");
 
 const kInput = document.getElementById("k");
 const kValueEl = document.getElementById("kValue");
+const kLabelEl = document.getElementById("kLabel");
 
 async function main() {
   try {
@@ -36,34 +37,37 @@ async function main() {
 
     const lockedCardIds = new Set();
 
-    function filteredCards() {
-      if (!excludeFeeCardsEl?.checked) return eligibleCards;
-      return eligibleCards.filter((card) => Number(card.annual_fee?.amount ?? 0) <= 0);
+    function selectedLockedCardIds() {
+      if (!enableLockedCardsEl?.checked) return [];
+      const allowedIds = new Set(eligibleCards.map((card) => card.id));
+      return [...lockedCardIds].filter((id) => allowedIds.has(id));
     }
 
-    function sanitizeLockedCardSelection(cardsToConsider) {
-      const allowedIds = new Set(cardsToConsider.map((card) => card.id));
+    function unlockedCandidateCards() {
+      const selectedIds = new Set(selectedLockedCardIds());
+      let pool = eligibleCards.filter((card) => !selectedIds.has(card.id));
+      if (excludeFeeCardsEl?.checked) pool = pool.filter((card) => Number(card.annual_fee?.amount ?? 0) <= 0);
+      return pool;
+    }
+
+    function sanitizeLockedCardSelection() {
+      const allowedIds = new Set(eligibleCards.map((card) => card.id));
       for (const id of [...lockedCardIds]) {
         if (!allowedIds.has(id)) lockedCardIds.delete(id);
       }
     }
 
-    function selectedLockedCardIds(cardsToConsider) {
-      if (!enableLockedCardsEl?.checked) return [];
-      const allowedIds = new Set(cardsToConsider.map((card) => card.id));
-      return [...lockedCardIds].filter((id) => allowedIds.has(id));
+    function currentMaxAdditionalCards() {
+      return Math.max(0, Math.min(5, unlockedCandidateCards().length));
     }
 
-    function currentMaxAdditionalCards(cards) {
-      const lockedCount = selectedLockedCardIds(cards).length;
-      return Math.max(0, Math.min(5, cards.length - lockedCount));
-    }
-
-    function syncKBounds(cards) {
-      const maxAdditionalCards = currentMaxAdditionalCards(cards);
-      kInput.min = "0";
+    function syncKBounds() {
+      const maxAdditionalCards = currentMaxAdditionalCards();
+      const baseMin = enableLockedCardsEl?.checked ? 0 : 1;
+      const minValue = maxAdditionalCards < baseMin ? 0 : baseMin;
+      kInput.min = String(minValue);
       kInput.max = String(maxAdditionalCards);
-      kInput.value = String(clampInt(kInput.value, 0, maxAdditionalCards));
+      kInput.value = String(clampInt(kInput.value, minValue, maxAdditionalCards));
       return maxAdditionalCards;
     }
 
@@ -71,10 +75,10 @@ async function main() {
       return new Map(cards.map((card) => [card.id, card]));
     }
 
-    function renderLockedCardPicks(cardsToConsider) {
+    function renderLockedCardPicks() {
       if (!lockedCardPicksEl) return;
-      const byId = cardsById(cardsToConsider);
-      const ids = selectedLockedCardIds(cardsToConsider);
+      const byId = cardsById(eligibleCards);
+      const ids = selectedLockedCardIds();
       if (!ids.length) {
         lockedCardPicksEl.innerHTML = "No locked cards selected.";
         return;
@@ -89,10 +93,10 @@ async function main() {
         .join(" ");
     }
 
-    function searchMatches(cardsToConsider, query) {
+    function searchMatches(query) {
       const q = query.trim().toLowerCase();
       if (!q) return [];
-      return cardsToConsider
+      return eligibleCards
         .filter((card) => !lockedCardIds.has(card.id))
         .filter((card) => {
           const hay = `${card.card_name} ${card.issuer} ${card.network}`.toLowerCase();
@@ -101,9 +105,9 @@ async function main() {
         .slice(0, 10);
     }
 
-    function renderLockedSearchResults(cardsToConsider) {
+    function renderLockedSearchResults() {
       if (!lockedCardOptionsEl || !lockedCardSearchEl) return;
-      const matches = searchMatches(cardsToConsider, lockedCardSearchEl.value || "");
+      const matches = searchMatches(lockedCardSearchEl.value || "");
       if (!matches.length) {
         lockedCardOptionsEl.classList.add("hidden");
         lockedCardOptionsEl.innerHTML = "";
@@ -116,8 +120,13 @@ async function main() {
         .join("");
     }
 
-    function updateLockedCardsUi(cardsToConsider) {
-      sanitizeLockedCardSelection(cardsToConsider);
+    function updateSliderLabel() {
+      if (!kLabelEl) return;
+      kLabelEl.textContent = enableLockedCardsEl?.checked ? "Additional cards" : "Number of cards";
+    }
+
+    function updateLockedCardsUi() {
+      sanitizeLockedCardSelection();
       const enabled = Boolean(enableLockedCardsEl?.checked);
       lockedCardsPanelEl?.classList.toggle("hidden", !enabled);
 
@@ -127,8 +136,9 @@ async function main() {
         if (lockedCardOptionsEl) lockedCardOptionsEl.innerHTML = "";
       }
 
-      renderLockedCardPicks(cardsToConsider);
-      renderLockedSearchResults(cardsToConsider);
+      renderLockedCardPicks();
+      renderLockedSearchResults();
+      updateSliderLabel();
     }
 
     const comboCache = new Map();
@@ -145,20 +155,22 @@ async function main() {
       return schema.map((cat) => `${cat}:${monthlySpend[cat] || 0}`).join("|");
     }
 
-    function getBestCombo(cards, k, annualSpend, valuationMode, monthlySpend, lockedIds) {
+    function getBestCombo(allCards, additionalCards, k, annualSpend, valuationMode, monthlySpend, lockedIds) {
       const excludeFeeCards = excludeFeeCardsEl?.checked ? "excludeFee" : "allCards";
       const lockKey = [...lockedIds].sort().join(",");
-      const key = `${spendKey(monthlySpend)}::${valuationMode}::${k}::${excludeFeeCards}::${lockKey}`;
+      const additionalIdsKey = additionalCards.map((card) => card.id).sort().join(",");
+      const key = `${spendKey(monthlySpend)}::${valuationMode}::${k}::${excludeFeeCards}::${lockKey}::${additionalIdsKey}`;
       if (comboCache.has(key)) return comboCache.get(key);
 
       const best = findBestCombo({
-        cards,
+        cards: allCards,
         programsMap,
         schema,
         k,
         annualSpend,
         valuationMode,
-        lockedCardIds: lockedIds
+        lockedCardIds: lockedIds,
+        additionalCardIds: additionalCards.map((card) => card.id)
       });
       comboCache.set(key, best);
       return best;
@@ -169,25 +181,26 @@ async function main() {
       resultEl.classList.add("hidden");
       resultEl.textContent = "Computing…";
 
-      const cardsToConsider = filteredCards();
-      updateLockedCardsUi(cardsToConsider);
-      const selectedLockedIds = selectedLockedCardIds(cardsToConsider);
+      updateLockedCardsUi();
+      const selectedLockedIds = selectedLockedCardIds();
+      const additionalCards = unlockedCandidateCards();
 
-      const maxAdditionalCards = syncKBounds(cardsToConsider);
-      const k = clampInt(kInput.value, 0, maxAdditionalCards);
+      const maxAdditionalCards = syncKBounds();
+      const minValue = Number(kInput.min || 0);
+      const k = clampInt(kInput.value, minValue, maxAdditionalCards);
       kInput.value = String(k);
       updateKValue();
 
-      if (!cardsToConsider.length) {
+      if (!eligibleCards.length) {
         resultEl.classList.remove("hidden");
-        resultEl.innerHTML = `<span class="badge bad">No result</span> No cards without annual fees are available for optimization.`;
+        resultEl.innerHTML = `<span class="badge bad">No result</span> No eligible cards are available for optimization.`;
         runBtn.disabled = false;
         return;
       }
 
-      if (!selectedLockedIds.length && k === 0) {
+      if (excludeFeeCardsEl?.checked && k > 0 && !additionalCards.length) {
         resultEl.classList.remove("hidden");
-        resultEl.innerHTML = `<span class="muted">Choose at least one locked card or increase additional cards above 0.</span>`;
+        resultEl.innerHTML = `<span class="badge bad">No result</span> No additional cards without annual fees are available.`;
         runBtn.disabled = false;
         return;
       }
@@ -203,7 +216,7 @@ async function main() {
       }
 
       const annualSpend = annualizeMonthlySpend(monthlySpend, schema);
-      const best = getBestCombo(cardsToConsider, k, annualSpend, valuationMode, monthlySpend, selectedLockedIds);
+      const best = getBestCombo(eligibleCards, additionalCards, k, annualSpend, valuationMode, monthlySpend, selectedLockedIds);
 
       renderResult(resultEl, best, annualSpend, schema, valuationMode);
       runBtn.disabled = false;
@@ -217,8 +230,8 @@ async function main() {
       else issuesWrap.classList.add("hidden");
     }
 
-    updateLockedCardsUi(filteredCards());
-    syncKBounds(filteredCards());
+    updateLockedCardsUi();
+    syncKBounds();
     updateKValue();
     appEl.classList.remove("hidden");
 
@@ -229,8 +242,7 @@ async function main() {
     enableLockedCardsEl?.addEventListener("change", runOptimizer);
 
     lockedCardSearchEl?.addEventListener("input", () => {
-      const cardsToConsider = filteredCards();
-      renderLockedSearchResults(cardsToConsider);
+      renderLockedSearchResults();
     });
 
     lockedCardOptionsEl?.addEventListener("click", (event) => {

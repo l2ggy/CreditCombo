@@ -54,15 +54,15 @@
             </label>
           </div>
 
-          <div id="lockedCardsPanel" class="field hidden">
+          <div id="lockedCardsPanel" class="field field-full hidden">
             <label for="lockedCardSearch">Search and add cards you already have</label>
             <input id="lockedCardSearch" type="search" placeholder="Type card or issuer name" autocomplete="off" />
             <div id="lockedCardOptions" class="lockedOptions hidden" role="listbox" aria-label="Matching cards"></div>
             <div id="lockedCardPicks" class="lockedPicks muted">No locked cards selected.</div>
           </div>
           <div class="field field-slider">
-            <label for="k">Additional cards to add <span id="kValue" class="value-pill">2</span></label>
-            <input id="k" type="range" min="0" max="5" value="2" step="1" />
+            <label for="k"><span id="kLabel">Number of cards</span> <span id="kValue" class="value-pill">3</span></label>
+            <input id="k" type="range" min="0" max="5" value="3" step="1" />
           </div>
           <div class="field">
             <label for="valuationMode">Points valuation <a class="infoBadge" href="./valuations.html" aria-label="Learn how rewards valuations work" title="How valuation modes work">i</a></label>

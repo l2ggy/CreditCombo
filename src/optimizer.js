@@ -247,15 +247,16 @@ function computeCandidateLimit(cardCount, maxSize) {
   return Math.max(maxSize, limit);
 }
 
-export function findBestCombo({ cards, programsMap, schema, k, annualSpend, valuationMode = "estimated", lockedCardIds = [] }) {
+export function findBestCombo({ cards, programsMap, schema, k, annualSpend, valuationMode = "estimated", lockedCardIds = [], additionalCardIds = null }) {
   let best = { combo: [], net: -1e18, gross: 0, fees: 0, assigned: null };
 
   const byId = new Map(cards.map((card) => [card.id, card]));
   const lockedCards = [...new Set(lockedCardIds)].map((id) => byId.get(id)).filter(Boolean);
   const lockedIds = new Set(lockedCards.map((card) => card.id));
 
-  const additionalCount = Math.max(0, Math.min(Number(k) || 0, cards.length - lockedCards.length));
-  const unlockedCards = cards.filter((card) => !lockedIds.has(card.id));
+  const additionalAllowedIds = additionalCardIds ? new Set(additionalCardIds) : null;
+  const unlockedCards = cards.filter((card) => !lockedIds.has(card.id) && (!additionalAllowedIds || additionalAllowedIds.has(card.id)));
+  const additionalCount = Math.max(0, Math.min(Number(k) || 0, unlockedCards.length));
 
   if (lockedCards.length + additionalCount < 1) return best;
 
