@@ -62,13 +62,15 @@ export function renderIssues(el, issues) {
 }
 
 
-function cardThumbMarkup(card, className = "resultCardThumb") {
-  return `<span class="thumbFrame"><img class="${className}" src="./assets/cards/${escapeHtml(card.id)}.webp" alt="${escapeHtml(card.card_name)}" loading="lazy" decoding="async" onerror="this.closest('.thumbFrame')?.remove()" /></span>`;
+function cardThumbMarkup(card, className = "resultCardThumb", withFrame = true) {
+  const image = `<img class="${className}" src="./assets/cards/${escapeHtml(card.id)}.webp" alt="${escapeHtml(card.card_name)}" loading="lazy" decoding="async" onerror="this.remove()" />`;
+  if (!withFrame) return image;
+  return `<span class="thumbFrame">${image}</span>`;
 }
 
 function instructionLineMarkup(card, amount = null) {
   const amountPart = amount == null ? "" : ` <span class="mono">(${money(amount)})</span>`;
-  return `<span class="instructionCard">${cardThumbMarkup(card, "instructionCardThumb")}<span>${escapeHtml(card.card_name)}${amountPart}</span></span>`;
+  return `<span class="instructionCard">${cardThumbMarkup(card, "instructionCardThumb", false)}<span>${escapeHtml(card.card_name)}${amountPart}</span></span>`;
 }
 
 export function renderResult(el, best, annualSpend, schema, valuationMode = "estimated") {
