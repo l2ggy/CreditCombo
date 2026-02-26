@@ -10,15 +10,15 @@
       "transit",
       "rideshare",
       "streaming",
-      "digital_media",
+      "digital",
       "utilities",
-      "recurring_bills",
+      "bills",
       "drugstore",
       "entertainment",
-      "travel_general",
+      "travel",
       "other"
     ],
-    "note": "Hyper-specific merchant/portal multipliers are not mapped into travel_general; see special_earn_rules.",
+    "note": "Hyper-specific merchant/portal multipliers are not mapped into travel; see special_earn_rules.",
     "taxonomy_definition": {
       "standard_categories": [
         "grocery",
@@ -27,12 +27,12 @@
         "transit",
         "rideshare",
         "streaming",
-        "digital_media",
+        "digital",
         "utilities",
-        "recurring_bills",
+        "bills",
         "drugstore",
         "entertainment",
-        "travel_general",
+        "travel",
         "other"
       ],
       "inclusion_rules": {
@@ -42,12 +42,12 @@
         "transit": "Public transit, parking, tolls, and commuting services that are not rideshare.",
         "rideshare": "App-based ride-hailing services only.",
         "streaming": "Subscription video/audio streaming services.",
-        "digital_media": "Digital app/software/game/music purchases not billed as streaming subscriptions.",
+        "digital": "Digital app/software/game/music purchases not billed as streaming subscriptions.",
         "utilities": "Home utilities and telecom billers when issuer separately rewards utility-type merchants.",
-        "recurring_bills": "Pre-authorized recurring bill payments not otherwise mapped to utilities/streaming/digital_media.",
+        "bills": "Pre-authorized recurring bill payments not otherwise mapped to utilities/streaming/digital.",
         "drugstore": "Pharmacies and drugstores.",
         "entertainment": "Movies, events, and leisure admissions.",
-        "travel_general": "Non-portal travel spend (airlines, hotels, car rental, cruises, travel agencies) unless an issuer states portal-only acceleration.",
+        "travel": "Non-portal travel spend (airlines, hotels, car rental, cruises, travel agencies) unless an issuer states portal-only acceleration.",
         "other": "Base earn for all uncategorized eligible purchases."
       },
       "exclusion_rules": [
@@ -57,8 +57,8 @@
       "tie_break_rules": [
         "Use issuer merchant category coding (MCC) precedence when categories overlap.",
         "If a transaction can map to rideshare or transit, rideshare wins only for app ride-hailing operators.",
-        "If a charge is both recurring and category-specific (e.g., streaming subscription), the specific category wins over recurring_bills.",
-        "If terms cite portal-only travel acceleration, keep baseline travel in travel_general and capture portal uplift in special_earn_rules."
+        "If a charge is both recurring and category-specific (e.g., streaming subscription), the specific category wins over bills.",
+        "If terms cite portal-only travel acceleration, keep baseline travel in travel and capture portal uplift in special_earn_rules."
       ]
     }
   },
@@ -108,7 +108,7 @@
         "type": "annual"
       },
       "earn_rates": {
-        "travel_general": 2,
+        "travel": 2,
         "gas": 2,
         "grocery": 2,
         "drugstore": 2,
@@ -182,7 +182,7 @@
       "earn_rates": {
         "grocery": 1.5,
         "gas": 1.5,
-        "travel_general": 1.5,
+        "travel": 1.5,
         "other": 1
       },
       "caps": [
@@ -191,7 +191,7 @@
           "categories": [
             "grocery",
             "gas",
-            "travel_general"
+            "travel"
           ],
           "cap_amount": 80000,
           "cap_period": "annual",
@@ -202,7 +202,7 @@
       "special_earn_rules": [
         {
           "type": "merchant_specific",
-          "description": "Higher earn often includes Air Canada direct purchases; not mapped into travel_general."
+          "description": "Higher earn often includes Air Canada direct purchases; not mapped into travel."
         },
         {
           "type": "merchant_specific",
@@ -223,7 +223,7 @@
       "earn_rates": {
         "grocery": 1.5,
         "gas": 1.5,
-        "travel_general": 1.5,
+        "travel": 1.5,
         "other": 1
       },
       "caps": [
@@ -242,7 +242,7 @@
       "special_earn_rules": [
         {
           "type": "merchant_specific",
-          "description": "Air Canada purchase earn uplift exists on issuer terms; not mapped into travel_general."
+          "description": "Air Canada purchase earn uplift exists on issuer terms; not mapped into travel."
         },
         {
           "type": "merchant_specific",
@@ -261,7 +261,7 @@
         "type": "annual"
       },
       "earn_rates": {
-        "travel_general": 1.25,
+        "travel": 1.25,
         "other": 1
       },
       "caps": [],
@@ -285,7 +285,7 @@
       "earn_rates": {
         "dining": 3,
         "entertainment": 3,
-        "recurring_bills": 3,
+        "bills": 3,
         "other": 1
       },
       "caps": [
@@ -310,7 +310,7 @@
         {
           "scope": "per_category",
           "categories": [
-            "recurring_bills"
+            "bills"
           ],
           "cap_amount": 10000,
           "cap_period": "annual",
@@ -320,7 +320,7 @@
       "special_earn_rules": [
         {
           "type": "portal_specific",
-          "description": "Higher earn for travel booked via BMO Rewards travel portal exists; do not map to travel_general until modeled."
+          "description": "Higher earn for travel booked via BMO Rewards travel portal exists; do not map to travel until modeled."
         }
       ]
     },
@@ -356,7 +356,7 @@
       "special_earn_rules": [
         {
           "type": "portal_specific",
-          "description": "2x travel via CIBC Rewards Centre is portal-specific; not mapped into travel_general."
+          "description": "2x travel via CIBC Rewards Centre is portal-specific; not mapped into travel."
         },
         {
           "type": "merchant_specific",
@@ -381,7 +381,7 @@
       "special_earn_rules": [
         {
           "type": "merchant_specific",
-          "description": "5x at participating Marriott Bonvoy properties (hotel-specific); not mapped to travel_general."
+          "description": "5x at participating Marriott Bonvoy properties (hotel-specific); not mapped to travel."
         }
       ]
     },
@@ -474,7 +474,7 @@
       },
       "earn_rates": {
         "grocery": 4,
-        "recurring_bills": 4,
+        "bills": 4,
         "gas": 2,
         "transit": 2,
         "rideshare": 2,
@@ -486,7 +486,7 @@
           "scope": "shared",
           "categories": [
             "grocery",
-            "recurring_bills"
+            "bills"
           ],
           "cap_amount": 25000,
           "cap_period": "annual",
@@ -527,7 +527,7 @@
         "gas": 4,
         "transit": 2,
         "dining": 2,
-        "recurring_bills": 2,
+        "bills": 2,
         "other": 1
       },
       "caps": [],
@@ -552,7 +552,7 @@
         "grocery": 5,
         "transit": 4,
         "gas": 3,
-        "recurring_bills": 2,
+        "bills": 2,
         "other": 1
       },
       "caps": [
@@ -586,7 +586,7 @@
         {
           "scope": "per_category",
           "categories": [
-            "recurring_bills"
+            "bills"
           ],
           "cap_amount": 500,
           "cap_period": "monthly",
@@ -613,7 +613,7 @@
       "earn_rates": {
         "grocery": 5,
         "dining": 5,
-        "digital_media": 5,
+        "digital": 5,
         "utilities": 5,
         "other": 1
       },
@@ -623,7 +623,7 @@
           "categories": [
             "grocery",
             "dining",
-            "digital_media",
+            "digital",
             "utilities"
           ],
           "cap_amount": 50000,
@@ -658,7 +658,7 @@
         "gas": 1,
         "transit": 1,
         "dining": 1,
-        "recurring_bills": 1,
+        "bills": 1,
         "other": 0.5
       },
       "caps": [],
@@ -685,7 +685,7 @@
         "transit": 2,
         "rideshare": 2,
         "drugstore": 2,
-        "recurring_bills": 2,
+        "bills": 2,
         "other": 1
       },
       "caps": [],
@@ -710,16 +710,16 @@
         "grocery": 6,
         "dining": 6,
         "transit": 6,
-        "recurring_bills": 4,
+        "bills": 4,
         "streaming": 4,
-        "digital_media": 4,
+        "digital": 4,
         "other": 2
       },
       "caps": [],
       "special_earn_rules": [
         {
           "type": "portal_specific",
-          "description": "8 TD Rewards points per $ on travel booked through Expedia® for TD (not mapped to travel_general)."
+          "description": "8 TD Rewards points per $ on travel booked through Expedia® for TD (not mapped to travel)."
         },
         {
           "type": "category_out_of_schema",
@@ -747,9 +747,9 @@
       "earn_rates": {
         "grocery": 3,
         "gas": 3,
-        "recurring_bills": 3,
+        "bills": 3,
         "streaming": 3,
-        "digital_media": 3,
+        "digital": 3,
         "other": 1
       },
       "caps": [
@@ -776,7 +776,7 @@
         {
           "scope": "per_category",
           "categories": [
-            "recurring_bills"
+            "bills"
           ],
           "cap_amount": 15000,
           "cap_period": "annual",
@@ -796,7 +796,7 @@
         {
           "scope": "per_category",
           "categories": [
-            "digital_media"
+            "digital"
           ],
           "cap_amount": 15000,
           "cap_period": "annual",
@@ -828,9 +828,9 @@
         "grocery": 1,
         "gas": 1,
         "transit": 1,
-        "recurring_bills": 1,
+        "bills": 1,
         "streaming": 1,
-        "digital_media": 1,
+        "digital": 1,
         "other": 0.5
       },
       "caps": [
@@ -849,9 +849,9 @@
         {
           "scope": "shared",
           "categories": [
-            "recurring_bills",
+            "bills",
             "streaming",
-            "digital_media"
+            "digital"
           ],
           "cap_amount": 5000,
           "cap_period": "annual",
@@ -945,7 +945,7 @@
         "type": "annual"
       },
       "earn_rates": {
-        "travel_general": 5,
+        "travel": 5,
         "dining": 5,
         "grocery": 5,
         "gas": 5,
@@ -956,7 +956,7 @@
         {
           "scope": "shared",
           "categories": [
-            "travel_general",
+            "travel",
             "dining",
             "grocery",
             "gas",
@@ -989,7 +989,7 @@
         "type": "annual"
       },
       "earn_rates": {
-        "recurring_bills": 2.5,
+        "bills": 2.5,
         "grocery": 2.5,
         "dining": 2.5,
         "other": 0.5
@@ -1019,7 +1019,7 @@
         "grocery": 2,
         "dining": 2,
         "gas": 2,
-        "recurring_bills": 2,
+        "bills": 2,
         "other": 1
       },
       "caps": [],
@@ -1030,7 +1030,7 @@
         },
         {
           "type": "portal_specific",
-          "description": "2 points/$ on travel booked through À la carte Travel (portal-specific; not mapped to travel_general)."
+          "description": "2 points/$ on travel booked through À la carte Travel (portal-specific; not mapped to travel)."
         },
         {
           "type": "category_out_of_schema",
@@ -1056,7 +1056,7 @@
         "gas": 1.5,
         "grocery": 1.5,
         "drugstore": 1.5,
-        "recurring_bills": 1.5,
+        "bills": 1.5,
         "other": 0.5
       },
       "caps": [
@@ -1075,7 +1075,7 @@
             "gas",
             "grocery",
             "drugstore",
-            "recurring_bills"
+            "bills"
           ],
           "cap_amount": 15000,
           "cap_period": "annual",
@@ -1266,7 +1266,7 @@
       "special_earn_rules": [
         {
           "type": "merchant_specific",
-          "description": "2 WestJet points per $ on eligible WestJet flights / WestJet Vacations / Sunwing Vacations (not mapped to travel_general)."
+          "description": "2 WestJet points per $ on eligible WestJet flights / WestJet Vacations / Sunwing Vacations (not mapped to travel)."
         },
         {
           "type": "merchant_specific",
@@ -1291,14 +1291,14 @@
       "earn_rates": {
         "dining": 1.5,
         "streaming": 1.5,
-        "digital_media": 1.5,
+        "digital": 1.5,
         "other": 1
       },
       "caps": [],
       "special_earn_rules": [
         {
           "type": "merchant_specific",
-          "description": "1.5 WestJet points per $ on eligible WestJet flights / WestJet Vacations / Sunwing Vacations (not mapped to travel_general)."
+          "description": "1.5 WestJet points per $ on eligible WestJet flights / WestJet Vacations / Sunwing Vacations (not mapped to travel)."
         },
         {
           "type": "category_out_of_schema",
@@ -1428,7 +1428,7 @@
       },
       "earn_rates": {
         "grocery": 3,
-        "recurring_bills": 1,
+        "bills": 1,
         "other": 0.5
       },
       "caps": [
@@ -1484,7 +1484,7 @@
         "type": "annual"
       },
       "earn_rates": {
-        "travel_general": 1,
+        "travel": 1,
         "other": 1
       },
       "caps": [],
@@ -1501,7 +1501,7 @@
         "type": "annual"
       },
       "earn_rates": {
-        "travel_general": 2,
+        "travel": 2,
         "dining": 2,
         "other": 1
       },
@@ -1525,7 +1525,7 @@
       },
       "earn_rates": {
         "dining": 3,
-        "travel_general": 2,
+        "travel": 2,
         "other": 1
       },
       "caps": [],
@@ -1552,7 +1552,7 @@
       },
       "earn_rates": {
         "dining": 3,
-        "travel_general": 2,
+        "travel": 2,
         "other": 1
       },
       "caps": [],
@@ -1672,7 +1672,7 @@
         "type": "annual"
       },
       "earn_rates": {
-        "travel_general": 1.25,
+        "travel": 1.25,
         "other": 1.25
       },
       "caps": [],
@@ -1712,7 +1712,7 @@
       "earn_rates": {
         "dining": 2,
         "entertainment": 2,
-        "travel_general": 2,
+        "travel": 2,
         "other": 1
       },
       "caps": [],
@@ -1800,7 +1800,7 @@
       "earn_rates": {
         "grocery": 2,
         "dining": 2,
-        "recurring_bills": 2,
+        "bills": 2,
         "other": 1
       },
       "caps": [
@@ -1809,7 +1809,7 @@
           "categories": [
             "grocery",
             "dining",
-            "recurring_bills"
+            "bills"
           ],
           "cap_amount": 10000,
           "cap_period": "annual",
@@ -1983,7 +1983,7 @@
       "earn_rates": {
         "gas": 3,
         "dining": 3,
-        "travel_general": 3,
+        "travel": 3,
         "other": 2
       },
       "caps": [],
@@ -2023,7 +2023,7 @@
         "type": "annual"
       },
       "earn_rates": {
-        "travel_general": 4,
+        "travel": 4,
         "dining": 2,
         "other": 1
       },
@@ -2048,7 +2048,7 @@
       "earn_rates": {
         "gas": 1.5,
         "dining": 1.5,
-        "travel_general": 1.5,
+        "travel": 1.5,
         "other": 1
       },
       "caps": [],
@@ -2070,7 +2070,7 @@
         "type": "annual"
       },
       "earn_rates": {
-        "travel_general": 1,
+        "travel": 1,
         "gas": 1,
         "other": 1
       },
@@ -2093,7 +2093,7 @@
         "type": "annual"
       },
       "earn_rates": {
-        "travel_general": 2,
+        "travel": 2,
         "gas": 1.5,
         "grocery": 1.5,
         "other": 1
@@ -2117,7 +2117,7 @@
         "type": "annual"
       },
       "earn_rates": {
-        "travel_general": 2,
+        "travel": 2,
         "dining": 1.25,
         "other": 1
       },
@@ -2167,7 +2167,7 @@
         "type": "annual"
       },
       "earn_rates": {
-        "travel_general": 1.25,
+        "travel": 1.25,
         "other": 1
       },
       "caps": [],
@@ -2207,7 +2207,7 @@
         "type": "annual"
       },
       "earn_rates": {
-        "travel_general": 3,
+        "travel": 3,
         "dining": 2,
         "other": 1
       },
@@ -2264,7 +2264,7 @@
         "type": "annual"
       },
       "earn_rates": {
-        "travel_general": 2,
+        "travel": 2,
         "other": 1
       },
       "caps": [],
@@ -2350,7 +2350,7 @@
         "type": "annual"
       },
       "earn_rates": {
-        "travel_general": 2,
+        "travel": 2,
         "gas": 2,
         "other": 1
       },
@@ -2368,7 +2368,7 @@
         "type": "annual"
       },
       "earn_rates": {
-        "travel_general": 1.25,
+        "travel": 1.25,
         "other": 1.25
       },
       "caps": [],
@@ -2431,7 +2431,7 @@
         "type": "annual"
       },
       "earn_rates": {
-        "travel_general": 2,
+        "travel": 2,
         "dining": 1.5,
         "other": 1
       },
@@ -2473,7 +2473,7 @@
         "type": "annual"
       },
       "earn_rates": {
-        "travel_general": 1.5,
+        "travel": 1.5,
         "gas": 1,
         "other": 1
       },
@@ -2592,7 +2592,7 @@
         "type": "annual"
       },
       "earn_rates": {
-        "travel_general": 1,
+        "travel": 1,
         "other": 1
       },
       "caps": [],
@@ -2633,7 +2633,7 @@
       "earn_rates": {
         "grocery": 1.5,
         "dining": 1.5,
-        "recurring_bills": 1.5,
+        "bills": 1.5,
         "other": 1
       },
       "caps": [],
@@ -2650,7 +2650,7 @@
         "type": "annual"
       },
       "earn_rates": {
-        "travel_general": 1.5,
+        "travel": 1.5,
         "other": 1
       },
       "caps": [],
@@ -2704,7 +2704,7 @@
         "type": "annual"
       },
       "earn_rates": {
-        "travel_general": 2,
+        "travel": 2,
         "other": 1
       },
       "caps": [],
@@ -3117,7 +3117,7 @@
       },
       "earn_rates": {
         "grocery": 3,
-        "recurring_bills": 3,
+        "bills": 3,
         "other": 1
       },
       "caps": [],
@@ -3498,7 +3498,7 @@
       "earn_rates": {
         "grocery": 4,
         "gas": 3,
-        "recurring_bills": 3,
+        "bills": 3,
         "other": 1
       },
       "caps": [],
@@ -3538,7 +3538,7 @@
       "earn_rates": {
         "grocery": 3,
         "gas": 2,
-        "recurring_bills": 2,
+        "bills": 2,
         "other": 1
       },
       "caps": [],
@@ -3587,7 +3587,7 @@
       "special_earn_rules": [
         {
           "type": "merchant_specific",
-          "description": "Elevated earn on Cathay Pacific purchases and certain travel-related transactions is merchant-specific and not mapped to travel_general."
+          "description": "Elevated earn on Cathay Pacific purchases and certain travel-related transactions is merchant-specific and not mapped to travel."
         }
       ]
     },
@@ -3636,7 +3636,7 @@
         "type": "annual"
       },
       "earn_rates": {
-        "travel_general": 2,
+        "travel": 2,
         "dining": 2,
         "entertainment": 2,
         "other": 1
@@ -3655,7 +3655,7 @@
         "type": "annual"
       },
       "earn_rates": {
-        "travel_general": 3,
+        "travel": 3,
         "other": 1.5
       },
       "caps": [],
@@ -3728,7 +3728,7 @@
       "special_earn_rules": [
         {
           "type": "merchant_specific",
-          "description": "Higher Avios earn on eligible British Airways and partner bookings is merchant-specific; not mapped to travel_general."
+          "description": "Higher Avios earn on eligible British Airways and partner bookings is merchant-specific; not mapped to travel."
         }
       ]
     },
@@ -4100,7 +4100,7 @@
       "earn_rates": {
         "gas": 2,
         "grocery": 2,
-        "recurring_bills": 2,
+        "bills": 2,
         "other": 0.5
       },
       "caps": [],
@@ -4188,7 +4188,7 @@
       },
       "earn_rates": {
         "gas": 3,
-        "recurring_bills": 3,
+        "bills": 3,
         "other": 1
       },
       "caps": [],
@@ -4263,7 +4263,7 @@
         "type": "annual"
       },
       "earn_rates": {
-        "travel_general": 3,
+        "travel": 3,
         "dining": 2,
         "other": 1
       },
