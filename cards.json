@@ -2,7 +2,7 @@
   "meta": {
     "currency": "CAD",
     "spend_time_basis": "monthly_input_annualized",
-    "last_verified": "2026-02-25",
+    "last_verified": "2026-02-26",
     "category_schema_modeled": [
       "grocery",
       "dining",
@@ -1738,26 +1738,6 @@
       "special_earn_rules": []
     },
     {
-      "id": "scotia_momentum_we_mc",
-      "card_name": "Scotia Momentum World Elite Mastercard",
-      "issuer": "Scotiabank",
-      "network": "Mastercard",
-      "rewards_program": "scotia_cashback",
-      "annual_fee": {
-        "amount": 120,
-        "type": "annual"
-      },
-      "earn_rates": {
-        "recurring_bills": 4,
-        "gas": 2,
-        "grocery": 2,
-        "drugstore": 2,
-        "other": 1
-      },
-      "caps": [],
-      "special_earn_rules": []
-    },
-    {
       "id": "bmo_rewards_mastercard",
       "card_name": "BMO Rewards Mastercard",
       "issuer": "BMO",
@@ -2197,25 +2177,6 @@
           "description": "RBC Avion travel portal and selected partner booking channels may offer earn differences vs. baseline spend."
         }
       ]
-    },
-    {
-      "id": "rbc_ion_premium",
-      "card_name": "RBC ION+ Premium",
-      "issuer": "RBC",
-      "network": "Visa",
-      "rewards_program": "rbc_avion",
-      "annual_fee": {
-        "amount": 48,
-        "type": "annual"
-      },
-      "earn_rates": {
-        "grocery": 3,
-        "dining": 3,
-        "rideshare": 3,
-        "other": 1
-      },
-      "caps": [],
-      "special_earn_rules": []
     },
     {
       "id": "scotia_scene_visa",
