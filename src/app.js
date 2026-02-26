@@ -11,6 +11,7 @@ const runBtn = document.getElementById("runBtn");
 const valuationModeEl = document.getElementById("valuationMode");
 
 const kInput = document.getElementById("k");
+const kValueEl = document.getElementById("kValue");
 
 async function main() {
   try {
@@ -31,27 +32,25 @@ async function main() {
     kInput.max = String(maxSelectableCards);
     kInput.value = String(clampInt(kInput.value, 1, maxSelectableCards));
 
-    renderSpendTable(spendTableEl, schema, categoryDescriptions);
-    renderIssues(issuesEl, issues);
-    const issuesWrap = document.getElementById("issuesWrap");
-    if (issuesWrap) {
-      if (issues.length) issuesWrap.classList.remove("hidden");
-      else issuesWrap.classList.add("hidden");
+    const comboCache = new Map();
+
+    function updateKValue() {
+      if (kValueEl) kValueEl.textContent = String(kInput.value);
     }
 
-    appEl.classList.remove("hidden");
-
-    runBtn.addEventListener("click", () => {
-      runBtn.disabled = true;
-      resultEl.classList.add("hidden");
-      resultEl.textContent = "Computing…";
-
-      const k = clampInt(kInput.value, 1, maxSelectableCards);
-      const valuationMode = valuationModeEl?.value === "minimum_guaranteed"
+    function currentValuationMode() {
+      return valuationModeEl?.value === "minimum_guaranteed"
         ? "minimum_guaranteed"
         : "estimated";
-      const monthlySpend = readMonthlySpend(schema);
-      const annualSpend = annualizeMonthlySpend(monthlySpend, schema);
+    }
+
+    function spendKey(monthlySpend) {
+      return schema.map((cat) => `${cat}:${monthlySpend[cat] || 0}`).join("|");
+    }
+
+    function getBestCombo(k, annualSpend, valuationMode, monthlySpend) {
+      const key = `${spendKey(monthlySpend)}::${valuationMode}::${k}`;
+      if (comboCache.has(key)) return comboCache.get(key);
 
       const best = findBestCombo({
         cards: eligibleCards,
@@ -61,10 +60,42 @@ async function main() {
         annualSpend,
         valuationMode
       });
+      comboCache.set(key, best);
+      return best;
+    }
+
+    function runOptimizer() {
+      runBtn.disabled = true;
+      resultEl.classList.add("hidden");
+      resultEl.textContent = "Computing…";
+
+      const k = clampInt(kInput.value, 1, maxSelectableCards);
+      kInput.value = String(k);
+      updateKValue();
+
+      const valuationMode = currentValuationMode();
+      const monthlySpend = readMonthlySpend(schema);
+      const annualSpend = annualizeMonthlySpend(monthlySpend, schema);
+      const best = getBestCombo(k, annualSpend, valuationMode, monthlySpend);
 
       renderResult(resultEl, best, annualSpend, schema, valuationMode);
       runBtn.disabled = false;
-    });
+    }
+
+    renderSpendTable(spendTableEl, schema, categoryDescriptions);
+    renderIssues(issuesEl, issues);
+    const issuesWrap = document.getElementById("issuesWrap");
+    if (issuesWrap) {
+      if (issues.length) issuesWrap.classList.remove("hidden");
+      else issuesWrap.classList.add("hidden");
+    }
+
+    updateKValue();
+    appEl.classList.remove("hidden");
+
+    runBtn.addEventListener("click", runOptimizer);
+    kInput.addEventListener("input", runOptimizer);
+    valuationModeEl?.addEventListener("change", runOptimizer);
 
   } catch (e) {
     statusEl.innerHTML = `<span class="badge bad">Error</span> ${e.message}`;

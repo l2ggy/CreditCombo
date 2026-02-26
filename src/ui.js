@@ -19,7 +19,7 @@ export function renderSpendTable(el, schema, categoryDescriptions = {}) {
               <div class="mono">${cat}</div>
               <div class="category-desc muted">${escapeHtml(categoryDescriptions[cat] || "")}</div>
             </td>
-            <td><input type="number" min="0" step="1" value="0" data-cat="${cat}" /></td>
+            <td><input class="spend-input" type="number" min="0" step="1" value="0" data-cat="${cat}" /></td>
           </tr>
         `).join("")}
       </tbody>
