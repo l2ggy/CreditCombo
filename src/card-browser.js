@@ -2,7 +2,8 @@ import { loadJson } from "./data.js";
 
 const state = {
   cards: [],
-  filteredCards: []
+  filteredCards: [],
+  earnRateCategories: []
 };
 
 const els = {
@@ -77,14 +78,45 @@ function sortCards(cards) {
   return sorted;
 }
 
-function earnRateMarkup(earnRates) {
-  const entries = Object.entries(earnRates || {});
-  if (!entries.length) return "<li class=\"muted\">No earn rates available</li>";
+function collectEarnRateCategories(cards) {
+  const categories = new Set();
 
-  return entries
-    .sort((a, b) => b[1] - a[1])
-    .map(([category, rate]) => `<li><span class="mono">${category}</span><strong>${rate}×</strong></li>`)
-    .join("");
+  for (const card of cards) {
+    for (const category of Object.keys(card.earn_rates || {})) {
+      categories.add(category);
+    }
+  }
+
+  return [...categories].sort((a, b) => {
+    if (a === "other") return 1;
+    if (b === "other") return -1;
+    return a.localeCompare(b);
+  });
+}
+
+function earnRateMarkup(earnRates, categories) {
+  if (!categories.length) return '<p class="muted">No earn rates available.</p>';
+
+  const otherRate = earnRates?.other;
+  const headers = categories.map((category) => `<th class="mono">${category}</th>`).join("");
+  const cells = categories.map((category) => {
+    const rate = earnRates?.[category] ?? otherRate;
+    const value = Number.isFinite(Number(rate)) ? `${Number(rate)}×` : "n/a";
+    return `<td><strong>${value}</strong></td>`;
+  }).join("");
+
+  return `
+    <div class="browserRateTableWrap">
+      <table class="browserRateTable">
+        <thead>
+          <tr>${headers}</tr>
+        </thead>
+        <tbody>
+          <tr>${cells}</tr>
+        </tbody>
+      </table>
+    </div>
+  `;
 }
 
 function capMarkup(caps) {
@@ -123,7 +155,7 @@ function renderCards() {
       <div class="browserCardBody">
         <section>
           <h4>Earn rates</h4>
-          <ul class="browserRateList">${earnRateMarkup(card.earn_rates)}</ul>
+          ${earnRateMarkup(card.earn_rates, state.earnRateCategories)}
         </section>
         <section>
           <h4>Caps</h4>
@@ -145,6 +177,7 @@ async function init() {
   try {
     const cardsJson = await loadJson("./cards.json");
     state.cards = cardsJson?.cards ?? [];
+    state.earnRateCategories = collectEarnRateCategories(state.cards);
 
     const issuers = [...new Set(state.cards.map((c) => c.issuer))].sort((a, b) => a.localeCompare(b));
     const programs = [...new Set(state.cards.map((c) => c.rewards_program))].sort((a, b) => a.localeCompare(b));
