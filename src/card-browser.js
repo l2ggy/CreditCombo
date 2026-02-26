@@ -1,7 +1,8 @@
-import { loadJson } from "./data.js";
+import { loadJson, normalizePrograms } from "./data.js";
 
 const state = {
   cards: [],
+  programs: new Map(),
   filteredCards: []
 };
 
@@ -77,13 +78,25 @@ function sortCards(cards) {
   return sorted;
 }
 
-function earnRateMarkup(earnRates) {
+function formatEarnPercent(multiplierRate, rewardsProgram) {
+  const program = state.programs.get(rewardsProgram);
+  const centsPerPoint = Number(program?.cents_per_point);
+  if (!Number.isFinite(centsPerPoint)) return null;
+
+  return (multiplierRate * centsPerPoint).toFixed(1);
+}
+
+function earnRateMarkup(earnRates, rewardsProgram) {
   const entries = Object.entries(earnRates || {});
   if (!entries.length) return "<li class=\"muted\">No earn rates available</li>";
 
   return entries
     .sort((a, b) => b[1] - a[1])
-    .map(([category, rate]) => `<li><span class="mono">${category}</span><strong>${rate}×</strong></li>`)
+    .map(([category, rate]) => {
+      const earnPercent = formatEarnPercent(rate, rewardsProgram);
+      const percentMarkup = earnPercent == null ? "" : `<span class="browserEarnPercent">(${earnPercent}%)</span>`;
+      return `<li><span class="mono">${category}</span><strong>${rate}× ${percentMarkup}</strong></li>`;
+    })
     .join("");
 }
 
@@ -123,7 +136,7 @@ function renderCards() {
       <div class="browserCardBody">
         <section>
           <h4>Earn rates</h4>
-          <ul class="browserRateList">${earnRateMarkup(card.earn_rates)}</ul>
+          <ul class="browserRateList">${earnRateMarkup(card.earn_rates, card.rewards_program)}</ul>
         </section>
         <section>
           <h4>Caps</h4>
@@ -143,7 +156,12 @@ function registerEvents() {
 
 async function init() {
   try {
-    const cardsJson = await loadJson("./cards.json");
+    const [cardsJson, programsJson] = await Promise.all([
+      loadJson("./cards.json"),
+      loadJson("./programs.json")
+    ]);
+
+    state.programs = normalizePrograms(programsJson);
     state.cards = cardsJson?.cards ?? [];
 
     const issuers = [...new Set(state.cards.map((c) => c.issuer))].sort((a, b) => a.localeCompare(b));
