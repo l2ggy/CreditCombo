@@ -15,6 +15,7 @@ const lockedCardsPanelEl = document.getElementById("lockedCardsPanel");
 const lockedCardSearchEl = document.getElementById("lockedCardSearch");
 const lockedCardOptionsEl = document.getElementById("lockedCardOptions");
 const lockedCardPicksEl = document.getElementById("lockedCardPicks");
+const lockedCardsDividerEl = document.getElementById("lockedCardsDivider");
 
 const kInput = document.getElementById("k");
 const kValueEl = document.getElementById("kValue");
@@ -129,6 +130,7 @@ async function main() {
       sanitizeLockedCardSelection();
       const enabled = Boolean(enableLockedCardsEl?.checked);
       lockedCardsPanelEl?.classList.toggle("hidden", !enabled);
+      lockedCardsDividerEl?.classList.toggle("hidden", !enabled);
 
       if (!enabled) {
         if (lockedCardSearchEl) lockedCardSearchEl.value = "";
