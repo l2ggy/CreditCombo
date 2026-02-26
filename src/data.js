@@ -31,10 +31,10 @@ export function validateAndFilterCards(cardsJson, programsMap) {
   const rawCards = cardsJson?.cards ?? [];
 
   if (!Array.isArray(schema) || schema.length === 0) {
-    throw new Error("cards.json missing meta.category_schema_modeled");
+    throw new Error("data/cards.json missing meta.category_schema_modeled");
   }
   if (!Array.isArray(rawCards) || rawCards.length === 0) {
-    throw new Error("cards.json missing cards[]");
+    throw new Error("data/cards.json missing cards[]");
   }
 
   const eligible = [];

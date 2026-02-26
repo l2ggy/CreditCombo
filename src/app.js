@@ -17,8 +17,8 @@ const kValueEl = document.getElementById("kValue");
 async function main() {
   try {
     const [cardsJson, programsJson] = await Promise.all([
-      loadJson("./cards.json"),
-      loadJson("./programs.json")
+      loadJson("./data/cards.json"),
+      loadJson("./data/programs.json")
     ]);
 
     const programsMap = normalizePrograms(programsJson);
