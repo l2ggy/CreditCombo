@@ -113,7 +113,7 @@ input[type="search"]{
 input[type="search"]:focus{border-color:var(--accent)}
 
 .browserLayout{display:grid;gap:14px}
-.browserControls{position:sticky;top:10px}
+.browserControls{position:static}
 .browserFilterGrid{display:grid;grid-template-columns:repeat(4,minmax(170px,1fr));gap:10px}
 .browserCards{display:grid;gap:12px}
 .browserCardTop{display:flex;justify-content:space-between;gap:14px;align-items:flex-start}
