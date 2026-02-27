@@ -1,4 +1,5 @@
 import { loadJson, normalizePrograms } from "./data.js";
+import { addToCompareQueue } from "./compare-queue.js";
 
 const state = {
   cards: [],
@@ -202,6 +203,10 @@ function renderCards() {
           ${capMarkup(card.caps)}
         </section>
       </div>
+
+      <div class="browserCardActions">
+        <button type="button" class="queueAddBtn" data-queue-card-id="${card.id}">Add to comparison queue</button>
+      </div>
     </article>
   `).join("");
 }
@@ -218,6 +223,14 @@ function registerEvents() {
       renderCards();
     });
   }
+
+  els.cardsList?.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-queue-card-id]");
+    if (!button) return;
+    addToCompareQueue(button.dataset.queueCardId, state.cards.map((card) => card.id));
+    button.textContent = "Queued";
+    button.disabled = true;
+  });
 }
 
 async function init() {

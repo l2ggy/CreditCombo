@@ -396,3 +396,13 @@ tbody tr:last-child td{border-bottom:none}
 @media (max-width:380px){
   .useGrid{grid-template-columns:1fr}
 }
+
+.compareLayout{grid-template-columns:1fr 1fr;margin-top:14px}
+.compareDropZone{margin-top:10px;padding:10px;border:1px dashed var(--border);border-radius:10px;color:var(--muted)}
+.dropZoneActive{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 16%, transparent)}
+.queueItem{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--border)}
+.queueActions{display:flex;gap:8px;flex-wrap:wrap}
+.browserCardActions{margin-top:10px}
+.queueAddBtn{padding:8px 10px}
+.compareSummaryGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:900px){.compareLayout,.compareSummaryGrid{grid-template-columns:1fr}}

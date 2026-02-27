@@ -160,3 +160,45 @@ function escapeHtml(s) {
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
 }
+
+
+export function renderComparisonResult(el, leftResult, rightResult, schema, valuationMode = "estimated") {
+  if (!leftResult?.best || !rightResult?.best) {
+    el.innerHTML = "";
+    return;
+  }
+
+  const left = leftResult.best;
+  const right = rightResult.best;
+  const netDelta = right.net - left.net;
+  const deltaDirection = netDelta >= 0 ? "Right" : "Left";
+
+  const sideSummary = (label, result) => {
+    const cards = result.combo.map((card) => `<li class="resultCardItem">${cardThumbMarkup(card)}<span><b>${escapeHtml(card.card_name)}</b> <span class="muted">(${escapeHtml(card.issuer)})</span></span></li>`).join("");
+    return `<section><h3>${label}</h3><ul class="comboList">${cards || '<li class="muted">No cards</li>'}</ul><table><tbody><tr><th>Gross rewards</th><td>${money(result.gross)}</td></tr><tr><th>Annual fees</th><td>${money(result.fees)}</td></tr><tr><th>Net value</th><td><b>${money(result.net)}</b></td></tr></tbody></table></section>`;
+  };
+
+  const breakdown = schema.map((cat) => {
+    const l = categoryNetValue(left, cat, valuationMode);
+    const r = categoryNetValue(right, cat, valuationMode);
+    const winner = r > l ? "Right" : l > r ? "Left" : "Tie";
+    return `<tr><th class="mono">${escapeHtml(cat)}</th><td>${money(l)}</td><td>${money(r)}</td><td>${winner}</td></tr>`;
+  }).join("");
+
+  el.innerHTML = `
+    <h2>Comparison summary</h2>
+    <div class="compareSummaryGrid">${sideSummary("Left combo", left)}${sideSummary("Right combo", right)}</div>
+    <p><b>Net delta (Right − Left): ${money(netDelta)}</b> · ${deltaDirection} side leads.</p>
+    <h3>Category winner breakdown</h3>
+    <table><thead><tr><th>Category</th><th>Left</th><th>Right</th><th>Winner</th></tr></thead><tbody>${breakdown}</tbody></table>
+  `;
+}
+
+function categoryNetValue(result, category) {
+  const card = result.combo.find((c) => (result.assigned?.[c.id]?.[category] || 0) > 0);
+  if (!card) return 0;
+  const spend = Number(result.assigned?.[card.id]?.[category] || 0);
+  if (!spend) return 0;
+  const perDollar = result.gross / Math.max(1, Object.values(result.assigned[card.id] || {}).reduce((a, b) => a + b, 0));
+  return spend * perDollar;
+}
