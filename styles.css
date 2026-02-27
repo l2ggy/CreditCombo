@@ -360,6 +360,7 @@ tbody tr:last-child td{border-bottom:none}
 
 .browserLayout{display:grid;gap:14px}
 .browserControls{position:static}
+.browserResetBtn{width:auto;padding:8px 12px;font-size:12px}
 .browserFilterGrid{display:grid;grid-template-columns:repeat(4,minmax(170px,1fr));gap:10px}
 .browserCards{display:grid;gap:12px}
 .browserCardTop{display:flex;justify-content:space-between;gap:14px;align-items:flex-start}
@@ -393,4 +394,3 @@ tbody tr:last-child td{border-bottom:none}
 @media (max-width:380px){
   .useGrid{grid-template-columns:1fr}
 }
-
