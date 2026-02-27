@@ -250,6 +250,8 @@ function computeCandidateLimit(cardCount, maxSize) {
 export function findBestCombo({ cards, programsMap, schema, k, annualSpend, valuationMode = "estimated", lockedCardIds = [], additionalCardIds = null }) {
   let best = { combo: [], net: -1e18, gross: 0, fees: 0, assigned: null };
 
+  const businessCardCount = (result) => result.combo.reduce((count, card) => count + (card.is_business_card ? 1 : 0), 0);
+
   const byId = new Map(cards.map((card) => [card.id, card]));
   const lockedCards = [...new Set(lockedCardIds)].map((id) => byId.get(id)).filter(Boolean);
   const lockedIds = new Set(lockedCards.map((card) => card.id));
@@ -272,7 +274,9 @@ export function findBestCombo({ cards, programsMap, schema, k, annualSpend, valu
       const result = evaluateCombo([...lockedCards, ...combo], annualSpend, schema, programsMap, valuationMode);
       const sameNet = Math.abs(result.net - best.net) <= 1e-9;
       const fewerCards = result.combo.length < best.combo.length;
-      if (result.net > best.net || (sameNet && fewerCards)) best = result;
+      const sameCardCount = result.combo.length === best.combo.length;
+      const fewerBusinessCards = businessCardCount(result) < businessCardCount(best);
+      if (result.net > best.net || (sameNet && (fewerCards || (sameCardCount && fewerBusinessCards)))) best = result;
     }
   }
 
