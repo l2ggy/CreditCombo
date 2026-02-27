@@ -11,6 +11,7 @@ const resultEl = document.getElementById("result");
 const runBtn = document.getElementById("runBtn");
 const valuationModeEl = document.getElementById("valuationMode");
 const excludeFeeCardsEl = document.getElementById("excludeFeeCards");
+const excludeBusinessCardsEl = document.getElementById("excludeBusinessCards");
 const enableLockedCardsEl = document.getElementById("enableLockedCards");
 const lockedCardsPanelEl = document.getElementById("lockedCardsPanel");
 const lockedCardSearchEl = document.getElementById("lockedCardSearch");
@@ -50,6 +51,7 @@ async function main() {
       const selectedIds = new Set(selectedLockedCardIds());
       let pool = eligibleCards.filter((card) => !selectedIds.has(card.id));
       if (excludeFeeCardsEl?.checked) pool = pool.filter((card) => Number(card.annual_fee?.amount ?? 0) <= 0);
+      if (excludeBusinessCardsEl?.checked) pool = pool.filter((card) => !card.is_business_card);
       return pool;
     }
 
@@ -159,9 +161,10 @@ async function main() {
 
     function getBestCombo(allCards, additionalCards, k, annualSpend, valuationMode, monthlySpend, lockedIds) {
       const excludeFeeCards = excludeFeeCardsEl?.checked ? "excludeFee" : "allCards";
+      const excludeBusinessCards = excludeBusinessCardsEl?.checked ? "excludeBusiness" : "includeBusiness";
       const lockKey = [...lockedIds].sort().join(",");
       const additionalIdsKey = additionalCards.map((card) => card.id).sort().join(",");
-      const key = `${spendKey(monthlySpend)}::${valuationMode}::${k}::${excludeFeeCards}::${lockKey}::${additionalIdsKey}`;
+      const key = `${spendKey(monthlySpend)}::${valuationMode}::${k}::${excludeFeeCards}::${excludeBusinessCards}::${lockKey}::${additionalIdsKey}`;
       if (comboCache.has(key)) return comboCache.get(key);
 
       const best = findBestCombo({
@@ -247,6 +250,7 @@ async function main() {
     kInput.addEventListener("input", runOptimizer);
     valuationModeEl?.addEventListener("change", runOptimizer);
     excludeFeeCardsEl?.addEventListener("change", runOptimizer);
+    excludeBusinessCardsEl?.addEventListener("change", runOptimizer);
     enableLockedCardsEl?.addEventListener("change", runOptimizer);
 
     lockedCardSearchEl?.addEventListener("input", () => {

@@ -61,7 +61,19 @@
         "If terms cite portal-only travel acceleration, keep baseline travel in travel and capture portal uplift in special_earn_rules."
       ]
     },
-    "cards_sort_order": "cards[] are sorted by issuer (asc), network (asc), card_name (asc), then id (asc); keep this order when adding/updating cards."
+    "cards_sort_order": "cards[] are sorted by issuer (asc), network (asc), card_name (asc), then id (asc); keep this order when adding/updating cards.",
+    "card_item_required_fields": [
+      "id",
+      "card_name",
+      "issuer",
+      "network",
+      "rewards_program",
+      "is_business_card",
+      "annual_fee",
+      "earn_rates",
+      "caps",
+      "special_earn_rules"
+    ]
   },
   "cards": [
     {
@@ -70,6 +82,7 @@
       "issuer": "American Express",
       "network": "American Express",
       "rewards_program": "aeroplan",
+      "is_business_card": true,
       "annual_fee": {
         "amount": 599,
         "type": "annual"
@@ -100,6 +113,7 @@
       "issuer": "American Express",
       "network": "American Express",
       "rewards_program": "aeroplan",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 120,
         "type": "annual"
@@ -126,6 +140,7 @@
       "issuer": "American Express",
       "network": "American Express",
       "rewards_program": "aeroplan",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 599,
         "type": "annual"
@@ -156,6 +171,7 @@
       "issuer": "American Express",
       "network": "American Express",
       "rewards_program": "amex_mr_ca",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 192,
         "type": "annual"
@@ -194,6 +210,7 @@
       "issuer": "American Express",
       "network": "American Express",
       "rewards_program": "amex_mr_ca",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 250,
         "type": "annual"
@@ -223,6 +240,7 @@
       "issuer": "American Express",
       "network": "American Express",
       "rewards_program": "amex_mr_ca",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 0,
         "type": "annual"
@@ -243,6 +261,7 @@
       "issuer": "American Express",
       "network": "American Express",
       "rewards_program": "amex_mr_ca",
+      "is_business_card": true,
       "annual_fee": {
         "amount": 199,
         "type": "annual"
@@ -264,6 +283,7 @@
       "issuer": "American Express",
       "network": "American Express",
       "rewards_program": "amex_mr_ca",
+      "is_business_card": true,
       "annual_fee": {
         "amount": 799,
         "type": "annual"
@@ -289,6 +309,7 @@
       "issuer": "American Express",
       "network": "American Express",
       "rewards_program": "marriott_bonvoy",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 120,
         "type": "annual"
@@ -313,6 +334,7 @@
       "issuer": "American Express",
       "network": "American Express",
       "rewards_program": "marriott_bonvoy",
+      "is_business_card": true,
       "annual_fee": {
         "amount": 150,
         "type": "annual"
@@ -335,6 +357,7 @@
       "issuer": "American Express",
       "network": "American Express",
       "rewards_program": "amex_cashback",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 0,
         "type": "annual"
@@ -362,6 +385,7 @@
       "issuer": "American Express",
       "network": "American Express",
       "rewards_program": "amex_cashback",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 119.88,
         "type": "annual"
@@ -389,6 +413,7 @@
       "issuer": "American Express",
       "network": "American Express",
       "rewards_program": "amex_mr_ca",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 799,
         "type": "annual"
@@ -416,6 +441,7 @@
       "issuer": "ATB",
       "network": "Mastercard",
       "rewards_program": "atb_cashback",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 0,
         "type": "annual"
@@ -435,6 +461,7 @@
       "issuer": "ATB",
       "network": "Mastercard",
       "rewards_program": "atb_rewards",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 0,
         "type": "annual"
@@ -454,6 +481,7 @@
       "issuer": "ATB",
       "network": "Mastercard",
       "rewards_program": "atb_rewards",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 120,
         "type": "annual"
@@ -473,6 +501,7 @@
       "issuer": "BMO",
       "network": "Mastercard",
       "rewards_program": "bmo_rewards",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 150,
         "type": "annual"
@@ -528,6 +557,7 @@
       "issuer": "BMO",
       "network": "Mastercard",
       "rewards_program": "bmo_cashback",
+      "is_business_card": true,
       "annual_fee": {
         "amount": 0,
         "type": "annual"
@@ -548,6 +578,7 @@
       "issuer": "BMO",
       "network": "Mastercard",
       "rewards_program": "bmo_cashback",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 0,
         "type": "annual"
@@ -568,6 +599,7 @@
       "issuer": "BMO",
       "network": "Mastercard",
       "rewards_program": "bmo_cashback",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 120,
         "type": "annual"
@@ -634,6 +666,7 @@
       "issuer": "BMO",
       "network": "Mastercard",
       "rewards_program": "bmo_cashback",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 0,
         "type": "annual"
@@ -667,6 +700,7 @@
       "issuer": "BMO",
       "network": "Mastercard",
       "rewards_program": "canadian_non_rewards",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 29,
         "type": "annual"
@@ -691,6 +725,7 @@
       "issuer": "BMO",
       "network": "Mastercard",
       "rewards_program": "canadian_non_rewards",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 49,
         "type": "annual"
@@ -715,6 +750,7 @@
       "issuer": "BMO",
       "network": "Mastercard",
       "rewards_program": "viporter",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 89,
         "type": "annual"
@@ -739,6 +775,7 @@
       "issuer": "BMO",
       "network": "Mastercard",
       "rewards_program": "viporter",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 199,
         "type": "annual"
@@ -767,6 +804,7 @@
       "issuer": "BMO",
       "network": "Mastercard",
       "rewards_program": "bmo_rewards",
+      "is_business_card": true,
       "annual_fee": {
         "amount": 149,
         "type": "annual"
@@ -791,6 +829,7 @@
       "issuer": "BMO",
       "network": "Mastercard",
       "rewards_program": "bmo_cashback",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 0,
         "type": "annual"
@@ -811,6 +850,7 @@
       "issuer": "BMO",
       "network": "Visa",
       "rewards_program": "bmo_rewards",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 0,
         "type": "annual"
@@ -839,6 +879,7 @@
       "issuer": "BMO",
       "network": "Visa",
       "rewards_program": "bmo_rewards",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 599,
         "type": "annual"
@@ -884,6 +925,7 @@
       "issuer": "BMO",
       "network": "Visa",
       "rewards_program": "bmo_rewards",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 120,
         "type": "annual"
@@ -950,6 +992,7 @@
       "issuer": "Brim Financial",
       "network": "Mastercard",
       "rewards_program": "brim_cashback",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 0,
         "type": "annual"
@@ -974,6 +1017,7 @@
       "issuer": "Brim Financial",
       "network": "Mastercard",
       "rewards_program": "brim_cashback",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 199,
         "type": "annual"
@@ -998,6 +1042,7 @@
       "issuer": "Canadian Tire Bank",
       "network": "Mastercard",
       "rewards_program": "ct_money",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 0,
         "type": "annual"
@@ -1017,6 +1062,7 @@
       "issuer": "Canadian Tire Bank",
       "network": "Mastercard",
       "rewards_program": "ct_money",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 0,
         "type": "annual"
@@ -1046,6 +1092,7 @@
       "issuer": "Canadian Tire Financial Services",
       "network": "Mastercard",
       "rewards_program": "ct_money",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 0,
         "type": "annual"
@@ -1080,6 +1127,7 @@
       "issuer": "Capital One",
       "network": "Mastercard",
       "rewards_program": "capital_one_non_rewards",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 59,
         "type": "annual"
@@ -1104,6 +1152,7 @@
       "issuer": "Capital One",
       "network": "Mastercard",
       "rewards_program": "capital_one_smart_rewards",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 0,
         "type": "annual"
@@ -1123,6 +1172,7 @@
       "issuer": "CIBC",
       "network": "Mastercard",
       "rewards_program": "cibc_dividend_cashback",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 0,
         "type": "annual"
@@ -1154,6 +1204,7 @@
       "issuer": "CIBC",
       "network": "Visa",
       "rewards_program": "aeroplan",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 0,
         "type": "annual"
@@ -1181,6 +1232,7 @@
       "issuer": "CIBC",
       "network": "Visa",
       "rewards_program": "aeroplan",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 139,
         "type": "annual"
@@ -1225,6 +1277,7 @@
       "issuer": "CIBC",
       "network": "Visa",
       "rewards_program": "aeroplan",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 599,
         "type": "annual"
@@ -1252,6 +1305,7 @@
       "issuer": "CIBC",
       "network": "Visa",
       "rewards_program": "cibc_aventura",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 139,
         "type": "annual"
@@ -1279,6 +1333,7 @@
       "issuer": "CIBC",
       "network": "Visa",
       "rewards_program": "cibc_aventura",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 0,
         "type": "annual"
@@ -1305,6 +1360,7 @@
       "issuer": "CIBC",
       "network": "Visa",
       "rewards_program": "cibc_aventura",
+      "is_business_card": true,
       "annual_fee": {
         "amount": 120,
         "type": "annual"
@@ -1331,6 +1387,7 @@
       "issuer": "CIBC",
       "network": "Visa",
       "rewards_program": "cibc_aventura",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 139,
         "type": "annual"
@@ -1375,6 +1432,7 @@
       "issuer": "CIBC",
       "network": "Visa",
       "rewards_program": "cibc_aventura",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 499,
         "type": "annual"
@@ -1401,6 +1459,7 @@
       "issuer": "CIBC",
       "network": "Visa",
       "rewards_program": "canadian_non_rewards",
+      "is_business_card": true,
       "annual_fee": {
         "amount": 0,
         "type": "annual"
@@ -1425,6 +1484,7 @@
       "issuer": "CIBC",
       "network": "Visa",
       "rewards_program": "cibc_dividend_cashback",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 99,
         "type": "annual"
@@ -1447,6 +1507,7 @@
       "issuer": "CIBC",
       "network": "Visa",
       "rewards_program": "cibc_dividend_cashback",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 0,
         "type": "annual"
@@ -1476,6 +1537,7 @@
       "issuer": "CIBC",
       "network": "Visa",
       "rewards_program": "cibc_dividend_cashback",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 120,
         "type": "annual"
@@ -1506,6 +1568,7 @@
       "issuer": "CIBC",
       "network": "Visa",
       "rewards_program": "canadian_non_rewards",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 29,
         "type": "annual"
@@ -1530,6 +1593,7 @@
       "issuer": "Desjardins",
       "network": "Mastercard",
       "rewards_program": "desjardins_bonusdollars",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 0,
         "type": "annual"
@@ -1549,6 +1613,7 @@
       "issuer": "Desjardins",
       "network": "Mastercard",
       "rewards_program": "desjardins_bonusdollars",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 110,
         "type": "annual"
@@ -1569,6 +1634,7 @@
       "issuer": "Desjardins",
       "network": "Mastercard",
       "rewards_program": "desjardins_bonusdollars",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 395,
         "type": "annual"
@@ -1591,6 +1657,7 @@
       "issuer": "Desjardins",
       "network": "Mastercard",
       "rewards_program": "desjardins_bonusdollars",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 130,
         "type": "annual"
@@ -1615,6 +1682,7 @@
       "issuer": "Desjardins",
       "network": "Visa",
       "rewards_program": "desjardins_bonusdollars",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 30,
         "type": "annual"
@@ -1634,6 +1702,7 @@
       "issuer": "Desjardins",
       "network": "Visa",
       "rewards_program": "desjardins_bonusdollars",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 0,
         "type": "annual"
@@ -1653,6 +1722,7 @@
       "issuer": "Desjardins",
       "network": "Visa",
       "rewards_program": "canadian_non_rewards",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 0,
         "type": "annual"
@@ -1677,6 +1747,7 @@
       "issuer": "Desjardins",
       "network": "Visa",
       "rewards_program": "desjardins_bonusdollars",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 110,
         "type": "annual"
@@ -1697,6 +1768,7 @@
       "issuer": "EQ Bank",
       "network": "Mastercard",
       "rewards_program": "eq_cashback",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 0,
         "type": "annual"
@@ -1716,6 +1788,7 @@
       "issuer": "Fidem",
       "network": "Mastercard",
       "rewards_program": "canadian_non_rewards",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 120,
         "type": "annual"
@@ -1740,6 +1813,7 @@
       "issuer": "Home Trust",
       "network": "Visa",
       "rewards_program": "home_trust_cashback",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 0,
         "type": "annual"
@@ -1759,6 +1833,7 @@
       "issuer": "Home Trust",
       "network": "Visa",
       "rewards_program": "home_trust_cashback",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 0,
         "type": "annual"
@@ -1783,6 +1858,7 @@
       "issuer": "KOHO",
       "network": "Mastercard",
       "rewards_program": "koho_cashback",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 0,
         "type": "annual"
@@ -1819,6 +1895,7 @@
       "issuer": "KOHO",
       "network": "Mastercard",
       "rewards_program": "koho_cashback",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 0,
         "type": "annual"
@@ -1855,6 +1932,7 @@
       "issuer": "KOHO",
       "network": "Mastercard",
       "rewards_program": "koho_cashback",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 0,
         "type": "annual"
@@ -1891,6 +1969,7 @@
       "issuer": "Manulife Bank",
       "network": "Visa",
       "rewards_program": "manulife_cashback",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 120,
         "type": "annual"
@@ -1900,7 +1979,19 @@
         "bills": 3,
         "other": 1
       },
-      "caps": [],
+      "caps": [
+        {
+          "scope": "shared",
+          "categories": [
+            "grocery",
+            "bills"
+          ],
+          "cap_amount": 25000,
+          "cap_period": "annual",
+          "earn_rate_above_cap": 1,
+          "notes": "Accelerated cash back on grocery and recurring bill payments applies on up to $25,000 annual spend in combined eligible categories."
+        }
+      ],
       "special_earn_rules": [
         {
           "type": "category_restriction",
@@ -1921,6 +2012,7 @@
       "issuer": "MBNA",
       "network": "Mastercard",
       "rewards_program": "amazon_rewards",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 0,
         "type": "annual"
@@ -1940,6 +2032,7 @@
       "issuer": "MBNA",
       "network": "Mastercard",
       "rewards_program": "mbna_rewards",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 0,
         "type": "annual"
@@ -1988,6 +2081,7 @@
       "issuer": "MBNA",
       "network": "Mastercard",
       "rewards_program": "mbna_smart_cashback",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 0,
         "type": "annual"
@@ -2009,6 +2103,7 @@
       "issuer": "MBNA",
       "network": "Mastercard",
       "rewards_program": "mbna_smart_cashback",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 39,
         "type": "annual"
@@ -2030,6 +2125,7 @@
       "issuer": "MBNA",
       "network": "Mastercard",
       "rewards_program": "mbna_non_rewards",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 39,
         "type": "annual"
@@ -2054,6 +2150,7 @@
       "issuer": "MBNA",
       "network": "Mastercard",
       "rewards_program": "mbna_non_rewards",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 0,
         "type": "annual"
@@ -2078,6 +2175,7 @@
       "issuer": "MBNA (TD Bank Group)",
       "network": "Mastercard",
       "rewards_program": "mbna_rewards",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 120,
         "type": "annual"
@@ -2125,6 +2223,7 @@
       "issuer": "Meridian",
       "network": "Visa",
       "rewards_program": "meridian_cashback",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 0,
         "type": "annual"
@@ -2146,6 +2245,7 @@
       "issuer": "Meridian",
       "network": "Visa",
       "rewards_program": "meridian_rewards",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 99,
         "type": "annual"
@@ -2176,6 +2276,7 @@
       "issuer": "Meridian",
       "network": "Visa",
       "rewards_program": "meridian_cashback",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 99,
         "type": "annual"
@@ -2209,6 +2310,7 @@
       "issuer": "Meridian",
       "network": "Visa",
       "rewards_program": "meridian_rewards",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 65,
         "type": "annual"
@@ -2233,6 +2335,7 @@
       "issuer": "National Bank",
       "network": "Mastercard",
       "rewards_program": "nb_echo_cashback",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 0,
         "type": "annual"
@@ -2252,6 +2355,7 @@
       "issuer": "National Bank",
       "network": "Mastercard",
       "rewards_program": "canadian_non_rewards",
+      "is_business_card": true,
       "annual_fee": {
         "amount": 0,
         "type": "annual"
@@ -2276,6 +2380,7 @@
       "issuer": "National Bank",
       "network": "Mastercard",
       "rewards_program": "nb_echo_cashback",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 30,
         "type": "annual"
@@ -2295,6 +2400,7 @@
       "issuer": "National Bank",
       "network": "Mastercard",
       "rewards_program": "nb_echo_cashback",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 0,
         "type": "annual"
@@ -2319,6 +2425,7 @@
       "issuer": "National Bank",
       "network": "Mastercard",
       "rewards_program": "nb_a_la_carte",
+      "is_business_card": true,
       "annual_fee": {
         "amount": 125,
         "type": "annual"
@@ -2338,6 +2445,7 @@
       "issuer": "National Bank",
       "network": "Mastercard",
       "rewards_program": "nb_a_la_carte",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 89,
         "type": "annual"
@@ -2358,6 +2466,7 @@
       "issuer": "National Bank",
       "network": "Mastercard",
       "rewards_program": "nb_a_la_carte",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 0,
         "type": "annual"
@@ -2382,6 +2491,7 @@
       "issuer": "National Bank",
       "network": "Mastercard",
       "rewards_program": "nb_a_la_carte",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 150,
         "type": "annual"
@@ -2402,6 +2512,7 @@
       "issuer": "National Bank of Canada",
       "network": "Mastercard",
       "rewards_program": "nb_a_la_carte",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 150,
         "type": "annual"
@@ -2439,6 +2550,7 @@
       "issuer": "Neo Financial",
       "network": "Mastercard",
       "rewards_program": "asia_miles",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 180,
         "type": "annual"
@@ -2464,6 +2576,7 @@
       "issuer": "Neo Financial",
       "network": "Mastercard",
       "rewards_program": "scotia_cashback",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 0,
         "type": "annual"
@@ -2492,6 +2605,7 @@
       "issuer": "Neo Financial",
       "network": "Mastercard",
       "rewards_program": "neo_cashback",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 125,
         "type": "annual"
@@ -2521,6 +2635,7 @@
       "issuer": "Neo Financial",
       "network": "Mastercard",
       "rewards_program": "neo_cashback",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 0,
         "type": "annual"
@@ -2550,6 +2665,7 @@
       "issuer": "PC Financial",
       "network": "Mastercard",
       "rewards_program": "pc_optimum",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 0,
         "type": "annual"
@@ -2583,6 +2699,7 @@
       "issuer": "PC Financial",
       "network": "Mastercard",
       "rewards_program": "pc_optimum",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 0,
         "type": "annual"
@@ -2611,6 +2728,7 @@
       "issuer": "PC Financial",
       "network": "Mastercard",
       "rewards_program": "pc_optimum",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 120,
         "type": "annual"
@@ -2643,6 +2761,7 @@
       "issuer": "PC Financial",
       "network": "Mastercard",
       "rewards_program": "pc_optimum",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 0,
         "type": "annual"
@@ -2671,6 +2790,7 @@
       "issuer": "RBC",
       "network": "Mastercard",
       "rewards_program": "rbc_cashback",
+      "is_business_card": true,
       "annual_fee": {
         "amount": 0,
         "type": "annual"
@@ -2690,6 +2810,7 @@
       "issuer": "RBC",
       "network": "Mastercard",
       "rewards_program": "rbc_cashback",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 0,
         "type": "annual"
@@ -2731,6 +2852,7 @@
       "issuer": "RBC",
       "network": "Mastercard",
       "rewards_program": "rbc_cashback",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 99,
         "type": "annual"
@@ -2762,6 +2884,7 @@
       "issuer": "RBC",
       "network": "Mastercard",
       "rewards_program": "westjet_rewards",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 39,
         "type": "annual"
@@ -2798,6 +2921,7 @@
       "issuer": "RBC",
       "network": "Mastercard",
       "rewards_program": "westjet_rewards",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 139,
         "type": "annual"
@@ -2831,6 +2955,7 @@
       "issuer": "RBC",
       "network": "Visa",
       "rewards_program": "moi_rewards",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 0,
         "type": "annual"
@@ -2850,6 +2975,7 @@
       "issuer": "RBC",
       "network": "Visa",
       "rewards_program": "more_rewards",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 0,
         "type": "annual"
@@ -2874,6 +3000,7 @@
       "issuer": "RBC",
       "network": "Visa",
       "rewards_program": "more_rewards",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 0,
         "type": "annual"
@@ -2898,6 +3025,7 @@
       "issuer": "RBC",
       "network": "Visa",
       "rewards_program": "rbc_avion",
+      "is_business_card": true,
       "annual_fee": {
         "amount": 120,
         "type": "annual"
@@ -2924,6 +3052,7 @@
       "issuer": "RBC",
       "network": "Visa",
       "rewards_program": "rbc_avion",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 120,
         "type": "annual"
@@ -2950,6 +3079,7 @@
       "issuer": "RBC",
       "network": "Visa",
       "rewards_program": "rbc_avion",
+      "is_business_card": true,
       "annual_fee": {
         "amount": 175,
         "type": "annual"
@@ -2991,6 +3121,7 @@
       "issuer": "RBC",
       "network": "Visa",
       "rewards_program": "rbc_avion",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 399,
         "type": "annual"
@@ -3016,6 +3147,7 @@
       "issuer": "RBC",
       "network": "Visa",
       "rewards_program": "rbc_avion",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 48,
         "type": "annual"
@@ -3047,6 +3179,7 @@
       "issuer": "RBC",
       "network": "Visa",
       "rewards_program": "canadian_non_rewards",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 0,
         "type": "annual"
@@ -3071,6 +3204,7 @@
       "issuer": "RBC",
       "network": "Visa",
       "rewards_program": "rbc_avion",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 65,
         "type": "annual"
@@ -3095,6 +3229,7 @@
       "issuer": "RBC",
       "network": "Visa",
       "rewards_program": "rbc_cashback",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 20,
         "type": "annual"
@@ -3119,6 +3254,7 @@
       "issuer": "RBC",
       "network": "Visa",
       "rewards_program": "canadian_non_rewards",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 0,
         "type": "annual"
@@ -3143,6 +3279,7 @@
       "issuer": "RBC",
       "network": "Visa",
       "rewards_program": "rbc_avion",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 120,
         "type": "annual"
@@ -3168,6 +3305,7 @@
       "issuer": "RBC",
       "network": "Visa",
       "rewards_program": "rbc_avios",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 165,
         "type": "annual"
@@ -3192,6 +3330,7 @@
       "issuer": "RBC",
       "network": "Visa",
       "rewards_program": "rbc_avion",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 0,
         "type": "annual"
@@ -3226,6 +3365,7 @@
       "issuer": "Rogers Bank",
       "network": "Mastercard",
       "rewards_program": "rogers_cashback",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 0,
         "type": "annual"
@@ -3251,6 +3391,7 @@
       "issuer": "Rogers Bank",
       "network": "Mastercard",
       "rewards_program": "rogers_cashback",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 0,
         "type": "annual"
@@ -3280,6 +3421,7 @@
       "issuer": "Scotiabank",
       "network": "American Express",
       "rewards_program": "scene_plus",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 0,
         "type": "annual"
@@ -3302,6 +3444,7 @@
       "issuer": "Scotiabank",
       "network": "American Express",
       "rewards_program": "scene_plus",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 120,
         "type": "annual"
@@ -3333,6 +3476,7 @@
       "issuer": "Scotiabank",
       "network": "American Express",
       "rewards_program": "scene_plus",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 399,
         "type": "annual"
@@ -3355,6 +3499,7 @@
       "issuer": "Scotiabank",
       "network": "Mastercard",
       "rewards_program": "scotia_cashback",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 0,
         "type": "annual"
@@ -3377,6 +3522,7 @@
       "issuer": "Scotiabank",
       "network": "Visa",
       "rewards_program": "scotia_cashback",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 0,
         "type": "annual"
@@ -3407,6 +3553,7 @@
       "issuer": "Scotiabank",
       "network": "Visa",
       "rewards_program": "scotia_cashback",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 120,
         "type": "annual"
@@ -3461,6 +3608,7 @@
       "issuer": "Scotiabank",
       "network": "Visa",
       "rewards_program": "scotia_cashback",
+      "is_business_card": true,
       "annual_fee": {
         "amount": 79,
         "type": "annual"
@@ -3482,6 +3630,7 @@
       "issuer": "Scotiabank",
       "network": "Visa",
       "rewards_program": "scotia_cashback",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 29,
         "type": "annual"
@@ -3506,6 +3655,7 @@
       "issuer": "Scotiabank",
       "network": "Visa",
       "rewards_program": "scene_plus",
+      "is_business_card": true,
       "annual_fee": {
         "amount": 199,
         "type": "annual"
@@ -3527,6 +3677,7 @@
       "issuer": "Scotiabank",
       "network": "Visa",
       "rewards_program": "scene_plus",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 150,
         "type": "annual"
@@ -3551,6 +3702,7 @@
       "issuer": "Scotiabank",
       "network": "Visa",
       "rewards_program": "scene_plus",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 599,
         "type": "annual"
@@ -3572,6 +3724,7 @@
       "issuer": "Scotiabank",
       "network": "Visa",
       "rewards_program": "scene_plus",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 0,
         "type": "annual"
@@ -3593,6 +3746,7 @@
       "issuer": "Simplii Financial (CIBC)",
       "network": "Visa",
       "rewards_program": "simplii_cashback",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 0,
         "type": "annual"
@@ -3640,6 +3794,7 @@
       "issuer": "Tangerine",
       "network": "Mastercard",
       "rewards_program": "tangerine_cashback",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 0,
         "type": "annual"
@@ -3669,6 +3824,7 @@
       "issuer": "Tangerine",
       "network": "Mastercard",
       "rewards_program": "tangerine_cashback",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 0,
         "type": "annual"
@@ -3698,6 +3854,7 @@
       "issuer": "Tangerine Bank",
       "network": "Mastercard",
       "rewards_program": "tangerine_cashback",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 0,
         "type": "annual"
@@ -3727,6 +3884,7 @@
       "issuer": "TD",
       "network": "Visa",
       "rewards_program": "aeroplan",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 599,
         "type": "annual"
@@ -3754,6 +3912,7 @@
       "issuer": "TD",
       "network": "Visa",
       "rewards_program": "aeroplan",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 89,
         "type": "annual"
@@ -3780,6 +3939,7 @@
       "issuer": "TD",
       "network": "Visa",
       "rewards_program": "td_cashback",
+      "is_business_card": true,
       "annual_fee": {
         "amount": 0,
         "type": "annual"
@@ -3802,6 +3962,7 @@
       "issuer": "TD",
       "network": "Visa",
       "rewards_program": "td_rewards",
+      "is_business_card": true,
       "annual_fee": {
         "amount": 149,
         "type": "annual"
@@ -3826,6 +3987,7 @@
       "issuer": "TD",
       "network": "Visa",
       "rewards_program": "canadian_non_rewards",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 25,
         "type": "annual"
@@ -3850,6 +4012,7 @@
       "issuer": "TD",
       "network": "Visa",
       "rewards_program": "td_rewards",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 89,
         "type": "annual"
@@ -3876,6 +4039,7 @@
       "issuer": "TD",
       "network": "Visa",
       "rewards_program": "td_rewards",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 0,
         "type": "annual"
@@ -3902,6 +4066,7 @@
       "issuer": "TD Canada Trust",
       "network": "Visa",
       "rewards_program": "aeroplan",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 139,
         "type": "annual"
@@ -3947,6 +4112,7 @@
       "issuer": "TD Canada Trust",
       "network": "Visa",
       "rewards_program": "td_cashback",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 139,
         "type": "annual"
@@ -4028,6 +4194,7 @@
       "issuer": "TD Canada Trust",
       "network": "Visa",
       "rewards_program": "td_cashback",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 0,
         "type": "annual"
@@ -4084,6 +4251,7 @@
       "issuer": "TD Canada Trust",
       "network": "Visa",
       "rewards_program": "td_rewards",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 139,
         "type": "annual"
@@ -4123,6 +4291,7 @@
       "issuer": "TD Canada Trust",
       "network": "Visa",
       "rewards_program": "aeroplan",
+      "is_business_card": true,
       "annual_fee": {
         "amount": 149,
         "type": "annual"
@@ -4156,6 +4325,7 @@
       "issuer": "Tims Financial",
       "network": "Mastercard",
       "rewards_program": "tims_rewards",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 0,
         "type": "annual"
@@ -4176,6 +4346,7 @@
       "issuer": "Walmart Rewards Mastercard (DUCA)",
       "network": "Mastercard",
       "rewards_program": "walmart_cashback",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 0,
         "type": "annual"
@@ -4205,6 +4376,7 @@
       "issuer": "Walmart Rewards Mastercard (DUCA)",
       "network": "Mastercard",
       "rewards_program": "walmart_cashback",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 0,
         "type": "annual"
@@ -4234,6 +4406,7 @@
       "issuer": "Wealthsimple",
       "network": "Visa",
       "rewards_program": "wealthsimple_cashback",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 240,
         "type": "annual"
@@ -4253,6 +4426,7 @@
       "issuer": "Wealthsimple",
       "network": "Visa",
       "rewards_program": "wealthsimple_cashback",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 240,
         "type": "annual"
@@ -4272,6 +4446,7 @@
       "issuer": "Zolve",
       "network": "Mastercard",
       "rewards_program": "zolve_cashback",
+      "is_business_card": false,
       "annual_fee": {
         "amount": 0,
         "type": "annual"
