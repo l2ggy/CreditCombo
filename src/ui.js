@@ -101,15 +101,17 @@ export function renderResult(el, best, annualSpend, schema, valuationMode = "est
 
     if (!alloc.length) continue;
 
-    const thumbs = alloc.map(({ c, amt }) => {
+    const thumbs = alloc.map(({ c, amt }, idx) => {
       const amountPart = alloc.length > 1 ? ` — ${money(amt)}` : "";
-      return `<span class="useCardThumb" title="${escapeHtml(c.card_name)}${escapeHtml(amountPart)}" aria-label="${escapeHtml(c.card_name)}${escapeHtml(amountPart)}">${cardThumbMarkup(c, "useThumbImage", false)}</span>`;
+      return `<span class="useCardThumb" style="--stack-index:${idx}" title="${escapeHtml(c.card_name)}${escapeHtml(amountPart)}" aria-label="${escapeHtml(c.card_name)}${escapeHtml(amountPart)}">${cardThumbMarkup(c, "useThumbImage", false)}</span>`;
     }).join("");
+
+    const stackClass = alloc.length > 1 ? "useCards useCardsStack" : "useCards useCardsSingle";
 
     instructions.push(`
       <div class="useTile" role="listitem">
         <div class="mono useCategory">${escapeHtml(cat)}</div>
-        <div class="useCards useCards-${alloc.length}">${thumbs}</div>
+        <div class="${stackClass}" style="--stack-count:${alloc.length}">${thumbs}</div>
       </div>
     `);
   }
@@ -118,7 +120,7 @@ export function renderResult(el, best, annualSpend, schema, valuationMode = "est
 
   el.innerHTML = `
     <h2>Best combo</h2>
-    <ul>${comboList}</ul>
+    <ul class="comboList">${comboList}</ul>
 
     <h2>Annual value (${valuationMode === "minimum_guaranteed" ? "minimum guaranteed" : "estimated"})</h2>
     <table>
@@ -135,7 +137,8 @@ export function renderResult(el, best, annualSpend, schema, valuationMode = "est
       ${instructions.join("") || `<p class="muted">No spend entered.</p>`}
     </div>
 
-    <p class="muted">Mode: ${valuationMode === "minimum_guaranteed" ? "minimum guaranteed points redemption value" : "estimated points value"}. Note: <span class="mono">special_earn_rules</span> are ignored in this MVP.</p>
+    <p class="muted">Mode: ${valuationMode === "minimum_guaranteed" ? "minimum guaranteed points redemption value" : "estimated points value"}.</p>
+    <p class="muted">Note: <span class="mono">special_earn_rules</span> are ignored in this MVP.</p>
   `;
 }
 

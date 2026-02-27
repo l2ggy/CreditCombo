@@ -154,6 +154,7 @@ select[multiple]{padding:8px;background:transparent;appearance:auto;min-width:32
 .lockedChipRemove{display:inline-flex;align-items:center;justify-content:center;width:auto;min-width:20px;min-height:20px;border:none;background:transparent;color:var(--muted);padding:0;line-height:1;font-size:15px;font-weight:700;cursor:pointer}
 .lockedChipRemove:hover{color:var(--text)}
 
+.comboList{list-style:none;margin:0;padding:0}
 .resultCardItem{display:flex;align-items:center;gap:10px}
 .thumbFrame{width:44px;height:44px;display:inline-flex;align-items:center;justify-content:center;flex:0 0 44px}
 .resultCardThumb{width:auto;height:auto;max-width:44px;max-height:44px;border-radius:10%;border:1px solid var(--border);display:block}
@@ -248,20 +249,31 @@ tbody tr:last-child td{border-bottom:none}
 }
 .useCategory{font-size:12px;line-height:1.2;text-align:center}
 .useCards{
-  display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:4px;
   width:100%;
+  display:flex;
+  justify-content:center;
 }
-.useCards.useCards-1{grid-template-columns:minmax(0,1fr)}
-.useCards.useCards-2{grid-template-columns:repeat(2,minmax(0,1fr))}
-.useCards.useCards-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.useCardsSingle .useCardThumb{
+  width:clamp(34px, 7vw, 54px);
+  aspect-ratio:1/1;
+}
+.useCardsStack{
+  position:relative;
+  width:clamp(34px, 7vw, 54px);
+  height:calc(clamp(34px, 7vw, 54px) + (var(--stack-count, 1) - 1) * clamp(11px, 2vw, 18px));
+}
+.useCardsStack .useCardThumb{
+  position:absolute;
+  inset-inline:0;
+  top:calc(var(--stack-index, 0) * clamp(11px, 2vw, 18px));
+  width:100%;
+  aspect-ratio:1/1;
+  z-index:calc(10 - var(--stack-index, 0));
+}
 .useCardThumb{
   display:flex;
   align-items:center;
   justify-content:center;
-  aspect-ratio:1/1;
-  min-width:0;
   line-height:0;
 }
 .useThumbImage{
