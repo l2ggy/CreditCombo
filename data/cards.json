@@ -2499,14 +2499,21 @@
         "type": "annual"
       },
       "earn_rates": {
-        "grocery": 3,
-        "gas": 2,
-        "bills": 2,
         "other": 1
       },
       "caps": [],
-      "special_earn_rules": [],
+      "special_earn_rules": [
+        {
+          "type": "proxy_program",
+          "description": "Neo World earn is partner- and merchant-dependent; modeled as a conservative baseline cashback proxy instead of fixed category multipliers."
+        },
+        {
+          "type": "merchant_specific",
+          "description": "Advertised earn is commonly shown as average or \"up to\" cashback with boosted Neo Partner offers, not a universal fixed category table."
+        }
+      ],
       "sources": [
+        "https://www.neofinancial.com/credit/world-mastercard",
         "https://www.neofinancial.com/credit"
       ]
     },
@@ -3608,8 +3615,18 @@
         "other": 0.5
       },
       "caps": [],
-      "special_earn_rules": [],
+      "special_earn_rules": [
+        {
+          "type": "user_selectable_categories",
+          "description": "2% cashback in up to 2 categories (or 3 if rewards deposited to Tangerine Savings). Categories are user-chosen; not hard-coded into earn_rates."
+        },
+        {
+          "type": "merchant_specific",
+          "description": "User-selectable 2% categories (typically up to 2, or 3 with a Tangerine savings account) are configurable and merchant-code dependent."
+        }
+      ],
       "sources": [
+        "https://www.tangerine.ca/en/personal/spend/credit-cards",
         "https://www.tangerine.ca/en/products/spending/creditcard"
       ]
     },
