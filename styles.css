@@ -181,7 +181,8 @@ tbody tr:last-child td{border-bottom:none}
 
 .spendActions{display:flex;justify-content:flex-end;margin-top:8px}
 .spendActions button{width:auto;padding:8px 12px;font-size:12px}
-
+#clearSpendBtn{border-color:var(--border);color:var(--muted)}
+#clearSpendBtn:hover{color:var(--text);border-color:color-mix(in srgb,var(--border) 75%, var(--text) 25%)}
 
 .spendGrid{
   display:grid;
