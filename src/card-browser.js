@@ -104,14 +104,23 @@ function formatEarnPercentRange(multiplierRate, rewardsProgram) {
   return `${minimumPercent}-${estimatedPercent}`;
 }
 
+function isCashbackProgram(rewardsProgram) {
+  return state.programs.get(rewardsProgram)?.program_type === "cashback";
+}
+
 function earnRateMarkup(earnRates, rewardsProgram) {
   const entries = Object.entries(earnRates || {});
   if (!entries.length) return "<li class=\"muted\">No earn rates available</li>";
+  const cashbackProgram = isCashbackProgram(rewardsProgram);
 
   return entries
     .sort((a, b) => b[1] - a[1])
     .map(([category, rate]) => {
       const earnPercent = formatEarnPercentRange(rate, rewardsProgram);
+      if (cashbackProgram && earnPercent != null) {
+        return `<li><span class="mono">${category}</span><strong><span class="browserEarnPercent">${earnPercent}%</span></strong></li>`;
+      }
+
       const percentMarkup = earnPercent == null ? "" : `<span class="browserEarnPercent">(${earnPercent}%)</span>`;
       return `<li><span class="mono">${category}</span><strong>${formatMultiplier(rate)}× ${percentMarkup}</strong></li>`;
     })
