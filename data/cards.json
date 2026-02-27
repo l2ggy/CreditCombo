@@ -88,19 +88,17 @@
         "type": "annual"
       },
       "earn_rates": {
-        "dining": 3,
-        "travel": 2,
         "other": 1
       },
       "caps": [],
       "special_earn_rules": [
         {
           "type": "merchant_specific",
-          "description": "Higher earn can apply on eligible Air Canada purchases."
+          "description": "Earn 3 points per $1 on eligible purchases made directly with Air Canada and Air Canada Vacations."
         },
         {
-          "type": "merchant_specific",
-          "description": "Air Canada and Air Canada Vacations spend can have elevated Aeroplan earn compared with baseline categories."
+          "type": "category_specific",
+          "description": "Earn 2 points per $1 on eligible hotel and car rental purchases booked directly with the merchant or through American Express Travel Services."
         }
       ],
       "sources": [
@@ -119,8 +117,7 @@
         "type": "annual"
       },
       "earn_rates": {
-        "grocery": 2,
-        "dining": 2,
+        "dining": 1.5,
         "other": 1
       },
       "caps": [],
@@ -146,9 +143,8 @@
         "type": "annual"
       },
       "earn_rates": {
-        "dining": 3,
-        "travel": 2,
-        "other": 1
+        "dining": 2,
+        "other": 1.25
       },
       "caps": [],
       "special_earn_rules": [
