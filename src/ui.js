@@ -116,7 +116,7 @@ export function renderResult(el, best, annualSpend, schema, valuationMode = "est
     `);
   }
 
-  const useCols = Math.min(4, Math.max(1, instructions.length));
+  const useCols = Math.min(5, Math.max(1, instructions.length));
 
   el.innerHTML = `
     <h2>Best combo</h2>

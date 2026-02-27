@@ -234,15 +234,15 @@ tbody tr:last-child td{border-bottom:none}
 
 .useGrid{
   display:grid;
-  grid-template-columns:repeat(4,minmax(0,1fr));
-  gap:8px;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:6px;
 }
 .useTile{
   display:flex;
   flex-direction:column;
   align-items:center;
-  gap:6px;
-  padding:8px;
+  gap:4px;
+  padding:6px;
   border:1px solid var(--border);
   border-radius:10px;
   background:color-mix(in srgb,var(--panel) 75%, transparent);
@@ -255,18 +255,18 @@ tbody tr:last-child td{border-bottom:none}
   justify-content:center;
 }
 .useCardsSingle .useCardThumb{
-  width:clamp(58px, 11vw, 88px);
+  width:clamp(44px, 8vw, 64px);
   aspect-ratio:1/1;
 }
 .useCardsStack{
   position:relative;
-  width:clamp(58px, 11vw, 88px);
-  height:calc(clamp(58px, 11vw, 88px) + (var(--stack-count, 1) - 1) * clamp(6px, 1.1vw, 10px));
+  width:clamp(44px, 8vw, 64px);
+  height:calc(clamp(44px, 8vw, 64px) + (var(--stack-count, 1) - 1) * clamp(5px, 0.9vw, 8px));
 }
 .useCardsStack .useCardThumb{
   position:absolute;
   inset-inline:0;
-  top:calc(var(--stack-index, 0) * clamp(6px, 1.1vw, 10px));
+  top:calc(var(--stack-index, 0) * clamp(5px, 0.9vw, 8px));
   width:100%;
   aspect-ratio:1/1;
   z-index:calc(1 + var(--stack-index, 0));
@@ -378,7 +378,7 @@ tbody tr:last-child td{border-bottom:none}
   .headerActions{width:100%;justify-content:space-between}
   .footerContent{align-items:flex-start}
   .spendGrid{grid-template-columns:1fr}
-  .useGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .useGrid{grid-template-columns:repeat(3,minmax(0,1fr))}
 }
 
 @media (max-width:560px){
@@ -389,4 +389,3 @@ tbody tr:last-child td{border-bottom:none}
 @media (max-width:380px){
   .useGrid{grid-template-columns:1fr}
 }
-
