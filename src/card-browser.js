@@ -156,7 +156,14 @@ function capMarkup(caps) {
     const categories = (cap.categories || []).join(", ") || "multiple categories";
     const limit = formatCurrency(Number(cap.cap_amount ?? 0));
     const aboveCapRate = cap.earn_rate_above_cap == null ? "n/a" : formatMultiplier(cap.earn_rate_above_cap);
-    return `<li><span class="mono">${categories}</span> capped at <strong>${limit}</strong> per ${cap.cap_period || "period"} (above cap: ${aboveCapRate}×)</li>`;
+    const capPeriod = String(cap.cap_period || "period").toLowerCase();
+    const periodLabel = capPeriod === "monthly"
+      ? "month"
+      : capPeriod === "annual"
+        ? "year"
+        : capPeriod;
+
+    return `<li><span class="mono">${categories}</span> capped at <strong>${limit}</strong> per ${periodLabel} (above cap: ${aboveCapRate}×)</li>`;
   }).join("")}</ul>`;
 }
 
