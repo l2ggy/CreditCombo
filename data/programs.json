@@ -186,6 +186,14 @@
       "minimum_valuation_note": "Cashback redemptions are valued at face value, so the minimum equals the base valuation."
     },
     {
+      "program_id": "amex_cashback",
+      "program_name": "American Express Cash Back",
+      "program_type": "cashback",
+      "cents_per_point": 1.0,
+      "minimum_cents_per_point": 1.0,
+      "minimum_valuation_note": "Cashback redemptions are valued at face value, so the minimum equals the base valuation."
+    },
+    {
       "program_id": "simplii_cashback",
       "program_name": "Simplii Cash Back",
       "program_type": "cashback",
