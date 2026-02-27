@@ -214,8 +214,9 @@ tbody tr:last-child td{border-bottom:none}
   font-size:10px;
   line-height:1.2;
   color:var(--muted);
-  text-decoration:underline;
+  text-decoration:none;
 }
+.spendDescLabel{text-decoration:underline}
 .spendDesc summary::-webkit-details-marker{display:none}
 .spendDesc summary::after{content:"▾";font-size:14px;line-height:1;color:var(--muted);text-decoration:none}
 .spendDesc[open] summary::after{content:"▴"}
