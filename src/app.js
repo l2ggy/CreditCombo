@@ -22,6 +22,7 @@ const lockedCardsDividerEl = document.getElementById("lockedCardsDivider");
 const kInput = document.getElementById("k");
 const kValueEl = document.getElementById("kValue");
 const kLabelEl = document.getElementById("kLabel");
+const kLoadingEl = document.getElementById("kLoading");
 
 async function main() {
   try {
@@ -146,9 +147,17 @@ async function main() {
     }
 
     const comboCache = new Map();
+    let optimizeTimer = null;
+    let optimizeRunToken = 0;
 
     function updateKValue() {
       if (kValueEl) kValueEl.textContent = String(kInput.value);
+    }
+
+    function setSliderLoading(isLoading) {
+      if (!kLoadingEl) return;
+      kLoadingEl.classList.toggle("hidden", !isLoading);
+      kLoadingEl.setAttribute("aria-hidden", isLoading ? "false" : "true");
     }
 
     function currentValuationMode() {
@@ -183,6 +192,7 @@ async function main() {
 
     function runOptimizer() {
       runBtn.disabled = true;
+      setSliderLoading(true);
       resultEl.classList.add("hidden");
       resultEl.textContent = "Computing…";
 
@@ -200,6 +210,7 @@ async function main() {
         resultEl.classList.remove("hidden");
         resultEl.innerHTML = `<span class="badge bad">No result</span> No eligible cards are available for optimization.`;
         runBtn.disabled = false;
+        setSliderLoading(false);
         return;
       }
 
@@ -207,6 +218,7 @@ async function main() {
         resultEl.classList.remove("hidden");
         resultEl.innerHTML = `<span class="badge bad">No result</span> No additional cards without annual fees are available.`;
         runBtn.disabled = false;
+        setSliderLoading(false);
         return;
       }
 
@@ -217,6 +229,7 @@ async function main() {
         resultEl.classList.remove("hidden");
         resultEl.innerHTML = `<span class="muted">Enter monthly spend in at least one category to generate card recommendations.</span>`;
         runBtn.disabled = false;
+        setSliderLoading(false);
         return;
       }
 
@@ -225,6 +238,22 @@ async function main() {
 
       renderResult(resultEl, best, annualSpend, schema, valuationMode);
       runBtn.disabled = false;
+      setSliderLoading(false);
+    }
+
+    function scheduleOptimizer(delay = 0) {
+      optimizeRunToken += 1;
+      const runToken = optimizeRunToken;
+      if (optimizeTimer) clearTimeout(optimizeTimer);
+
+      runBtn.disabled = true;
+      setSliderLoading(true);
+
+      optimizeTimer = setTimeout(() => {
+        optimizeTimer = null;
+        if (runToken !== optimizeRunToken) return;
+        runOptimizer();
+      }, delay);
     }
 
     renderSpendTable(spendTableEl, schema, categoryDescriptions);
@@ -240,18 +269,21 @@ async function main() {
     updateKValue();
     appEl.classList.remove("hidden");
 
-    runBtn.addEventListener("click", runOptimizer);
+    runBtn.addEventListener("click", () => scheduleOptimizer());
     clearSpendBtn?.addEventListener("click", () => {
       spendTableEl.querySelectorAll("input[data-cat]").forEach((input) => {
         input.value = "0";
       });
-      runOptimizer();
+      scheduleOptimizer();
     });
-    kInput.addEventListener("input", runOptimizer);
-    valuationModeEl?.addEventListener("change", runOptimizer);
-    excludeFeeCardsEl?.addEventListener("change", runOptimizer);
-    excludeBusinessCardsEl?.addEventListener("change", runOptimizer);
-    enableLockedCardsEl?.addEventListener("change", runOptimizer);
+    kInput.addEventListener("input", () => {
+      updateKValue();
+      scheduleOptimizer(120);
+    });
+    valuationModeEl?.addEventListener("change", () => scheduleOptimizer());
+    excludeFeeCardsEl?.addEventListener("change", () => scheduleOptimizer());
+    excludeBusinessCardsEl?.addEventListener("change", () => scheduleOptimizer());
+    enableLockedCardsEl?.addEventListener("change", () => scheduleOptimizer());
 
     lockedCardSearchEl?.addEventListener("input", () => {
       renderLockedSearchResults();
@@ -262,14 +294,14 @@ async function main() {
       if (!btn) return;
       lockedCardIds.add(btn.dataset.cardId);
       if (lockedCardSearchEl) lockedCardSearchEl.value = "";
-      runOptimizer();
+      scheduleOptimizer();
     });
 
     lockedCardPicksEl?.addEventListener("click", (event) => {
       const btn = event.target.closest("[data-remove-id]");
       if (!btn) return;
       lockedCardIds.delete(btn.dataset.removeId);
-      runOptimizer();
+      scheduleOptimizer();
     });
 
   } catch (e) {
