@@ -43,6 +43,7 @@ h3{margin:var(--space-3) 0 var(--space-2);font-size:14px;color:var(--muted)}
 .panelHeader-result .subtle{margin:4px 0 0;max-width:62ch}
 
 .inputPanel{
+  --input-rhythm:8px;
   padding:12px;
 }
 
@@ -52,7 +53,7 @@ h3{margin:var(--space-3) 0 var(--space-2);font-size:14px;color:var(--muted)}
 .inputPanel .row,
 .inputPanel .issues,
 .inputPanel #spendTable{
-  padding-inline:8px;
+  padding-inline:var(--input-rhythm);
 }
 
 .inputPanel .panelHeader h2,
@@ -62,18 +63,23 @@ h3{margin:var(--space-3) 0 var(--space-2);font-size:14px;color:var(--muted)}
 }
 
 .inputPanel .sectionTitle{
-  margin-bottom:6px;
+  margin-bottom:var(--input-rhythm);
 }
 
 .inputPanel .divider{
-  margin-block:10px;
+  margin-block:var(--input-rhythm);
 }
 
 .inputPanel .row{
-  gap:8px;
+  gap:var(--input-rhythm);
+  margin:0;
 }
 
 .row{display:flex;gap:var(--space-2);flex-wrap:wrap;align-items:stretch}
+
+.inputPanel .row + .row{
+  margin-top:var(--input-rhythm);
+}
 
 label{display:block;font-size:12px;color:var(--muted);margin:0 0 var(--space-1)}
 input[type="number"],
@@ -113,7 +119,7 @@ input[type="search"]:focus{border-color:var(--accent)}
 
 
 .field-full{flex-basis:100%;width:100%}
-#lockedCardsPanel{margin-top:var(--space-1)}
+#lockedCardsPanel{margin-top:0}
 .checkboxLabel{display:flex;align-items:center;gap:var(--space-1);margin:0;cursor:pointer;color:var(--text);font-size:13px}
 .checkboxLabel input[type="checkbox"]{width:16px;height:16px;accent-color:var(--accent);cursor:pointer}
 .value-pill{
@@ -251,11 +257,12 @@ tbody tr:last-child td{border-bottom:none}
 .useCards.useCards-2{grid-template-columns:repeat(2,minmax(0,1fr))}
 .useCards.useCards-3{grid-template-columns:repeat(3,minmax(0,1fr))}
 .useCardThumb{
-  display:inline-flex;
+  display:flex;
   align-items:center;
   justify-content:center;
   aspect-ratio:1/1;
   min-width:0;
+  line-height:0;
 }
 .useThumbImage{
   width:100%;
@@ -269,6 +276,9 @@ tbody tr:last-child td{border-bottom:none}
 
 .issues{
   margin-top:12px;border:1px solid var(--border);border-radius:14px;padding:var(--space-2) 12px;background:transparent
+}
+.inputPanel .issues{
+  margin-top:var(--input-rhythm);
 }
 .issues summary{cursor:pointer;font-weight:700;color:var(--text)}
 .issues ul{margin:10px 0 0;padding-left:18px}
