@@ -218,8 +218,8 @@ tbody tr:last-child td{border-bottom:none}
 }
 .spendDescLabel{text-decoration:underline}
 .spendDesc summary::-webkit-details-marker{display:none}
-.spendDesc summary::after{content:"▾";font-size:14px;line-height:1;color:var(--muted);text-decoration:none}
-.spendDesc[open] summary::after{content:"▴"}
+.spendDescCaret{display:inline-block;font-size:14px;line-height:1;text-decoration:none}
+.spendDesc[open] .spendDescCaret{transform:rotate(180deg)}
 .spendDescBody{
   margin-top:4px;
   font-size:10px;
