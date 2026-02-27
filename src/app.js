@@ -191,7 +191,6 @@ async function main() {
     }
 
     function runOptimizer() {
-      runBtn.disabled = true;
       setSliderLoading(true);
       resultEl.classList.add("hidden");
       resultEl.textContent = "Computing…";
@@ -209,7 +208,6 @@ async function main() {
       if (!eligibleCards.length) {
         resultEl.classList.remove("hidden");
         resultEl.innerHTML = `<span class="badge bad">No result</span> No eligible cards are available for optimization.`;
-        runBtn.disabled = false;
         setSliderLoading(false);
         return;
       }
@@ -217,7 +215,6 @@ async function main() {
       if (excludeFeeCardsEl?.checked && k > 0 && !additionalCards.length) {
         resultEl.classList.remove("hidden");
         resultEl.innerHTML = `<span class="badge bad">No result</span> No additional cards without annual fees are available.`;
-        runBtn.disabled = false;
         setSliderLoading(false);
         return;
       }
@@ -228,7 +225,6 @@ async function main() {
       if (!hasSpend) {
         resultEl.classList.remove("hidden");
         resultEl.innerHTML = `<span class="muted">Enter monthly spend in at least one category to generate card recommendations.</span>`;
-        runBtn.disabled = false;
         setSliderLoading(false);
         return;
       }
@@ -237,7 +233,6 @@ async function main() {
       const best = getBestCombo(eligibleCards, additionalCards, k, annualSpend, valuationMode, monthlySpend, selectedLockedIds);
 
       renderResult(resultEl, best, annualSpend, schema, valuationMode);
-      runBtn.disabled = false;
       setSliderLoading(false);
     }
 
@@ -246,7 +241,6 @@ async function main() {
       const runToken = optimizeRunToken;
       if (optimizeTimer) clearTimeout(optimizeTimer);
 
-      runBtn.disabled = true;
       setSliderLoading(true);
 
       optimizeTimer = setTimeout(() => {
