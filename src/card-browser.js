@@ -140,11 +140,11 @@ function earnRateMarkup(earnRates, rewardsProgram) {
     .map(([category, rate]) => {
       const earnPercent = formatEarnPercentRange(rate, rewardsProgram);
       if (cashbackProgram && earnPercent != null) {
-        return `<li><span class="mono">${category}</span><strong><span class="browserEarnPercent">${earnPercent}%</span></strong></li>`;
+        return `<li><span class="mono">${escapeHtml(category)}</span><strong><span class="browserEarnPercent">${escapeHtml(earnPercent)}%</span></strong></li>`;
       }
 
-      const percentMarkup = earnPercent == null ? "" : `<span class="browserEarnPercent">(${earnPercent}%)</span>`;
-      return `<li><span class="mono">${category}</span><strong>${formatMultiplier(rate)}× ${percentMarkup}</strong></li>`;
+      const percentMarkup = earnPercent == null ? "" : `<span class="browserEarnPercent">(${escapeHtml(earnPercent)}%)</span>`;
+      return `<li><span class="mono">${escapeHtml(category)}</span><strong>${escapeHtml(formatMultiplier(rate))}× ${percentMarkup}</strong></li>`;
     })
     .join("");
 }
@@ -163,13 +163,13 @@ function capMarkup(caps) {
         ? "year"
         : capPeriod;
 
-    return `<li><span class="mono">${categories}</span> capped at <strong>${limit}</strong> per ${periodLabel} (above cap: ${aboveCapRate}×)</li>`;
+    return `<li><span class="mono">${escapeHtml(categories)}</span> capped at <strong>${escapeHtml(limit)}</strong> per ${escapeHtml(periodLabel)} (above cap: ${escapeHtml(aboveCapRate)}×)</li>`;
   }).join("")}</ul>`;
 }
 
 function cardThumbnailMarkup(cardId, cardName) {
-  const imageSrc = `./assets/cards/${cardId}.webp`;
-  return `<img class="browserCardThumb" src="${imageSrc}" alt="${cardName}" loading="lazy" decoding="async" onload="this.classList.toggle('is-portrait', this.naturalHeight > this.naturalWidth)" onerror="this.remove()" />`;
+  const imageSrc = `./assets/cards/${encodeURIComponent(String(cardId))}.webp`;
+  return `<img class="browserCardThumb" src="${imageSrc}" alt="${escapeHtml(cardName)}" loading="lazy" decoding="async" onload="this.classList.toggle('is-portrait', this.naturalHeight > this.naturalWidth)" onerror="this.remove()" />`;
 }
 
 function renderCards() {
@@ -189,13 +189,13 @@ function renderCards() {
         <div class="browserCardHeading">
           ${cardThumbnailMarkup(card.id, card.card_name)}
           <div>
-            <h3 class="browserCardTitle">${card.card_name}</h3>
-            <p class="subtle">${card.issuer} · ${card.network} · <span class="mono">${card.rewards_program}</span></p>
+            <h3 class="browserCardTitle">${escapeHtml(card.card_name)}</h3>
+            <p class="subtle">${escapeHtml(card.issuer)} · ${escapeHtml(card.network)} · <span class="mono">${escapeHtml(card.rewards_program)}</span></p>
           </div>
         </div>
         <div class="browserFee">
           <span class="muted">Annual fee</span>
-          <strong>${formatCurrency(annualFeeAmount(card))}</strong>
+          <strong>${escapeHtml(formatCurrency(annualFeeAmount(card)))}</strong>
         </div>
       </div>
 
@@ -252,3 +252,12 @@ async function init() {
 }
 
 init();
+
+function escapeHtml(s) {
+  return String(s)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
