@@ -1933,7 +1933,8 @@
       "earn_rates": {
         "grocery": 2,
         "dining": 2,
-        "bills": 2,
+        "digital": 2,
+        "utilities": 2,
         "other": 1
       },
       "caps": [
@@ -1942,15 +1943,25 @@
           "categories": [
             "grocery",
             "dining",
-            "bills"
+            "digital",
+            "utilities"
           ],
           "cap_amount": 10000,
           "cap_period": "annual",
           "earn_rate_above_cap": 1,
-          "notes": "accelerated earn annual threshold"
+          "notes": "Accelerated earn applies to eligible restaurant, grocery, digital media, and household utility purchases up to $10,000 annual spend in applicable category buckets."
         }
       ],
-      "special_earn_rules": [],
+      "special_earn_rules": [
+        {
+          "type": "category_out_of_schema",
+          "description": "Accelerated earn also applies to memberships category (not represented in current schema)."
+        },
+        {
+          "type": "bonus_structure",
+          "description": "Card includes annual Birthday Bonus points equal to a percentage of prior-year earn, subject to issuer terms and cap."
+        }
+      ],
       "sources": [
         "https://www.mbna.ca/en/credit-cards/rewards",
         "https://www.mbna.ca/en/credit-cards/rewards/mbna-rewards-mastercard",
