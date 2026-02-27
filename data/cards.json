@@ -1616,10 +1616,18 @@
         "type": "annual"
       },
       "earn_rates": {
-        "other": 2
+        "grocery": 2,
+        "dining": 2,
+        "transit": 2,
+        "other": 0.5
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [
+        {
+          "type": "category_restriction",
+          "description": "2% earn applies to groceries, dining/food & drink, and transportation/transit purchases; all other eligible spend earns 0.5%."
+        }
+      ]
     },
     {
       "id": "koho_extra_mastercard",
