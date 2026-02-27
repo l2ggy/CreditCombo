@@ -69,7 +69,7 @@ function cardThumbMarkup(card, className = "resultCardThumb", withFrame = true) 
   return `<span class="thumbFrame">${image}</span>`;
 }
 
-export function renderResult(el, best, annualSpend, schema, valuationMode = "estimated") {
+export function renderResult(el, best, annualSpend, schema, valuationMode = "estimated", useColsPreference = 5) {
   el.classList.remove("hidden");
 
   if (!best.combo.length) {
@@ -116,7 +116,10 @@ export function renderResult(el, best, annualSpend, schema, valuationMode = "est
     `);
   }
 
-  const useCols = Math.min(5, Math.max(1, instructions.length));
+  const preferredCols = clampInt(useColsPreference, 1, 5);
+  const useCols = Math.min(preferredCols, Math.max(1, instructions.length));
+  const useColsMd = Math.min(useCols, 3);
+  const useColsSm = Math.min(useCols, 2);
 
   el.innerHTML = `
     <h2>Best combo</h2>
@@ -133,7 +136,7 @@ export function renderResult(el, best, annualSpend, schema, valuationMode = "est
 
     <div class="divider divider-tight"></div>
     <h2 class="useHeading">Which card to use</h2>
-    <div class="useGrid" role="list" aria-label="Card to use by category" style="--use-cols:${useCols}">
+    <div class="useGrid" role="list" aria-label="Card to use by category" style="--use-cols:${useCols};--use-cols-md:${useColsMd};--use-cols-sm:${useColsSm}">
       ${instructions.join("") || `<p class="muted">No spend entered.</p>`}
     </div>
 

@@ -10,6 +10,7 @@ const resultEl = document.getElementById("result");
 const runBtn = document.getElementById("runBtn");
 const valuationModeEl = document.getElementById("valuationMode");
 const excludeFeeCardsEl = document.getElementById("excludeFeeCards");
+const useColsEl = document.getElementById("useCols");
 const enableLockedCardsEl = document.getElementById("enableLockedCards");
 const lockedCardsPanelEl = document.getElementById("lockedCardsPanel");
 const lockedCardSearchEl = document.getElementById("lockedCardSearch");
@@ -219,7 +220,8 @@ async function main() {
       const annualSpend = annualizeMonthlySpend(monthlySpend, schema);
       const best = getBestCombo(eligibleCards, additionalCards, k, annualSpend, valuationMode, monthlySpend, selectedLockedIds);
 
-      renderResult(resultEl, best, annualSpend, schema, valuationMode);
+      const useColsPreference = clampInt(useColsEl?.value || 5, 1, 5);
+      renderResult(resultEl, best, annualSpend, schema, valuationMode, useColsPreference);
       runBtn.disabled = false;
     }
 
@@ -240,6 +242,7 @@ async function main() {
     kInput.addEventListener("input", runOptimizer);
     valuationModeEl?.addEventListener("change", runOptimizer);
     excludeFeeCardsEl?.addEventListener("change", runOptimizer);
+    useColsEl?.addEventListener("change", runOptimizer);
     enableLockedCardsEl?.addEventListener("change", runOptimizer);
 
     lockedCardSearchEl?.addEventListener("input", () => {
