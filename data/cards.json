@@ -1952,6 +1952,8 @@
       ],
       "special_earn_rules": [],
       "sources": [
+        "https://www.mbna.ca/en/credit-cards/rewards",
+        "https://www.mbna.ca/en/credit-cards/rewards/mbna-rewards-mastercard",
         "https://www.mbna.ca/en/credit-cards"
       ]
     },
@@ -3211,6 +3213,7 @@
         }
       ],
       "sources": [
+        "https://rogersbank.com/en/rogers_red_details",
         "https://rogersbank.com/en/rogers_mastercard_details"
       ]
     },
@@ -3655,6 +3658,7 @@
         }
       ],
       "sources": [
+        "https://www.tangerine.ca/en/personal/spend/credit-cards",
         "https://www.tangerine.ca/en/products/spending/creditcard"
       ]
     },
