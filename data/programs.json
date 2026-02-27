@@ -2,10 +2,10 @@
   "meta": {
     "currency": "CAD",
     "value_unit": "cents_per_point",
-    "source_points_valuations": "Prince of Travel — Points Valuations",
+    "source_points_valuations": "Prince of Travel — Points Valuations (primary) + Finly program valuations (fallback where Prince of Travel has no program valuation)",
     "note": "For cashback programs we treat earn_rates as percent and value at face value.",
-    "last_verified": "2026-02-25",
-    "source_minimum_valuations": "Issuer base redemption options and program terms (conservative planning floors)",
+    "last_verified": "2026-02-27",
+    "source_minimum_valuations": "Guaranteed fixed-value redemption options (statement credits, cashback, fixed travel portals, or fixed-value transfer paths such as 1:1 transfers into fixed-value programs). If no fixed-rate floor is published, minimum is set to 0.0.",
     "programs_sort_order": "programs[] are sorted by program_type (asc), program_name (asc), then program_id (asc); keep this order when adding/updating programs."
   },
   "programs": [
@@ -245,7 +245,7 @@
       "program_type": "points",
       "cents_per_point": 10.5,
       "minimum_cents_per_point": 10.5,
-      "minimum_valuation_note": "Cash Miles floor: 95 miles = $10."
+      "minimum_valuation_note": "Guaranteed AIR MILES Cash redemptions are 95 miles = $10 CAD, which is 10.5 cpp."
     },
     {
       "program_id": "atb_rewards",
@@ -253,7 +253,7 @@
       "program_type": "points",
       "cents_per_point": 0.5,
       "minimum_cents_per_point": 0.5,
-      "minimum_valuation_note": "Finly conversion values indicate approximately 0.5 cpp for reward redemptions.",
+      "minimum_valuation_note": "Finly indicates a fixed 0.5 cpp baseline redemption value for ATB Rewards.",
       "valuation_note": "Finly conversion values indicate approximately 0.5 cpp for reward redemptions."
     },
     {
@@ -261,8 +261,9 @@
       "program_name": "Aeroplan",
       "program_type": "points",
       "cents_per_point": 2.1,
-      "minimum_cents_per_point": 1.0,
-      "minimum_valuation_note": "Conservative planning floor for guaranteed-value-like redemptions; flight redemptions can be higher."
+      "minimum_cents_per_point": 0.0,
+      "minimum_valuation_note": "No universally published fixed cash/statement-credit redemption ratio; guaranteed minimum treated as 0.0 cpp.",
+      "valuation_note": "Prince of Travel valuation for Aeroplan is 2.1 cpp (CAD); actual redemption value is variable."
     },
     {
       "program_id": "amex_mr_ca",
@@ -270,16 +271,16 @@
       "program_type": "points",
       "cents_per_point": 2.2,
       "minimum_cents_per_point": 1.0,
-      "minimum_valuation_note": "Statement credit redemption floor (approximate)."
+      "minimum_valuation_note": "Guaranteed statement credit redemption floor is 1.0 cpp."
     },
     {
       "program_id": "asia_miles",
       "program_name": "Asia Miles",
       "program_type": "points",
-      "cents_per_point": 1.4,
-      "minimum_cents_per_point": 1.0,
-      "minimum_valuation_note": "Finly reward conversion values show ~1.0-1.4 cpp depending on redemption option.",
-      "valuation_note": "Finly reward conversion values show ~1.0-1.4 cpp depending on redemption option."
+      "cents_per_point": 1.6,
+      "minimum_cents_per_point": 0.0,
+      "minimum_valuation_note": "No universally published fixed cash/statement-credit redemption ratio; guaranteed minimum treated as 0.0 cpp.",
+      "valuation_note": "Prince of Travel valuation for Cathay Pacific Asia Miles is 1.6 cpp (CAD); actual redemption value varies by route/cabin."
     },
     {
       "program_id": "bmo_rewards",
@@ -287,7 +288,7 @@
       "program_type": "points",
       "cents_per_point": 0.67,
       "minimum_cents_per_point": 0.67,
-      "minimum_valuation_note": "Conservative floor aligned with base BMO Rewards redemption value."
+      "minimum_valuation_note": "Guaranteed base redemption is 150 points = $1 (0.67 cpp)."
     },
     {
       "program_id": "cibc_aventura",
@@ -295,7 +296,7 @@
       "program_type": "points",
       "cents_per_point": 1.0,
       "minimum_cents_per_point": 1.0,
-      "minimum_valuation_note": "Base redemption value floor used for conservative planning."
+      "minimum_valuation_note": "Guaranteed baseline travel redemption is 1.0 cpp through CIBC Travel Centre / travel offset."
     },
     {
       "program_id": "capital_one_smart_rewards",
@@ -303,7 +304,7 @@
       "program_type": "points",
       "cents_per_point": 0.25,
       "minimum_cents_per_point": 0.25,
-      "minimum_valuation_note": "Finly conversion values show 0.25 cpp for statement credits and gift cards.",
+      "minimum_valuation_note": "Finly indicates fixed statement credit/gift card redemptions at 0.25 cpp.",
       "valuation_note": "Finly conversion values show 0.25 cpp for statement credits and gift cards."
     },
     {
@@ -312,15 +313,17 @@
       "program_type": "points",
       "cents_per_point": 1.0,
       "minimum_cents_per_point": 1.0,
-      "minimum_valuation_note": "Cash-back/statement style redemption floor."
+      "minimum_valuation_note": "Guaranteed floor uses MBNA Rewards travel redemptions at 1.0 cpp (100 points = $1 in travel value).",
+      "valuation_note": "Prince of Travel values MBNA Rewards at 1.0 cpp when redeemed for travel through the MBNA Rewards portal."
     },
     {
       "program_id": "marriott_bonvoy",
       "program_name": "Marriott Bonvoy",
       "program_type": "points",
       "cents_per_point": 0.8,
-      "minimum_cents_per_point": 0.5,
-      "minimum_valuation_note": "Conservative floor for low-end Bonvoy redemptions; many hotel redemptions are higher."
+      "minimum_cents_per_point": 0.0,
+      "minimum_valuation_note": "No universally published fixed cash/statement-credit redemption ratio; guaranteed minimum treated as 0.0 cpp.",
+      "valuation_note": "Prince of Travel valuation for Marriott Bonvoy is 0.8 cpp (CAD); actual hotel redemption values vary materially."
     },
     {
       "program_id": "meridian_rewards",
@@ -328,7 +331,7 @@
       "program_type": "points",
       "cents_per_point": 1.0,
       "minimum_cents_per_point": 1.0,
-      "minimum_valuation_note": "Finly conversion values indicate approximately 1.0 cpp for travel/cash/gift card style redemptions.",
+      "minimum_valuation_note": "Finly indicates approximately 1.0 cpp fixed-value redemptions across core options.",
       "valuation_note": "Finly conversion values indicate approximately 1.0 cpp for travel/cash/gift card style redemptions."
     },
     {
@@ -337,7 +340,7 @@
       "program_type": "points",
       "cents_per_point": 0.8,
       "minimum_cents_per_point": 0.8,
-      "minimum_valuation_note": "Finly conversion values indicate approximately 0.8 cpp valuation.",
+      "minimum_valuation_note": "Finly indicates an approximately fixed 0.8 cpp redemption baseline.",
       "valuation_note": "Finly conversion values indicate approximately 0.8 cpp valuation."
     },
     {
@@ -346,7 +349,7 @@
       "program_type": "points",
       "cents_per_point": 0.43,
       "minimum_cents_per_point": 0.15,
-      "minimum_valuation_note": "Finly reward conversion values: Travel ~0.43 cpp; store ~0.30 cpp; grocery floor ~0.15 cpp.",
+      "minimum_valuation_note": "Finly indicates low-end guaranteed grocery redemptions around 0.15 cpp.",
       "valuation_note": "Finly reward conversion values: Travel ~0.43 cpp; store ~0.30 cpp; grocery floor ~0.15 cpp."
     },
     {
@@ -355,7 +358,7 @@
       "program_type": "points",
       "cents_per_point": 1.0,
       "minimum_cents_per_point": 1.0,
-      "minimum_valuation_note": "Conservative floor for base redemption value."
+      "minimum_valuation_note": "Guaranteed travel-portal style redemption baseline is 1.0 cpp."
     },
     {
       "program_id": "pc_optimum",
@@ -365,7 +368,7 @@
       "valuation_status": "minimum_guaranteed_redemption_value_confirmed",
       "valuation_note": "Confirmed minimum base redemption: 10,000 points = $10 CAD (0.1 cents/point).",
       "minimum_cents_per_point": 0.1,
-      "minimum_valuation_note": "Confirmed minimum base redemption: 10,000 points = $10 CAD (0.1 cents/point)."
+      "minimum_valuation_note": "Guaranteed base redemption is 10,000 points = $10 CAD (0.1 cpp)."
     },
     {
       "program_id": "rbc_avion",
@@ -373,16 +376,17 @@
       "program_type": "points",
       "cents_per_point": 2.0,
       "minimum_cents_per_point": 1.0,
-      "minimum_valuation_note": "Conservative floor for non-optimized redemptions."
+      "minimum_valuation_note": "Guaranteed floor set at 1.0 cpp via RBC Avion conversion path to WestJet Rewards at 1:1, where WestJet points are fixed at 1 cent each.",
+      "valuation_note": "Prince of Travel valuation for RBC Avion is 2.0 cpp (CAD); actual redemption value varies by transfer/redemption option."
     },
     {
       "program_id": "rbc_avios",
       "program_name": "RBC Avios / British Airways Executive Club",
       "program_type": "points",
-      "cents_per_point": 1.7,
-      "minimum_cents_per_point": 0.88,
-      "minimum_valuation_note": "Finly Avios conversion values range roughly 0.88-1.7 cpp depending on redemption.",
-      "valuation_note": "Finly Avios conversion values range roughly 0.88-1.7 cpp depending on redemption."
+      "cents_per_point": 2.0,
+      "minimum_cents_per_point": 0.0,
+      "minimum_valuation_note": "No universally published fixed cash/statement-credit redemption ratio for Avios; guaranteed minimum treated as 0.0 cpp.",
+      "valuation_note": "Prince of Travel valuation for British Airways Club Avios is 2.0 cpp (CAD); actual redemption value is highly itinerary-dependent."
     },
     {
       "program_id": "scene_plus",
@@ -390,7 +394,7 @@
       "program_type": "points",
       "cents_per_point": 1.0,
       "minimum_cents_per_point": 1.0,
-      "minimum_valuation_note": "Fixed-value style redemption floor."
+      "minimum_valuation_note": "Guaranteed Scene+ redemption floor is 1.0 cpp for eligible purchase offset."
     },
     {
       "program_id": "td_rewards",
@@ -398,7 +402,7 @@
       "program_type": "points",
       "cents_per_point": 0.5,
       "minimum_cents_per_point": 0.5,
-      "minimum_valuation_note": "Base fixed-value travel redemption floor."
+      "minimum_valuation_note": "Guaranteed Expedia for TD baseline redemption is 0.5 cpp."
     },
     {
       "program_id": "viporter",
@@ -406,7 +410,7 @@
       "program_type": "points",
       "cents_per_point": 1.5,
       "minimum_cents_per_point": 1.5,
-      "minimum_valuation_note": "Finly reward conversion value for Porter travel is 1.5 cpp (fixed).",
+      "minimum_valuation_note": "Finly indicates a fixed 1.5 cpp valuation for Porter flight redemptions.",
       "valuation_note": "Finly reward conversion value for Porter travel is 1.5 cpp (fixed)."
     },
     {
@@ -415,7 +419,7 @@
       "program_type": "points",
       "cents_per_point": 1.0,
       "minimum_cents_per_point": 1.0,
-      "minimum_valuation_note": "WestJet dollars are fixed at $1 per 100 dollars."
+      "minimum_valuation_note": "Guaranteed fixed value is 1 WestJet point = $0.01 CAD."
     }
   ]
 }
