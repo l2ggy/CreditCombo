@@ -217,8 +217,8 @@ tbody tr:last-child td{border-bottom:none}
   text-decoration:underline dotted;
 }
 .spendDesc summary::-webkit-details-marker{display:none}
-.spendDesc summary::after{content:" ▾";font-size:10px;color:var(--muted)}
-.spendDesc[open] summary::after{content:" ▴"}
+.spendDesc summary::after{content:"▾";font-size:14px;line-height:1;color:var(--muted)}
+.spendDesc[open] summary::after{content:"▴"}
 .spendDescBody{
   margin-top:4px;
   font-size:10px;
@@ -393,4 +393,3 @@ tbody tr:last-child td{border-bottom:none}
 @media (max-width:380px){
   .useGrid{grid-template-columns:1fr}
 }
-
