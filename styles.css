@@ -196,9 +196,13 @@ tbody tr:last-child td{border-bottom:none}
 .spendDesc summary{
   cursor:pointer;
   list-style:none;
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
   font-size:10px;
   line-height:1.2;
   color:var(--muted);
+  text-decoration:underline dotted;
 }
 .spendDesc summary::-webkit-details-marker{display:none}
 .spendDesc summary::after{content:" ▾";font-size:10px;color:var(--muted)}
@@ -219,7 +223,7 @@ tbody tr:last-child td{border-bottom:none}
 
 .useGrid{
   display:grid;
-  grid-template-columns:repeat(var(--use-cols, 1),minmax(0,1fr));
+  grid-template-columns:repeat(4,minmax(0,1fr));
   gap:8px;
 }
 .useTile{
@@ -255,9 +259,9 @@ tbody tr:last-child td{border-bottom:none}
   width:100%;
   height:100%;
   object-fit:contain;
-  padding:2px;
+  padding:0;
   border-radius:10%;
-  border:1px solid var(--border);
+  border:none;
   display:block;
 }
 
@@ -328,8 +332,11 @@ tbody tr:last-child td{border-bottom:none}
   .headerActions{width:100%;justify-content:space-between}
   .footerContent{align-items:flex-start}
   .spendGrid{grid-template-columns:1fr}
+  .useGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 
 @media (max-width:560px){
   .browserFilterGrid{grid-template-columns:1fr}
+  .useGrid{grid-template-columns:1fr}
 }
+
