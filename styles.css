@@ -158,9 +158,10 @@ select[multiple]{padding:8px;background:transparent;appearance:auto;min-width:32
 .comboList{list-style:none;margin:0 0 14px;padding:0}
 .resultCardItem{display:flex;align-items:center;gap:10px}
 .thumbFrame{width:44px;height:44px;display:inline-flex;align-items:center;justify-content:center;flex:0 0 44px}
-.resultCardThumb{width:auto;height:auto;max-width:44px;max-height:44px;border-radius:10%;border:1px solid var(--border);display:block}
-.instructionCardThumb,.lockedCardThumb{width:auto;height:auto;max-width:20px;max-height:20px;border-radius:10%;border:1px solid var(--border);display:block}
+.resultCardThumb{width:auto;height:auto;max-width:44px;max-height:44px;border-radius:10% / 16%;border:1px solid var(--border);display:block}
+.instructionCardThumb,.lockedCardThumb{width:auto;height:auto;max-width:20px;max-height:20px;border-radius:10% / 16%;border:1px solid var(--border);display:block}
 .instructionCardThumb{height:1.75em;width:auto;max-height:none;max-width:42px;vertical-align:middle;object-fit:contain}
+.resultCardThumb.is-portrait,.instructionCardThumb.is-portrait,.lockedCardThumb.is-portrait,.browserCardThumb.is-portrait{border-radius:16% / 10%}
 .instructionCard{display:inline-flex;align-items:center;gap:4px;white-space:nowrap;line-height:1.2}
 button{
   width:100%;padding:var(--space-2) var(--space-3);border-radius:12px;border:1px solid var(--accent);
@@ -309,10 +310,11 @@ tbody tr:last-child td{border-bottom:none}
   height:100%;
   object-fit:contain;
   padding:1px;
-  border-radius:10%;
+  border-radius:10% / 16%;
   border:none;
   display:block;
 }
+.useThumbImage.is-portrait{border-radius:16% / 10%}
 
 .issues{
   margin-top:12px;border:1px solid var(--border);border-radius:14px;padding:var(--space-2) 12px;background:transparent

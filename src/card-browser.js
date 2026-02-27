@@ -169,7 +169,7 @@ function capMarkup(caps) {
 
 function cardThumbnailMarkup(cardId, cardName) {
   const imageSrc = `./assets/cards/${cardId}.webp`;
-  return `<img class="browserCardThumb" src="${imageSrc}" alt="${cardName}" loading="lazy" decoding="async" onerror="this.remove()" />`;
+  return `<img class="browserCardThumb" src="${imageSrc}" alt="${cardName}" loading="lazy" decoding="async" onload="this.classList.toggle('is-portrait', this.naturalHeight > this.naturalWidth)" onerror="this.remove()" />`;
 }
 
 function renderCards() {
