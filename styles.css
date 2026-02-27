@@ -255,13 +255,13 @@ tbody tr:last-child td{border-bottom:none}
   justify-content:center;
 }
 .useCardsSingle .useCardThumb{
-  width:clamp(46px, 9vw, 72px);
+  width:clamp(58px, 11vw, 88px);
   aspect-ratio:1/1;
 }
 .useCardsStack{
   position:relative;
-  width:clamp(46px, 9vw, 72px);
-  height:calc(clamp(46px, 9vw, 72px) + (var(--stack-count, 1) - 1) * clamp(6px, 1.1vw, 10px));
+  width:clamp(58px, 11vw, 88px);
+  height:calc(clamp(58px, 11vw, 88px) + (var(--stack-count, 1) - 1) * clamp(6px, 1.1vw, 10px));
 }
 .useCardsStack .useCardThumb{
   position:absolute;
@@ -302,7 +302,7 @@ tbody tr:last-child td{border-bottom:none}
   width:100%;
   height:100%;
   object-fit:contain;
-  padding:0;
+  padding:1px;
   border-radius:10%;
   border:none;
   display:block;

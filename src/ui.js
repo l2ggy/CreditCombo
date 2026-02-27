@@ -14,7 +14,7 @@ export function renderSpendTable(el, schema, categoryDescriptions = {}) {
       ${schema.map(cat => `
         <label class="spendRow" for="spend-${cat}">
           <span class="spendMeta">
-            <span class="mono spendCat">${categoryEmoji(cat)} ${cat}</span>
+            <span class="mono spendCat">${cat}</span>
             ${spendDescriptionMarkup(categoryDescriptions[cat] || "")}
           </span>
           <input id="spend-${cat}" class="spend-input" type="number" min="0" step="1" value="0" data-cat="${cat}" aria-label="Monthly spend for ${cat}" />
@@ -144,24 +144,6 @@ export function renderResult(el, best, annualSpend, schema, valuationMode = "est
 
 
 
-
-function categoryEmoji(cat) {
-  const c = String(cat || "").toLowerCase();
-  if (c.includes("grocery") || c.includes("supermarket")) return "🛒";
-  if (c.includes("dining") || c.includes("restaurant") || c.includes("food")) return "🍽️";
-  if (c.includes("travel") || c.includes("flight") || c.includes("hotel")) return "✈️";
-  if (c.includes("gas") || c.includes("fuel")) return "⛽";
-  if (c.includes("rideshare") || c.includes("ride share")) return "🚗";
-  if (c.includes("transit") || c.includes("transport")) return "🚇";
-  if (c.includes("drug") || c.includes("pharmacy") || c.includes("health")) return "💊";
-  if (c.includes("entertainment")) return "🎮";
-  if (c.includes("stream")) return "📺";
-  if (c.includes("digital") || c.includes("mobile") || c.includes("phone") || c.includes("internet") || c.includes("telecom")) return "📱";
-  if (c.includes("recurring") || c.includes("subscription") || c.includes("bill") || c.includes("utilities")) return "🧾";
-  if (c.includes("amazon") || c.includes("online") || c.includes("e-commerce")) return "📦";
-  if (c.includes("home") || c.includes("furniture")) return "🏠";
-  return "🏷️";
-}
 
 function spendDescriptionMarkup(desc) {
   const clean = String(desc || "").trim().replace(/\s+/g, " ");
