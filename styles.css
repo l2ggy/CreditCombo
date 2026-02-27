@@ -113,8 +113,7 @@ input[type="search"]:focus{border-color:var(--accent)}
   min-height:42px;
 }
 .row > .field-checkbox,
-.row > button,
-.row > .actionButtons{
+.row > button{
   flex:1 1 100%;
 }
 
@@ -180,10 +179,9 @@ thead th{
 tbody td{padding:var(--space-2);border-bottom:1px solid var(--border);vertical-align:top}
 tbody tr:last-child td{border-bottom:none}
 
-.actionButtons{display:flex;flex-wrap:wrap;gap:8px}
-.actionButtons button{width:auto;padding:8px 12px;font-size:12px}
-.actionButtons .primary{order:1}
-#clearSpendBtn{order:2;border-color:var(--border);color:var(--muted)}
+.spendActions{display:flex;justify-content:flex-end;margin-top:8px}
+.spendActions button{width:auto;padding:8px 12px;font-size:12px}
+#clearSpendBtn{border-color:var(--border);color:var(--muted)}
 #clearSpendBtn:hover{color:var(--text);border-color:color-mix(in srgb,var(--border) 75%, var(--text) 25%)}
 
 .spendGrid{
