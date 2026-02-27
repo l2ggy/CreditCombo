@@ -1810,17 +1810,20 @@
         "type": "annual"
       },
       "earn_rates": {
-        "other": 2
+        "grocery": 2,
+        "dining": 2,
+        "transit": 2,
+        "other": 0.5
       },
       "caps": [],
       "special_earn_rules": [
         {
-          "type": "threshold_bonus",
-          "description": "Cash back is tied to KOHO Subscription Plan level and can change over time; benefits are replaced (not stacked) when switching plans."
+          "type": "category_restriction",
+          "description": "2% cash back applies to groceries, eating & drinking, and transportation; all other eligible purchases earn 0.5% cash back."
         },
         {
           "type": "merchant_specific",
-          "description": "KOHO states cashback eligibility and earn rate can vary by merchant and transaction eligibility; model uses plan-level baseline proxy rate."
+          "description": "KOHO states cashback eligibility can vary by merchant and transaction eligibility; issuer terms and merchant coding determine final earn treatment."
         },
         {
           "type": "product_feature",
