@@ -103,7 +103,7 @@ export function renderResult(el, best, annualSpend, schema, valuationMode = "est
 
     const thumbs = alloc.map(({ c, amt }, idx) => {
       const amountPart = alloc.length > 1 ? ` — ${money(amt)}` : "";
-      return `<span class="useCardThumb" style="--stack-index:${idx}" title="${escapeHtml(c.card_name)}${escapeHtml(amountPart)}" aria-label="${escapeHtml(c.card_name)}${escapeHtml(amountPart)}">${cardThumbMarkup(c, "useThumbImage", false)}</span>`;
+      return `<span class="useCardThumb" style="--stack-index:${idx}" title="${escapeHtml(c.card_name)}${escapeHtml(amountPart)}" data-card="${escapeHtml(c.card_name)}${escapeHtml(amountPart)}" aria-label="${escapeHtml(c.card_name)}${escapeHtml(amountPart)}">${cardThumbMarkup(c, "useThumbImage", false)}</span>`;
     }).join("");
 
     const stackClass = alloc.length > 1 ? "useCards useCardsStack" : "useCards useCardsSingle";
@@ -151,14 +151,16 @@ function categoryEmoji(cat) {
   if (c.includes("dining") || c.includes("restaurant") || c.includes("food")) return "🍽️";
   if (c.includes("travel") || c.includes("flight") || c.includes("hotel")) return "✈️";
   if (c.includes("gas") || c.includes("fuel")) return "⛽";
-  if (c.includes("transit") || c.includes("transport")) return "🚌";
+  if (c.includes("rideshare") || c.includes("ride share")) return "🚗";
+  if (c.includes("transit") || c.includes("transport")) return "🚇";
   if (c.includes("drug") || c.includes("pharmacy") || c.includes("health")) return "💊";
-  if (c.includes("stream") || c.includes("entertainment")) return "🎬";
-  if (c.includes("mobile") || c.includes("phone") || c.includes("internet") || c.includes("telecom")) return "📱";
+  if (c.includes("entertainment")) return "🎮";
+  if (c.includes("stream")) return "📺";
+  if (c.includes("digital") || c.includes("mobile") || c.includes("phone") || c.includes("internet") || c.includes("telecom")) return "📱";
   if (c.includes("recurring") || c.includes("subscription") || c.includes("bill") || c.includes("utilities")) return "🧾";
   if (c.includes("amazon") || c.includes("online") || c.includes("e-commerce")) return "📦";
   if (c.includes("home") || c.includes("furniture")) return "🏠";
-  return "💳";
+  return "🏷️";
 }
 
 function spendDescriptionMarkup(desc) {
