@@ -64,7 +64,7 @@ export function renderIssues(el, issues) {
 
 
 function cardThumbMarkup(card, className = "resultCardThumb", withFrame = true) {
-  const image = `<img class="${className}" src="./assets/cards/${escapeHtml(card.id)}.webp" alt="${escapeHtml(card.card_name)}" loading="lazy" decoding="async" onerror="this.remove()" />`;
+  const image = `<img class="${className}" src="./assets/cards/${escapeHtml(card.id)}.webp" alt="${escapeHtml(card.card_name)}" loading="lazy" decoding="async" onload="this.classList.toggle('is-portrait', this.naturalHeight > this.naturalWidth)" onerror="this.remove()" />`;
   if (!withFrame) return image;
   return `<span class="thumbFrame">${image}</span>`;
 }

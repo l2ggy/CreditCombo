@@ -295,7 +295,7 @@ tbody tr:last-child td{border-bottom:none}
   z-index:30;
   pointer-events:none;
 }
-.useCardsStack .useThumbImage{
+.useCardsStack .useThumbImage.is-portrait{
   transform:rotate(90deg);
 }
 .useThumbImage{
