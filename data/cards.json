@@ -1739,11 +1739,27 @@
         "bills": 3,
         "other": 1
       },
-      "caps": [],
+      "caps": [
+        {
+          "scope": "shared",
+          "categories": [
+            "grocery",
+            "bills"
+          ],
+          "cap_amount": 25000,
+          "cap_period": "annual",
+          "earn_rate_above_cap": 1,
+          "notes": "Accelerated cash back on grocery and recurring bill payments applies on up to $25,000 annual spend in combined eligible categories."
+        }
+      ],
       "special_earn_rules": [
         {
+          "type": "category_restriction",
+          "description": "Accelerated earn applies to groceries and recurring bill payments; all other eligible purchases earn the base rate."
+        },
+        {
           "type": "threshold_bonus",
-          "description": "Card has spend-threshold-dependent earn boosts; model captures commonly advertised base tier bonuses only."
+          "description": "Issuer advertises rates as \"up to\" values subject to plan eligibility conditions; dataset models the publicly advertised top earn tier."
         }
       ]
     },
