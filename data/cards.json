@@ -3675,27 +3675,6 @@
       ]
     },
     {
-      "id": "wealthsimple_prepaid_mastercard",
-      "card_name": "Wealthsimple Prepaid Mastercard",
-      "issuer": "Wealthsimple",
-      "network": "Mastercard",
-      "rewards_program": "canadian_non_rewards",
-      "annual_fee": {
-        "amount": 0,
-        "type": "annual"
-      },
-      "earn_rates": {
-        "other": 0
-      },
-      "caps": [],
-      "special_earn_rules": [
-        {
-          "type": "product_feature",
-          "description": "Prepaid product; no standard credit-card rewards earn modeled."
-        }
-      ]
-    },
-    {
       "id": "wealthsimple_visa_infinite_privilege",
       "card_name": "Wealthsimple Visa Infinite Privilege*",
       "issuer": "Wealthsimple",
