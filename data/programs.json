@@ -107,7 +107,8 @@
       "program_type": "cashback",
       "cents_per_point": 1.0,
       "minimum_cents_per_point": 1.0,
-      "minimum_valuation_note": "Cashback redemptions are valued at face value, so the minimum equals the base valuation."
+      "minimum_valuation_note": "KOHO rewards are cashback-denominated, so redemption value is fixed at face value (1.0 cpp equivalent).",
+      "valuation_note": "Cashback program: rewards are valued at face value."
     },
     {
       "program_id": "mbna_non_rewards",
@@ -141,7 +142,8 @@
       "program_type": "cashback",
       "cents_per_point": 1.0,
       "minimum_cents_per_point": 1.0,
-      "minimum_valuation_note": "Cashback redemptions are valued at face value, so the minimum equals the base valuation."
+      "minimum_valuation_note": "Meridian cash back is redeemed at face value, so the guaranteed minimum is 1.0 cpp equivalent.",
+      "valuation_note": "Cashback program: rewards are valued at face value."
     },
     {
       "program_id": "nb_echo_cashback",
@@ -288,7 +290,8 @@
       "program_type": "points",
       "cents_per_point": 0.67,
       "minimum_cents_per_point": 0.67,
-      "minimum_valuation_note": "Guaranteed base redemption is 150 points = $1 (0.67 cpp)."
+      "minimum_valuation_note": "Guaranteed base redemption value is 150 BMO Rewards points = $1 CAD (0.67 cpp).",
+      "valuation_note": "Prince of Travel valuation for BMO Rewards is 0.67 cpp (CAD), matching the core fixed-value redemption baseline."
     },
     {
       "program_id": "cibc_aventura",
@@ -313,8 +316,8 @@
       "program_type": "points",
       "cents_per_point": 1.0,
       "minimum_cents_per_point": 1.0,
-      "minimum_valuation_note": "Guaranteed floor uses MBNA Rewards travel redemptions at 1.0 cpp (100 points = $1 in travel value).",
-      "valuation_note": "Prince of Travel values MBNA Rewards at 1.0 cpp when redeemed for travel through the MBNA Rewards portal."
+      "minimum_valuation_note": "Guaranteed floor uses MBNA Rewards travel redemptions at 100 points = $1 CAD (1.0 cpp).",
+      "valuation_note": "Prince of Travel valuation for MBNA Rewards is 1.0 cpp (CAD), aligned with MBNA travel redemption mechanics."
     },
     {
       "program_id": "marriott_bonvoy",
@@ -331,8 +334,8 @@
       "program_type": "points",
       "cents_per_point": 1.0,
       "minimum_cents_per_point": 1.0,
-      "minimum_valuation_note": "Finly indicates approximately 1.0 cpp fixed-value redemptions across core options.",
-      "valuation_note": "Finly conversion values indicate approximately 1.0 cpp for travel/cash/gift card style redemptions."
+      "minimum_valuation_note": "Guaranteed baseline is treated as 1.0 cpp based on Meridian Rewards fixed-value style travel/cash redemption options.",
+      "valuation_note": "Finly valuation for Meridian Rewards is ~1.0 cpp across core redemption options."
     },
     {
       "program_id": "moi_rewards",
@@ -376,8 +379,8 @@
       "program_type": "points",
       "cents_per_point": 2.0,
       "minimum_cents_per_point": 1.0,
-      "minimum_valuation_note": "Guaranteed floor set at 1.0 cpp via RBC Avion conversion path to WestJet Rewards at 1:1, where WestJet points are fixed at 1 cent each.",
-      "valuation_note": "Prince of Travel valuation for RBC Avion is 2.0 cpp (CAD); actual redemption value varies by transfer/redemption option."
+      "minimum_valuation_note": "Guaranteed floor uses the 1:1 transfer path from RBC Avion to WestJet Rewards, where 1 WestJet point = $0.01 CAD (1.0 cpp floor).",
+      "valuation_note": "Prince of Travel valuation for RBC Avion is 2.0 cpp (CAD); value is higher on optimized airline-transfer redemptions."
     },
     {
       "program_id": "rbc_avios",
