@@ -89,6 +89,9 @@
           "type": "merchant_specific",
           "description": "Air Canada and Air Canada Vacations spend can have elevated Aeroplan earn compared with baseline categories."
         }
+      ],
+      "sources": [
+        "https://www.americanexpress.com/en-ca/credit-cards/"
       ]
     },
     {
@@ -112,6 +115,9 @@
           "type": "merchant_specific",
           "description": "Air Canada and Air Canada Vacations spend can have elevated Aeroplan earn compared with baseline categories."
         }
+      ],
+      "sources": [
+        "https://www.americanexpress.com/en-ca/credit-cards/"
       ]
     },
     {
@@ -139,6 +145,9 @@
           "type": "merchant_specific",
           "description": "Air Canada and Air Canada Vacations spend can have elevated Aeroplan earn compared with baseline categories."
         }
+      ],
+      "sources": [
+        "https://www.americanexpress.com/en-ca/credit-cards/"
       ]
     },
     {
@@ -173,7 +182,11 @@
           "notes": "5x bucket cap (monthly)"
         }
       ],
-      "special_earn_rules": []
+      "special_earn_rules": [],
+      "sources": [
+        "https://www.americanexpress.com/en-ca/credit-cards/cobalt-card/",
+        "https://www.americanexpress.com/en-ca/credit-cards/"
+      ]
     },
     {
       "id": "amex_gold_rewards",
@@ -198,6 +211,10 @@
           "type": "merchant_specific",
           "description": "American Express Travel bookings can have elevated Membership Rewards earn versus baseline travel."
         }
+      ],
+      "sources": [
+        "https://www.americanexpress.com/en-ca/credit-cards/gold-rewards-card/",
+        "https://www.americanexpress.com/en-ca/credit-cards/"
       ]
     },
     {
@@ -215,7 +232,10 @@
         "other": 1
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [],
+      "sources": [
+        "https://www.americanexpress.com/en-ca/credit-cards/"
+      ]
     },
     {
       "id": "amex_business_gold_rewards",
@@ -233,7 +253,10 @@
         "other": 1
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [],
+      "sources": [
+        "https://www.americanexpress.com/en-ca/credit-cards/"
+      ]
     },
     {
       "id": "amex_business_platinum",
@@ -255,6 +278,9 @@
           "type": "merchant_specific",
           "description": "American Express Travel bookings can have elevated Membership Rewards earn versus baseline travel."
         }
+      ],
+      "sources": [
+        "https://www.americanexpress.com/en-ca/credit-cards/"
       ]
     },
     {
@@ -276,6 +302,9 @@
           "type": "merchant_specific",
           "description": "5x at participating Marriott Bonvoy properties (hotel-specific); not mapped to travel."
         }
+      ],
+      "sources": [
+        "https://www.americanexpress.com/en-ca/credit-cards/"
       ]
     },
     {
@@ -295,14 +324,17 @@
         "other": 2
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [],
+      "sources": [
+        "https://www.americanexpress.com/en-ca/credit-cards/"
+      ]
     },
     {
       "id": "amex_simplycash",
       "card_name": "SimplyCash® Card from American Express",
       "issuer": "American Express",
       "network": "American Express",
-      "rewards_program": "scotia_cashback",
+      "rewards_program": "amex_cashback",
       "annual_fee": {
         "amount": 0,
         "type": "annual"
@@ -318,6 +350,10 @@
           "type": "proxy_program",
           "description": "Modeled as cashback-equivalent earn rates."
         }
+      ],
+      "sources": [
+        "https://www.americanexpress.com/en-ca/credit-cards/simply-cash/",
+        "https://www.americanexpress.com/en-ca/credit-cards/"
       ]
     },
     {
@@ -325,7 +361,7 @@
       "card_name": "SimplyCash® Preferred Card from American Express",
       "issuer": "American Express",
       "network": "American Express",
-      "rewards_program": "scotia_cashback",
+      "rewards_program": "amex_cashback",
       "annual_fee": {
         "amount": 119.88,
         "type": "annual"
@@ -341,6 +377,10 @@
           "type": "proxy_program",
           "description": "Modeled as cashback-equivalent earn rates."
         }
+      ],
+      "sources": [
+        "https://www.americanexpress.com/en-ca/credit-cards/simply-cash-preferred/",
+        "https://www.americanexpress.com/en-ca/credit-cards/"
       ]
     },
     {
@@ -364,6 +404,10 @@
           "type": "merchant_specific",
           "description": "American Express Travel bookings can have elevated Membership Rewards earn versus baseline travel."
         }
+      ],
+      "sources": [
+        "https://www.americanexpress.com/en-ca/credit-cards/the-platinum-card/",
+        "https://www.americanexpress.com/en-ca/credit-cards/"
       ]
     },
     {
@@ -380,7 +424,10 @@
         "other": 1
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [],
+      "sources": [
+        "https://www.atb.com/personal/everyday-banking/credit-cards/"
+      ]
     },
     {
       "id": "atb_gold_my_rewards_mastercard",
@@ -396,7 +443,10 @@
         "other": 1.5
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [],
+      "sources": [
+        "https://www.atb.com/personal/everyday-banking/credit-cards/"
+      ]
     },
     {
       "id": "atb_world_elite_mastercard",
@@ -412,7 +462,10 @@
         "other": 2
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [],
+      "sources": [
+        "https://www.atb.com/personal/everyday-banking/credit-cards/"
+      ]
     },
     {
       "id": "bmo_ascend_we",
@@ -464,6 +517,9 @@
           "type": "portal_specific",
           "description": "Higher earn for travel booked via BMO Rewards travel portal exists; do not map to travel until modeled."
         }
+      ],
+      "sources": [
+        "https://www.bmo.com/main/personal/credit-cards/"
       ]
     },
     {
@@ -481,7 +537,10 @@
         "other": 0.75
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [],
+      "sources": [
+        "https://www.bmo.com/main/personal/credit-cards/"
+      ]
     },
     {
       "id": "bmo_cashback_no_fee_mc",
@@ -498,7 +557,10 @@
         "other": 0.5
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [],
+      "sources": [
+        "https://www.bmo.com/main/personal/credit-cards/"
+      ]
     },
     {
       "id": "bmo_cashback_we",
@@ -560,6 +622,10 @@
           "type": "definition_specific",
           "description": "BMO defines 'ground transportation' in detail; mapped broadly to transit for now."
         }
+      ],
+      "sources": [
+        "https://www.bmo.com/main/personal/credit-cards/bmo-cashback-world-elite-mastercard/",
+        "https://www.bmo.com/main/personal/credit-cards/"
       ]
     },
     {
@@ -591,7 +657,8 @@
       ],
       "special_earn_rules": [],
       "sources": [
-        "https://www.bmo.com/main/personal/credit-cards/bmo-cashback-mastercard/"
+        "https://www.bmo.com/main/personal/credit-cards/bmo-cashback-mastercard/",
+        "https://www.bmo.com/main/personal/credit-cards/"
       ]
     },
     {
@@ -613,6 +680,9 @@
           "type": "product_feature",
           "description": "Low-rate or non-rewards product with no ongoing rewards earn."
         }
+      ],
+      "sources": [
+        "https://www.bmo.com/main/personal/credit-cards/"
       ]
     },
     {
@@ -634,6 +704,9 @@
           "type": "product_feature",
           "description": "Low-rate or non-rewards product with no ongoing rewards earn."
         }
+      ],
+      "sources": [
+        "https://www.bmo.com/main/personal/credit-cards/"
       ]
     },
     {
@@ -655,6 +728,9 @@
           "type": "merchant_specific",
           "description": "Earn 2x VIPorter points per $1 on eligible Porter purchases (merchant-specific); excluded from modeled categories."
         }
+      ],
+      "sources": [
+        "https://www.bmo.com/main/personal/credit-cards/"
       ]
     },
     {
@@ -680,6 +756,9 @@
           "type": "merchant_specific",
           "description": "Earn 3x VIPorter points per $1 on eligible Porter purchases (merchant-specific); excluded from modeled categories."
         }
+      ],
+      "sources": [
+        "https://www.bmo.com/main/personal/credit-cards/"
       ]
     },
     {
@@ -701,6 +780,9 @@
           "type": "merchant_specific",
           "description": "Higher earn up to 4x on eligible travel bookings and categories is merchant/portal-specific; base modeled at 1.5x."
         }
+      ],
+      "sources": [
+        "https://www.bmo.com/main/personal/credit-cards/"
       ]
     },
     {
@@ -718,7 +800,10 @@
         "other": 0.5
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [],
+      "sources": [
+        "https://www.bmo.com/main/personal/credit-cards/"
+      ]
     },
     {
       "id": "bmo_eclipse_rise",
@@ -744,7 +829,8 @@
         }
       ],
       "sources": [
-        "https://www.bmo.com/main/personal/credit-cards/bmo-eclipse-rise-visa/"
+        "https://www.bmo.com/main/personal/credit-cards/bmo-eclipse-rise-visa/",
+        "https://www.bmo.com/main/personal/credit-cards/"
       ]
     },
     {
@@ -788,7 +874,8 @@
         }
       ],
       "sources": [
-        "https://www.bmo.com/main/personal/credit-cards/bmo-eclipse-visa-infinite-privilege/"
+        "https://www.bmo.com/main/personal/credit-cards/bmo-eclipse-visa-infinite-privilege/",
+        "https://www.bmo.com/main/personal/credit-cards/"
       ]
     },
     {
@@ -853,7 +940,8 @@
         }
       ],
       "sources": [
-        "https://www.bmo.com/main/personal/credit-cards/bmo-eclipse-visa-infinite/"
+        "https://www.bmo.com/main/personal/credit-cards/bmo-eclipse-visa-infinite/",
+        "https://www.bmo.com/main/personal/credit-cards/"
       ]
     },
     {
@@ -875,6 +963,9 @@
           "type": "merchant_specific",
           "description": "Partner offers can increase returns beyond base earn; model uses base rate only."
         }
+      ],
+      "sources": [
+        "https://brimfinancial.com/credit-cards"
       ]
     },
     {
@@ -896,6 +987,9 @@
           "type": "merchant_specific",
           "description": "Partner offers can increase returns beyond base earn; model uses base rate only."
         }
+      ],
+      "sources": [
+        "https://brimfinancial.com/credit-cards"
       ]
     },
     {
@@ -912,7 +1006,10 @@
         "other": 1
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [],
+      "sources": [
+        "https://triangle.canadiantire.ca/en/credit-cards.html"
+      ]
     },
     {
       "id": "triangle_mastercard",
@@ -938,6 +1035,9 @@
           "type": "merchant_specific",
           "description": "Triangle earn rates are partner-merchant specific (Canadian Tire family and selected partners)."
         }
+      ],
+      "sources": [
+        "https://triangle.canadiantire.ca/en/credit-cards.html"
       ]
     },
     {
@@ -970,7 +1070,8 @@
         }
       ],
       "sources": [
-        "https://triangle.canadiantire.ca/en/credit-cards/triangle-world-elite-mastercard.html"
+        "https://triangle.canadiantire.ca/en/credit-cards/triangle-world-elite-mastercard.html",
+        "https://triangle.canadiantire.ca/en/credit-cards.html"
       ]
     },
     {
@@ -992,6 +1093,9 @@
           "type": "product_feature",
           "description": "Credit-building product with no rewards earn."
         }
+      ],
+      "sources": [
+        "https://www.capitalone.ca/credit-cards/"
       ]
     },
     {
@@ -1008,7 +1112,10 @@
         "other": 5
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [],
+      "sources": [
+        "https://www.capitalone.ca/credit-cards/"
+      ]
     },
     {
       "id": "cibc_costco_mastercard",
@@ -1035,6 +1142,10 @@
           "type": "merchant_specific",
           "description": "Costco gas and Costco.ca spend can have differentiated earn rates compared with non-Costco transactions."
         }
+      ],
+      "sources": [
+        "https://www.cibc.com/en/personal-banking/credit-cards/all-credit-cards/costco-mastercard.html",
+        "https://www.cibc.com/en/personal-banking/credit-cards.html"
       ]
     },
     {
@@ -1058,6 +1169,10 @@
           "type": "merchant_specific",
           "description": "Air Canada and Air Canada Vacations spend can have elevated Aeroplan earn compared with baseline categories."
         }
+      ],
+      "sources": [
+        "https://www.cibc.com/en/personal-banking/credit-cards/all-credit-cards/aeroplan-visa-card.html",
+        "https://www.cibc.com/en/personal-banking/credit-cards.html"
       ]
     },
     {
@@ -1098,6 +1213,10 @@
           "type": "merchant_specific",
           "description": "Air Canada and Air Canada Vacations spend can have elevated Aeroplan earn compared with baseline categories."
         }
+      ],
+      "sources": [
+        "https://www.cibc.com/en/personal-banking/credit-cards/all-credit-cards/aeroplan-visa-infinite-card.html",
+        "https://www.cibc.com/en/personal-banking/credit-cards.html"
       ]
     },
     {
@@ -1122,6 +1241,9 @@
           "type": "merchant_specific",
           "description": "Air Canada and Air Canada Vacations spend can have elevated Aeroplan earn compared with baseline categories."
         }
+      ],
+      "sources": [
+        "https://www.cibc.com/en/personal-banking/credit-cards.html"
       ]
     },
     {
@@ -1146,6 +1268,9 @@
           "type": "merchant_specific",
           "description": "CIBC Rewards Centre / issuer travel portal bookings can have elevated Aventura earn versus baseline."
         }
+      ],
+      "sources": [
+        "https://www.cibc.com/en/personal-banking/credit-cards.html"
       ]
     },
     {
@@ -1169,6 +1294,9 @@
           "type": "merchant_specific",
           "description": "CIBC Rewards Centre / issuer travel portal bookings can have elevated Aventura earn versus baseline."
         }
+      ],
+      "sources": [
+        "https://www.cibc.com/en/personal-banking/credit-cards.html"
       ]
     },
     {
@@ -1192,6 +1320,9 @@
           "type": "merchant_specific",
           "description": "CIBC Rewards Centre / issuer travel portal bookings can have elevated Aventura earn versus baseline."
         }
+      ],
+      "sources": [
+        "https://www.cibc.com/en/personal-banking/credit-cards.html"
       ]
     },
     {
@@ -1232,6 +1363,10 @@
           "type": "merchant_specific",
           "description": "CIBC Rewards Centre / issuer travel portal bookings can have elevated Aventura earn versus baseline."
         }
+      ],
+      "sources": [
+        "https://www.cibc.com/en/personal-banking/credit-cards/all-credit-cards/aventura-visa-infinite-card.html",
+        "https://www.cibc.com/en/personal-banking/credit-cards.html"
       ]
     },
     {
@@ -1255,6 +1390,9 @@
           "type": "merchant_specific",
           "description": "CIBC Rewards Centre / issuer travel portal bookings can have elevated Aventura earn versus baseline."
         }
+      ],
+      "sources": [
+        "https://www.cibc.com/en/personal-banking/credit-cards.html"
       ]
     },
     {
@@ -1276,6 +1414,9 @@
           "type": "product_feature",
           "description": "Low-rate or non-rewards product with no ongoing rewards earn."
         }
+      ],
+      "sources": [
+        "https://www.cibc.com/en/personal-banking/credit-cards.html"
       ]
     },
     {
@@ -1295,7 +1436,10 @@
         "other": 1
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [],
+      "sources": [
+        "https://www.cibc.com/en/personal-banking/credit-cards.html"
+      ]
     },
     {
       "id": "cibc_dividend_no_fee",
@@ -1321,6 +1465,9 @@
           "type": "definition_specific",
           "description": "Issuer includes EV charging inside gas/transportation; omitted as separate category."
         }
+      ],
+      "sources": [
+        "https://www.cibc.com/en/personal-banking/credit-cards.html"
       ]
     },
     {
@@ -1347,6 +1494,10 @@
           "type": "definition_specific",
           "description": "Issuer includes EV charging and other sub-definitions inside gas/transportation; keep separate if you add EV_charging explicitly."
         }
+      ],
+      "sources": [
+        "https://www.cibc.com/en/personal-banking/credit-cards/all-credit-cards/dividend-visa-infinite-card.html",
+        "https://www.cibc.com/en/personal-banking/credit-cards.html"
       ]
     },
     {
@@ -1368,6 +1519,9 @@
           "type": "product_feature",
           "description": "Low-rate or non-rewards product with no ongoing rewards earn."
         }
+      ],
+      "sources": [
+        "https://www.cibc.com/en/personal-banking/credit-cards.html"
       ]
     },
     {
@@ -1384,7 +1538,10 @@
         "other": 0.5
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [],
+      "sources": [
+        "https://www.desjardins.com/ca/personal/loans-credit/credit-cards/index.jsp"
+      ]
     },
     {
       "id": "desjardins_cashback_we",
@@ -1401,7 +1558,10 @@
         "other": 1
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [],
+      "sources": [
+        "https://www.desjardins.com/ca/personal/loans-credit/credit-cards/index.jsp"
+      ]
     },
     {
       "id": "desjardins_odyssey_visa_infinite_privilege",
@@ -1420,7 +1580,10 @@
         "other": 1
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [],
+      "sources": [
+        "https://www.desjardins.com/ca/personal/loans-credit/credit-cards/index.jsp"
+      ]
     },
     {
       "id": "desjardins_odyssey_we",
@@ -1442,7 +1605,8 @@
       "caps": [],
       "special_earn_rules": [],
       "sources": [
-        "https://www.desjardins.com/ca/personal/loans-credit/credit-cards/odyssey-world-elite-mastercard/index.jsp"
+        "https://www.desjardins.com/ca/personal/loans-credit/credit-cards/odyssey-world-elite-mastercard/index.jsp",
+        "https://www.desjardins.com/ca/personal/loans-credit/credit-cards/index.jsp"
       ]
     },
     {
@@ -1459,7 +1623,10 @@
         "other": 1
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [],
+      "sources": [
+        "https://www.desjardins.com/ca/personal/loans-credit/credit-cards/index.jsp"
+      ]
     },
     {
       "id": "desjardins_cash_back_visa",
@@ -1475,7 +1642,10 @@
         "other": 1
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [],
+      "sources": [
+        "https://www.desjardins.com/ca/personal/loans-credit/credit-cards/index.jsp"
+      ]
     },
     {
       "id": "desjardins_flexi_visa",
@@ -1496,6 +1666,9 @@
           "type": "product_feature",
           "description": "Low-rate or non-rewards product with no ongoing rewards earn."
         }
+      ],
+      "sources": [
+        "https://www.desjardins.com/ca/personal/loans-credit/credit-cards/index.jsp"
       ]
     },
     {
@@ -1513,7 +1686,10 @@
         "other": 1
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [],
+      "sources": [
+        "https://www.desjardins.com/ca/personal/loans-credit/credit-cards/index.jsp"
+      ]
     },
     {
       "id": "eq_bank_card",
@@ -1529,7 +1705,10 @@
         "other": 0.5
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [],
+      "sources": [
+        "https://www.eqbank.ca/personal-banking/payments/card"
+      ]
     },
     {
       "id": "fidem_mastercard",
@@ -1550,6 +1729,9 @@
           "type": "product_feature",
           "description": "Low-rate or non-rewards product with no ongoing rewards earn."
         }
+      ],
+      "sources": [
+        "https://fidemfinance.com/"
       ]
     },
     {
@@ -1566,7 +1748,10 @@
         "other": 1
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [],
+      "sources": [
+        "https://www.hometrust.ca/credit-cards/"
+      ]
     },
     {
       "id": "ht_secured_visa",
@@ -1587,6 +1772,9 @@
           "type": "product_feature",
           "description": "No base rewards earn; secured card commonly chosen for accessibility/credit-building rather than rewards."
         }
+      ],
+      "sources": [
+        "https://www.hometrust.ca/credit-cards/"
       ]
     },
     {
@@ -1600,10 +1788,30 @@
         "type": "annual"
       },
       "earn_rates": {
-        "other": 1
+        "grocery": 1,
+        "dining": 1,
+        "transit": 1,
+        "other": 0.5
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [
+        {
+          "type": "category_restriction",
+          "description": "KOHO plan pricing table advertises 1% cash back on groceries, transportation, and food & drinks for Essential; all other eligible purchases are modeled at 0.5% base cash back."
+        },
+        {
+          "type": "merchant_specific",
+          "description": "KOHO states cashback eligibility can vary by merchant and transaction eligibility; issuer terms and merchant coding determine final earn treatment."
+        },
+        {
+          "type": "product_feature",
+          "description": "Paid KOHO subscription plan fees may apply and are billed monthly/annually in-app; these plan fees are not represented in annual_fee."
+        }
+      ],
+      "sources": [
+        "https://www.koho.ca/legal/",
+        "https://www.koho.ca/"
+      ]
     },
     {
       "id": "koho_everything_mastercard",
@@ -1616,10 +1824,30 @@
         "type": "annual"
       },
       "earn_rates": {
-        "other": 2
+        "grocery": 2,
+        "dining": 2,
+        "transit": 2,
+        "other": 0.5
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [
+        {
+          "type": "category_restriction",
+          "description": "2% cash back applies to groceries, eating & drinking, and transportation; all other eligible purchases earn 0.5% cash back."
+        },
+        {
+          "type": "merchant_specific",
+          "description": "KOHO states cashback eligibility can vary by merchant and transaction eligibility; issuer terms and merchant coding determine final earn treatment."
+        },
+        {
+          "type": "product_feature",
+          "description": "Paid KOHO subscription plan fees may apply and are billed monthly/annually in-app; these plan fees are not represented in annual_fee."
+        }
+      ],
+      "sources": [
+        "https://www.koho.ca/legal/",
+        "https://www.koho.ca/"
+      ]
     },
     {
       "id": "koho_extra_mastercard",
@@ -1632,10 +1860,30 @@
         "type": "annual"
       },
       "earn_rates": {
-        "other": 1.5
+        "grocery": 1.5,
+        "dining": 1.5,
+        "transit": 1.5,
+        "other": 0.5
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [
+        {
+          "type": "category_restriction",
+          "description": "KOHO plan pricing table advertises 1.5% cash back on groceries, transportation, and food & drinks for Extra; all other eligible purchases are modeled at 0.5% base cash back."
+        },
+        {
+          "type": "merchant_specific",
+          "description": "KOHO states cashback eligibility can vary by merchant and transaction eligibility; issuer terms and merchant coding determine final earn treatment."
+        },
+        {
+          "type": "product_feature",
+          "description": "Paid KOHO subscription plan fees may apply and are billed monthly/annually in-app; these plan fees are not represented in annual_fee."
+        }
+      ],
+      "sources": [
+        "https://www.koho.ca/legal/",
+        "https://www.koho.ca/"
+      ]
     },
     {
       "id": "manulife_moneyplus_visa_infinite",
@@ -1655,9 +1903,16 @@
       "caps": [],
       "special_earn_rules": [
         {
+          "type": "category_restriction",
+          "description": "Accelerated earn applies to groceries and recurring bill payments; all other eligible purchases earn the base rate."
+        },
+        {
           "type": "threshold_bonus",
-          "description": "Card has spend-threshold-dependent earn boosts; model captures commonly advertised base tier bonuses only."
+          "description": "Issuer advertises \"up to\" cashback and eligibility-conditioned tiers; use issuer terms for exact threshold/cap mechanics."
         }
+      ],
+      "sources": [
+        "https://www.manulifebank.ca/personal-banking/credit-cards.html"
       ]
     },
     {
@@ -1674,7 +1929,10 @@
         "other": 1
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [],
+      "sources": [
+        "https://www.mbna.ca/en/credit-cards"
+      ]
     },
     {
       "id": "mbna_rewards_platinum_plus",
@@ -1689,7 +1947,8 @@
       "earn_rates": {
         "grocery": 2,
         "dining": 2,
-        "bills": 2,
+        "digital": 2,
+        "utilities": 2,
         "other": 1
       },
       "caps": [
@@ -1698,15 +1957,30 @@
           "categories": [
             "grocery",
             "dining",
-            "bills"
+            "digital",
+            "utilities"
           ],
           "cap_amount": 10000,
           "cap_period": "annual",
           "earn_rate_above_cap": 1,
-          "notes": "accelerated earn annual threshold"
+          "notes": "Accelerated earn applies to eligible restaurant, grocery, digital media, and household utility purchases up to $10,000 annual spend in applicable category buckets."
         }
       ],
-      "special_earn_rules": []
+      "special_earn_rules": [
+        {
+          "type": "category_out_of_schema",
+          "description": "Accelerated earn also applies to memberships category (not represented in current schema)."
+        },
+        {
+          "type": "bonus_structure",
+          "description": "Card includes annual Birthday Bonus points equal to a percentage of prior-year earn, subject to issuer terms and cap."
+        }
+      ],
+      "sources": [
+        "https://www.mbna.ca/en/credit-cards/rewards",
+        "https://www.mbna.ca/en/credit-cards/rewards/mbna-rewards-mastercard",
+        "https://www.mbna.ca/en/credit-cards"
+      ]
     },
     {
       "id": "mbna_smart_cash_platinum_plus_mastercard",
@@ -1724,7 +1998,10 @@
         "other": 1
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [],
+      "sources": [
+        "https://www.mbna.ca/en/credit-cards"
+      ]
     },
     {
       "id": "mbna_smart_cash_world_mastercard",
@@ -1742,7 +2019,10 @@
         "other": 1
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [],
+      "sources": [
+        "https://www.mbna.ca/en/credit-cards"
+      ]
     },
     {
       "id": "mbna_true_line_gold_mastercard",
@@ -1763,6 +2043,9 @@
           "type": "product_feature",
           "description": "Low-interest card with no rewards earn."
         }
+      ],
+      "sources": [
+        "https://www.mbna.ca/en/credit-cards"
       ]
     },
     {
@@ -1784,6 +2067,9 @@
           "type": "product_feature",
           "description": "Low-interest card with no rewards earn."
         }
+      ],
+      "sources": [
+        "https://www.mbna.ca/en/credit-cards"
       ]
     },
     {
@@ -1827,6 +2113,10 @@
           "type": "bonus_structure",
           "description": "Birthday bonus exists; omitted from long-term earn modeling for now (non-spend multiplier)."
         }
+      ],
+      "sources": [
+        "https://www.mbna.ca/en/credit-cards/rewards/mbna-rewards-world-elite-mastercard",
+        "https://www.mbna.ca/en/credit-cards"
       ]
     },
     {
@@ -1845,7 +2135,10 @@
         "other": 0.5
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [],
+      "sources": [
+        "https://www.meridiancu.ca/personal/credit-cards"
+      ]
     },
     {
       "id": "meridian_visa_infinite_travel_rewards_card",
@@ -1862,7 +2155,20 @@
         "other": 1.5
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [
+        {
+          "type": "category_restriction",
+          "description": "Accelerated earn applies to travel purchases; non-travel spend earns the base rate."
+        },
+        {
+          "type": "threshold_bonus",
+          "description": "Issuer may apply eligibility conditions and spending thresholds to accelerated travel earn; verify current Meridian terms for exact limits."
+        }
+      ],
+      "sources": [
+        "https://www.meridiancu.ca/personal/credit-cards/visa-infinite-travel-rewards-card",
+        "https://www.meridiancu.ca/personal/credit-cards"
+      ]
     },
     {
       "id": "meridian_visa_infinite_cash_back",
@@ -1876,11 +2182,26 @@
       },
       "earn_rates": {
         "gas": 4,
-        "grocery": 2,
+        "grocery": 4,
+        "drugstore": 2,
+        "utilities": 2,
         "other": 1
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [
+        {
+          "type": "category_restriction",
+          "description": "Accelerated earn applies by category (gas/grocery at higher tier; select everyday categories at mid tier) while other spend earns base cashback."
+        },
+        {
+          "type": "threshold_bonus",
+          "description": "Accelerated cashback may be subject to annual spend limits and eligibility terms; confirm current Meridian disclosure for exact cap treatment."
+        }
+      ],
+      "sources": [
+        "https://www.meridiancu.ca/personal/credit-cards/visa-infinite-cash-back-card",
+        "https://www.meridiancu.ca/personal/credit-cards"
+      ]
     },
     {
       "id": "meridian_visa_us_dollar_card",
@@ -1899,8 +2220,11 @@
       "special_earn_rules": [
         {
           "type": "product_feature",
-          "description": "Low-rate or non-rewards product with no ongoing rewards earn."
+          "description": "Low-rate USD card; modeled with baseline earn for comparison."
         }
+      ],
+      "sources": [
+        "https://www.meridiancu.ca/personal/credit-cards"
       ]
     },
     {
@@ -1917,7 +2241,10 @@
         "other": 0.5
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [],
+      "sources": [
+        "https://www.nbc.ca/personal/mastercard-credit-cards.html"
+      ]
     },
     {
       "id": "national_bank_business_mastercard",
@@ -1938,6 +2265,9 @@
           "type": "product_feature",
           "description": "Low-rate or non-rewards product with no ongoing rewards earn."
         }
+      ],
+      "sources": [
+        "https://www.nbc.ca/personal/mastercard-credit-cards.html"
       ]
     },
     {
@@ -1954,7 +2284,10 @@
         "other": 1
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [],
+      "sources": [
+        "https://www.nbc.ca/personal/mastercard-credit-cards.html"
+      ]
     },
     {
       "id": "national_bank_mycredit_mastercard",
@@ -1973,8 +2306,11 @@
       "special_earn_rules": [
         {
           "type": "product_feature",
-          "description": "Low-rate or non-rewards product with no ongoing rewards earn."
+          "description": "Entry-level card; modeled with baseline earn for comparison."
         }
+      ],
+      "sources": [
+        "https://www.nbc.ca/personal/mastercard-credit-cards.html"
       ]
     },
     {
@@ -1991,7 +2327,10 @@
         "other": 1.5
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [],
+      "sources": [
+        "https://www.nbc.ca/personal/mastercard-credit-cards.html"
+      ]
     },
     {
       "id": "nb_platinum_mastercard",
@@ -2008,7 +2347,10 @@
         "other": 1
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [],
+      "sources": [
+        "https://www.nbc.ca/personal/mastercard-credit-cards.html"
+      ]
     },
     {
       "id": "nb_syncro_mastercard",
@@ -2029,6 +2371,9 @@
           "type": "proxy_program",
           "description": "Primarily low-rate product; modeled with baseline earn."
         }
+      ],
+      "sources": [
+        "https://www.nbc.ca/personal/mastercard-credit-cards.html"
       ]
     },
     {
@@ -2046,7 +2391,10 @@
         "other": 1
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [],
+      "sources": [
+        "https://www.nbc.ca/personal/mastercard-credit-cards.html"
+      ]
     },
     {
       "id": "national_bank_world_elite",
@@ -2081,7 +2429,8 @@
         }
       ],
       "sources": [
-        "https://www.nbc.ca/personal/mastercard-credit-cards/world-elite.html"
+        "https://www.nbc.ca/personal/mastercard-credit-cards/world-elite.html",
+        "https://www.nbc.ca/personal/mastercard-credit-cards.html"
       ]
     },
     {
@@ -2104,6 +2453,9 @@
           "type": "merchant_specific",
           "description": "Elevated earn on Cathay Pacific purchases and certain travel-related transactions is merchant-specific and not mapped to travel."
         }
+      ],
+      "sources": [
+        "https://www.neofinancial.com/credit"
       ]
     },
     {
@@ -2129,6 +2481,9 @@
           "type": "merchant_specific",
           "description": "Neo earn can vary by merchant-specific boosted offers and partner network promotions."
         }
+      ],
+      "sources": [
+        "https://www.neofinancial.com/credit"
       ]
     },
     {
@@ -2142,13 +2497,23 @@
         "type": "annual"
       },
       "earn_rates": {
-        "grocery": 4,
-        "gas": 3,
-        "bills": 3,
         "other": 1
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [
+        {
+          "type": "proxy_program",
+          "description": "Neo World Elite earn is heavily partner- and merchant-dependent; modeled as a conservative baseline cashback proxy instead of fixed category multipliers."
+        },
+        {
+          "type": "merchant_specific",
+          "description": "Advertised earn is typically expressed as average or \"up to\" cashback with boosted Neo Partner offers, not a universal fixed category table."
+        }
+      ],
+      "sources": [
+        "https://www.neofinancial.com/credit/world-elite-mastercard",
+        "https://www.neofinancial.com/credit"
+      ]
     },
     {
       "id": "neo_world_mastercard",
@@ -2161,13 +2526,23 @@
         "type": "annual"
       },
       "earn_rates": {
-        "grocery": 3,
-        "gas": 2,
-        "bills": 2,
         "other": 1
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [
+        {
+          "type": "proxy_program",
+          "description": "Neo World earn is partner- and merchant-dependent; modeled as a conservative baseline cashback proxy instead of fixed category multipliers."
+        },
+        {
+          "type": "merchant_specific",
+          "description": "Advertised earn is commonly shown as average or \"up to\" cashback with boosted Neo Partner offers, not a universal fixed category table."
+        }
+      ],
+      "sources": [
+        "https://www.neofinancial.com/credit/world-mastercard",
+        "https://www.neofinancial.com/credit"
+      ]
     },
     {
       "id": "pc_financial_world_elite",
@@ -2198,7 +2573,8 @@
         }
       ],
       "sources": [
-        "https://www.pcfinancial.ca/en/credit-cards/world-elite/"
+        "https://www.pcfinancial.ca/en/credit-cards/world-elite/",
+        "https://www.pcfinancial.ca/en/credit-cards/"
       ]
     },
     {
@@ -2224,6 +2600,9 @@
           "type": "merchant_specific",
           "description": "Base non-partner spend is modeled at 10 PC Optimum points per $1."
         }
+      ],
+      "sources": [
+        "https://www.pcfinancial.ca/en/credit-cards/"
       ]
     },
     {
@@ -2253,6 +2632,9 @@
           "type": "merchant_specific",
           "description": "Base non-partner spend is modeled at 10 PC Optimum points per $1."
         }
+      ],
+      "sources": [
+        "https://www.pcfinancial.ca/en/credit-cards/"
       ]
     },
     {
@@ -2278,6 +2660,9 @@
           "type": "merchant_specific",
           "description": "Base non-partner spend is modeled at 10 PC Optimum points per $1."
         }
+      ],
+      "sources": [
+        "https://www.pcfinancial.ca/en/credit-cards/"
       ]
     },
     {
@@ -2294,7 +2679,10 @@
         "other": 1
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [],
+      "sources": [
+        "https://www.rbcroyalbank.com/credit-cards/"
+      ]
     },
     {
       "id": "rbc_cash_back_mastercard",
@@ -2333,7 +2721,8 @@
       ],
       "special_earn_rules": [],
       "sources": [
-        "https://www.rbcroyalbank.com/credit-cards/cash-back/rbc-cashback-mastercard.html"
+        "https://www.rbcroyalbank.com/credit-cards/cash-back/rbc-cashback-mastercard.html",
+        "https://www.rbcroyalbank.com/credit-cards/"
       ]
     },
     {
@@ -2362,7 +2751,9 @@
       ],
       "special_earn_rules": [],
       "sources": [
-        "https://www.rbcroyalbank.com/credit-cards/cash-back/cash-back-preferred-world-elite-mastercard.html"
+        "https://www.rbcroyalbank.com/credit-cards/cash-back/rbc-cashback-preferred-world-elite-mastercard.html",
+        "https://www.rbcroyalbank.com/credit-cards/cash-back/cash-back-preferred-world-elite-mastercard.html",
+        "https://www.rbcroyalbank.com/credit-cards/"
       ]
     },
     {
@@ -2397,7 +2788,8 @@
         }
       ],
       "sources": [
-        "https://www.rbcroyalbank.com/credit-cards/travel/westjet-rbc-mastercard.html"
+        "https://www.rbcroyalbank.com/credit-cards/travel/westjet-rbc-mastercard.html",
+        "https://www.rbcroyalbank.com/credit-cards/"
       ]
     },
     {
@@ -2429,7 +2821,8 @@
         }
       ],
       "sources": [
-        "https://www.rbcroyalbank.com/credit-cards/travel/westjet-rbc-world-elite-mastercard.html"
+        "https://www.rbcroyalbank.com/credit-cards/travel/westjet-rbc-world-elite-mastercard.html",
+        "https://www.rbcroyalbank.com/credit-cards/"
       ]
     },
     {
@@ -2446,7 +2839,10 @@
         "other": 1
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [],
+      "sources": [
+        "https://www.rbcroyalbank.com/credit-cards/"
+      ]
     },
     {
       "id": "more_rewards_rbc_visa",
@@ -2467,6 +2863,9 @@
           "type": "merchant_specific",
           "description": "Higher earn up to 5x applies at participating More Rewards partners; base earn modeled at 3x."
         }
+      ],
+      "sources": [
+        "https://www.rbcroyalbank.com/credit-cards/"
       ]
     },
     {
@@ -2488,6 +2887,9 @@
           "type": "merchant_specific",
           "description": "Higher earn up to 8x applies at participating More Rewards partners; base earn modeled at 4x."
         }
+      ],
+      "sources": [
+        "https://www.rbcroyalbank.com/credit-cards/"
       ]
     },
     {
@@ -2512,7 +2914,8 @@
         }
       ],
       "sources": [
-        "https://www.rbcroyalbank.com/business/credit-cards/avion-visa-business.html"
+        "https://www.rbcroyalbank.com/business/credit-cards/avion-visa-business.html",
+        "https://www.rbcroyalbank.com/credit-cards/"
       ]
     },
     {
@@ -2535,6 +2938,10 @@
           "type": "merchant_specific",
           "description": "RBC Avion travel portal and selected partner booking channels may offer earn differences vs. baseline spend."
         }
+      ],
+      "sources": [
+        "https://www.rbcroyalbank.com/credit-cards/travel/rbc-avion-visa-infinite.html",
+        "https://www.rbcroyalbank.com/credit-cards/"
       ]
     },
     {
@@ -2550,16 +2957,32 @@
       "earn_rates": {
         "other": 1.25
       },
-      "caps": [],
+      "caps": [
+        {
+          "scope": "per_category",
+          "categories": [
+            "other"
+          ],
+          "cap_amount": 75000,
+          "cap_period": "annual",
+          "earn_rate_above_cap": 1,
+          "notes": "RBC business cards page states 1.25 Avion points per $1 on net purchases up to $75,000 per year."
+        }
+      ],
       "special_earn_rules": [
+        {
+          "type": "threshold_bonus",
+          "description": "Accelerated 1.25 points per $1 applies on net purchases up to annual spend threshold; above-threshold spend earns lower base points rate."
+        },
         {
           "type": "merchant_specific",
           "description": "RBC Avion travel redemptions can produce higher effective value than baseline statement-credit redemption."
         }
       ],
       "sources": [
-        "https://www.rbcroyalbank.com/credit-cards/business/rbc-avion-visa-infinite-business.html",
-        "https://www.finlywealth.com/credit-cards/rbc-avion-visa-infinite-business"
+        "https://www.rbcroyalbank.com/business/credit-cards/small-business-credit-cards/avion-visa-infinite-business.html",
+        "https://www.rbcroyalbank.com/business/credit-cards/index.html",
+        "https://www.rbcroyalbank.com/credit-cards/"
       ]
     },
     {
@@ -2582,6 +3005,9 @@
           "type": "merchant_specific",
           "description": "RBC Avion travel portal and selected partner booking channels may offer earn differences vs. baseline spend."
         }
+      ],
+      "sources": [
+        "https://www.rbcroyalbank.com/credit-cards/"
       ]
     },
     {
@@ -2609,6 +3035,10 @@
           "type": "category_out_of_schema",
           "description": "3x also applies to digital gaming + eligible digital subscriptions; keep separate if you add a dedicated category."
         }
+      ],
+      "sources": [
+        "https://www.rbcroyalbank.com/credit-cards/rewards/rbc-ion-plus-visa.html",
+        "https://www.rbcroyalbank.com/credit-cards/"
       ]
     },
     {
@@ -2630,6 +3060,9 @@
           "type": "product_feature",
           "description": "Low-rate or non-rewards product with no ongoing rewards earn."
         }
+      ],
+      "sources": [
+        "https://www.rbcroyalbank.com/credit-cards/"
       ]
     },
     {
@@ -2649,8 +3082,11 @@
       "special_earn_rules": [
         {
           "type": "product_feature",
-          "description": "Low-rate or non-rewards product with no ongoing rewards earn."
+          "description": "USD-denominated card; modeled with baseline earn for comparison."
         }
+      ],
+      "sources": [
+        "https://www.rbcroyalbank.com/credit-cards/"
       ]
     },
     {
@@ -2672,6 +3108,9 @@
           "type": "proxy_program",
           "description": "Low-rate product modeled conservatively with baseline cashback proxy."
         }
+      ],
+      "sources": [
+        "https://www.rbcroyalbank.com/credit-cards/"
       ]
     },
     {
@@ -2693,6 +3132,9 @@
           "type": "product_feature",
           "description": "Low-rate or non-rewards product with no ongoing rewards earn."
         }
+      ],
+      "sources": [
+        "https://www.rbcroyalbank.com/credit-cards/"
       ]
     },
     {
@@ -2716,7 +3158,8 @@
         }
       ],
       "sources": [
-        "https://www.rbcroyalbank.com/credit-cards/travel/rbc-avion-visa-platinum.html"
+        "https://www.rbcroyalbank.com/credit-cards/travel/rbc-avion-visa-platinum.html",
+        "https://www.rbcroyalbank.com/credit-cards/"
       ]
     },
     {
@@ -2738,6 +3181,9 @@
           "type": "merchant_specific",
           "description": "Higher Avios earn on eligible British Airways and partner bookings is merchant-specific; not mapped to travel."
         }
+      ],
+      "sources": [
+        "https://www.rbcroyalbank.com/credit-cards/"
       ]
     },
     {
@@ -2770,7 +3216,8 @@
         }
       ],
       "sources": [
-        "https://www.rbcroyalbank.com/credit-cards/rewards/rbc-ion-visa.html"
+        "https://www.rbcroyalbank.com/credit-cards/rewards/rbc-ion-visa.html",
+        "https://www.rbcroyalbank.com/credit-cards/"
       ]
     },
     {
@@ -2792,6 +3239,10 @@
           "type": "merchant_specific",
           "description": "Additional effective value can apply when redeeming rewards against Rogers/Fido/Shaw purchases; kept out of base earn_rates."
         }
+      ],
+      "sources": [
+        "https://rogersbank.com/en/rogers_red_details",
+        "https://rogersbank.com/en/rogers_mastercard_details"
       ]
     },
     {
@@ -2817,6 +3268,10 @@
           "type": "merchant_specific",
           "description": "Additional effective value can apply when redeeming rewards against Rogers/Fido/Shaw purchases; kept out of base earn_rates."
         }
+      ],
+      "sources": [
+        "https://rogersbank.com/en/rogers_red_worldelite_details",
+        "https://rogersbank.com/en/rogers_mastercard_details"
       ]
     },
     {
@@ -2836,7 +3291,10 @@
         "other": 1
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [],
+      "sources": [
+        "https://www.scotiabank.com/ca/en/personal/credit-cards.html"
+      ]
     },
     {
       "id": "scotia_gold_amex",
@@ -2863,6 +3321,10 @@
           "type": "merchant_specific",
           "description": "6x grocery may be restricted to select grocers (e.g., Empire/Sobeys family). Keep separate if you later model merchant lists."
         }
+      ],
+      "sources": [
+        "https://www.scotiabank.com/ca/en/personal/credit-cards/american-express/gold-card.html",
+        "https://www.scotiabank.com/ca/en/personal/credit-cards.html"
       ]
     },
     {
@@ -2882,7 +3344,10 @@
         "other": 1
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [],
+      "sources": [
+        "https://www.scotiabank.com/ca/en/personal/credit-cards.html"
+      ]
     },
     {
       "id": "scotia_momentum_mastercard_no_fee",
@@ -2901,7 +3366,10 @@
         "other": 0.5
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [],
+      "sources": [
+        "https://www.scotiabank.com/ca/en/personal/credit-cards.html"
+      ]
     },
     {
       "id": "scotia_momentum_no_fee",
@@ -2928,6 +3396,9 @@
           "type": "merchant_specific",
           "description": "2% bucket also references food delivery per issuer terms; keep separate if you later model it precisely."
         }
+      ],
+      "sources": [
+        "https://www.scotiabank.com/ca/en/personal/credit-cards.html"
       ]
     },
     {
@@ -2978,6 +3449,10 @@
           "type": "merchant_specific",
           "description": "2% bucket includes select food-delivery MCCs/merchants per Scotiabank terms; keep separate if you later model it precisely."
         }
+      ],
+      "sources": [
+        "https://www.scotiabank.com/ca/en/personal/credit-cards/visa/momentum-infinite-card.html",
+        "https://www.scotiabank.com/ca/en/personal/credit-cards.html"
       ]
     },
     {
@@ -2996,7 +3471,10 @@
         "other": 1
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [],
+      "sources": [
+        "https://www.scotiabank.com/ca/en/personal/credit-cards.html"
+      ]
     },
     {
       "id": "scotia_value_visa",
@@ -3017,6 +3495,9 @@
           "type": "proxy_program",
           "description": "Low-rate product modeled conservatively with baseline cashback proxy."
         }
+      ],
+      "sources": [
+        "https://www.scotiabank.com/ca/en/personal/credit-cards.html"
       ]
     },
     {
@@ -3035,7 +3516,10 @@
         "other": 1
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [],
+      "sources": [
+        "https://www.scotiabank.com/ca/en/personal/credit-cards.html"
+      ]
     },
     {
       "id": "scotia_passport_vi",
@@ -3055,7 +3539,11 @@
         "other": 1
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [],
+      "sources": [
+        "https://www.scotiabank.com/ca/en/personal/credit-cards/visa/passport-infinite-card.html",
+        "https://www.scotiabank.com/ca/en/personal/credit-cards.html"
+      ]
     },
     {
       "id": "scotiabank_passport_visa_infinite_privilege_card",
@@ -3073,7 +3561,10 @@
         "other": 1
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [],
+      "sources": [
+        "https://www.scotiabank.com/ca/en/personal/credit-cards.html"
+      ]
     },
     {
       "id": "scotia_scene_visa",
@@ -3091,7 +3582,10 @@
         "other": 1
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [],
+      "sources": [
+        "https://www.scotiabank.com/ca/en/personal/credit-cards.html"
+      ]
     },
     {
       "id": "simplii_cash_back_visa",
@@ -3136,7 +3630,8 @@
       ],
       "special_earn_rules": [],
       "sources": [
-        "https://www.simplii.com/en/credit-cards/cash-back-visa.html"
+        "https://www.simplii.com/en/credit-cards/cash-back-visa.html",
+        "https://www.simplii.com/en/credit-cards.html"
       ]
     },
     {
@@ -3153,7 +3648,20 @@
         "other": 0.5
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [
+        {
+          "type": "user_selectable_categories",
+          "description": "2% cashback in up to 2 categories (or 3 if rewards deposited to Tangerine Savings). Categories are user-chosen; not hard-coded into earn_rates."
+        },
+        {
+          "type": "merchant_specific",
+          "description": "User-selectable 2% categories (typically up to 2, or 3 with a Tangerine savings account) are configurable and merchant-code dependent."
+        }
+      ],
+      "sources": [
+        "https://www.tangerine.ca/en/personal/spend/credit-cards",
+        "https://www.tangerine.ca/en/products/spending/creditcard"
+      ]
     },
     {
       "id": "tangerine_world_mastercard",
@@ -3178,6 +3686,10 @@
           "type": "merchant_specific",
           "description": "User-selectable 2% categories (typically up to 2, or 3 with a Tangerine savings account) are configurable and merchant-code dependent."
         }
+      ],
+      "sources": [
+        "https://www.tangerine.ca/en/personal/spend/credit-cards",
+        "https://www.tangerine.ca/en/products/spending/creditcard"
       ]
     },
     {
@@ -3203,6 +3715,10 @@
           "type": "merchant_specific",
           "description": "User-selectable 2% categories (typically up to 2, or 3 with a Tangerine savings account) are configurable and merchant-code dependent."
         }
+      ],
+      "sources": [
+        "https://www.tangerine.ca/en/personal/spend/credit-cards",
+        "https://www.tangerine.ca/en/products/spending/creditcard"
       ]
     },
     {
@@ -3227,6 +3743,9 @@
           "type": "merchant_specific",
           "description": "Air Canada and Air Canada Vacations spend can have elevated Aeroplan earn compared with baseline categories."
         }
+      ],
+      "sources": [
+        "https://www.td.com/ca/en/personal-banking/products/credit-cards"
       ]
     },
     {
@@ -3250,6 +3769,9 @@
           "type": "merchant_specific",
           "description": "Air Canada and Air Canada Vacations spend can have elevated Aeroplan earn compared with baseline categories."
         }
+      ],
+      "sources": [
+        "https://www.td.com/ca/en/personal-banking/products/credit-cards"
       ]
     },
     {
@@ -3269,7 +3791,10 @@
         "other": 0.5
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [],
+      "sources": [
+        "https://www.td.com/ca/en/personal-banking/products/credit-cards"
+      ]
     },
     {
       "id": "td_business_travel_visa_card",
@@ -3290,6 +3815,9 @@
           "type": "merchant_specific",
           "description": "Up to 9x TD Rewards on Expedia For TD purchases is portal-specific and excluded from base categories."
         }
+      ],
+      "sources": [
+        "https://www.td.com/ca/en/personal-banking/products/credit-cards"
       ]
     },
     {
@@ -3311,6 +3839,9 @@
           "type": "product_feature",
           "description": "Low-rate or non-rewards product with no ongoing rewards earn."
         }
+      ],
+      "sources": [
+        "https://www.td.com/ca/en/personal-banking/products/credit-cards"
       ]
     },
     {
@@ -3334,6 +3865,9 @@
           "type": "merchant_specific",
           "description": "Travel booked through Expedia for TD can have higher earn than baseline categories; captured as portal-specific."
         }
+      ],
+      "sources": [
+        "https://www.td.com/ca/en/personal-banking/products/credit-cards"
       ]
     },
     {
@@ -3357,6 +3891,9 @@
           "type": "merchant_specific",
           "description": "Travel booked through Expedia for TD can have higher earn than baseline categories; captured as portal-specific."
         }
+      ],
+      "sources": [
+        "https://www.td.com/ca/en/personal-banking/products/credit-cards"
       ]
     },
     {
@@ -3398,6 +3935,10 @@
           "type": "merchant_specific",
           "description": "Air Canada and Air Canada Vacations spend can have elevated Aeroplan earn compared with baseline categories."
         }
+      ],
+      "sources": [
+        "https://www.td.com/ca/en/personal-banking/products/credit-cards/travel-rewards/aeroplan-visa-infinite-card",
+        "https://www.td.com/ca/en/personal-banking/products/credit-cards"
       ]
     },
     {
@@ -3477,7 +4018,8 @@
         }
       ],
       "sources": [
-        "https://www.td.com/ca/en/personal-banking/products/credit-cards/cash-back-rewards/cash-back-visa-infinite-card"
+        "https://www.td.com/ca/en/personal-banking/products/credit-cards/cash-back-rewards/cash-back-visa-infinite-card",
+        "https://www.td.com/ca/en/personal-banking/products/credit-cards"
       ]
     },
     {
@@ -3532,7 +4074,8 @@
         }
       ],
       "sources": [
-        "https://www.td.com/ca/en/personal-banking/products/credit-cards/cash-back-rewards/cash-back-visa-card"
+        "https://www.td.com/ca/en/personal-banking/products/credit-cards/cash-back-rewards/cash-back-visa-card",
+        "https://www.td.com/ca/en/personal-banking/products/credit-cards"
       ]
     },
     {
@@ -3570,7 +4113,8 @@
         }
       ],
       "sources": [
-        "https://www.td.com/ca/en/personal-banking/products/credit-cards/travel-rewards/first-class-travel-visa-infinite-card"
+        "https://www.td.com/ca/en/personal-banking/products/credit-cards/travel-rewards/first-class-travel-visa-infinite-card",
+        "https://www.td.com/ca/en/personal-banking/products/credit-cards"
       ]
     },
     {
@@ -3602,7 +4146,8 @@
       ],
       "sources": [
         "https://www.td.com/ca/en/business-banking/small-business/credit-cards/aeroplan-visa-business",
-        "https://www.finlywealth.com/credit-cards/td-aeroplan-visa-card-business"
+        "https://www.finlywealth.com/credit-cards/td-aeroplan-visa-card-business",
+        "https://www.td.com/ca/en/personal-banking/products/credit-cards"
       ]
     },
     {
@@ -3620,7 +4165,10 @@
         "other": 0.5
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [],
+      "sources": [
+        "https://www.timhortons.ca/tims-financial"
+      ]
     },
     {
       "id": "walmart_rewards_mastercard",
@@ -3646,6 +4194,9 @@
           "type": "merchant_specific",
           "description": "Higher earn tiers may apply at Walmart channels versus non-Walmart merchants depending on current program terms."
         }
+      ],
+      "sources": [
+        "https://www.walmartrewards.ca/"
       ]
     },
     {
@@ -3672,6 +4223,9 @@
           "type": "merchant_specific",
           "description": "Higher earn tiers may apply at Walmart channels versus non-Walmart merchants depending on current program terms."
         }
+      ],
+      "sources": [
+        "https://www.walmartrewards.ca/"
       ]
     },
     {
@@ -3688,7 +4242,10 @@
         "other": 2
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [],
+      "sources": [
+        "https://www.wealthsimple.com/en-ca/spend/card"
+      ]
     },
     {
       "id": "wealthsimple_visa_infinite",
@@ -3704,7 +4261,10 @@
         "other": 2
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [],
+      "sources": [
+        "https://www.wealthsimple.com/en-ca/spend/card"
+      ]
     },
     {
       "id": "zolve_classic_credit_card",
@@ -3720,7 +4280,10 @@
         "other": 1
       },
       "caps": [],
-      "special_earn_rules": []
+      "special_earn_rules": [],
+      "sources": [
+        "https://www.zolve.com/credit-card"
+      ]
     }
   ]
 }
