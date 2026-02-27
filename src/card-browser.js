@@ -11,6 +11,7 @@ const els = {
   issuerFilter: document.getElementById("issuerFilter"),
   programFilter: document.getElementById("programFilter"),
   sortBy: document.getElementById("sortBy"),
+  resetFiltersBtn: document.getElementById("resetFiltersBtn"),
   cardsList: document.getElementById("cardsList"),
   summary: document.getElementById("browserSummary"),
   fatal: document.getElementById("browserFatal")
@@ -52,6 +53,27 @@ function populateSelect(selectEl, values, allLabel) {
     option.textContent = value;
     selectEl.append(option);
   }
+}
+
+function hasActiveFilters() {
+  return Boolean(
+    els.searchInput.value.trim()
+    || els.issuerFilter.value
+    || els.programFilter.value
+    || els.sortBy.value !== "name"
+  );
+}
+
+function resetFilters() {
+  els.searchInput.value = "";
+  els.issuerFilter.value = "";
+  els.programFilter.value = "";
+  els.sortBy.value = "name";
+}
+
+function updateResetButtonState() {
+  if (!els.resetFiltersBtn) return;
+  els.resetFiltersBtn.disabled = !hasActiveFilters();
 }
 
 function cardMatches(card) {
@@ -147,6 +169,7 @@ function renderCards() {
   state.filteredCards = sortCards(state.cards.filter(cardMatches));
 
   els.summary.textContent = `Showing ${state.filteredCards.length} of ${state.cards.length} cards.`;
+  updateResetButtonState();
 
   if (!state.filteredCards.length) {
     els.cardsList.innerHTML = '<section class="panel"><p class="muted">No cards match those filters.</p></section>';
@@ -188,6 +211,13 @@ function registerEvents() {
     el.addEventListener("input", renderCards);
     el.addEventListener("change", renderCards);
   });
+
+  if (els.resetFiltersBtn) {
+    els.resetFiltersBtn.addEventListener("click", () => {
+      resetFilters();
+      renderCards();
+    });
+  }
 }
 
 async function init() {
