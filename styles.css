@@ -218,7 +218,7 @@ tbody tr:last-child td{border-bottom:none}
 }
 .spendDescLabel{text-decoration:underline}
 .spendDesc summary::-webkit-details-marker{display:none}
-.spendDescCaret{display:inline-block;font-size:14px;line-height:1;text-decoration:none}
+.spendDescCaret{display:inline-block;font-size:18px;line-height:1;text-decoration:none}
 .spendDesc[open] .spendDescCaret{transform:rotate(180deg)}
 .spendDescBody{
   margin-top:4px;
