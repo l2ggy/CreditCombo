@@ -1788,17 +1788,20 @@
         "type": "annual"
       },
       "earn_rates": {
-        "other": 1
+        "grocery": 1,
+        "dining": 1,
+        "transit": 1,
+        "other": 0.5
       },
       "caps": [],
       "special_earn_rules": [
         {
-          "type": "threshold_bonus",
-          "description": "Cash back is tied to KOHO Subscription Plan level and can change over time; benefits are replaced (not stacked) when switching plans."
+          "type": "category_restriction",
+          "description": "KOHO plan pricing table advertises 1% cash back on groceries, transportation, and food & drinks for Essential; all other eligible purchases are modeled at 0.5% base cash back."
         },
         {
           "type": "merchant_specific",
-          "description": "KOHO states cashback eligibility and earn rate can vary by merchant and transaction eligibility; model uses plan-level baseline proxy rate."
+          "description": "KOHO states cashback eligibility can vary by merchant and transaction eligibility; issuer terms and merchant coding determine final earn treatment."
         },
         {
           "type": "product_feature",
@@ -1857,17 +1860,20 @@
         "type": "annual"
       },
       "earn_rates": {
-        "other": 1.5
+        "grocery": 1.5,
+        "dining": 1.5,
+        "transit": 1.5,
+        "other": 0.5
       },
       "caps": [],
       "special_earn_rules": [
         {
-          "type": "threshold_bonus",
-          "description": "Cash back is tied to KOHO Subscription Plan level and can change over time; benefits are replaced (not stacked) when switching plans."
+          "type": "category_restriction",
+          "description": "KOHO plan pricing table advertises 1.5% cash back on groceries, transportation, and food & drinks for Extra; all other eligible purchases are modeled at 0.5% base cash back."
         },
         {
           "type": "merchant_specific",
-          "description": "KOHO states cashback eligibility and earn rate can vary by merchant and transaction eligibility; model uses plan-level baseline proxy rate."
+          "description": "KOHO states cashback eligibility can vary by merchant and transaction eligibility; issuer terms and merchant coding determine final earn treatment."
         },
         {
           "type": "product_feature",
