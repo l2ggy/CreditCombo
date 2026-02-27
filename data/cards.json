@@ -2133,6 +2133,7 @@
         }
       ],
       "sources": [
+        "https://www.meridiancu.ca/personal/credit-cards/visa-infinite-travel-rewards-card",
         "https://www.meridiancu.ca/personal/credit-cards"
       ]
     },
@@ -2165,6 +2166,7 @@
         }
       ],
       "sources": [
+        "https://www.meridiancu.ca/personal/credit-cards/visa-infinite-cash-back-card",
         "https://www.meridiancu.ca/personal/credit-cards"
       ]
     },
@@ -2912,16 +2914,31 @@
       "earn_rates": {
         "other": 1.25
       },
-      "caps": [],
+      "caps": [
+        {
+          "scope": "per_category",
+          "categories": [
+            "other"
+          ],
+          "cap_amount": 75000,
+          "cap_period": "annual",
+          "earn_rate_above_cap": 1,
+          "notes": "RBC business cards page states 1.25 Avion points per $1 on net purchases up to $75,000 per year."
+        }
+      ],
       "special_earn_rules": [
+        {
+          "type": "threshold_bonus",
+          "description": "Accelerated 1.25 points per $1 applies on net purchases up to annual spend threshold; above-threshold spend earns lower base points rate."
+        },
         {
           "type": "merchant_specific",
           "description": "RBC Avion travel redemptions can produce higher effective value than baseline statement-credit redemption."
         }
       ],
       "sources": [
-        "https://www.rbcroyalbank.com/credit-cards/business/rbc-avion-visa-infinite-business.html",
-        "https://www.finlywealth.com/credit-cards/rbc-avion-visa-infinite-business",
+        "https://www.rbcroyalbank.com/business/credit-cards/small-business-credit-cards/avion-visa-infinite-business.html",
+        "https://www.rbcroyalbank.com/business/credit-cards/index.html",
         "https://www.rbcroyalbank.com/credit-cards/"
       ]
     },
