@@ -42,15 +42,44 @@ h3{margin:var(--space-3) 0 var(--space-2);font-size:14px;color:var(--muted)}
 .panelHeader-result{flex-direction:column;align-items:flex-start}
 .panelHeader-result .subtle{margin:4px 0 0;max-width:62ch}
 
+.inputPanel{
+  --input-rhythm:8px;
+  padding:12px;
+}
+
 .inputPanel .panelHeader,
 .inputPanel .sectionTitle,
 .inputPanel .divider,
 .inputPanel .row,
-.inputPanel .issues{
-  padding-inline:var(--space-2);
+.inputPanel .issues,
+.inputPanel #spendTable{
+  padding-inline:var(--input-rhythm);
+}
+
+.inputPanel .panelHeader h2,
+.inputPanel .sectionTitle{
+  line-height:1.15;
+  margin-block:0;
+}
+
+.inputPanel .sectionTitle{
+  margin-bottom:var(--input-rhythm);
+}
+
+.inputPanel .divider{
+  margin-block:var(--input-rhythm);
+}
+
+.inputPanel .row{
+  gap:var(--input-rhythm);
+  margin:0;
 }
 
 .row{display:flex;gap:var(--space-2);flex-wrap:wrap;align-items:stretch}
+
+.inputPanel .row + .row{
+  margin-top:var(--input-rhythm);
+}
 
 label{display:block;font-size:12px;color:var(--muted);margin:0 0 var(--space-1)}
 input[type="number"],
@@ -87,8 +116,10 @@ input[type="search"]:focus{border-color:var(--accent)}
 .row > button{
   flex:1 1 100%;
 }
+
+
 .field-full{flex-basis:100%;width:100%}
-#lockedCardsPanel{margin-top:var(--space-1)}
+#lockedCardsPanel{margin-top:0}
 .checkboxLabel{display:flex;align-items:center;gap:var(--space-1);margin:0;cursor:pointer;color:var(--text);font-size:13px}
 .checkboxLabel input[type="checkbox"]{width:16px;height:16px;accent-color:var(--accent);cursor:pointer}
 .value-pill{
@@ -123,6 +154,8 @@ select[multiple]{padding:8px;background:transparent;appearance:auto;min-width:32
 .lockedChipRemove{display:inline-flex;align-items:center;justify-content:center;width:auto;min-width:20px;min-height:20px;border:none;background:transparent;color:var(--muted);padding:0;line-height:1;font-size:15px;font-weight:700;cursor:pointer}
 .lockedChipRemove:hover{color:var(--text)}
 
+.resultPanel h2{margin:0 0 10px}
+.comboList{list-style:none;margin:0 0 14px;padding:0}
 .resultCardItem{display:flex;align-items:center;gap:10px}
 .thumbFrame{width:44px;height:44px;display:inline-flex;align-items:center;justify-content:center;flex:0 0 44px}
 .resultCardThumb{width:auto;height:auto;max-width:44px;max-height:44px;border-radius:10%;border:1px solid var(--border);display:block}
@@ -146,8 +179,140 @@ thead th{
 tbody td{padding:var(--space-2);border-bottom:1px solid var(--border);vertical-align:top}
 tbody tr:last-child td{border-bottom:none}
 
+.spendGrid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:8px;
+}
+
+.spendRow{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 92px;
+  align-items:center;
+  gap:8px;
+  margin:0;
+  padding:8px;
+  border:1px solid var(--border);
+  border-radius:10px;
+  background:color-mix(in srgb,var(--panel) 75%, transparent);
+}
+
+.spendMeta{min-width:0;overflow:hidden}
+.spendCat{display:block;font-size:12px;line-height:1.2}
+
+.spendDesc{margin-top:2px}
+.spendDesc summary{
+  cursor:pointer;
+  list-style:none;
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+  font-size:10px;
+  line-height:1.2;
+  color:var(--muted);
+  text-decoration:underline dotted;
+}
+.spendDesc summary::-webkit-details-marker{display:none}
+.spendDesc summary::after{content:" ▾";font-size:10px;color:var(--muted)}
+.spendDesc[open] summary::after{content:" ▴"}
+.spendDescBody{
+  margin-top:4px;
+  font-size:10px;
+  line-height:1.25;
+}
+
+.spendRow input[type="number"].spend-input{
+  min-width:0;
+  max-width:none;
+  width:100%;
+  padding:6px 8px;
+}
+
+
+.divider-tight{margin-block:12px 8px}
+.useHeading{margin-bottom:8px}
+
+.useGrid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:8px;
+}
+.useTile{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:6px;
+  padding:8px;
+  border:1px solid var(--border);
+  border-radius:10px;
+  background:color-mix(in srgb,var(--panel) 75%, transparent);
+  text-align:center;
+}
+.useCategory{font-size:12px;line-height:1.2;text-align:center}
+.useCards{
+  width:100%;
+  display:flex;
+  justify-content:center;
+}
+.useCardsSingle .useCardThumb{
+  width:clamp(58px, 11vw, 88px);
+  aspect-ratio:1/1;
+}
+.useCardsStack{
+  position:relative;
+  width:clamp(58px, 11vw, 88px);
+  height:calc(clamp(58px, 11vw, 88px) + (var(--stack-count, 1) - 1) * clamp(6px, 1.1vw, 10px));
+}
+.useCardsStack .useCardThumb{
+  position:absolute;
+  inset-inline:0;
+  top:calc(var(--stack-index, 0) * clamp(6px, 1.1vw, 10px));
+  width:100%;
+  aspect-ratio:1/1;
+  z-index:calc(1 + var(--stack-index, 0));
+}
+.useCardThumb{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  line-height:0;
+  position:relative;
+}
+.useCardThumb[data-card]:hover::after{
+  content:attr(data-card);
+  position:absolute;
+  left:50%;
+  bottom:calc(100% + 6px);
+  transform:translateX(-50%);
+  background:#06101f;
+  border:1px solid var(--border);
+  color:var(--text);
+  font-size:11px;
+  line-height:1.2;
+  padding:4px 6px;
+  border-radius:6px;
+  white-space:nowrap;
+  z-index:30;
+  pointer-events:none;
+}
+.useCardsStack .useThumbImage.is-portrait{
+  transform:rotate(90deg);
+}
+.useThumbImage{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  padding:1px;
+  border-radius:10%;
+  border:none;
+  display:block;
+}
+
 .issues{
   margin-top:12px;border:1px solid var(--border);border-radius:14px;padding:var(--space-2) 12px;background:transparent
+}
+.inputPanel .issues{
+  margin-top:var(--input-rhythm);
 }
 .issues summary{cursor:pointer;font-weight:700;color:var(--text)}
 .issues ul{margin:10px 0 0;padding-left:18px}
@@ -212,8 +377,16 @@ tbody tr:last-child td{border-bottom:none}
   .topNav{justify-content:flex-start}
   .headerActions{width:100%;justify-content:space-between}
   .footerContent{align-items:flex-start}
+  .spendGrid{grid-template-columns:1fr}
+  .useGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 
 @media (max-width:560px){
   .browserFilterGrid{grid-template-columns:1fr}
+  .useGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
+
+@media (max-width:380px){
+  .useGrid{grid-template-columns:1fr}
+}
+

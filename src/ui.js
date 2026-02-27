@@ -10,20 +10,17 @@ export function clampInt(n, lo, hi) {
 
 export function renderSpendTable(el, schema, categoryDescriptions = {}) {
   el.innerHTML = `
-    <table>
-      <thead><tr><th>Category</th><th>Monthly spend</th></tr></thead>
-      <tbody>
-        ${schema.map(cat => `
-          <tr>
-            <td>
-              <div class="mono">${cat}</div>
-              <div class="category-desc muted">${escapeHtml(categoryDescriptions[cat] || "")}</div>
-            </td>
-            <td><input class="spend-input" type="number" min="0" step="1" value="0" data-cat="${cat}" /></td>
-          </tr>
-        `).join("")}
-      </tbody>
-    </table>
+    <div class="spendGrid" role="group" aria-label="Monthly spend by category">
+      ${schema.map(cat => `
+        <label class="spendRow" for="spend-${cat}">
+          <span class="spendMeta">
+            <span class="mono spendCat">${cat}</span>
+            ${spendDescriptionMarkup(categoryDescriptions[cat] || "")}
+          </span>
+          <input id="spend-${cat}" class="spend-input" type="number" min="0" step="1" value="0" data-cat="${cat}" aria-label="Monthly spend for ${cat}" />
+        </label>
+      `).join("")}
+    </div>
   `;
 
   el.querySelectorAll('input[data-cat]').forEach((inp) => {
@@ -67,14 +64,9 @@ export function renderIssues(el, issues) {
 
 
 function cardThumbMarkup(card, className = "resultCardThumb", withFrame = true) {
-  const image = `<img class="${className}" src="./assets/cards/${escapeHtml(card.id)}.webp" alt="${escapeHtml(card.card_name)}" loading="lazy" decoding="async" onerror="this.remove()" />`;
+  const image = `<img class="${className}" src="./assets/cards/${escapeHtml(card.id)}.webp" alt="${escapeHtml(card.card_name)}" loading="lazy" decoding="async" onload="this.classList.toggle('is-portrait', this.naturalHeight > this.naturalWidth)" onerror="this.remove()" />`;
   if (!withFrame) return image;
   return `<span class="thumbFrame">${image}</span>`;
-}
-
-function instructionLineMarkup(card, amount = null) {
-  const amountPart = amount == null ? "" : ` <span class="mono">(${money(amount)})</span>`;
-  return `<span class="instructionCard">${cardThumbMarkup(card, "instructionCardThumb", false)}<span>${escapeHtml(card.card_name)}${amountPart}</span></span>`;
 }
 
 export function renderResult(el, best, annualSpend, schema, valuationMode = "estimated") {
@@ -104,19 +96,31 @@ export function renderResult(el, best, annualSpend, schema, valuationMode = "est
     const alloc = best.combo
       .map(c => ({ c, amt: (best.assigned?.[c.id]?.[cat] || 0) }))
       .filter(x => x.amt > 1e-6)
-      .sort((a, b) => b.amt - a.amt);
+      .sort((a, b) => b.amt - a.amt)
+      .slice(0, 3);
 
-    if (alloc.length === 1) {
-      instructions.push(`<tr><td class="mono">${escapeHtml(cat)}</td><td>${instructionLineMarkup(alloc[0].c)}</td></tr>`);
-    } else {
-      const parts = alloc.slice(0, 3).map(x => instructionLineMarkup(x.c, x.amt)).join('<span class="muted">, </span>');
-      instructions.push(`<tr><td class="mono">${escapeHtml(cat)}</td><td>split → ${parts}</td></tr>`);
-    }
+    if (!alloc.length) continue;
+
+    const thumbs = alloc.map(({ c, amt }, idx) => {
+      const amountPart = alloc.length > 1 ? ` — ${money(amt)}` : "";
+      return `<span class="useCardThumb" style="--stack-index:${idx}" title="${escapeHtml(c.card_name)}${escapeHtml(amountPart)}" data-card="${escapeHtml(c.card_name)}${escapeHtml(amountPart)}" aria-label="${escapeHtml(c.card_name)}${escapeHtml(amountPart)}">${cardThumbMarkup(c, "useThumbImage", false)}</span>`;
+    }).join("");
+
+    const stackClass = alloc.length > 1 ? "useCards useCardsStack" : "useCards useCardsSingle";
+
+    instructions.push(`
+      <div class="useTile" role="listitem">
+        <div class="mono useCategory">${escapeHtml(cat)}</div>
+        <div class="${stackClass}" style="--stack-count:${alloc.length}">${thumbs}</div>
+      </div>
+    `);
   }
+
+  const useCols = Math.min(4, Math.max(1, instructions.length));
 
   el.innerHTML = `
     <h2>Best combo</h2>
-    <ul>${comboList}</ul>
+    <ul class="comboList">${comboList}</ul>
 
     <h2>Annual value (${valuationMode === "minimum_guaranteed" ? "minimum guaranteed" : "estimated"})</h2>
     <table>
@@ -127,16 +131,25 @@ export function renderResult(el, best, annualSpend, schema, valuationMode = "est
       </tbody>
     </table>
 
-    <h2>Which card to use</h2>
-    <table>
-      <thead><tr><th>Category</th><th>Use</th></tr></thead>
-      <tbody>
-        ${instructions.join("") || `<tr><td colspan="2" class="muted">No spend entered.</td></tr>`}
-      </tbody>
-    </table>
+    <div class="divider divider-tight"></div>
+    <h2 class="useHeading">Which card to use</h2>
+    <div class="useGrid" role="list" aria-label="Card to use by category" style="--use-cols:${useCols}">
+      ${instructions.join("") || `<p class="muted">No spend entered.</p>`}
+    </div>
 
-    <p class="muted">Mode: ${valuationMode === "minimum_guaranteed" ? "minimum guaranteed points redemption value" : "estimated points value"}. Note: <span class="mono">special_earn_rules</span> are ignored in this MVP.</p>
+    <p class="muted">Mode: ${valuationMode === "minimum_guaranteed" ? "minimum guaranteed points redemption value" : "estimated points value"}.</p>
+    <p class="muted">Note: <span class="mono">special_earn_rules</span> are ignored in this MVP.</p>
   `;
+}
+
+
+
+
+function spendDescriptionMarkup(desc) {
+  const clean = String(desc || "").trim().replace(/\s+/g, " ");
+  if (!clean) return "";
+
+  return `<details class="spendDesc"><summary>Details</summary><div class="spendDescBody muted">${escapeHtml(clean)}</div></details>`;
 }
 
 function escapeHtml(s) {
