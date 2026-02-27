@@ -149,7 +149,7 @@ function spendDescriptionMarkup(desc) {
   const clean = String(desc || "").trim().replace(/\s+/g, " ");
   if (!clean) return "";
 
-  return `<details class="spendDesc"><summary>Details</summary><div class="spendDescBody muted">${escapeHtml(clean)}</div></details>`;
+  return `<details class="spendDesc"><summary><span class="spendDescLabel">Details</span><span class="spendDescCaret" aria-hidden="true">▾</span></summary><div class="spendDescBody muted">${escapeHtml(clean)}</div></details>`;
 }
 
 function escapeHtml(s) {
