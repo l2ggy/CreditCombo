@@ -184,6 +184,7 @@
       ],
       "special_earn_rules": [],
       "sources": [
+        "https://www.americanexpress.com/en-ca/credit-cards/cobalt-card/",
         "https://www.americanexpress.com/en-ca/credit-cards/"
       ]
     },
@@ -212,6 +213,7 @@
         }
       ],
       "sources": [
+        "https://www.americanexpress.com/en-ca/credit-cards/gold-rewards-card/",
         "https://www.americanexpress.com/en-ca/credit-cards/"
       ]
     },
@@ -332,7 +334,7 @@
       "card_name": "SimplyCash® Card from American Express",
       "issuer": "American Express",
       "network": "American Express",
-      "rewards_program": "scotia_cashback",
+      "rewards_program": "amex_cashback",
       "annual_fee": {
         "amount": 0,
         "type": "annual"
@@ -350,6 +352,7 @@
         }
       ],
       "sources": [
+        "https://www.americanexpress.com/en-ca/credit-cards/simply-cash/",
         "https://www.americanexpress.com/en-ca/credit-cards/"
       ]
     },
@@ -358,7 +361,7 @@
       "card_name": "SimplyCash® Preferred Card from American Express",
       "issuer": "American Express",
       "network": "American Express",
-      "rewards_program": "scotia_cashback",
+      "rewards_program": "amex_cashback",
       "annual_fee": {
         "amount": 119.88,
         "type": "annual"
@@ -403,6 +406,7 @@
         }
       ],
       "sources": [
+        "https://www.americanexpress.com/en-ca/credit-cards/the-platinum-card/",
         "https://www.americanexpress.com/en-ca/credit-cards/"
       ]
     },
@@ -1140,6 +1144,7 @@
         }
       ],
       "sources": [
+        "https://www.cibc.com/en/personal-banking/credit-cards/all-credit-cards/costco-mastercard.html",
         "https://www.cibc.com/en/personal-banking/credit-cards.html"
       ]
     },
@@ -1166,6 +1171,7 @@
         }
       ],
       "sources": [
+        "https://www.cibc.com/en/personal-banking/credit-cards/all-credit-cards/aeroplan-visa-card.html",
         "https://www.cibc.com/en/personal-banking/credit-cards.html"
       ]
     },
@@ -1209,6 +1215,7 @@
         }
       ],
       "sources": [
+        "https://www.cibc.com/en/personal-banking/credit-cards/all-credit-cards/aeroplan-visa-infinite-card.html",
         "https://www.cibc.com/en/personal-banking/credit-cards.html"
       ]
     },
@@ -1358,6 +1365,7 @@
         }
       ],
       "sources": [
+        "https://www.cibc.com/en/personal-banking/credit-cards/all-credit-cards/aventura-visa-infinite-card.html",
         "https://www.cibc.com/en/personal-banking/credit-cards.html"
       ]
     },
@@ -2737,6 +2745,7 @@
       ],
       "special_earn_rules": [],
       "sources": [
+        "https://www.rbcroyalbank.com/credit-cards/cash-back/rbc-cashback-preferred-world-elite-mastercard.html",
         "https://www.rbcroyalbank.com/credit-cards/cash-back/cash-back-preferred-world-elite-mastercard.html",
         "https://www.rbcroyalbank.com/credit-cards/"
       ]
@@ -2925,6 +2934,7 @@
         }
       ],
       "sources": [
+        "https://www.rbcroyalbank.com/credit-cards/travel/rbc-avion-visa-infinite.html",
         "https://www.rbcroyalbank.com/credit-cards/"
       ]
     },
@@ -3021,6 +3031,7 @@
         }
       ],
       "sources": [
+        "https://www.rbcroyalbank.com/credit-cards/rewards/rbc-ion-plus-visa.html",
         "https://www.rbcroyalbank.com/credit-cards/"
       ]
     },
@@ -3306,6 +3317,7 @@
         }
       ],
       "sources": [
+        "https://www.scotiabank.com/ca/en/personal/credit-cards/american-express/gold-card.html",
         "https://www.scotiabank.com/ca/en/personal/credit-cards.html"
       ]
     },
@@ -3523,6 +3535,7 @@
       "caps": [],
       "special_earn_rules": [],
       "sources": [
+        "https://www.scotiabank.com/ca/en/personal/credit-cards/visa/passport-infinite-card.html",
         "https://www.scotiabank.com/ca/en/personal/credit-cards.html"
       ]
     },
@@ -3918,6 +3931,7 @@
         }
       ],
       "sources": [
+        "https://www.td.com/ca/en/personal-banking/products/credit-cards/travel-rewards/aeroplan-visa-infinite-card",
         "https://www.td.com/ca/en/personal-banking/products/credit-cards"
       ]
     },
