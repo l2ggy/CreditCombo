@@ -5,6 +5,7 @@ import { clampInt, renderSpendTable, readMonthlySpend, renderIssues, renderResul
 const statusEl = document.getElementById("status");
 const appEl = document.getElementById("app");
 const spendTableEl = document.getElementById("spendTable");
+const clearSpendBtn = document.getElementById("clearSpendBtn");
 const issuesEl = document.getElementById("issues");
 const resultEl = document.getElementById("result");
 const runBtn = document.getElementById("runBtn");
@@ -237,6 +238,12 @@ async function main() {
     appEl.classList.remove("hidden");
 
     runBtn.addEventListener("click", runOptimizer);
+    clearSpendBtn?.addEventListener("click", () => {
+      spendTableEl.querySelectorAll("input[data-cat]").forEach((input) => {
+        input.value = "0";
+      });
+      runOptimizer();
+    });
     kInput.addEventListener("input", runOptimizer);
     valuationModeEl?.addEventListener("change", runOptimizer);
     excludeFeeCardsEl?.addEventListener("change", runOptimizer);
