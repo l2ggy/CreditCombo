@@ -261,12 +261,12 @@ tbody tr:last-child td{border-bottom:none}
 .useCardsStack{
   position:relative;
   width:clamp(46px, 9vw, 72px);
-  height:calc(clamp(46px, 9vw, 72px) + (var(--stack-count, 1) - 1) * clamp(12px, 2.2vw, 20px));
+  height:calc(clamp(46px, 9vw, 72px) + (var(--stack-count, 1) - 1) * clamp(6px, 1.1vw, 10px));
 }
 .useCardsStack .useCardThumb{
   position:absolute;
   inset-inline:0;
-  top:calc(var(--stack-index, 0) * clamp(12px, 2.2vw, 20px));
+  top:calc(var(--stack-index, 0) * clamp(6px, 1.1vw, 10px));
   width:100%;
   aspect-ratio:1/1;
   z-index:calc(1 + var(--stack-index, 0));
