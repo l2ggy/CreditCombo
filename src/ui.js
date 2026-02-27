@@ -129,7 +129,8 @@ export function renderResult(el, best, annualSpend, schema, valuationMode = "est
       </tbody>
     </table>
 
-    <h2>Which card to use</h2>
+    <div class="divider divider-tight"></div>
+    <h2 class="useHeading">Which card to use</h2>
     <div class="useGrid" role="list" aria-label="Card to use by category" style="--use-cols:${useCols}">
       ${instructions.join("") || `<p class="muted">No spend entered.</p>`}
     </div>
