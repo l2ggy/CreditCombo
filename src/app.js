@@ -3,6 +3,7 @@ import { renderIssues, renderSpendTable } from "./ui.js";
 import { createActions } from "./app/actions.js";
 import { createUiState } from "./app/state.js";
 import { createView } from "./app/view.js";
+import { escapeHtml } from "./shared/sanitize.js";
 
 async function main() {
   const view = createView();
@@ -59,7 +60,7 @@ async function main() {
 
     window.addEventListener("beforeunload", actions.terminateWorker);
   } catch (e) {
-    elements.statusEl.innerHTML = `<span class="badge bad">Error</span> ${e.message}`;
+    elements.statusEl.innerHTML = `<span class="badge bad">Error</span> ${escapeHtml(e?.message || "Unknown error")}`;
   }
 }
 
