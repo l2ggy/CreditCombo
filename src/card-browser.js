@@ -239,22 +239,29 @@ function renderBrowserCardItem(card) {
 
   top.append(heading, fee);
 
+  const topDivider = document.createElement("div");
+  topDivider.className = "divider";
+
   const body = document.createElement("div");
   body.className = "splitBody";
 
   const earnSection = document.createElement("section");
   const earnTitle = document.createElement("h4");
   earnTitle.textContent = "Earn rates";
-  earnSection.append(earnTitle, renderEarnRateList(card.earn_rates, card.rewards_program));
+  const earnDivider = document.createElement("div");
+  earnDivider.className = "divider";
+  earnSection.append(earnTitle, earnDivider, renderEarnRateList(card.earn_rates, card.rewards_program));
 
   const capSection = document.createElement("section");
   const capTitle = document.createElement("h4");
   capTitle.textContent = "Caps";
-  capSection.append(capTitle, renderCapContent(card.caps));
+  const capDivider = document.createElement("div");
+  capDivider.className = "divider";
+  capSection.append(capTitle, capDivider, renderCapContent(card.caps));
 
   body.append(earnSection, capSection);
 
-  article.append(top, body);
+  article.append(top, topDivider, body);
   return article;
 }
 
