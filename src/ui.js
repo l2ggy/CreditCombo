@@ -22,15 +22,34 @@ export function renderSpendTable(el, schema, categoryDescriptions = {}) {
     </div>
   `;
 
+  const spendTotalEl = document.getElementById("spendTotal");
+
+  const updateSpendTotal = () => {
+    const total = [...el.querySelectorAll("input[data-cat]")].reduce((sum, input) => {
+      const value = Number(input.value);
+      if (!Number.isFinite(value) || value < 0) return sum;
+      return sum + value;
+    }, 0);
+
+    if (spendTotalEl) {
+      spendTotalEl.textContent = `Total monthly spend: ${formatMoneyCAD(total, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
+    }
+  };
+
   el.querySelectorAll('input[data-cat]').forEach((inp) => {
+    inp.addEventListener("input", updateSpendTotal);
+
     inp.addEventListener("focus", () => {
       if (inp.value === "0") inp.select();
     });
 
     inp.addEventListener("blur", () => {
       if (inp.value.trim() === "") inp.value = "0";
+      updateSpendTotal();
     });
   });
+
+  updateSpendTotal();
 }
 
 export function readMonthlySpend(schema) {
