@@ -229,7 +229,10 @@ function renderBrowserCardItem(card) {
 
   const meta = document.createElement("p");
   meta.className = "subtle";
-  meta.append(`${card.issuer} · ${card.network} · `);
+  const issuerNetwork = card.issuer === card.network
+    ? card.issuer
+    : `${card.issuer} · ${card.network}`;
+  meta.append(`${issuerNetwork} · `);
   const program = document.createElement("span");
   program.className = "mono";
   program.textContent = card.rewards_program;
@@ -247,7 +250,7 @@ function renderBrowserCardItem(card) {
   feeValue.textContent = formatMoneyCAD(annualFeeAmount(card), { minimumFractionDigits: 0, maximumFractionDigits: 0 });
   fee.append(feeLabel, feeValue);
 
-  const officialLink = renderOfficialCardLink(card);
+  const officialLink = renderOfficialCardLink(card, "Link");
   if (officialLink) {
     meta.append(" · ", officialLink);
   }
