@@ -18,10 +18,9 @@ What it does
 
 What it does NOT do (yet)
 -------------------------
-- It does not model merchant-/portal-specific multipliers listed in special_earn_rules
-  (e.g., “Air Canada direct”, “Expedia for TD”, specific hotel chains).
-- It does not model MCC quirks or acceptance constraints (e.g., Amex acceptance).
-- It ignores one-time promotions / welcome bonuses; this is intended for a long-term setup.
+- Merchant- or portal-specific `special_earn_rules` are intentionally ignored.
+- MCC quirks and acceptance constraints are not modeled.
+- One-time promotions and welcome bonuses are not modeled.
 
 Eligibility rules for cards
 ---------------------------
@@ -89,16 +88,15 @@ data/programs.json
 
 Optimizer notes
 --------------
+- Rules modeled in scoring are intentionally narrow:
+  - Two valuation modes are modeled: estimated points value and minimum guaranteed redemption value.
+  - Category spend is assigned to the best card, cap overflow is rerouted to the next-best card, and residual overflow can earn at the above-cap rate.
+  - Annual fees are subtracted from gross rewards to report net annual value.
 - Reward value per $ is computed as:
   - points programs: `(points per $) * (effective cents per point) / 100`
     - effective cpp = `cents_per_point` in estimated mode
     - effective cpp = `minimum_cents_per_point` in minimum guaranteed mode (falls back to `cents_per_point` if a future program entry omits it)
   - cashback programs: `(percent) / 100` (cashback is treated as a fixed 1.0 cpp equivalent)
-- For each candidate combo, the optimizer:
-  1) assigns each category to the highest-value card in that combo,
-  2) enforces cap rules by rerouting overflow to the next-best card (iterative),
-  3) applies `earn_rate_above_cap` to any overflow that still remains on a capped card,
-  4) subtracts annual fees to get net value.
 - To keep runtime practical on large card sets, it narrows to a candidate pool before evaluating all combinations from size 1..k. The pool is built by combining:
   - top cards per active spend category (high value-per-dollar in that category),
   - top cards by overall weighted potential (using your spend mix and annual fees),

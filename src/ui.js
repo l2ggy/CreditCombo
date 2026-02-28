@@ -1,5 +1,6 @@
 import { formatMoneyCAD } from "./shared/format.js";
 import { escapeHtml } from "./shared/sanitize.js";
+import { RULES_MANIFEST } from "./domain/rules-manifest.js";
 
 export function clampInt(n, lo, hi) {
   n = Math.floor(Number(n) || lo);
@@ -115,6 +116,13 @@ export function renderResult(el, best, annualSpend, schema, valuationMode = "est
   }
 
   const useCols = Math.min(4, Math.max(1, instructions.length));
+  const modeText = valuationMode === "minimum_guaranteed"
+    ? "minimum guaranteed points redemption value"
+    : "estimated points value";
+  const outOfScopeLabels = Object.keys(RULES_MANIFEST.out_of_scope_behaviors)
+    .map((key) => key === "mcc_quirks" ? "MCC quirks" : key)
+    .join(", ");
+  const outOfScopeDetails = Object.values(RULES_MANIFEST.out_of_scope_behaviors).join(" ");
 
   el.innerHTML = `
     <h2>Best combo</h2>
@@ -135,8 +143,9 @@ export function renderResult(el, best, annualSpend, schema, valuationMode = "est
       ${instructions.join("") || `<p class="muted">No spend entered.</p>`}
     </div>
 
-    <p class="muted">Mode: ${valuationMode === "minimum_guaranteed" ? "minimum guaranteed points redemption value" : "estimated points value"}.</p>
-    <p class="muted">Note: <span class="mono">special_earn_rules</span> are ignored in this MVP.</p>
+    <p class="muted">Mode: ${escapeHtml(modeText)}. ${escapeHtml(RULES_MANIFEST.modeled_behaviors.valuation_mode)}</p>
+    <p class="muted">Rules modeled: ${escapeHtml(RULES_MANIFEST.modeled_behaviors.caps_routing)} ${escapeHtml(RULES_MANIFEST.modeled_behaviors.fee_subtraction)}</p>
+    <p class="muted">Out of scope: <span class="mono">${escapeHtml(outOfScopeLabels)}</span>. ${escapeHtml(outOfScopeDetails)}</p>
   `;
 }
 
@@ -149,4 +158,3 @@ function spendDescriptionMarkup(desc) {
 
   return `<details class="spendDesc"><summary><span class="spendDescLabel">Details</span><span class="spendDescCaret" aria-hidden="true">▾</span></summary><div class="spendDescBody muted">${escapeHtml(clean)}</div></details>`;
 }
-
