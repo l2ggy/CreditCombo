@@ -250,11 +250,16 @@ function computeCandidateLimit(cardCount, maxSize) {
   return Math.max(maxSize, limit);
 }
 
-export function findBestCombo({ cards, programsMap, schema, k, annualSpend, valuationMode = "estimated", excludedProgramIds = [], customProgramCpp = {}, lockedCardIds = [], additionalCardIds = null }) {
+export function findBestCombo({ cards, programsMap, schema, k, annualSpend, valuationMode = "estimated", excludedProgramIds = [], excludeCashbackPrograms = false, customProgramCpp = {}, lockedCardIds = [], additionalCardIds = null }) {
   let best = { combo: [], net: -1e18, gross: 0, fees: 0, assigned: null };
 
   const excludedPrograms = new Set(excludedProgramIds || []);
-  const filteredCards = cards.filter((card) => !excludedPrograms.has(card.rewards_program));
+  const filteredCards = cards.filter((card) => {
+    if (excludedPrograms.has(card.rewards_program)) return false;
+    if (!excludeCashbackPrograms) return true;
+    const program = programsMap.get(card.rewards_program);
+    return (program?.program_type ?? "points") !== "cashback";
+  });
   const byId = new Map(filteredCards.map((card) => [card.id, card]));
   const lockedCards = [...new Set(lockedCardIds)].map((id) => byId.get(id)).filter(Boolean);
   const lockedIds = new Set(lockedCards.map((card) => card.id));

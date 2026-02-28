@@ -10,6 +10,7 @@ export function createView() {
     runBtn: document.getElementById("runBtn"),
     valuationModeEl: document.getElementById("valuationMode"),
     excludeBusinessCardsEl: document.getElementById("excludeBusinessCards"),
+    excludeCashbackProgramsEl: document.getElementById("excludeCashbackPrograms"),
     maxAnnualFeeEl: document.getElementById("maxAnnualFee"),
     programPrefsEl: document.getElementById("programPrefs"),
     enableLockedCardsEl: document.getElementById("enableLockedCards"),

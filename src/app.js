@@ -41,6 +41,7 @@ async function main() {
     elements.kInput.addEventListener("input", () => actions.setK(elements.kInput.value));
     elements.valuationModeEl?.addEventListener("change", () => actions.setValuationMode(elements.valuationModeEl.value));
     elements.excludeBusinessCardsEl?.addEventListener("change", () => actions.setExcludeBusinessCards(elements.excludeBusinessCardsEl.checked));
+    elements.excludeCashbackProgramsEl?.addEventListener("change", () => actions.setExcludeCashbackPrograms(elements.excludeCashbackProgramsEl.checked));
     elements.maxAnnualFeeEl?.addEventListener("input", () => actions.setMaxAnnualFee(elements.maxAnnualFeeEl.value));
     elements.enableLockedCardsEl?.addEventListener("change", actions.toggleLockedCards);
 
