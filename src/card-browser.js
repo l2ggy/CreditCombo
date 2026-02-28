@@ -206,15 +206,15 @@ function renderBrowserCardItem(card) {
   article.className = "panel card";
 
   const top = document.createElement("div");
-  top.className = "cardTop";
+  top.className = "split";
 
   const heading = document.createElement("div");
-  heading.className = "cardHeading";
+  heading.className = "inline";
   heading.append(renderCardThumb(card, { className: "thumb thumb-sm thumb-cover", withFrame: false }));
 
   const headingText = document.createElement("div");
   const title = document.createElement("h3");
-  title.className = "cardTitle";
+  
   title.textContent = card.card_name;
 
   const meta = document.createElement("p");
@@ -229,7 +229,7 @@ function renderBrowserCardItem(card) {
   heading.append(headingText);
 
   const fee = document.createElement("div");
-  fee.className = "statCol";
+  fee.className = "stack-end";
   const feeLabel = document.createElement("span");
   feeLabel.className = "muted";
   feeLabel.textContent = "Annual fee";
@@ -240,7 +240,7 @@ function renderBrowserCardItem(card) {
   top.append(heading, fee);
 
   const body = document.createElement("div");
-  body.className = "cardBody";
+  body.className = "splitBody";
 
   const earnSection = document.createElement("section");
   const earnTitle = document.createElement("h4");
