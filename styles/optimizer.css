@@ -1,6 +1,10 @@
 .layout{display:grid;grid-template-columns:1.1fr .9fr;gap:var(--space-6);align-items:start}
+@keyframes fadeUpIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+#app:not(.hidden){animation:fadeUpIn .16s ease-out both;animation-delay:20ms}
 .inputPanel{padding:var(--space-5)}
 .inputPanel,.resultPanel{--r:var(--space-3)}
+.inputPanel{animation-delay:50ms}
+.resultPanel{animation-delay:80ms}
 
 .panelHeader-result{flex-direction:column;align-items:flex-start}
 .inputPanel .panelHeader,.resultPanel .panelHeader,.inputPanel .sectionTitle,.inputPanel .row,.inputPanel .issues,.inputPanel #spendTable,.inputPanel .divider,.resultPanel .divider{padding-inline:var(--r)}
@@ -65,3 +69,4 @@
 
 @media (max-width:900px){.layout{grid-template-columns:1fr}.spendGrid{grid-template-columns:1fr}.tileGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:380px){.tileGrid{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){#app:not(.hidden),.inputPanel,.resultPanel{animation:none}}
