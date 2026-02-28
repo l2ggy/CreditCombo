@@ -1,7 +1,7 @@
 import { annualizeMonthlySpend } from "../optimizer.js";
 import { clampInt, readMonthlySpend, renderResult } from "../ui.js";
 import { candidatePools, kBounds, selectedLockedCardIds } from "./state.js";
-import { escapeHtml } from "../shared/sanitize.js";
+import { renderCardThumb, renderLockedChip } from "../shared/render.js";
 
 export function createActions({ state, view, schema, programsMap, eligibleCards, eligibleCardIdSet, eligibleCardsById }) {
   const { elements } = view;
@@ -35,10 +35,6 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
     return { min, max, additionalCards };
   }
 
-  function lockedCardThumbMarkup(card, className = "lockedCardThumb") {
-    return `<img class="${className}" src="./assets/cards/${escapeHtml(card.id)}.webp" alt="${escapeHtml(card.card_name)}" loading="lazy" decoding="async" onerror="this.remove()" />`;
-  }
-
   function searchMatches(query) {
     const q = query.trim().toLowerCase();
     if (!q) return [];
@@ -51,18 +47,40 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
   function renderLockedCardPicks() {
     if (!elements.lockedCardPicksEl) return;
     const ids = selectedLockedCardIds(state, eligibleCardIdSet);
+    elements.lockedCardPicksEl.innerHTML = "";
+
     if (!ids.length) {
-      elements.lockedCardPicksEl.innerHTML = "No locked cards selected.";
+      elements.lockedCardPicksEl.textContent = "No locked cards selected.";
       return;
     }
 
-    elements.lockedCardPicksEl.innerHTML = ids
-      .map((id) => {
-        const card = eligibleCardsById.get(id);
-        const label = card ? `${card.card_name} (${card.issuer})` : id;
-        return `<span class="lockedChip">${card ? lockedCardThumbMarkup(card) : ""}<span>${escapeHtml(label)}</span> <button type="button" class="lockedChipRemove" data-remove-id="${id}" aria-label="Remove ${escapeHtml(label)}">×</button></span>`;
-      })
-      .join(" ");
+    const fragment = document.createDocumentFragment();
+    ids.forEach((id, idx) => {
+      const card = eligibleCardsById.get(id);
+      if (card) {
+        fragment.append(renderLockedChip(card));
+      } else {
+        const chip = document.createElement("span");
+        chip.className = "lockedChip";
+
+        const label = document.createElement("span");
+        label.textContent = id;
+
+        const remove = document.createElement("button");
+        remove.type = "button";
+        remove.className = "lockedChipRemove";
+        remove.dataset.removeId = id;
+        remove.setAttribute("aria-label", `Remove ${id}`);
+        remove.textContent = "×";
+
+        chip.append(label, " ", remove);
+        fragment.append(chip);
+      }
+
+      if (idx < ids.length - 1) fragment.append(" ");
+    });
+
+    elements.lockedCardPicksEl.append(fragment);
   }
 
   function renderLockedSearchResults() {
@@ -75,9 +93,30 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
     }
 
     elements.lockedCardOptionsEl.classList.remove("hidden");
-    elements.lockedCardOptionsEl.innerHTML = matches
-      .map((card) => `<button type="button" class="lockedOption" data-card-id="${card.id}">${lockedCardThumbMarkup(card)}<span>${escapeHtml(card.card_name)} <span class="muted">(${escapeHtml(card.issuer)})</span></span></button>`)
-      .join("");
+    elements.lockedCardOptionsEl.innerHTML = "";
+
+    const fragment = document.createDocumentFragment();
+    matches.forEach((card) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "lockedOption";
+      button.dataset.cardId = card.id;
+
+      button.append(renderCardThumb(card, { className: "lockedCardThumb", withFrame: false }));
+
+      const label = document.createElement("span");
+      label.textContent = `${card.card_name} `;
+
+      const issuer = document.createElement("span");
+      issuer.className = "muted";
+      issuer.textContent = `(${card.issuer})`;
+
+      label.append(issuer);
+      button.append(label);
+      fragment.append(button);
+    });
+
+    elements.lockedCardOptionsEl.append(fragment);
   }
 
   function updateLockedCardsUi() {
