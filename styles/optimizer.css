@@ -25,6 +25,9 @@
 .loadingSpinner{width:var(--space-6);height:var(--space-6);border:2px solid color-mix(in srgb,var(--color-accent) 20%,transparent);border-top-color:var(--color-accent);border-radius:50%;animation:spin .75s linear infinite}
 .resultPanel #result.is-loading{min-height:120px;display:flex;align-items:center;justify-content:center}
 @keyframes spin{to{transform:rotate(360deg)}}
+@keyframes resultEnter{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+
+.resultPanel #result .resultContent--enter{animation:resultEnter .18s ease-out both}
 
 #clearSpendBtn{border-color:var(--color-border);color:var(--color-muted)}
 #clearSpendBtn:hover{color:var(--color-text);border-color:color-mix(in srgb,var(--color-border) 75%,var(--color-text) 25%)}
@@ -74,7 +77,7 @@
 .issues ul{margin:var(--space-4) 0 0;padding-left:18px}
 .issues li{margin:var(--space-2) 0;color:var(--color-muted)}
 
-@media (prefers-reduced-motion:reduce){.spendDescCaret,.issues summary::after,.spendDescBody,.issuesBody{transition:none}.spendDescBody,.issuesBody{transform:none}}
+@media (prefers-reduced-motion:reduce){.spendDescCaret,.issues summary::after,.spendDescBody,.issuesBody{transition:none}.spendDescBody,.issuesBody{transform:none}.resultPanel #result .resultContent--enter{animation:none;transform:none}}
 
 @media (max-width:900px){.layout{grid-template-columns:1fr}.spendGrid{grid-template-columns:1fr}.tileGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:380px){.tileGrid{grid-template-columns:1fr}}
