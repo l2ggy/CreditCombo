@@ -54,14 +54,14 @@ tbody tr:last-child td{border-bottom:none}
 .listOption:hover{background:color-mix(in srgb,var(--color-accent) 14%,transparent)}
 
 .chipList{margin-top:var(--space-4);display:flex;flex-wrap:wrap;gap:var(--space-3)}
-.chip{display:inline-flex;align-items:center;gap:var(--space-2);padding:var(--space-3) var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-md);background:color-mix(in srgb,var(--color-accent) 12%,transparent);font-size:var(--font-size-sm)}
-.chipRemove{min-width:var(--space-9);min-height:var(--space-9);border:none;background:transparent;color:var(--color-muted);padding:0;line-height:1;font-size:var(--font-size-lg)}
+.chip{display:inline-flex;align-items:center;gap:var(--space-2);padding:var(--space-3) var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-md);background:color-mix(in srgb,var(--color-accent) 12%,transparent);font-size:var(--font-size-sm);line-height:1.25;color:var(--color-text)}
+.chipRemove{display:inline-flex;align-items:center;justify-content:center;min-width:var(--space-9);min-height:var(--space-9);border:none;background:transparent;color:var(--color-muted);padding:0;line-height:1;font-size:var(--font-size-lg);font-weight:700;cursor:pointer}
 .chipRemove:hover{color:var(--color-text)}
 
 .thumbWrap{width:44px;height:44px;display:inline-flex;align-items:center;justify-content:center;flex:0 0 44px}
 .thumb{display:block;border:1px solid var(--color-border);border-radius:var(--radius-card)}
 .thumb.is-portrait{border-radius:var(--radius-card-portrait)}
-.thumb-xs{max-width:var(--space-9);max-height:var(--space-9)}
+.thumb-xs{width:auto;height:auto;max-width:var(--space-9);max-height:var(--space-9)}
 .thumb-sm{width:72px;height:45px}
 .thumb-md{max-width:44px;max-height:44px}
 .thumb-lg{width:100%;height:100%;padding:1px;border:none}
