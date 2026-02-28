@@ -155,6 +155,18 @@ select[multiple]{padding:8px;background:transparent;appearance:auto;min-width:32
 .lockedChipRemove:hover{color:var(--text)}
 
 .resultPanel h2{margin:0 0 10px}
+
+.loadingState{display:inline-flex;align-items:center;gap:10px;color:var(--muted);font-size:14px}
+.loadingSpinner{
+  width:14px;
+  height:14px;
+  border-radius:50%;
+  border:2px solid color-mix(in srgb,var(--accent) 20%, transparent);
+  border-top-color:var(--accent);
+  animation:spin .75s linear infinite;
+}
+.resultPanel #result.is-loading{min-height:120px;display:flex;align-items:center;justify-content:center}
+@keyframes spin{to{transform:rotate(360deg)}}
 .comboList{list-style:none;margin:0 0 14px;padding:0}
 .resultCardItem{display:flex;align-items:center;gap:10px}
 .thumbFrame{width:44px;height:44px;display:inline-flex;align-items:center;justify-content:center;flex:0 0 44px}

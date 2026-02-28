@@ -1,5 +1,5 @@
 import { loadJson, normalizePrograms, validateAndFilterCards } from "./data.js";
-import { annualizeMonthlySpend, findBestCombo } from "./optimizer.js";
+import { annualizeMonthlySpend } from "./optimizer.js";
 import { clampInt, renderSpendTable, readMonthlySpend, renderIssues, renderResult } from "./ui.js";
 
 const statusEl = document.getElementById("status");
@@ -159,32 +159,79 @@ async function main() {
       return schema.map((cat) => `${cat}:${monthlySpend[cat] || 0}`).join("|");
     }
 
-    function getBestCombo(allCards, additionalCards, k, annualSpend, valuationMode, monthlySpend, lockedIds) {
+    function getBestComboSyncCache(allCards, additionalCards, k, annualSpend, valuationMode, monthlySpend, lockedIds) {
       const excludeFeeCards = excludeFeeCardsEl?.checked ? "excludeFee" : "allCards";
       const excludeBusinessCards = excludeBusinessCardsEl?.checked ? "excludeBusiness" : "includeBusiness";
       const lockKey = [...lockedIds].sort().join(",");
       const additionalIdsKey = additionalCards.map((card) => card.id).sort().join(",");
       const key = `${spendKey(monthlySpend)}::${valuationMode}::${k}::${excludeFeeCards}::${excludeBusinessCards}::${lockKey}::${additionalIdsKey}`;
-      if (comboCache.has(key)) return comboCache.get(key);
-
-      const best = findBestCombo({
-        cards: allCards,
-        programsMap,
-        schema,
-        k,
-        annualSpend,
-        valuationMode,
-        lockedCardIds: lockedIds,
-        additionalCardIds: additionalCards.map((card) => card.id)
-      });
-      comboCache.set(key, best);
-      return best;
+      return {
+        key,
+        cached: comboCache.get(key) || null,
+        payload: {
+          cards: allCards,
+          programs: [...programsMap.values()],
+          schema,
+          k,
+          annualSpend,
+          valuationMode,
+          lockedCardIds: lockedIds,
+          additionalCardIds: additionalCards.map((card) => card.id)
+        }
+      };
     }
 
-    function runOptimizer() {
+    let optimizeWorker = null;
+    let optimizeRequestId = 0;
+
+    function terminateWorker() {
+      if (!optimizeWorker) return;
+      optimizeWorker.terminate();
+      optimizeWorker = null;
+    }
+
+    function runOptimizationInWorker(payload) {
+      optimizeRequestId += 1;
+      const requestId = optimizeRequestId;
+
+      terminateWorker();
+      optimizeWorker = new Worker(new URL("./optimizer-worker.js", import.meta.url), { type: "module" });
+
+      return new Promise((resolve, reject) => {
+        optimizeWorker.addEventListener("message", (event) => {
+          const msg = event.data || {};
+          if (msg.requestId !== requestId) return;
+          if (msg.error) {
+            reject(new Error(msg.error));
+            return;
+          }
+          resolve(msg.result);
+        });
+
+        optimizeWorker.addEventListener("error", (event) => {
+          reject(new Error(event?.message || "Worker error"));
+        });
+
+        optimizeWorker.postMessage({ requestId, payload });
+      });
+    }
+
+    function setLoadingState(isLoading) {
+      resultEl.classList.toggle("is-loading", isLoading);
+      if (isLoading) {
+        resultEl.classList.remove("hidden");
+        resultEl.innerHTML = `
+          <div class="loadingState" role="status" aria-live="polite">
+            <span class="loadingSpinner" aria-hidden="true"></span>
+            <span>Re-optimizing recommendations…</span>
+          </div>
+        `;
+      }
+    }
+
+    async function runOptimizer() {
       runBtn.disabled = true;
-      resultEl.classList.add("hidden");
-      resultEl.textContent = "Computing…";
+      setLoadingState(true);
 
       updateLockedCardsUi();
       const selectedLockedIds = selectedLockedCardIds();
@@ -197,6 +244,7 @@ async function main() {
       updateKValue();
 
       if (!eligibleCards.length) {
+        setLoadingState(false);
         resultEl.classList.remove("hidden");
         resultEl.innerHTML = `<span class="badge bad">No result</span> No eligible cards are available for optimization.`;
         runBtn.disabled = false;
@@ -204,6 +252,7 @@ async function main() {
       }
 
       if (excludeFeeCardsEl?.checked && k > 0 && !additionalCards.length) {
+        setLoadingState(false);
         resultEl.classList.remove("hidden");
         resultEl.innerHTML = `<span class="badge bad">No result</span> No additional cards without annual fees are available.`;
         runBtn.disabled = false;
@@ -214,6 +263,7 @@ async function main() {
       const monthlySpend = readMonthlySpend(schema);
       const hasSpend = schema.some((cat) => (monthlySpend[cat] || 0) > 0);
       if (!hasSpend) {
+        setLoadingState(false);
         resultEl.classList.remove("hidden");
         resultEl.innerHTML = `<span class="muted">Enter monthly spend in at least one category to generate card recommendations.</span>`;
         runBtn.disabled = false;
@@ -221,10 +271,31 @@ async function main() {
       }
 
       const annualSpend = annualizeMonthlySpend(monthlySpend, schema);
-      const best = getBestCombo(eligibleCards, additionalCards, k, annualSpend, valuationMode, monthlySpend, selectedLockedIds);
+      const { key, cached, payload } = getBestComboSyncCache(eligibleCards, additionalCards, k, annualSpend, valuationMode, monthlySpend, selectedLockedIds);
 
-      renderResult(resultEl, best, annualSpend, schema, valuationMode);
-      runBtn.disabled = false;
+      if (cached) {
+        setLoadingState(false);
+        renderResult(resultEl, cached, annualSpend, schema, valuationMode);
+        runBtn.disabled = false;
+        return;
+      }
+
+      const requestId = optimizeRequestId + 1;
+
+      try {
+        const best = await runOptimizationInWorker(payload);
+        if (requestId !== optimizeRequestId) return;
+        comboCache.set(key, best);
+        setLoadingState(false);
+        renderResult(resultEl, best, annualSpend, schema, valuationMode);
+      } catch (error) {
+        if (requestId !== optimizeRequestId) return;
+        setLoadingState(false);
+        resultEl.classList.remove("hidden");
+        resultEl.innerHTML = `<span class="badge bad">Error</span> ${escapeHtml(error?.message || "Failed to optimize")}`;
+      } finally {
+        if (requestId === optimizeRequestId) runBtn.disabled = false;
+      }
     }
 
     renderSpendTable(spendTableEl, schema, categoryDescriptions);
@@ -271,6 +342,8 @@ async function main() {
       lockedCardIds.delete(btn.dataset.removeId);
       runOptimizer();
     });
+
+    window.addEventListener("beforeunload", terminateWorker);
 
   } catch (e) {
     statusEl.innerHTML = `<span class="badge bad">Error</span> ${e.message}`;
