@@ -186,7 +186,8 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
         cppInput.step = "0.01";
         cppInput.min = "0";
         cppInput.dataset.programCpp = program.program_id;
-        cppInput.placeholder = String(program.cents_per_point ?? "");
+        cppInput.placeholder = `CPP ${String(program.cents_per_point ?? "")}`.trim();
+        cppInput.title = `Set custom CPP for ${program.program_name || program.program_id}`;
         const customValue = state.customProgramCpp[program.program_id];
         cppInput.value = Number.isFinite(customValue) ? String(customValue) : "";
         cppInput.setAttribute("aria-label", `Custom CPP for ${program.program_name || program.program_id}`);
