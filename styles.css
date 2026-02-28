@@ -39,7 +39,32 @@ h3{margin:var(--space-3) 0 var(--space-2);font-size:14px;color:var(--muted)}
 @media (max-width:900px){.layout{grid-template-columns:1fr}.header{flex-direction:column;align-items:flex-start}}
 
 .panelHeader{display:flex;justify-content:space-between;gap:var(--space-2);align-items:flex-end}
-.resultPanel .resultIntro{margin:0 0 var(--space-3);max-width:62ch;color:var(--muted)}
+
+.resultPanel{
+  --result-rhythm:8px;
+}
+
+.resultPanel .panelHeader,
+.resultPanel .divider,
+.resultPanel .resultIntro{
+  padding-inline:var(--result-rhythm);
+}
+
+.resultPanel .panelHeader h2{
+  line-height:1.15;
+  margin-block:0;
+}
+
+.resultPanel .divider{
+  margin-block:var(--result-rhythm);
+}
+
+.resultPanel .resultIntro{
+  margin:0 0 var(--result-rhythm);
+  max-width:62ch;
+  color:var(--muted);
+}
+
 
 .inputPanel{
   --input-rhythm:8px;
@@ -153,7 +178,6 @@ select[multiple]{padding:8px;background:transparent;appearance:auto;min-width:32
 .lockedChipRemove{display:inline-flex;align-items:center;justify-content:center;width:auto;min-width:20px;min-height:20px;border:none;background:transparent;color:var(--muted);padding:0;line-height:1;font-size:15px;font-weight:700;cursor:pointer}
 .lockedChipRemove:hover{color:var(--text)}
 
-.resultPanel h2{margin:0 0 10px}
 
 .loadingState{display:inline-flex;align-items:center;gap:10px;color:var(--muted);font-size:14px}
 .loadingSpinner{
