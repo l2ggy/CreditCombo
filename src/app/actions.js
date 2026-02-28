@@ -3,10 +3,15 @@ import { clampInt, readMonthlySpend, renderResult } from "../ui.js";
 import { candidatePools, kBounds, selectedLockedCardIds } from "./state.js";
 import { renderCardThumb, renderLockedChip } from "../shared/render.js";
 import { buildSearchText, scoreSearchMatch, tokenizeSearchQuery } from "../shared/search.js";
+import { escapeHtml } from "../shared/sanitize.js";
 
 export function createActions({ state, view, schema, programsMap, eligibleCards, eligibleCardIdSet, eligibleCardsById }) {
   const { elements } = view;
   const comboCache = new Map();
+
+  const cashbackProgramIds = new Set([...programsMap.values()]
+    .filter((program) => (program.program_type ?? "points") === "cashback")
+    .map((program) => program.program_id));
 
   let optimizeWorker = null;
   let optimizeRequestId = 0;
@@ -14,8 +19,10 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
 
   function syncStateFromControls() {
     state.valuationMode = elements.valuationModeEl?.value === "minimum_guaranteed" ? "minimum_guaranteed" : "estimated";
-    state.excludeFeeCards = Boolean(elements.excludeFeeCardsEl?.checked);
+    const maxAnnualFeeRaw = elements.maxAnnualFeeEl?.value?.trim?.() ?? "";
+    state.maxAnnualFee = maxAnnualFeeRaw === "" ? null : Math.max(0, Number(maxAnnualFeeRaw) || 0);
     state.excludeBusinessCards = Boolean(elements.excludeBusinessCardsEl?.checked);
+    state.excludeCashbackPrograms = Boolean(elements.excludeCashbackProgramsEl?.checked);
     state.enableLockedCards = Boolean(elements.enableLockedCardsEl?.checked);
     state.k = Number(elements.kInput?.value || state.k || 0);
   }
@@ -27,7 +34,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
   }
 
   function syncKBoundsFromState() {
-    const { additionalCards } = candidatePools(state, eligibleCards, eligibleCardIdSet);
+    const { additionalCards } = candidatePools(state, eligibleCards, eligibleCardIdSet, cashbackProgramIds);
     const { min, max } = kBounds(state, additionalCards.length);
     elements.kInput.min = String(min);
     elements.kInput.max = String(max);
@@ -136,8 +143,98 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
     elements.lockedCardOptionsEl.append(fragment);
   }
 
+
+  function programMatches(query) {
+    const queryTokens = tokenizeSearchQuery(query);
+    if (!queryTokens.length) return [];
+
+    return [...programsMap.values()]
+      .filter((program) => (program.program_type ?? "points") !== "cashback")
+      .filter((program) => !state.excludedProgramIds.has(program.program_id))
+      .map((program) => {
+        const programNameText = buildSearchText(program.program_name || program.program_id);
+        const fullSearchText = buildSearchText([program.program_name, program.program_id]);
+        const fullScore = scoreSearchMatch(fullSearchText, queryTokens);
+        if (fullScore < 0) return null;
+
+        const nameScore = scoreSearchMatch(programNameText, queryTokens);
+        const totalScore = fullScore + (nameScore > 0 ? nameScore * 3 : 0);
+        return { program, totalScore };
+      })
+      .filter(Boolean)
+      .sort((a, b) => b.totalScore - a.totalScore || String(a.program.program_name || a.program.program_id).localeCompare(String(b.program.program_name || b.program.program_id)))
+      .slice(0, 10)
+      .map(({ program }) => program);
+  }
+
+  function renderExcludedProgramSearchResults() {
+    if (!elements.excludedProgramOptionsEl || !elements.excludedProgramSearchEl) return;
+
+    const matches = programMatches(elements.excludedProgramSearchEl.value || "");
+    if (!matches.length) {
+      elements.excludedProgramOptionsEl.classList.add("hidden");
+      elements.excludedProgramOptionsEl.innerHTML = "";
+      return;
+    }
+
+    elements.excludedProgramOptionsEl.classList.remove("hidden");
+    elements.excludedProgramOptionsEl.innerHTML = "";
+
+    const fragment = document.createDocumentFragment();
+    matches.forEach((program) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "listOption";
+      button.dataset.programId = program.program_id;
+      button.setAttribute("aria-label", `Exclude rewards program ${program.program_name || program.program_id}`);
+      button.textContent = program.program_name || program.program_id;
+      fragment.append(button);
+    });
+
+    elements.excludedProgramOptionsEl.append(fragment);
+  }
+
+  function renderExcludedProgramPicks() {
+    if (!elements.excludedProgramPicksEl) return;
+
+    const ids = [...state.excludedProgramIds]
+      .filter((programId) => programsMap.has(programId))
+      .sort((a, b) => String(programsMap.get(a)?.program_name || a).localeCompare(String(programsMap.get(b)?.program_name || b)));
+
+    elements.excludedProgramPicksEl.innerHTML = "";
+    if (!ids.length) {
+      elements.excludedProgramPicksEl.textContent = "No excluded rewards programs.";
+      return;
+    }
+
+    const fragment = document.createDocumentFragment();
+    ids.forEach((programId, idx) => {
+      const chip = document.createElement("span");
+      chip.className = "chip";
+
+      const label = document.createElement("span");
+      label.textContent = programsMap.get(programId)?.program_name || programId;
+
+      const remove = document.createElement("button");
+      remove.type = "button";
+      remove.className = "chipRemove";
+      remove.dataset.removeProgramId = programId;
+      remove.setAttribute("aria-label", `Remove excluded program ${label.textContent}`);
+      remove.textContent = "×";
+
+      chip.append(label, " ", remove);
+      fragment.append(chip);
+      if (idx < ids.length - 1) fragment.append(" ");
+    });
+
+    elements.excludedProgramPicksEl.append(fragment);
+  }
+
   function updateLockedCardsUi() {
     sanitizeLockedCardSelection();
+    for (const programId of [...state.excludedProgramIds]) {
+      if (!programsMap.has(programId)) state.excludedProgramIds.delete(programId);
+    }
     const enabled = state.enableLockedCards;
     elements.lockedCardsPanelEl?.classList.toggle("hidden", !enabled);
     elements.lockedCardsDividerEl?.classList.toggle("hidden", !enabled);
@@ -154,6 +251,8 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
 
     renderLockedCardPicks();
     renderLockedSearchResults();
+    renderExcludedProgramPicks();
+    renderExcludedProgramSearchResults();
   }
 
   function spendKey(monthlySpend) {
@@ -161,11 +260,13 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
   }
 
   function getBestComboSyncCache(additionalCards, annualSpend, monthlySpend, lockedIds) {
-    const excludeFeeCards = state.excludeFeeCards ? "excludeFee" : "allCards";
+    const maxAnnualFee = Number.isFinite(state.maxAnnualFee) ? state.maxAnnualFee : "none";
     const excludeBusinessCards = state.excludeBusinessCards ? "excludeBusiness" : "includeBusiness";
+    const excludeCashbackPrograms = state.excludeCashbackPrograms ? "excludeCashback" : "includeCashback";
+    const excludedProgramsKey = [...state.excludedProgramIds].sort().join(",");
     const lockKey = [...lockedIds].sort().join(",");
     const additionalIdsKey = additionalCards.map((card) => card.id).sort().join(",");
-    const key = `${spendKey(monthlySpend)}::${state.valuationMode}::${state.k}::${excludeFeeCards}::${excludeBusinessCards}::${lockKey}::${additionalIdsKey}`;
+    const key = `${spendKey(monthlySpend)}::${state.valuationMode}::${state.k}::${maxAnnualFee}::${excludeBusinessCards}::${excludeCashbackPrograms}::${excludedProgramsKey}::${lockKey}::${additionalIdsKey}`;
     return {
       key,
       cached: comboCache.get(key) || null,
@@ -176,6 +277,8 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
         k: state.k,
         annualSpend,
         valuationMode: state.valuationMode,
+        excludedProgramIds: [...state.excludedProgramIds],
+        excludeCashbackPrograms: state.excludeCashbackPrograms,
         lockedCardIds: lockedIds,
         additionalCardIds: additionalCards.map((card) => card.id)
       }
@@ -247,7 +350,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
       return;
     }
 
-    if (state.excludeFeeCards && state.k > 0 && !additionalCards.length) {
+    if (state.k > 0 && !additionalCards.length) {
       view.setLoadingState(false);
       elements.resultEl.classList.remove("hidden");
       elements.resultEl.classList.remove("resultEmpty");
@@ -332,15 +435,39 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
     return runOptimization();
   }
 
-  function setExcludeFeeCards(enabled) {
-    state.excludeFeeCards = Boolean(enabled);
-    if (elements.excludeFeeCardsEl) elements.excludeFeeCardsEl.checked = state.excludeFeeCards;
+  function setMaxAnnualFee(value) {
+    const raw = String(value ?? "").trim();
+    state.maxAnnualFee = raw === "" ? null : Math.max(0, Number(raw) || 0);
+    if (elements.maxAnnualFeeEl) elements.maxAnnualFeeEl.value = raw;
     return runOptimization();
   }
 
   function setExcludeBusinessCards(enabled) {
     state.excludeBusinessCards = Boolean(enabled);
     if (elements.excludeBusinessCardsEl) elements.excludeBusinessCardsEl.checked = state.excludeBusinessCards;
+    return runOptimization();
+  }
+
+  function setExcludeCashbackPrograms(enabled) {
+    state.excludeCashbackPrograms = Boolean(enabled);
+    if (elements.excludeCashbackProgramsEl) elements.excludeCashbackProgramsEl.checked = state.excludeCashbackPrograms;
+    return runOptimization();
+  }
+
+  function setProgramExcluded(programId, excluded) {
+    if (!programId) return;
+    if (excluded) state.excludedProgramIds.add(programId);
+    else state.excludedProgramIds.delete(programId);
+  }
+
+  function addExcludedProgram(programId) {
+    setProgramExcluded(programId, true);
+    if (elements.excludedProgramSearchEl) elements.excludedProgramSearchEl.value = "";
+    return runOptimization();
+  }
+
+  function removeExcludedProgram(programId) {
+    setProgramExcluded(programId, false);
     return runOptimization();
   }
 
@@ -354,9 +481,13 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
     setK,
     addLockedCard,
     removeLockedCard,
-    setExcludeFeeCards,
+    setMaxAnnualFee,
     setExcludeBusinessCards,
+    setExcludeCashbackPrograms,
+    addExcludedProgram,
+    removeExcludedProgram,
     renderLockedSearchResults,
+    renderExcludedProgramSearchResults,
     syncInitialUi: () => {
       syncStateFromControls();
       updateLockedCardsUi();

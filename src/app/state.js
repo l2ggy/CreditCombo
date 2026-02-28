@@ -2,8 +2,10 @@ export function createUiState() {
   return {
     lockedCardIds: new Set(),
     valuationMode: "estimated",
-    excludeFeeCards: false,
+    maxAnnualFee: null,
     excludeBusinessCards: false,
+    excludeCashbackPrograms: false,
+    excludedProgramIds: new Set(),
     enableLockedCards: false,
     k: 1
   };
@@ -14,16 +16,24 @@ export function selectedLockedCardIds(state, eligibleCardIdSet) {
   return [...state.lockedCardIds].filter((id) => eligibleCardIdSet.has(id));
 }
 
-export function candidatePools(state, eligibleCards, eligibleCardIdSet) {
+export function candidatePools(state, eligibleCards, eligibleCardIdSet, cashbackProgramIds = new Set()) {
   const selectedIds = new Set(selectedLockedCardIds(state, eligibleCardIdSet));
   let additionalCards = eligibleCards.filter((card) => !selectedIds.has(card.id));
 
-  if (state.excludeFeeCards) {
-    additionalCards = additionalCards.filter((card) => Number(card.annual_fee?.amount ?? 0) <= 0);
+  if (Number.isFinite(state.maxAnnualFee)) {
+    additionalCards = additionalCards.filter((card) => Number(card.annual_fee?.amount ?? 0) <= state.maxAnnualFee);
   }
 
   if (state.excludeBusinessCards) {
     additionalCards = additionalCards.filter((card) => !card.is_business_card);
+  }
+
+  if (state.excludeCashbackPrograms) {
+    additionalCards = additionalCards.filter((card) => !cashbackProgramIds.has(card.rewards_program));
+  }
+
+  if (state.excludedProgramIds?.size) {
+    additionalCards = additionalCards.filter((card) => !state.excludedProgramIds.has(card.rewards_program));
   }
 
   return {

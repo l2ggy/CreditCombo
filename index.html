@@ -86,14 +86,29 @@
             </select>
           </div>
           <div class="full">
-            <label class="checkboxLabel" for="excludeFeeCards">
-              <input id="excludeFeeCards" type="checkbox" />
-              Exclude cards with annual fees
-            </label>
-            <label class="checkboxLabel" for="excludeBusinessCards">
-              <input id="excludeBusinessCards" type="checkbox" />
-              Exclude business credit cards
-            </label>
+            <details id="advancedPrefs" class="advancedPrefs">
+              <summary>Advanced preferences</summary>
+              <div class="advancedPrefsBody">
+                <label for="maxAnnualFee">Maximum annual fee (CAD)</label>
+                <input id="maxAnnualFee" type="number" min="0" step="1" placeholder="No maximum" />
+                <label class="checkboxLabel" for="excludeBusinessCards">
+                  <input id="excludeBusinessCards" type="checkbox" />
+                  Exclude business credit cards
+                </label>
+                <label class="checkboxLabel" for="excludeCashbackPrograms">
+                  <input id="excludeCashbackPrograms" type="checkbox" />
+                  Exclude cashback programs
+                </label>
+                <div class="divider"></div>
+                <div class="advancedProgramPrefs">
+                  <h4>Rewards programs</h4>
+                  <label for="excludedProgramSearch" class="subtle">Exclude rewards programs</label>
+                  <input id="excludedProgramSearch" type="search" placeholder="Type program name" autocomplete="off" />
+                  <div id="excludedProgramOptions" class="listBox hidden" role="listbox" aria-label="Matching rewards programs"></div>
+                  <div id="excludedProgramPicks" class="chipList muted">No excluded rewards programs.</div>
+                </div>
+              </div>
+            </details>
           </div>
           <button id="runBtn" class="primary">Optimize</button>
         </div>
