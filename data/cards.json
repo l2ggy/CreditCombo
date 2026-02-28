@@ -2187,7 +2187,7 @@
       "card_name": "MBNA Rewards Platinum Plus Mastercard",
       "issuer": "MBNA",
       "network": "Mastercard",
-      "rewards_program": "mbna_rewards",
+      "rewards_program": "mbna_rewards_platinum_plus",
       "is_business_card": false,
       "annual_fee": {
         "amount": 0,
@@ -2212,7 +2212,7 @@
           "cap_amount": 50000,
           "cap_period": "annual",
           "earn_rate_above_cap": 1,
-          "notes": "Issuer terms indicate 5 points per dollar until $50,000 annual spend in each applicable category (calendar year)."
+          "notes": "Issuer terms indicate 2 points per dollar until $50,000 annual spend in each applicable category (calendar year)."
         }
       ],
       "special_earn_rules": [
@@ -2325,7 +2325,7 @@
       "card_name": "MBNA Rewards World Elite Mastercard",
       "issuer": "MBNA (TD Bank Group)",
       "network": "Mastercard",
-      "rewards_program": "mbna_rewards",
+      "rewards_program": "mbna_rewards_world_elite",
       "is_business_card": false,
       "annual_fee": {
         "amount": 120,
@@ -2359,12 +2359,17 @@
           "description": "5x also applies to memberships; add 'memberships' category later if you want."
         },
         {
+          "type": "merchant_specific",
+          "description": "Accelerated earn applies on eligible restaurant, grocery, digital media, membership, and household utility purchases based on merchant category coding."
+        },
+        {
           "type": "bonus_structure",
-          "description": "Birthday bonus exists; omitted from long-term earn modeling for now (non-spend multiplier)."
+          "description": "Birthday bonus exists: 10% of points earned in the prior 12 months before birthday month, capped at 15,000 points annually; omitted from long-term spend-only modeling."
         }
       ],
       "sources": [
         "https://www.mbna.ca/en/credit-cards/rewards/mbna-rewards-world-elite-mastercard",
+        "https://www.mbna.ca/content/dam/mbna/document/pdf/credit-cards/mbna-rewards-0322-en.pdf",
         "https://www.mbna.ca/en/credit-cards"
       ]
     },
