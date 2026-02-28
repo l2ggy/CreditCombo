@@ -1,4 +1,5 @@
 import { loadJson, normalizePrograms } from "./data.js";
+import { formatMoneyCAD, formatMultiplier } from "./shared/format.js";
 
 const state = {
   cards: [],
@@ -17,23 +18,6 @@ const els = {
   fatal: document.getElementById("browserFatal")
 };
 
-function formatCurrency(value) {
-  return new Intl.NumberFormat("en-CA", { style: "currency", currency: "CAD", maximumFractionDigits: 0 }).format(value);
-}
-
-function formatMultiplier(value, significantDigits = 2) {
-  const numericValue = Number(value);
-  if (!Number.isFinite(numericValue)) return String(value);
-  if (numericValue === 0) return "0";
-
-  const absValue = Math.abs(numericValue);
-  const order = Math.floor(Math.log10(absValue));
-  const scale = 10 ** (significantDigits - 1 - order);
-  const roundedValue = Math.round(numericValue * scale) / scale;
-  const fractionDigits = Math.max(0, significantDigits - 1 - order);
-
-  return roundedValue.toFixed(fractionDigits).replace(/\.?0+$/, "");
-}
 
 function annualFeeAmount(card) {
   return Number(card?.annual_fee?.amount ?? 0);
@@ -154,7 +138,7 @@ function capMarkup(caps) {
 
   return `<ul>${caps.map((cap) => {
     const categories = (cap.categories || []).join(", ") || "multiple categories";
-    const limit = formatCurrency(Number(cap.cap_amount ?? 0));
+    const limit = formatMoneyCAD(Number(cap.cap_amount ?? 0), { minimumFractionDigits: 0, maximumFractionDigits: 0 });
     const aboveCapRate = cap.earn_rate_above_cap == null ? "n/a" : formatMultiplier(cap.earn_rate_above_cap);
     const capPeriod = String(cap.cap_period || "period").toLowerCase();
     const periodLabel = capPeriod === "monthly"
@@ -195,7 +179,7 @@ function renderCards() {
         </div>
         <div class="browserFee">
           <span class="muted">Annual fee</span>
-          <strong>${formatCurrency(annualFeeAmount(card))}</strong>
+          <strong>${formatMoneyCAD(annualFeeAmount(card), { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</strong>
         </div>
       </div>
 
