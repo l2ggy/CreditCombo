@@ -363,8 +363,26 @@
         "grocery": 2,
         "other": 1.25
       },
-      "caps": [],
+      "caps": [
+        {
+          "scope": "per_category",
+          "categories": [
+            "grocery"
+          ],
+          "cap_amount": 15000,
+          "cap_period": "annual",
+          "earn_rate_above_cap": 1.25
+        }
+      ],
       "special_earn_rules": [
+        {
+          "type": "merchant_specific",
+          "description": "2% earn rate applies to eligible gas station purchases in Canada."
+        },
+        {
+          "type": "merchant_specific",
+          "description": "2% grocery earn is capped at $300 cash back annually (modeled as $15,000 annual grocery spend at 2% before reverting to 1.25%)."
+        },
         {
           "type": "proxy_program",
           "description": "Modeled as cashback-equivalent earn rates."
@@ -391,8 +409,26 @@
         "grocery": 4,
         "other": 2
       },
-      "caps": [],
+      "caps": [
+        {
+          "scope": "per_category",
+          "categories": [
+            "grocery"
+          ],
+          "cap_amount": 30000,
+          "cap_period": "annual",
+          "earn_rate_above_cap": 2
+        }
+      ],
       "special_earn_rules": [
+        {
+          "type": "merchant_specific",
+          "description": "4% earn rate applies to eligible gas station purchases in Canada."
+        },
+        {
+          "type": "merchant_specific",
+          "description": "4% grocery earn is capped at $1,200 cash back annually (modeled as $30,000 annual grocery spend at 4% before reverting to 2%)."
+        },
         {
           "type": "proxy_program",
           "description": "Modeled as cashback-equivalent earn rates."
@@ -581,11 +617,39 @@
       },
       "earn_rates": {
         "grocery": 3,
+        "bills": 1,
         "other": 0.5
       },
-      "caps": [],
-      "special_earn_rules": [],
+      "caps": [
+        {
+          "scope": "per_category",
+          "categories": [
+            "grocery"
+          ],
+          "cap_amount": 500,
+          "cap_period": "monthly",
+          "earn_rate_above_cap": 0.5,
+          "notes": "3% grocery applies to first $500 per statement period; then base rate."
+        },
+        {
+          "scope": "per_category",
+          "categories": [
+            "bills"
+          ],
+          "cap_amount": 500,
+          "cap_period": "monthly",
+          "earn_rate_above_cap": 0.5,
+          "notes": "1% recurring bill payments applies to first $500 per statement period; then base rate."
+        }
+      ],
+      "special_earn_rules": [
+        {
+          "type": "merchant_specific",
+          "description": "1% recurring bill payment earn is merchant/MCC dependent per issuer terms."
+        }
+      ],
       "sources": [
+        "https://www.bmo.com/main/personal/credit-cards/bmo-cashback-mastercard/",
         "https://www.bmo.com/main/personal/credit-cards/"
       ]
     },
@@ -681,10 +745,25 @@
           "cap_amount": 500,
           "cap_period": "monthly",
           "earn_rate_above_cap": 0.5,
-          "notes": "3% grocery applies to first $500/month; then base rate."
+          "notes": "3% grocery applies to first $500 per statement period; then base rate."
+        },
+        {
+          "scope": "per_category",
+          "categories": [
+            "bills"
+          ],
+          "cap_amount": 500,
+          "cap_period": "monthly",
+          "earn_rate_above_cap": 0.5,
+          "notes": "1% recurring bill payments applies to first $500 per statement period; then base rate."
         }
       ],
-      "special_earn_rules": [],
+      "special_earn_rules": [
+        {
+          "type": "merchant_specific",
+          "description": "Recurring bill payments are merchant/MCC dependent; not all recurring transactions qualify for accelerated earn."
+        }
+      ],
       "sources": [
         "https://www.bmo.com/main/personal/credit-cards/bmo-cashback-mastercard/",
         "https://www.bmo.com/main/personal/credit-cards/"
@@ -832,11 +911,39 @@
       },
       "earn_rates": {
         "grocery": 3,
+        "bills": 1,
         "other": 0.5
       },
-      "caps": [],
-      "special_earn_rules": [],
+      "caps": [
+        {
+          "scope": "per_category",
+          "categories": [
+            "grocery"
+          ],
+          "cap_amount": 500,
+          "cap_period": "monthly",
+          "earn_rate_above_cap": 0.5,
+          "notes": "3% grocery applies to first $500 per statement period; then base rate."
+        },
+        {
+          "scope": "per_category",
+          "categories": [
+            "bills"
+          ],
+          "cap_amount": 500,
+          "cap_period": "monthly",
+          "earn_rate_above_cap": 0.5,
+          "notes": "1% recurring bill payments applies to first $500 per statement period; then base rate."
+        }
+      ],
+      "special_earn_rules": [
+        {
+          "type": "merchant_specific",
+          "description": "Recurring bill payments are merchant/MCC dependent; not all recurring transactions qualify for accelerated earn."
+        }
+      ],
       "sources": [
+        "https://www.bmo.com/main/personal/credit-cards/student-bmo-cashback-mastercard/",
         "https://www.bmo.com/main/personal/credit-cards/"
       ]
     },
@@ -1595,11 +1702,38 @@
         "type": "annual"
       },
       "earn_rates": {
+        "dining": 2,
+        "entertainment": 2,
         "other": 0.5
       },
-      "caps": [],
-      "special_earn_rules": [],
+      "caps": [
+        {
+          "scope": "per_category",
+          "categories": [
+            "dining"
+          ],
+          "cap_amount": 3600,
+          "cap_period": "annual",
+          "earn_rate_above_cap": 0.5
+        },
+        {
+          "scope": "per_category",
+          "categories": [
+            "entertainment"
+          ],
+          "cap_amount": 3600,
+          "cap_period": "annual",
+          "earn_rate_above_cap": 0.5
+        }
+      ],
+      "special_earn_rules": [
+        {
+          "type": "merchant_specific",
+          "description": "2% restaurant and entertainment earn tiers apply on eligible annual spend thresholds by category; above threshold, purchases revert to the card's other-purchases rate."
+        }
+      ],
       "sources": [
+        "https://www.desjardins.com/ca/personal/loans-credit/credit-cards/cash-back-mastercard/index.jsp",
         "https://www.desjardins.com/ca/personal/loans-credit/credit-cards/index.jsp"
       ]
     },
@@ -1616,11 +1750,37 @@
       },
       "earn_rates": {
         "grocery": 4,
+        "dining": 3,
         "other": 1
       },
-      "caps": [],
-      "special_earn_rules": [],
+      "caps": [
+        {
+          "scope": "per_category",
+          "categories": [
+            "grocery"
+          ],
+          "cap_amount": 10000,
+          "cap_period": "annual",
+          "earn_rate_above_cap": 1
+        },
+        {
+          "scope": "per_category",
+          "categories": [
+            "dining"
+          ],
+          "cap_amount": 6000,
+          "cap_period": "annual",
+          "earn_rate_above_cap": 1
+        }
+      ],
+      "special_earn_rules": [
+        {
+          "type": "merchant_specific",
+          "description": "4% grocery and 3% restaurant earn tiers apply on eligible annual spend thresholds by category; above threshold, purchases revert to the card's other-purchases rate."
+        }
+      ],
       "sources": [
+        "https://www.desjardins.com/ca/personal/loans-credit/credit-cards/cash-back-world-elite-mastercard/index.jsp",
         "https://www.desjardins.com/ca/personal/loans-credit/credit-cards/index.jsp"
       ]
     },
@@ -2042,33 +2202,28 @@
       },
       "caps": [
         {
-          "scope": "shared",
+          "scope": "per_category",
           "categories": [
             "grocery",
             "dining",
             "digital",
             "utilities"
           ],
-          "cap_amount": 10000,
+          "cap_amount": 50000,
           "cap_period": "annual",
           "earn_rate_above_cap": 1,
-          "notes": "Accelerated earn applies to eligible restaurant, grocery, digital media, and household utility purchases up to $10,000 annual spend in applicable category buckets."
+          "notes": "Issuer terms indicate 5 points per dollar until $50,000 annual spend in each applicable category (calendar year)."
         }
       ],
       "special_earn_rules": [
         {
-          "type": "category_out_of_schema",
-          "description": "Accelerated earn also applies to memberships category (not represented in current schema)."
-        },
-        {
-          "type": "bonus_structure",
-          "description": "Card includes annual Birthday Bonus points equal to a percentage of prior-year earn, subject to issuer terms and cap."
+          "type": "merchant_specific",
+          "description": "Accelerated earn categories include eligible restaurant, grocery, digital media/membership, and household utility purchases based on merchant coding."
         }
       ],
       "sources": [
-        "https://www.mbna.ca/en/credit-cards/rewards",
         "https://www.mbna.ca/en/credit-cards/rewards/mbna-rewards-mastercard",
-        "https://www.mbna.ca/en/credit-cards"
+        "https://www.mbna.ca/en/credit-cards/rewards"
       ]
     },
     {
@@ -2227,11 +2382,19 @@
       "earn_rates": {
         "gas": 1,
         "grocery": 1,
+        "drugstore": 1,
+        "utilities": 1,
         "other": 0.5
       },
       "caps": [],
-      "special_earn_rules": [],
+      "special_earn_rules": [
+        {
+          "type": "merchant_specific",
+          "description": "1% category includes eligible pharmacy and utility bill payments based on issuer merchant coding."
+        }
+      ],
       "sources": [
+        "https://www.meridiancu.ca/personal/credit-cards/visa-cash-back-card",
         "https://www.meridiancu.ca/personal/credit-cards"
       ]
     },
@@ -2284,19 +2447,30 @@
         "utilities": 2,
         "other": 1
       },
-      "caps": [],
+      "caps": [
+        {
+          "scope": "shared",
+          "categories": [
+            "gas",
+            "grocery",
+            "drugstore",
+            "utilities"
+          ],
+          "cap_amount": 25000,
+          "cap_period": "annual",
+          "earn_rate_above_cap": 1,
+          "notes": "Issuer footnote indicates accelerated earn applies on first $25,000 in purchases, then 1% on all other purchases."
+        }
+      ],
       "special_earn_rules": [
         {
-          "type": "category_restriction",
-          "description": "Accelerated earn applies by category (gas/grocery at higher tier; select everyday categories at mid tier) while other spend earns base cashback."
-        },
-        {
-          "type": "threshold_bonus",
-          "description": "Accelerated cashback may be subject to annual spend limits and eligibility terms; confirm current Meridian disclosure for exact cap treatment."
+          "type": "merchant_specific",
+          "description": "4% gas/grocery and 2% pharmacy/utility bill categories are issuer-defined eligible purchase categories based on merchant coding."
         }
       ],
       "sources": [
         "https://www.meridiancu.ca/personal/credit-cards/visa-infinite-cash-back-card",
+        "https://www.meridiancu.ca/personal/credit-cards/legal-documents-for-credit-cards",
         "https://www.meridiancu.ca/personal/credit-cards"
       ]
     },
@@ -2322,6 +2496,7 @@
         }
       ],
       "sources": [
+        "https://www.meridiancu.ca/personal/credit-cards/meridian-visa-us-dollar-card",
         "https://www.meridiancu.ca/personal/credit-cards"
       ]
     },
@@ -2523,16 +2698,12 @@
       "caps": [],
       "special_earn_rules": [
         {
-          "type": "threshold_conditional",
-          "description": "Groceries + restaurants earn 5 points/$ only if total monthly purchases are under $2,500; otherwise those food purchases fall to 2 points/$."
+          "type": "bonus_structure",
+          "description": "Issuer terms indicate a monthly first-spend tier (5 points per dollar on the first $2,500 in gross monthly purchases, regardless of category), after which regular category rates apply."
         },
         {
-          "type": "portal_specific",
-          "description": "2 points/$ on travel booked through À la carte Travel (portal-specific; not mapped to travel)."
-        },
-        {
-          "type": "category_out_of_schema",
-          "description": "2 points/$ also includes EV charging (not modeled as separate category yet)."
+          "type": "merchant_specific",
+          "description": "Regular earn categories are merchant-code dependent (e.g., grocery/restaurant, gas and recurring bill payments)."
         }
       ],
       "sources": [
@@ -2962,6 +3133,7 @@
       "caps": [],
       "special_earn_rules": [],
       "sources": [
+        "https://www.rbcroyalbank.com/credit-cards/rewards/moi-rbc-visa.html",
         "https://www.rbcroyalbank.com/credit-cards/"
       ]
     },
@@ -2987,6 +3159,7 @@
         }
       ],
       "sources": [
+        "https://www.rbcroyalbank.com/credit-cards/rewards/more-rewards-rbc-visa.html",
         "https://www.rbcroyalbank.com/credit-cards/"
       ]
     },
@@ -3012,6 +3185,7 @@
         }
       ],
       "sources": [
+        "https://www.rbcroyalbank.com/credit-cards/rewards/more-rewards-rbc-visa-infinite.html",
         "https://www.rbcroyalbank.com/credit-cards/"
       ]
     },
@@ -3431,6 +3605,7 @@
       "caps": [],
       "special_earn_rules": [],
       "sources": [
+        "https://www.scotiabank.com/ca/en/personal/credit-cards/american-express/no-fee-amex-card.html",
         "https://www.scotiabank.com/ca/en/personal/credit-cards.html"
       ]
     },
@@ -3486,6 +3661,7 @@
       "caps": [],
       "special_earn_rules": [],
       "sources": [
+        "https://www.scotiabank.com/ca/en/personal/credit-cards/american-express/platinum-card.html",
         "https://www.scotiabank.com/ca/en/personal/credit-cards.html"
       ]
     },
@@ -3504,12 +3680,19 @@
         "gas": 1,
         "grocery": 1,
         "drugstore": 1,
+        "bills": 1,
         "other": 0.5
       },
       "caps": [],
-      "special_earn_rules": [],
+      "special_earn_rules": [
+        {
+          "type": "merchant_specific",
+          "description": "1% category includes recurring bill payments; mapped to bills based on issuer terms."
+        }
+      ],
       "sources": [
-        "https://www.scotiabank.com/ca/en/personal/credit-cards.html"
+        "https://www.scotiabank.com/ca/en/personal/credit-cards/mastercard/momentum-card.html",
+        "https://www.scotiabank.com/ca/en/personal/credit-cards/mastercard.html"
       ]
     },
     {
@@ -3524,22 +3707,42 @@
         "type": "annual"
       },
       "earn_rates": {
-        "grocery": 2,
-        "gas": 2,
-        "transit": 2,
-        "rideshare": 2,
-        "drugstore": 2,
-        "bills": 2,
-        "other": 1
+        "grocery": 1,
+        "gas": 1,
+        "transit": 1,
+        "rideshare": 1,
+        "drugstore": 1,
+        "bills": 1,
+        "streaming": 1,
+        "dining": 1,
+        "other": 0.5
       },
-      "caps": [],
+      "caps": [
+        {
+          "scope": "shared",
+          "categories": [
+            "grocery",
+            "gas",
+            "transit",
+            "rideshare",
+            "drugstore",
+            "bills",
+            "streaming",
+            "dining"
+          ],
+          "cap_amount": 15000,
+          "cap_period": "annual",
+          "earn_rate_above_cap": 0.5
+        }
+      ],
       "special_earn_rules": [
         {
           "type": "merchant_specific",
-          "description": "2% bucket also references food delivery per issuer terms; keep separate if you later model it precisely."
+          "description": "Food delivery and food subscription services are modeled in dining/streaming proxies based on issuer wording."
         }
       ],
       "sources": [
+        "https://www.scotiabank.com/ca/en/personal/credit-cards/visa/momentum-no-fee-card.html",
         "https://www.scotiabank.com/ca/en/personal/credit-cards.html"
       ]
     },
@@ -3611,13 +3814,36 @@
       },
       "earn_rates": {
         "gas": 3,
+        "dining": 3,
         "bills": 3,
         "other": 1
       },
-      "caps": [],
-      "special_earn_rules": [],
+      "caps": [
+        {
+          "scope": "shared",
+          "categories": [
+            "gas",
+            "dining",
+            "bills"
+          ],
+          "cap_amount": 40000,
+          "cap_period": "annual",
+          "earn_rate_above_cap": 1
+        }
+      ],
+      "special_earn_rules": [
+        {
+          "type": "merchant_specific",
+          "description": "3% category also includes eligible office supply store purchases and EV charging, which are not separate optimizer categories."
+        },
+        {
+          "type": "merchant_specific",
+          "description": "2% earn applies to shipping and accounting/bookkeeping services (unmodeled category)."
+        }
+      ],
       "sources": [
-        "https://www.scotiabank.com/ca/en/personal/credit-cards.html"
+        "https://www.scotiabank.com/ca/en/business-banking/banking-solutions/credit-cards/scotia-momentum-for-business-visa-credit-card.html",
+        "https://www.scotiabank.com/ca/en/business-banking/banking-solutions/credit-cards/scotia-momentum-for-business-visa-credit-card/terms.html"
       ]
     },
     {
@@ -3664,7 +3890,8 @@
       "caps": [],
       "special_earn_rules": [],
       "sources": [
-        "https://www.scotiabank.com/ca/en/personal/credit-cards.html"
+        "https://www.scotiabank.com/ca/en/business-banking/banking-solutions/credit-cards/scotiabank-passport-visa-infinite-business-card.html",
+        "https://www.scotiabank.com/ca/en/small-business/business-banking/credit-cards.html"
       ]
     },
     {
@@ -3711,6 +3938,7 @@
       "caps": [],
       "special_earn_rules": [],
       "sources": [
+        "https://www.scotiabank.com/ca/en/personal/credit-cards/visa/passport-infinite-privilege-card.html",
         "https://www.scotiabank.com/ca/en/personal/credit-cards.html"
       ]
     },
@@ -3733,6 +3961,7 @@
       "caps": [],
       "special_earn_rules": [],
       "sources": [
+        "https://www.scotiabank.com/ca/en/personal/credit-cards/visa/scene-card.html",
         "https://www.scotiabank.com/ca/en/personal/credit-cards.html"
       ]
     },
@@ -3778,9 +4007,23 @@
           "earn_rate_above_cap": 0.5
         }
       ],
-      "special_earn_rules": [],
+      "special_earn_rules": [
+        {
+          "type": "merchant_specific",
+          "description": "4% applies to eligible restaurant, bar, and coffee shop purchases up to $5,000 annual spend."
+        },
+        {
+          "type": "merchant_specific",
+          "description": "1.5% applies to eligible gas, grocery, drugstore purchases and pre-authorized payments up to $15,000 annual spend."
+        },
+        {
+          "type": "merchant_specific",
+          "description": "Cash back accumulation runs from January to December statement periods, and is applied as an annual credit on the January statement."
+        }
+      ],
       "sources": [
         "https://www.simplii.com/en/credit-cards/cash-back-visa.html",
+        "https://www.simplii.com/en/legal/credit-cards-agreements-and-insurance.html",
         "https://www.simplii.com/en/credit-cards.html"
       ]
     },
@@ -3899,7 +4142,8 @@
         }
       ],
       "sources": [
-        "https://www.td.com/ca/en/personal-banking/products/credit-cards"
+        "https://www.td.com/ca/en/personal-banking/products/credit-cards/aeroplan/aeroplan-visa-infinite-privilege-card",
+        "https://www.td.com/ca/en/personal-banking/products/credit-cards/aeroplan"
       ]
     },
     {
@@ -3926,7 +4170,8 @@
         }
       ],
       "sources": [
-        "https://www.td.com/ca/en/personal-banking/products/credit-cards"
+        "https://www.td.com/ca/en/personal-banking/products/credit-cards/aeroplan/aeroplan-visa-platinum-card",
+        "https://www.td.com/ca/en/personal-banking/products/credit-cards/aeroplan"
       ]
     },
     {
@@ -3942,14 +4187,37 @@
       },
       "earn_rates": {
         "gas": 2,
-        "grocery": 2,
+        "transit": 2,
         "bills": 2,
+        "streaming": 2,
+        "digital": 2,
         "other": 0.5
       },
-      "caps": [],
-      "special_earn_rules": [],
+      "caps": [
+        {
+          "scope": "per_category",
+          "categories": [
+            "gas",
+            "transit",
+            "bills",
+            "streaming",
+            "digital"
+          ],
+          "cap_amount": 15000,
+          "cap_period": "annual",
+          "earn_rate_above_cap": 0.5,
+          "notes": "Issuer terms state separate $15,000 annual caps for Gas/EV, Public Transit, and PAP + Streaming/Digital Gaming/Media accelerated rebates; modeled with per-category caps for mapped categories."
+        }
+      ],
+      "special_earn_rules": [
+        {
+          "type": "merchant_specific",
+          "description": "2% gas bucket includes electric vehicle charging MCCs; office supply 2% bucket is issuer-listed but currently unmapped to a canonical category."
+        }
+      ],
       "sources": [
-        "https://www.td.com/ca/en/personal-banking/products/credit-cards"
+        "https://www.td.com/ca/en/business-banking/small-business/credit-cards/business-cash-back-visa-card",
+        "https://www.td.com/ca/en/business-banking/small-business/credit-cards"
       ]
     },
     {
@@ -3964,17 +4232,38 @@
         "type": "annual"
       },
       "earn_rates": {
+        "dining": 6,
+        "transit": 6,
+        "bills": 6,
+        "streaming": 6,
+        "digital": 6,
         "other": 2
       },
-      "caps": [],
+      "caps": [
+        {
+          "scope": "per_category",
+          "categories": [
+            "dining",
+            "transit",
+            "bills",
+            "streaming",
+            "digital"
+          ],
+          "cap_amount": 80000,
+          "cap_period": "annual",
+          "earn_rate_above_cap": 2,
+          "notes": "Issuer terms set an $80,000 maximum net annual spend cap for each accelerated 6-point category (Dining, PAP + Streaming/Digital, EV charging, Public Transit); mapped categories cap to base 2 points per $."
+        }
+      ],
       "special_earn_rules": [
         {
           "type": "merchant_specific",
-          "description": "Up to 9x TD Rewards on Expedia For TD purchases is portal-specific and excluded from base categories."
+          "description": "Up to 9x TD Rewards on Expedia For TD purchases is portal-specific and excluded from base categories. Electric vehicle charging has a separate accelerated bucket and cap, but EV-specific MCCs are not represented by a dedicated canonical category."
         }
       ],
       "sources": [
-        "https://www.td.com/ca/en/personal-banking/products/credit-cards"
+        "https://www.td.com/ca/en/business-banking/small-business/credit-cards/business-travel-visa-card",
+        "https://www.td.com/ca/en/business-banking/small-business/credit-cards"
       ]
     },
     {
@@ -3999,7 +4288,8 @@
         }
       ],
       "sources": [
-        "https://www.td.com/ca/en/personal-banking/products/credit-cards"
+        "https://www.td.com/ca/en/personal-banking/products/credit-cards/low-rate/low-rate-visa-card",
+        "https://www.td.com/ca/en/personal-banking/products/credit-cards/low-rate"
       ]
     },
     {
@@ -4014,11 +4304,31 @@
         "type": "annual"
       },
       "earn_rates": {
-        "travel": 4,
-        "dining": 2,
-        "other": 1
+        "grocery": 4.5,
+        "dining": 4.5,
+        "transit": 4.5,
+        "bills": 3,
+        "streaming": 3,
+        "digital": 3,
+        "other": 1.5
       },
-      "caps": [],
+      "caps": [
+        {
+          "scope": "per_category",
+          "categories": [
+            "grocery",
+            "dining",
+            "transit",
+            "bills",
+            "streaming",
+            "digital"
+          ],
+          "cap_amount": 15000,
+          "cap_period": "annual",
+          "earn_rate_above_cap": 1.5,
+          "notes": "Issuer terms indicate a yearly $15,000 spend cap in each accelerated category (Groceries, Dining, Public Transit, and Recurring Bill Payments + Streaming/Digital Gaming/Media), then base earn applies."
+        }
+      ],
       "special_earn_rules": [
         {
           "type": "merchant_specific",
@@ -4026,7 +4336,8 @@
         }
       ],
       "sources": [
-        "https://www.td.com/ca/en/personal-banking/products/credit-cards"
+        "https://www.td.com/ca/en/personal-banking/products/credit-cards/travel-rewards/platinum-travel-visa-card",
+        "https://www.td.com/ca/en/personal-banking/products/credit-cards/travel-rewards"
       ]
     },
     {
@@ -4116,6 +4427,7 @@
       "earn_rates": {
         "grocery": 3,
         "gas": 3,
+        "transit": 3,
         "bills": 3,
         "streaming": 3,
         "digital": 3,
@@ -4136,6 +4448,16 @@
           "scope": "per_category",
           "categories": [
             "gas"
+          ],
+          "cap_amount": 15000,
+          "cap_period": "annual",
+          "earn_rate_above_cap": 1,
+          "notes": "Max $15,000 spend per year in each eligible 3% category."
+        },
+        {
+          "scope": "per_category",
+          "categories": [
+            "transit"
           ],
           "cap_amount": 15000,
           "cap_period": "annual",
@@ -4177,6 +4499,10 @@
         {
           "type": "category_out_of_schema",
           "description": "3% also covers EV charging + digital gaming (not modeled as separate categories yet)."
+        },
+        {
+          "type": "merchant_specific",
+          "description": "3% categories include Public Transit MCC 4111 and EV charging MCC 5552; EV remains represented through gas proxy while transit is mapped explicitly."
         }
       ],
       "sources": [
@@ -4206,28 +4532,64 @@
       },
       "caps": [
         {
-          "scope": "shared",
+          "scope": "per_category",
           "categories": [
-            "gas",
-            "grocery",
+            "grocery"
+          ],
+          "cap_amount": 5000,
+          "cap_period": "annual",
+          "earn_rate_above_cap": 0.5,
+          "notes": "Annual cap applies separately per eligible 1% category."
+        },
+        {
+          "scope": "per_category",
+          "categories": [
+            "gas"
+          ],
+          "cap_amount": 5000,
+          "cap_period": "annual",
+          "earn_rate_above_cap": 0.5,
+          "notes": "Annual cap applies separately per eligible 1% category."
+        },
+        {
+          "scope": "per_category",
+          "categories": [
             "transit"
           ],
           "cap_amount": 5000,
           "cap_period": "annual",
           "earn_rate_above_cap": 0.5,
-          "notes": "Combined cap group."
+          "notes": "Annual cap applies separately per eligible 1% category."
         },
         {
-          "scope": "shared",
+          "scope": "per_category",
           "categories": [
-            "bills",
-            "streaming",
+            "bills"
+          ],
+          "cap_amount": 5000,
+          "cap_period": "annual",
+          "earn_rate_above_cap": 0.5,
+          "notes": "Annual cap applies separately per eligible 1% category."
+        },
+        {
+          "scope": "per_category",
+          "categories": [
+            "streaming"
+          ],
+          "cap_amount": 5000,
+          "cap_period": "annual",
+          "earn_rate_above_cap": 0.5,
+          "notes": "Annual cap applies separately per eligible 1% category."
+        },
+        {
+          "scope": "per_category",
+          "categories": [
             "digital"
           ],
           "cap_amount": 5000,
           "cap_period": "annual",
           "earn_rate_above_cap": 0.5,
-          "notes": "Combined cap group."
+          "notes": "Annual cap applies separately per eligible 1% category."
         }
       ],
       "special_earn_rules": [
@@ -4261,7 +4623,23 @@
         "digital": 4,
         "other": 2
       },
-      "caps": [],
+      "caps": [
+        {
+          "scope": "per_category",
+          "categories": [
+            "grocery",
+            "dining",
+            "transit",
+            "bills",
+            "streaming",
+            "digital"
+          ],
+          "cap_amount": 25000,
+          "cap_period": "annual",
+          "earn_rate_above_cap": 2,
+          "notes": "Issuer terms indicate a yearly $25,000 spend cap in each accelerated category (Groceries, Dining, Public Transit, and Recurring Bill Payments + Streaming/Digital Gaming/Media), then base earn applies."
+        }
+      ],
       "special_earn_rules": [
         {
           "type": "portal_specific",
@@ -4298,7 +4676,20 @@
         "dining": 1.5,
         "other": 1
       },
-      "caps": [],
+      "caps": [
+        {
+          "scope": "shared",
+          "categories": [
+            "travel",
+            "transit",
+            "dining"
+          ],
+          "cap_amount": 80000,
+          "cap_period": "annual",
+          "earn_rate_above_cap": 1,
+          "notes": "Issuer terms cap bonus earn on a combined $80,000 annual spend across Air Canada, Travel & Transit, Dining, EV charging, and select business-service categories; mapped shared cap uses canonical categories."
+        }
+      ],
       "special_earn_rules": [
         {
           "type": "merchant_specific",
@@ -4307,9 +4698,14 @@
         {
           "type": "merchant_specific",
           "description": "Eligible business spend categories (e.g., shipping/internet/cable/phone) can earn accelerated points when merchant coding qualifies."
+        },
+        {
+          "type": "proxy_program",
+          "description": "Combined $80,000 annual bonus cap also covers Air Canada direct purchases plus shipping/internet/cable/phone and EV charging categories that are only partially represented in canonical mappings."
         }
       ],
       "sources": [
+        "https://www.td.com/ca/en/business-banking/small-business/credit-cards/aeroplan-visa-business-card",
         "https://www.td.com/ca/en/business-banking/small-business/credit-cards/aeroplan-visa-business",
         "https://www.finlywealth.com/credit-cards/td-aeroplan-visa-card-business",
         "https://www.td.com/ca/en/personal-banking/products/credit-cards"
@@ -4390,10 +4786,15 @@
         {
           "type": "merchant_specific",
           "description": "Higher earn tiers may apply at Walmart channels versus non-Walmart merchants depending on current program terms."
+        },
+        {
+          "type": "product_feature",
+          "description": "No explicit ongoing cashback earn-rate spend cap was found on reviewed Walmart Rewards product/terms pages; monitor for issuer program updates."
         }
       ],
       "sources": [
-        "https://www.walmartrewards.ca/"
+        "https://www.walmartrewards.ca/",
+        "https://www.walmartrewards.ca/en/creditcards"
       ]
     },
     {
@@ -4411,7 +4812,12 @@
         "other": 2
       },
       "caps": [],
-      "special_earn_rules": [],
+      "special_earn_rules": [
+        {
+          "type": "product_feature",
+          "description": "No explicit ongoing cashback earn-rate spend cap was found on reviewed Wealthsimple Visa Infinite Privilege materials."
+        }
+      ],
       "sources": [
         "https://www.wealthsimple.com/en-ca/spend/card"
       ]
@@ -4431,7 +4837,12 @@
         "other": 2
       },
       "caps": [],
-      "special_earn_rules": [],
+      "special_earn_rules": [
+        {
+          "type": "product_feature",
+          "description": "No explicit ongoing cashback earn-rate spend cap was found on reviewed Wealthsimple Visa Infinite materials."
+        }
+      ],
       "sources": [
         "https://www.wealthsimple.com/en-ca/spend/card"
       ]
@@ -4451,9 +4862,15 @@
         "other": 1
       },
       "caps": [],
-      "special_earn_rules": [],
+      "special_earn_rules": [
+        {
+          "type": "product_feature",
+          "description": "No explicit ongoing cashback earn-rate spend cap was found on reviewed Zolve Canada card materials."
+        }
+      ],
       "sources": [
-        "https://www.zolve.com/credit-card"
+        "https://www.zolve.com/credit-card",
+        "https://www.zolve.com/ca/credit-card"
       ]
     }
   ]
