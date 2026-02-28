@@ -319,13 +319,22 @@
       "valuation_note": "Finly conversion values show 0.25 cpp for statement credits and gift cards."
     },
     {
-      "program_id": "mbna_rewards",
-      "program_name": "MBNA Rewards",
+      "program_id": "mbna_rewards_platinum_plus",
+      "program_name": "MBNA Rewards (Platinum Plus)",
       "program_type": "points",
       "cents_per_point": 1.0,
-      "minimum_cents_per_point": 1.0,
-      "minimum_valuation_note": "Guaranteed floor uses MBNA Rewards travel redemptions at 100 points = $1 CAD (1.0 cpp).",
-      "valuation_note": "Prince of Travel valuation for MBNA Rewards is 1.0 cpp (CAD), aligned with MBNA travel redemption mechanics."
+      "minimum_cents_per_point": 0.5,
+      "minimum_valuation_note": "For MBNA Rewards Platinum Plus Mastercard, cash redemption is 200 points = $1 CAD (0.5 cpp); travel redemption can reach 100 points = $1 CAD.",
+      "valuation_note": "Estimated value remains 1.0 cpp based on MBNA travel redemption mechanics (100 points = $1 CAD)."
+    },
+    {
+      "program_id": "mbna_rewards_world_elite",
+      "program_name": "MBNA Rewards (World Elite)",
+      "program_type": "points",
+      "cents_per_point": 1.0,
+      "minimum_cents_per_point": 0.83,
+      "minimum_valuation_note": "For MBNA Rewards World Elite Mastercard, cash redemption is 120 points = $1 CAD (~0.83 cpp); travel redemption can reach 100 points = $1 CAD.",
+      "valuation_note": "Estimated value remains 1.0 cpp based on MBNA travel redemption mechanics (100 points = $1 CAD)."
     },
     {
       "program_id": "marriott_bonvoy",
