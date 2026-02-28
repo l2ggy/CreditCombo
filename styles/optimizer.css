@@ -73,6 +73,16 @@
 .issues ul{margin:var(--space-4) 0 0;padding-left:18px}
 .issues li{margin:var(--space-2) 0;color:var(--color-muted)}
 
+.advancedPrefs{border:1px solid var(--color-border);border-radius:var(--radius-lg);padding:var(--space-3) var(--space-4)}
+.advancedPrefs summary{font-weight:700;cursor:pointer;list-style:none}
+.advancedPrefs summary::-webkit-details-marker{display:none}
+.advancedPrefs summary::after{content:"▾";float:right;transition:transform .2s ease}
+.advancedPrefs[open] summary::after{transform:rotate(180deg)}
+.advancedPrefsBody{display:grid;gap:var(--space-3);margin-top:var(--space-3)}
+
+.advancedProgramPrefs .listBox{margin-top:var(--space-2)}
+#excludedProgramPicks .chip{border:1px solid color-mix(in srgb,#dc2626 35%,var(--color-border));border-radius:var(--radius-sm);background:color-mix(in srgb,#dc2626 14%,transparent)}
+
 @media (prefers-reduced-motion:reduce){.spendDescCaret,.issues summary::after,.spendDescBody,.issuesBody{transition:none}.spendDescBody,.issuesBody{transform:none}}
 
 @media (max-width:900px){.layout{grid-template-columns:1fr}.spendGrid{grid-template-columns:1fr}.tileGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
