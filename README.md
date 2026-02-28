@@ -103,6 +103,20 @@ Optimizer notes
   - a small set of lowest-fee cards (to preserve low-fee combo options),
   then trimming that merged set to a size limit derived from a target max combination count.
 
+Contribution guidance
+---------------------
+
+### CSS Philosophy (Minimal by Default)
+- Prefer generic reusable classes over page-specific selectors.
+- Add new classes only when composition cannot solve the need.
+- Keep feature styles in `styles/browser.css` or `styles/optimizer.css` and shared primitives in `styles/base.css`.
+- Require visual parity for tiny UX details (chips, tooltip labels, hover states) when simplifying styles.
+
+CSS change checklist:
+- Did this reduce or preserve selector/class count?
+- Could this be done with existing primitives?
+- Did I verify chip/tooltip/hover micro-styles still look correct?
+
 License / disclaimer
 --------------------
 This is an MVP for experimentation. Numbers are estimates; real-world results depend on merchant coding, acceptance, and redemption choices.
