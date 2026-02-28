@@ -1,6 +1,6 @@
 import { loadCoreData } from "./data-service.js";
 import { formatMoneyCAD, formatMultiplier } from "./shared/format.js";
-import { renderCardThumb } from "./shared/render.js";
+import { renderCardThumb, renderOfficialCardLink } from "./shared/render.js";
 import { buildSearchText, scoreSearchMatch, tokenizeSearchQuery } from "./shared/search.js";
 
 const state = {
@@ -246,6 +246,11 @@ function renderBrowserCardItem(card) {
   const feeValue = document.createElement("strong");
   feeValue.textContent = formatMoneyCAD(annualFeeAmount(card), { minimumFractionDigits: 0, maximumFractionDigits: 0 });
   fee.append(feeLabel, feeValue);
+
+  const officialLink = renderOfficialCardLink(card);
+  if (officialLink) {
+    fee.append(officialLink);
+  }
 
   top.append(heading, fee);
 

@@ -54,6 +54,29 @@ export function renderLockedChip(card) {
   return chip;
 }
 
+export function getOfficialCardUrl(card) {
+  const candidate = card?.sources?.find((source) => {
+    if (typeof source !== "string") return false;
+    return /^https?:\/\//i.test(source);
+  });
+
+  return candidate || null;
+}
+
+export function renderOfficialCardLink(card, label = "Official page") {
+  const officialUrl = getOfficialCardUrl(card);
+  if (!officialUrl) return null;
+
+  const link = document.createElement("a");
+  link.className = "btn-inline";
+  link.href = officialUrl;
+  link.target = "_blank";
+  link.rel = "noopener noreferrer";
+  link.textContent = label;
+  link.setAttribute("aria-label", `Open official page for ${card.card_name}`);
+  return link;
+}
+
 export function renderResultCardItem(card) {
   const item = document.createElement("li");
   item.className = "itemRow";
@@ -80,6 +103,12 @@ export function renderResultCardItem(card) {
   feeEl.className = "mono";
   feeEl.textContent = `${formatMoneyCAD(fee)}/yr`;
   details.append(feeEl);
+
+  const officialLink = renderOfficialCardLink(card);
+  if (officialLink) {
+    officialLink.classList.add("itemRowLink");
+    details.append(" ", officialLink);
+  }
 
   item.append(details);
   return item;

@@ -49,8 +49,10 @@ button.primary{background:var(--color-accent);border-color:var(--color-accent);c
 button.primary:hover:not(:disabled){background:color-mix(in srgb,var(--color-accent) 85%,black 15%);border-color:color-mix(in srgb,var(--color-accent) 85%,black 15%);transform:translateY(-1px);box-shadow:none}
 button.primary:active:not(:disabled){transform:translateY(.5px);box-shadow:none}
 button:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none;transition:none}
-.btn-inline{width:auto;padding:var(--space-3) var(--space-5);font-size:var(--font-size-sm);transform:translateY(0);box-shadow:none;transition:transform .16s ease,background-color .16s ease,box-shadow .16s ease,border-color .16s ease,color .16s ease}
+.btn-inline{display:inline-flex;align-items:center;justify-content:center;width:auto;padding:var(--space-3) var(--space-5);border:1px solid var(--color-accent);border-radius:var(--radius-md);background:transparent;color:var(--color-text);font-size:var(--font-size-sm);font-weight:700;text-decoration:none;transform:translateY(0);box-shadow:none;transition:transform .16s ease,background-color .16s ease,box-shadow .16s ease,border-color .16s ease,color .16s ease}
 .btn-inline:disabled{transform:none;box-shadow:none;transition:none}
+.btn-inline:hover{background:color-mix(in srgb,var(--color-accent) 14%,transparent);border-color:color-mix(in srgb,var(--color-accent) 70%,var(--color-text) 30%);transform:translateY(-1px)}
+.btn-inline:active{transform:translateY(.5px);box-shadow:none}
 
 table{width:100%;border-collapse:collapse;border:1px solid var(--color-border);border-radius:var(--radius-xl);overflow:hidden}
 thead th{padding:var(--space-4);font-size:var(--font-size-sm);text-align:left;color:var(--color-muted);border-bottom:1px solid var(--color-border)}
@@ -59,6 +61,7 @@ tbody tr:last-child td{border-bottom:none}
 
 .listClean{list-style:none;margin:0;padding:0}
 .itemRow{display:flex;align-items:center;gap:var(--space-4)}
+.itemRowLink{margin-left:var(--space-2)}
 .listBox{margin-top:var(--space-3);max-height:220px;overflow:auto;border:1px solid var(--color-border);border-radius:var(--radius-md);background:color-mix(in srgb,var(--color-panel) 80%,transparent)}
 .listOption{display:flex;align-items:center;gap:var(--space-3);width:100%;padding:var(--space-3) var(--space-4);border:none;border-bottom:1px solid var(--color-border);background:transparent;color:var(--color-text);text-align:left}
 .listOption:last-child{border-bottom:none}
