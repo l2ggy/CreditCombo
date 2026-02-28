@@ -24,6 +24,9 @@
 .loadingState{display:inline-flex;align-items:center;gap:var(--space-4);color:var(--color-muted)}
 .loadingSpinner{width:var(--space-6);height:var(--space-6);border:2px solid color-mix(in srgb,var(--color-accent) 20%,transparent);border-top-color:var(--color-accent);border-radius:50%;animation:spin .75s linear infinite}
 .resultPanel #result.is-loading{min-height:120px;display:flex;align-items:center;justify-content:center}
+.resultPanel #result.resultEmpty{position:relative;isolation:isolate;display:flex;align-items:center;justify-content:center;min-height:150px;padding:var(--space-5);border:1px dashed color-mix(in srgb,var(--color-border) 72%,var(--color-muted) 28%);border-radius:var(--radius-lg);background:linear-gradient(145deg,color-mix(in srgb,var(--color-panel) 88%,var(--color-bg) 12%),color-mix(in srgb,var(--color-bg) 84%,transparent));text-align:center;color:color-mix(in srgb,var(--color-muted) 85%,var(--color-text) 15%);font-size:var(--font-size-sm);line-height:var(--line-height-relaxed)}
+.resultPanel #result.resultEmpty::before{content:"✦";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:clamp(2.1rem,5vw,3rem);line-height:1;color:color-mix(in srgb,var(--color-accent) 42%,var(--color-muted) 58%);opacity:.16;pointer-events:none;z-index:-1}
+.resultPanel #result.resultEmpty :is(.badge,h2,table,.divider,.tileGrid,.earnRateCallout){display:none}
 @keyframes spin{to{transform:rotate(360deg)}}
 
 #clearSpendBtn{border-color:var(--color-border);color:var(--color-muted)}

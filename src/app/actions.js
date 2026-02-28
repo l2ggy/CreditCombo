@@ -241,6 +241,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
     if (!eligibleCards.length) {
       view.setLoadingState(false);
       elements.resultEl.classList.remove("hidden");
+      elements.resultEl.classList.remove("resultEmpty");
       elements.resultEl.innerHTML = `<span class="badge bad">No result</span> No eligible cards are available for optimization.`;
       elements.runBtn.disabled = false;
       return;
@@ -249,6 +250,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
     if (state.excludeFeeCards && state.k > 0 && !additionalCards.length) {
       view.setLoadingState(false);
       elements.resultEl.classList.remove("hidden");
+      elements.resultEl.classList.remove("resultEmpty");
       elements.resultEl.innerHTML = `<span class="badge bad">No result</span> No additional cards without annual fees are available.`;
       elements.runBtn.disabled = false;
       return;
@@ -259,6 +261,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
     if (!hasSpend) {
       view.setLoadingState(false);
       elements.resultEl.classList.remove("hidden");
+      elements.resultEl.classList.add("resultEmpty");
       elements.resultEl.innerHTML = `<span class="muted">Enter monthly spend in at least one category to generate card recommendations.</span>`;
       elements.runBtn.disabled = false;
       return;
@@ -287,6 +290,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
       if (requestId !== optimizeRequestId) return;
       view.setLoadingState(false);
       elements.resultEl.classList.remove("hidden");
+      elements.resultEl.classList.remove("resultEmpty");
       elements.resultEl.innerHTML = `<span class="badge bad">Error</span> ${escapeHtml(error?.message || "Failed to optimize")}`;
     } finally {
       if (requestId === optimizeRequestId) elements.runBtn.disabled = false;

@@ -80,6 +80,7 @@ export function renderIssues(el, issues) {
 
 export function renderResult(el, best, annualSpend, schema, valuationMode = "estimated") {
   el.classList.remove("hidden");
+  el.classList.remove("resultEmpty");
   el.innerHTML = "";
 
   if (!best.combo.length) {
