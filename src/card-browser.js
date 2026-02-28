@@ -1,6 +1,6 @@
 import { loadCoreData } from "./data-service.js";
 import { formatMoneyCAD, formatMultiplier } from "./shared/format.js";
-import { renderCardThumb } from "./shared/render.js";
+import { formatIssuerNetwork, renderCardThumb, renderOfficialCardLink } from "./shared/render.js";
 import { buildSearchText, scoreSearchMatch, tokenizeSearchQuery } from "./shared/search.js";
 
 const state = {
@@ -229,7 +229,10 @@ function renderBrowserCardItem(card) {
 
   const meta = document.createElement("p");
   meta.className = "subtle";
-  meta.append(`${card.issuer} · ${card.network} · `);
+  const issuerNetwork = formatIssuerNetwork(card);
+  if (issuerNetwork) {
+    meta.append(`${issuerNetwork} · `);
+  }
   const program = document.createElement("span");
   program.className = "mono";
   program.textContent = card.rewards_program;
@@ -241,11 +244,17 @@ function renderBrowserCardItem(card) {
   const fee = document.createElement("div");
   fee.className = "stack-end";
   const feeLabel = document.createElement("span");
-  feeLabel.className = "muted";
+  feeLabel.className = "muted cardFeeLabel";
   feeLabel.textContent = "Annual fee";
   const feeValue = document.createElement("strong");
+  feeValue.className = "cardFeeValue";
   feeValue.textContent = formatMoneyCAD(annualFeeAmount(card), { minimumFractionDigits: 0, maximumFractionDigits: 0 });
   fee.append(feeLabel, feeValue);
+
+  const officialLink = renderOfficialCardLink(card);
+  if (officialLink) {
+    meta.append(" · ", officialLink);
+  }
 
   top.append(heading, fee);
 

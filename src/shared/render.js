@@ -33,6 +33,18 @@ export function renderCardThumb(card, options = {}) {
   return frame;
 }
 
+
+export function formatIssuerNetwork(card) {
+  const issuer = typeof card?.issuer === "string" ? card.issuer.trim() : "";
+  const network = typeof card?.network === "string" ? card.network.trim() : "";
+
+  if (issuer && network) {
+    return issuer === network ? issuer : `${issuer} · ${network}`;
+  }
+
+  return issuer || network;
+}
+
 export function renderLockedChip(card) {
   const chip = document.createElement("span");
   chip.className = "chip";
@@ -54,6 +66,29 @@ export function renderLockedChip(card) {
   return chip;
 }
 
+export function getOfficialCardUrl(card) {
+  const candidate = card?.sources?.find((source) => {
+    if (typeof source !== "string") return false;
+    return /^https?:\/\//i.test(source);
+  });
+
+  return candidate || null;
+}
+
+export function renderOfficialCardLink(card, label = "Official") {
+  const officialUrl = getOfficialCardUrl(card);
+  if (!officialUrl) return null;
+
+  const link = document.createElement("a");
+  link.className = "textLink officialLink";
+  link.href = officialUrl;
+  link.target = "_blank";
+  link.rel = "noopener noreferrer";
+  link.textContent = `↗ ${label}`;
+  link.setAttribute("aria-label", `Open official page for ${card.card_name}`);
+  return link;
+}
+
 export function renderResultCardItem(card) {
   const item = document.createElement("li");
   item.className = "itemRow";
@@ -65,21 +100,26 @@ export function renderResultCardItem(card) {
   title.textContent = card.card_name;
   details.append(title, " ");
 
-  const issuer = document.createElement("span");
-  issuer.className = "muted";
-  issuer.textContent = `(${card.issuer})`;
-  details.append(issuer, " — ");
+  const issuerNetwork = formatIssuerNetwork(card);
+  if (issuerNetwork) {
+    const issuer = document.createElement("span");
+    issuer.className = "muted";
+    issuer.textContent = `(${issuerNetwork})`;
+    details.append(issuer, " — ");
+  }
 
-  const network = document.createElement("span");
-  network.className = "mono";
-  network.textContent = card.network;
-  details.append(network, " — fee ");
+  details.append("fee ");
 
   const fee = Number(card.annual_fee?.amount ?? 0);
   const feeEl = document.createElement("span");
   feeEl.className = "mono";
   feeEl.textContent = `${formatMoneyCAD(fee)}/yr`;
   details.append(feeEl);
+
+  const officialLink = renderOfficialCardLink(card);
+  if (officialLink) {
+    details.append(" · ", officialLink);
+  }
 
   item.append(details);
   return item;

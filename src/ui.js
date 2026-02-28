@@ -16,7 +16,7 @@ export function renderSpendTable(el, schema, categoryDescriptions = {}) {
             <span class="mono spendCat">${cat}</span>
             ${spendDescriptionMarkup(categoryDescriptions[cat] || "")}
           </span>
-          <input id="spend-${cat}" class="spend-input" type="number" min="0" step="1" value="0" data-cat="${cat}" aria-label="Monthly spend for ${cat}" />
+          <input id="spend-${cat}" class="spend-input" type="number" min="0" step="1" value="" placeholder="0" data-cat="${cat}" aria-label="Monthly spend for ${cat}" />
         </label>
       `).join("")}
     </div>
@@ -43,10 +43,7 @@ export function renderSpendTable(el, schema, categoryDescriptions = {}) {
       if (inp.value === "0") inp.select();
     });
 
-    inp.addEventListener("blur", () => {
-      if (inp.value.trim() === "") inp.value = "0";
-      updateSpendTotal();
-    });
+    inp.addEventListener("blur", updateSpendTotal);
   });
 
   updateSpendTotal();
@@ -83,28 +80,33 @@ export function renderIssues(el, issues) {
 
 export function renderResult(el, best, annualSpend, schema, valuationMode = "estimated") {
   el.classList.remove("hidden");
+  el.classList.remove("resultEmpty");
   el.innerHTML = "";
+
+  const resultContent = document.createElement("div");
+  resultContent.className = "resultContent resultContent--enter";
+  el.append(resultContent);
 
   if (!best.combo.length) {
     const badge = document.createElement("span");
     badge.className = "badge bad";
     badge.textContent = "No result";
-    el.append(badge, " No eligible cards found.");
+    resultContent.append(badge, " No eligible cards found.");
     return;
   }
 
   const comboHeading = document.createElement("h2");
   comboHeading.textContent = "Best combo";
-  el.append(comboHeading);
+  resultContent.append(comboHeading);
 
   const comboList = document.createElement("ul");
   comboList.className = "listClean";
   best.combo.forEach((card) => comboList.append(renderResultCardItem(card)));
-  el.append(comboList);
+  resultContent.append(comboList);
 
   const valueHeading = document.createElement("h2");
   valueHeading.textContent = `Annual value (${valuationMode === "minimum_guaranteed" ? "minimum guaranteed" : "estimated"})`;
-  el.append(valueHeading);
+  resultContent.append(valueHeading);
 
   const table = document.createElement("table");
   const tbody = document.createElement("tbody");
@@ -135,21 +137,21 @@ export function renderResult(el, best, annualSpend, schema, valuationMode = "est
   });
 
   table.append(tbody);
-  el.append(table);
+  resultContent.append(table);
 
   const effectiveRateCallout = document.createElement("p");
   effectiveRateCallout.className = "earnRateCallout";
   effectiveRateCallout.textContent = `Earn rate: ${formatPercent(effectiveEarnRate)}`;
-  el.append(effectiveRateCallout);
+  resultContent.append(effectiveRateCallout);
 
   const divider = document.createElement("div");
   divider.className = "divider divider-tight";
-  el.append(divider);
+  resultContent.append(divider);
 
   const useHeading = document.createElement("h2");
   useHeading.className = "useHeading";
   useHeading.textContent = "Which card to use";
-  el.append(useHeading);
+  resultContent.append(useHeading);
 
   const instructions = [];
   let useCardDescIndex = 0;
@@ -224,7 +226,7 @@ export function renderResult(el, best, annualSpend, schema, valuationMode = "est
     instructions.forEach((tile) => useGrid.append(tile));
   }
 
-  el.append(useGrid);
+  resultContent.append(useGrid);
 }
 
 function formatPercent(value) {
