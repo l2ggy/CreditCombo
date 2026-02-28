@@ -1,5 +1,6 @@
 import { loadCoreData } from "./data-service.js";
 import { formatMoneyCAD, formatMultiplier } from "./shared/format.js";
+import { renderCardThumb } from "./shared/render.js";
 
 const state = {
   cards: [],
@@ -114,29 +115,68 @@ function isCashbackProgram(rewardsProgram) {
   return state.programs.get(rewardsProgram)?.program_type === "cashback";
 }
 
-function earnRateMarkup(earnRates, rewardsProgram) {
+function renderEarnRateList(earnRates, rewardsProgram) {
+  const list = document.createElement("ul");
+  list.className = "browserRateList";
+
   const entries = Object.entries(earnRates || {});
-  if (!entries.length) return "<li class=\"muted\">No earn rates available</li>";
+  if (!entries.length) {
+    const item = document.createElement("li");
+    item.className = "muted";
+    item.textContent = "No earn rates available";
+    list.append(item);
+    return list;
+  }
+
   const cashbackProgram = isCashbackProgram(rewardsProgram);
 
-  return entries
+  entries
     .sort((a, b) => b[1] - a[1])
-    .map(([category, rate]) => {
+    .forEach(([category, rate]) => {
+      const item = document.createElement("li");
+
+      const categoryEl = document.createElement("span");
+      categoryEl.className = "mono";
+      categoryEl.textContent = category;
+
+      const valueEl = document.createElement("strong");
       const earnPercent = formatEarnPercentRange(rate, rewardsProgram);
+
       if (cashbackProgram && earnPercent != null) {
-        return `<li><span class="mono">${category}</span><strong><span class="browserEarnPercent">${earnPercent}%</span></strong></li>`;
+        const percent = document.createElement("span");
+        percent.className = "browserEarnPercent";
+        percent.textContent = `${earnPercent}%`;
+        valueEl.append(percent);
+      } else {
+        valueEl.append(`${formatMultiplier(rate)}×`);
+        if (earnPercent != null) {
+          valueEl.append(" ");
+          const percent = document.createElement("span");
+          percent.className = "browserEarnPercent";
+          percent.textContent = `(${earnPercent}%)`;
+          valueEl.append(percent);
+        }
       }
 
-      const percentMarkup = earnPercent == null ? "" : `<span class="browserEarnPercent">(${earnPercent}%)</span>`;
-      return `<li><span class="mono">${category}</span><strong>${formatMultiplier(rate)}× ${percentMarkup}</strong></li>`;
-    })
-    .join("");
+      item.append(categoryEl, valueEl);
+      list.append(item);
+    });
+
+  return list;
 }
 
-function capMarkup(caps) {
-  if (!Array.isArray(caps) || !caps.length) return '<p class="muted">No spend caps listed.</p>';
+function renderCapContent(caps) {
+  if (!Array.isArray(caps) || !caps.length) {
+    const empty = document.createElement("p");
+    empty.className = "muted";
+    empty.textContent = "No spend caps listed.";
+    return empty;
+  }
 
-  return `<ul>${caps.map((cap) => {
+  const list = document.createElement("ul");
+
+  caps.forEach((cap) => {
+    const item = document.createElement("li");
     const categories = (cap.categories || []).join(", ") || "multiple categories";
     const limit = formatMoneyCAD(Number(cap.cap_amount ?? 0), { minimumFractionDigits: 0, maximumFractionDigits: 0 });
     const aboveCapRate = cap.earn_rate_above_cap == null ? "n/a" : formatMultiplier(cap.earn_rate_above_cap);
@@ -147,13 +187,75 @@ function capMarkup(caps) {
         ? "year"
         : capPeriod;
 
-    return `<li><span class="mono">${categories}</span> capped at <strong>${limit}</strong> per ${periodLabel} (above cap: ${aboveCapRate}×)</li>`;
-  }).join("")}</ul>`;
+    const categoriesEl = document.createElement("span");
+    categoriesEl.className = "mono";
+    categoriesEl.textContent = categories;
+
+    const limitEl = document.createElement("strong");
+    limitEl.textContent = limit;
+
+    item.append(categoriesEl, " capped at ", limitEl, ` per ${periodLabel} (above cap: ${aboveCapRate}×)`);
+    list.append(item);
+  });
+
+  return list;
 }
 
-function cardThumbnailMarkup(cardId, cardName) {
-  const imageSrc = `./assets/cards/${cardId}.webp`;
-  return `<img class="browserCardThumb" src="${imageSrc}" alt="${cardName}" loading="lazy" decoding="async" onload="this.classList.toggle('is-portrait', this.naturalHeight > this.naturalWidth)" onerror="this.remove()" />`;
+function renderBrowserCardItem(card) {
+  const article = document.createElement("article");
+  article.className = "panel browserCard";
+
+  const top = document.createElement("div");
+  top.className = "browserCardTop";
+
+  const heading = document.createElement("div");
+  heading.className = "browserCardHeading";
+  heading.append(renderCardThumb(card, { className: "browserCardThumb", withFrame: false }));
+
+  const headingText = document.createElement("div");
+  const title = document.createElement("h3");
+  title.className = "browserCardTitle";
+  title.textContent = card.card_name;
+
+  const meta = document.createElement("p");
+  meta.className = "subtle";
+  meta.append(`${card.issuer} · ${card.network} · `);
+  const program = document.createElement("span");
+  program.className = "mono";
+  program.textContent = card.rewards_program;
+  meta.append(program);
+
+  headingText.append(title, meta);
+  heading.append(headingText);
+
+  const fee = document.createElement("div");
+  fee.className = "browserFee";
+  const feeLabel = document.createElement("span");
+  feeLabel.className = "muted";
+  feeLabel.textContent = "Annual fee";
+  const feeValue = document.createElement("strong");
+  feeValue.textContent = formatMoneyCAD(annualFeeAmount(card), { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+  fee.append(feeLabel, feeValue);
+
+  top.append(heading, fee);
+
+  const body = document.createElement("div");
+  body.className = "browserCardBody";
+
+  const earnSection = document.createElement("section");
+  const earnTitle = document.createElement("h4");
+  earnTitle.textContent = "Earn rates";
+  earnSection.append(earnTitle, renderEarnRateList(card.earn_rates, card.rewards_program));
+
+  const capSection = document.createElement("section");
+  const capTitle = document.createElement("h4");
+  capTitle.textContent = "Caps";
+  capSection.append(capTitle, renderCapContent(card.caps));
+
+  body.append(earnSection, capSection);
+
+  article.append(top, body);
+  return article;
 }
 
 function renderCards() {
@@ -162,39 +264,21 @@ function renderCards() {
   els.summary.textContent = `Showing ${state.filteredCards.length} of ${state.cards.length} cards.`;
   updateResetButtonState();
 
+  els.cardsList.innerHTML = "";
+
   if (!state.filteredCards.length) {
-    els.cardsList.innerHTML = '<section class="panel"><p class="muted">No cards match those filters.</p></section>';
+    const panel = document.createElement("section");
+    panel.className = "panel";
+    panel.innerHTML = '<p class="muted">No cards match those filters.</p>';
+    els.cardsList.append(panel);
     return;
   }
 
-  els.cardsList.innerHTML = state.filteredCards.map((card) => `
-    <article class="panel browserCard">
-      <div class="browserCardTop">
-        <div class="browserCardHeading">
-          ${cardThumbnailMarkup(card.id, card.card_name)}
-          <div>
-            <h3 class="browserCardTitle">${card.card_name}</h3>
-            <p class="subtle">${card.issuer} · ${card.network} · <span class="mono">${card.rewards_program}</span></p>
-          </div>
-        </div>
-        <div class="browserFee">
-          <span class="muted">Annual fee</span>
-          <strong>${formatMoneyCAD(annualFeeAmount(card), { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</strong>
-        </div>
-      </div>
-
-      <div class="browserCardBody">
-        <section>
-          <h4>Earn rates</h4>
-          <ul class="browserRateList">${earnRateMarkup(card.earn_rates, card.rewards_program)}</ul>
-        </section>
-        <section>
-          <h4>Caps</h4>
-          ${capMarkup(card.caps)}
-        </section>
-      </div>
-    </article>
-  `).join("");
+  const fragment = document.createDocumentFragment();
+  state.filteredCards.forEach((card) => {
+    fragment.append(renderBrowserCardItem(card));
+  });
+  els.cardsList.append(fragment);
 }
 
 function registerEvents() {

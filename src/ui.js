@@ -1,5 +1,6 @@
 import { formatMoneyCAD } from "./shared/format.js";
 import { escapeHtml } from "./shared/sanitize.js";
+import { renderCardThumb, renderResultCardItem } from "./shared/render.js";
 
 export function clampInt(n, lo, hi) {
   n = Math.floor(Number(n) || lo);
@@ -61,30 +62,68 @@ export function renderIssues(el, issues) {
 }
 
 
-function cardThumbMarkup(card, className = "resultCardThumb", withFrame = true) {
-  const image = `<img class="${className}" src="./assets/cards/${escapeHtml(card.id)}.webp" alt="${escapeHtml(card.card_name)}" loading="lazy" decoding="async" onload="this.classList.toggle('is-portrait', this.naturalHeight > this.naturalWidth)" onerror="this.remove()" />`;
-  if (!withFrame) return image;
-  return `<span class="thumbFrame">${image}</span>`;
-}
-
 export function renderResult(el, best, annualSpend, schema, valuationMode = "estimated") {
   el.classList.remove("hidden");
+  el.innerHTML = "";
 
   if (!best.combo.length) {
-    el.innerHTML = `<span class="badge bad">No result</span> No eligible cards found.`;
+    const badge = document.createElement("span");
+    badge.className = "badge bad";
+    badge.textContent = "No result";
+    el.append(badge, " No eligible cards found.");
     return;
   }
 
-  const comboList = best.combo.map(c => {
-    const fee = Number(c.annual_fee?.amount ?? 0);
-    return `<li class="resultCardItem">${cardThumbMarkup(c)}
-      <div>
-        <b>${escapeHtml(c.card_name)}</b> <span class="muted">(${escapeHtml(c.issuer)})</span>
-        — <span class="mono">${escapeHtml(c.network)}</span>
-        — fee <span class="mono">${formatMoneyCAD(fee)}/yr</span>
-      </div>
-    </li>`;
-  }).join("");
+  const comboHeading = document.createElement("h2");
+  comboHeading.textContent = "Best combo";
+  el.append(comboHeading);
+
+  const comboList = document.createElement("ul");
+  comboList.className = "comboList";
+  best.combo.forEach((card) => comboList.append(renderResultCardItem(card)));
+  el.append(comboList);
+
+  const valueHeading = document.createElement("h2");
+  valueHeading.textContent = `Annual value (${valuationMode === "minimum_guaranteed" ? "minimum guaranteed" : "estimated"})`;
+  el.append(valueHeading);
+
+  const table = document.createElement("table");
+  const tbody = document.createElement("tbody");
+  const rows = [
+    ["Gross rewards value", formatMoneyCAD(best.gross)],
+    ["Annual fees", formatMoneyCAD(best.fees)],
+    ["Net value", formatMoneyCAD(best.net)]
+  ];
+
+  rows.forEach(([label, value], idx) => {
+    const tr = document.createElement("tr");
+    const th = document.createElement("th");
+    th.textContent = label;
+    const td = document.createElement("td");
+
+    if (idx === rows.length - 1) {
+      const b = document.createElement("b");
+      b.textContent = value;
+      td.append(b);
+    } else {
+      td.textContent = value;
+    }
+
+    tr.append(th, td);
+    tbody.append(tr);
+  });
+
+  table.append(tbody);
+  el.append(table);
+
+  const divider = document.createElement("div");
+  divider.className = "divider divider-tight";
+  el.append(divider);
+
+  const useHeading = document.createElement("h2");
+  useHeading.className = "useHeading";
+  useHeading.textContent = "Which card to use";
+  el.append(useHeading);
 
   const instructions = [];
   for (const cat of schema) {
@@ -92,52 +131,62 @@ export function renderResult(el, best, annualSpend, schema, valuationMode = "est
     if (total <= 0) continue;
 
     const alloc = best.combo
-      .map(c => ({ c, amt: (best.assigned?.[c.id]?.[cat] || 0) }))
-      .filter(x => x.amt > 1e-6)
+      .map((card) => ({ card, amt: (best.assigned?.[card.id]?.[cat] || 0) }))
+      .filter((x) => x.amt > 1e-6)
       .sort((a, b) => b.amt - a.amt)
       .slice(0, 3);
 
     if (!alloc.length) continue;
 
-    const thumbs = alloc.map(({ c, amt }, idx) => {
+    const tile = document.createElement("div");
+    tile.className = "useTile";
+    tile.setAttribute("role", "listitem");
+
+    const category = document.createElement("div");
+    category.className = "mono useCategory";
+    category.textContent = cat;
+    tile.append(category);
+
+    const stack = document.createElement("div");
+    stack.className = alloc.length > 1 ? "useCards useCardsStack" : "useCards useCardsSingle";
+    stack.style.setProperty("--stack-count", String(alloc.length));
+
+    alloc.forEach(({ card, amt }, idx) => {
       const amountPart = alloc.length > 1 ? ` — ${formatMoneyCAD(amt)}` : "";
-      return `<span class="useCardThumb" style="--stack-index:${idx}" title="${escapeHtml(c.card_name)}${escapeHtml(amountPart)}" data-card="${escapeHtml(c.card_name)}${escapeHtml(amountPart)}" aria-label="${escapeHtml(c.card_name)}${escapeHtml(amountPart)}">${cardThumbMarkup(c, "useThumbImage", false)}</span>`;
-    }).join("");
+      const label = `${card.card_name}${amountPart}`;
 
-    const stackClass = alloc.length > 1 ? "useCards useCardsStack" : "useCards useCardsSingle";
+      const thumb = document.createElement("span");
+      thumb.className = "useCardThumb";
+      thumb.style.setProperty("--stack-index", String(idx));
+      thumb.title = label;
+      thumb.dataset.card = label;
+      thumb.setAttribute("aria-label", label);
+      thumb.append(renderCardThumb(card, { className: "useThumbImage", withFrame: false }));
+      stack.append(thumb);
+    });
 
-    instructions.push(`
-      <div class="useTile" role="listitem">
-        <div class="mono useCategory">${escapeHtml(cat)}</div>
-        <div class="${stackClass}" style="--stack-count:${alloc.length}">${thumbs}</div>
-      </div>
-    `);
+    tile.append(stack);
+    instructions.push(tile);
   }
 
   const useCols = Math.min(4, Math.max(1, instructions.length));
-  el.innerHTML = `
-    <h2>Best combo</h2>
-    <ul class="comboList">${comboList}</ul>
+  const useGrid = document.createElement("div");
+  useGrid.className = "useGrid";
+  useGrid.setAttribute("role", "list");
+  useGrid.setAttribute("aria-label", "Card to use by category");
+  useGrid.style.setProperty("--use-cols", String(useCols));
 
-    <h2>Annual value (${valuationMode === "minimum_guaranteed" ? "minimum guaranteed" : "estimated"})</h2>
-    <table>
-      <tbody>
-        <tr><th>Gross rewards value</th><td>${formatMoneyCAD(best.gross)}</td></tr>
-        <tr><th>Annual fees</th><td>${formatMoneyCAD(best.fees)}</td></tr>
-        <tr><th>Net value</th><td><b>${formatMoneyCAD(best.net)}</b></td></tr>
-      </tbody>
-    </table>
+  if (!instructions.length) {
+    const none = document.createElement("p");
+    none.className = "muted";
+    none.textContent = "No spend entered.";
+    useGrid.append(none);
+  } else {
+    instructions.forEach((tile) => useGrid.append(tile));
+  }
 
-    <div class="divider divider-tight"></div>
-    <h2 class="useHeading">Which card to use</h2>
-    <div class="useGrid" role="list" aria-label="Card to use by category" style="--use-cols:${useCols}">
-      ${instructions.join("") || `<p class="muted">No spend entered.</p>`}
-    </div>
-
-  `;
+  el.append(useGrid);
 }
-
-
 
 
 function spendDescriptionMarkup(desc) {
