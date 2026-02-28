@@ -89,6 +89,8 @@ export function renderResult(el, best, annualSpend, schema, valuationMode = "est
 
   const table = document.createElement("table");
   const tbody = document.createElement("tbody");
+  const totalAnnualSpend = schema.reduce((sum, cat) => sum + (annualSpend[cat] || 0), 0);
+  const effectiveEarnRate = totalAnnualSpend > 0 ? best.gross / totalAnnualSpend : null;
   const rows = [
     ["Gross rewards value", formatMoneyCAD(best.gross)],
     ["Annual fees", formatMoneyCAD(best.fees)],
@@ -115,6 +117,11 @@ export function renderResult(el, best, annualSpend, schema, valuationMode = "est
 
   table.append(tbody);
   el.append(table);
+
+  const effectiveRateCallout = document.createElement("p");
+  effectiveRateCallout.className = "earnRateCallout";
+  effectiveRateCallout.textContent = `Earn rate: ${formatPercent(effectiveEarnRate)}`;
+  el.append(effectiveRateCallout);
 
   const divider = document.createElement("div");
   divider.className = "divider divider-tight";
@@ -199,6 +206,15 @@ export function renderResult(el, best, annualSpend, schema, valuationMode = "est
   }
 
   el.append(useGrid);
+}
+
+function formatPercent(value) {
+  if (!Number.isFinite(value)) return "—";
+  return new Intl.NumberFormat("en-CA", {
+    style: "percent",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  }).format(value);
 }
 
 
