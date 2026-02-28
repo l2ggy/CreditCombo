@@ -82,26 +82,30 @@ export function renderResult(el, best, annualSpend, schema, valuationMode = "est
   el.classList.remove("hidden");
   el.innerHTML = "";
 
+  const resultContent = document.createElement("div");
+  resultContent.className = "resultContent resultContent--enter";
+  el.append(resultContent);
+
   if (!best.combo.length) {
     const badge = document.createElement("span");
     badge.className = "badge bad";
     badge.textContent = "No result";
-    el.append(badge, " No eligible cards found.");
+    resultContent.append(badge, " No eligible cards found.");
     return;
   }
 
   const comboHeading = document.createElement("h2");
   comboHeading.textContent = "Best combo";
-  el.append(comboHeading);
+  resultContent.append(comboHeading);
 
   const comboList = document.createElement("ul");
   comboList.className = "listClean";
   best.combo.forEach((card) => comboList.append(renderResultCardItem(card)));
-  el.append(comboList);
+  resultContent.append(comboList);
 
   const valueHeading = document.createElement("h2");
   valueHeading.textContent = `Annual value (${valuationMode === "minimum_guaranteed" ? "minimum guaranteed" : "estimated"})`;
-  el.append(valueHeading);
+  resultContent.append(valueHeading);
 
   const table = document.createElement("table");
   const tbody = document.createElement("tbody");
@@ -132,21 +136,21 @@ export function renderResult(el, best, annualSpend, schema, valuationMode = "est
   });
 
   table.append(tbody);
-  el.append(table);
+  resultContent.append(table);
 
   const effectiveRateCallout = document.createElement("p");
   effectiveRateCallout.className = "earnRateCallout";
   effectiveRateCallout.textContent = `Earn rate: ${formatPercent(effectiveEarnRate)}`;
-  el.append(effectiveRateCallout);
+  resultContent.append(effectiveRateCallout);
 
   const divider = document.createElement("div");
   divider.className = "divider divider-tight";
-  el.append(divider);
+  resultContent.append(divider);
 
   const useHeading = document.createElement("h2");
   useHeading.className = "useHeading";
   useHeading.textContent = "Which card to use";
-  el.append(useHeading);
+  resultContent.append(useHeading);
 
   const instructions = [];
   let useCardDescIndex = 0;
@@ -221,7 +225,7 @@ export function renderResult(el, best, annualSpend, schema, valuationMode = "est
     instructions.forEach((tile) => useGrid.append(tile));
   }
 
-  el.append(useGrid);
+  resultContent.append(useGrid);
 }
 
 function formatPercent(value) {
