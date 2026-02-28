@@ -7,6 +7,10 @@
   --color-accent: #6aa9ff;
   --color-accent-contrast: #06101f;
 
+  --bg-gradient-start: color-mix(in srgb, var(--color-accent) 12%, var(--color-bg));
+  --bg-gradient-end: color-mix(in srgb, var(--color-bg) 94%, #000);
+  --bg-noise-opacity: 0.025;
+
   --space-0: 0;
   --space-1: 4px;
   --space-2: 6px;
