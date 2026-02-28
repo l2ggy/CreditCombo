@@ -57,8 +57,9 @@
 .tileMedia{width:100%;display:flex;justify-content:center}
 .tileMedia-single .tileThumb{width:clamp(58px,11vw,88px);aspect-ratio:1/1}
 .tileMedia-stack{position:relative;width:clamp(58px,11vw,88px);height:calc(clamp(58px,11vw,88px) + (var(--stack-count,1) - 1) * clamp(6px,1.1vw,10px))}
-.tileMedia-stack .tileThumb{position:absolute;inset-inline:0;top:calc(var(--stack-index,0) * clamp(6px,1.1vw,10px));width:100%;aspect-ratio:1/1;z-index:calc(1 + var(--stack-index,0))}
-.tileThumb{position:relative;display:flex;align-items:center;justify-content:center;line-height:0}
+.tileMedia-stack .tileThumb{position:absolute;inset-inline:0;top:calc(var(--stack-index,0) * clamp(6px,1.1vw,10px));width:100%;aspect-ratio:1/1;z-index:calc(1 + var(--stack-index,0));filter:brightness(calc(1 - (var(--stack-index,0) * .02))) saturate(calc(1 - (var(--stack-index,0) * .03)))}
+.tileThumb{position:relative;display:flex;align-items:center;justify-content:center;line-height:0;box-shadow:0 1px 2px color-mix(in srgb,var(--color-bg) 30%,transparent);transition:transform .14s ease,box-shadow .18s ease,filter .18s ease}
+.tileMedia-stack .tileThumb:first-child:is(:hover,:focus-visible){transform:translateY(-2px);box-shadow:0 3px 8px color-mix(in srgb,var(--color-bg) 38%,transparent)}
 .tileThumb:is(:focus-visible,:hover){z-index:31}
 .tileThumb[data-card]:is(:focus-visible,:hover)::after{content:attr(data-card);position:absolute;left:50%;bottom:calc(100% + var(--space-2));transform:translateX(-50%);padding:var(--space-1) var(--space-2);border:1px solid var(--color-border);border-radius:var(--radius-sm);background:var(--color-accent-contrast);color:var(--color-text);font-size:11px;line-height:var(--line-height-compact);white-space:nowrap;z-index:30;pointer-events:none}
 .tileMedia-stack .thumb.is-portrait{transform:rotate(90deg)}
