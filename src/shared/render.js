@@ -47,7 +47,7 @@ export function renderLockedChip(card) {
   remove.type = "button";
   remove.className = "chipRemove";
   remove.dataset.removeId = card.id;
-  remove.setAttribute("aria-label", `Remove ${label.textContent}`);
+  remove.setAttribute("aria-label", `Remove locked card ${label.textContent}`);
   remove.textContent = "×";
   chip.append(" ", remove);
 

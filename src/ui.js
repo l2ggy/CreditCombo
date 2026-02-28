@@ -126,6 +126,7 @@ export function renderResult(el, best, annualSpend, schema, valuationMode = "est
   el.append(useHeading);
 
   const instructions = [];
+  let useCardDescIndex = 0;
   for (const cat of schema) {
     const total = annualSpend[cat] || 0;
     if (total <= 0) continue;
@@ -154,13 +155,25 @@ export function renderResult(el, best, annualSpend, schema, valuationMode = "est
     alloc.forEach(({ card, amt }, idx) => {
       const amountPart = alloc.length > 1 ? ` — ${formatMoneyCAD(amt)}` : "";
       const label = `${card.card_name}${amountPart}`;
+      const descId = `use-card-desc-${useCardDescIndex}`;
+      useCardDescIndex += 1;
 
       const thumb = document.createElement("span");
       thumb.className = "tileThumb";
       thumb.style.setProperty("--stack-index", String(idx));
       thumb.title = label;
       thumb.dataset.card = label;
-      thumb.setAttribute("aria-label", label);
+      thumb.tabIndex = 0;
+      thumb.setAttribute("role", "img");
+      thumb.setAttribute("aria-label", card.card_name);
+      thumb.setAttribute("aria-describedby", descId);
+
+      const desc = document.createElement("span");
+      desc.id = descId;
+      desc.className = "srOnly";
+      desc.textContent = `Use ${label} for ${cat}.`;
+
+      thumb.append(desc);
       thumb.append(renderCardThumb(card, { className: "thumb thumb-lg thumb-contain", withFrame: false }));
       stack.append(thumb);
     });
