@@ -42,16 +42,18 @@ h3{margin:var(--space-3) 0 var(--space-2);font-size:14px;color:var(--muted)}
 .panelHeader-result{flex-direction:column;align-items:flex-start}
 .panelHeader-result .subtle{margin:4px 0 0;max-width:62ch}
 
-.inputPanel{
+.inputPanel,
+.resultPanel{
   --input-rhythm:8px;
+}
+
+.inputPanel{
   padding:12px;
 }
 
 .inputPanel .panelHeader,
 .resultPanel .panelHeader,
 .inputPanel .sectionTitle,
-.inputPanel .divider,
-.resultPanel .divider,
 .inputPanel .row,
 .inputPanel .issues,
 .inputPanel #spendTable{
@@ -69,11 +71,9 @@ h3{margin:var(--space-3) 0 var(--space-2);font-size:14px;color:var(--muted)}
   margin-bottom:var(--input-rhythm);
 }
 
-.inputPanel .divider{
-  margin-block:var(--input-rhythm);
-}
-
+.inputPanel .divider,
 .resultPanel .divider{
+  padding-inline:var(--input-rhythm);
   margin-block:var(--input-rhythm);
 }
 
