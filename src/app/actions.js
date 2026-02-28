@@ -9,6 +9,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
 
   let optimizeWorker = null;
   let optimizeRequestId = 0;
+  const pendingRequests = new Map();
 
   function syncStateFromControls() {
     state.valuationMode = elements.valuationModeEl?.value === "minimum_guaranteed" ? "minimum_guaranteed" : "estimated";
@@ -169,29 +170,44 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
     if (!optimizeWorker) return;
     optimizeWorker.terminate();
     optimizeWorker = null;
+    pendingRequests.clear();
+  }
+
+  function initWorker() {
+    if (optimizeWorker) return;
+
+    optimizeWorker = new Worker(new URL("../optimizer-worker.js", import.meta.url), { type: "module" });
+
+    optimizeWorker.addEventListener("message", (event) => {
+      const msg = event.data || {};
+      const pending = pendingRequests.get(msg.requestId);
+      if (!pending) return;
+      pendingRequests.delete(msg.requestId);
+
+      if (msg.error) {
+        pending.reject(new Error(msg.error));
+        return;
+      }
+
+      pending.resolve(msg.result);
+    });
+
+    optimizeWorker.addEventListener("error", (event) => {
+      const error = new Error(event?.message || "Worker error");
+      for (const pending of pendingRequests.values()) {
+        pending.reject(error);
+      }
+      pendingRequests.clear();
+    });
   }
 
   function runOptimizationInWorker(payload) {
+    initWorker();
     optimizeRequestId += 1;
     const requestId = optimizeRequestId;
 
-    terminateWorker();
-    optimizeWorker = new Worker(new URL("../optimizer-worker.js", import.meta.url), { type: "module" });
-
     return new Promise((resolve, reject) => {
-      optimizeWorker.addEventListener("message", (event) => {
-        const msg = event.data || {};
-        if (msg.requestId !== requestId) return;
-        if (msg.error) {
-          reject(new Error(msg.error));
-          return;
-        }
-        resolve(msg.result);
-      });
-
-      optimizeWorker.addEventListener("error", (event) => {
-        reject(new Error(event?.message || "Worker error"));
-      });
+      pendingRequests.set(requestId, { resolve, reject });
 
       optimizeWorker.postMessage({ requestId, payload });
     });
@@ -307,6 +323,8 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
     if (elements.excludeBusinessCardsEl) elements.excludeBusinessCardsEl.checked = state.excludeBusinessCards;
     return runOptimization();
   }
+
+  initWorker();
 
   return {
     runOptimization,
