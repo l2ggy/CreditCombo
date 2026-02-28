@@ -71,7 +71,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
         remove.type = "button";
         remove.className = "chipRemove";
         remove.dataset.removeId = id;
-        remove.setAttribute("aria-label", `Remove ${id}`);
+        remove.setAttribute("aria-label", `Remove locked card ${id}`);
         remove.textContent = "×";
 
         chip.append(label, " ", remove);
@@ -102,6 +102,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
       button.type = "button";
       button.className = "listOption";
       button.dataset.cardId = card.id;
+      button.setAttribute("aria-label", `Add locked card ${card.card_name} (${card.issuer})`);
 
       button.append(renderCardThumb(card, { className: "thumb thumb-xs thumb-contain", withFrame: false }));
 
