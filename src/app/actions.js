@@ -2,6 +2,7 @@ import { annualizeMonthlySpend } from "../optimizer.js";
 import { clampInt, readMonthlySpend, renderResult } from "../ui.js";
 import { candidatePools, kBounds, selectedLockedCardIds } from "./state.js";
 import { renderCardThumb, renderLockedChip } from "../shared/render.js";
+import { buildSearchText, scoreSearchMatch, tokenizeSearchQuery } from "../shared/search.js";
 
 export function createActions({ state, view, schema, programsMap, eligibleCards, eligibleCardIdSet, eligibleCardsById }) {
   const { elements } = view;
@@ -37,12 +38,26 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
   }
 
   function searchMatches(query) {
-    const q = query.trim().toLowerCase();
-    if (!q) return [];
+    const queryTokens = tokenizeSearchQuery(query);
+    if (!queryTokens.length) return [];
+
     return eligibleCards
       .filter((card) => !state.lockedCardIds.has(card.id))
-      .filter((card) => `${card.card_name} ${card.issuer} ${card.network}`.toLowerCase().includes(q))
-      .slice(0, 10);
+      .map((card) => {
+        const cardNameText = buildSearchText(card.card_name);
+        const fullSearchText = buildSearchText([card.card_name, card.issuer, card.network]);
+        const fullScore = scoreSearchMatch(fullSearchText, queryTokens);
+
+        if (fullScore < 0) return null;
+
+        const nameScore = scoreSearchMatch(cardNameText, queryTokens);
+        const totalScore = fullScore + (nameScore > 0 ? nameScore * 3 : 0);
+        return { card, totalScore };
+      })
+      .filter(Boolean)
+      .sort((a, b) => b.totalScore - a.totalScore || a.card.card_name.localeCompare(b.card.card_name))
+      .slice(0, 10)
+      .map(({ card }) => card);
   }
 
   function renderLockedCardPicks() {
