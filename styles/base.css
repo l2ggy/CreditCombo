@@ -71,6 +71,7 @@ tbody tr:last-child td{border-bottom:none}
 .thumb.is-portrait{border-radius:var(--radius-card-portrait)}
 .thumb-xs{width:auto;height:auto;max-width:var(--space-9);max-height:var(--space-9)}
 .thumb-sm{width:72px;height:45px}
+.thumb-sm.is-portrait{width:45px;height:72px}
 .thumb-md{max-width:44px;max-height:44px}
 .thumb-lg{width:100%;height:100%;padding:1px;border:none}
 .thumb-contain{object-fit:contain}
