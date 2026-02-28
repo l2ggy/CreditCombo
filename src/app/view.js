@@ -34,6 +34,7 @@ export function createView() {
     setLoadingState(isLoading) {
       elements.resultEl.classList.toggle("is-loading", isLoading);
       if (isLoading) {
+        elements.resultEl.classList.remove("resultEmpty");
         elements.resultEl.classList.remove("hidden");
         elements.resultEl.innerHTML = `
           <div class="loadingState" role="status" aria-live="polite">
