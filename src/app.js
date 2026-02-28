@@ -40,8 +40,8 @@ async function main() {
     elements.clearSpendBtn?.addEventListener("click", actions.clearSpend);
     elements.kInput.addEventListener("input", () => actions.setK(elements.kInput.value));
     elements.valuationModeEl?.addEventListener("change", () => actions.setValuationMode(elements.valuationModeEl.value));
-    elements.excludeFeeCardsEl?.addEventListener("change", () => actions.setExcludeFeeCards(elements.excludeFeeCardsEl.checked));
     elements.excludeBusinessCardsEl?.addEventListener("change", () => actions.setExcludeBusinessCards(elements.excludeBusinessCardsEl.checked));
+    elements.maxAnnualFeeEl?.addEventListener("input", () => actions.setMaxAnnualFee(elements.maxAnnualFeeEl.value));
     elements.enableLockedCardsEl?.addEventListener("change", actions.toggleLockedCards);
 
     elements.lockedCardSearchEl?.addEventListener("input", actions.renderLockedSearchResults);
@@ -52,6 +52,18 @@ async function main() {
       actions.addLockedCard(btn.dataset.cardId);
     });
 
+
+    elements.programPrefsEl?.addEventListener("change", (event) => {
+      const excludeInput = event.target.closest("[data-program-exclude]");
+      if (!excludeInput) return;
+      actions.setProgramExcluded(excludeInput.dataset.programExclude, excludeInput.checked);
+    });
+
+    elements.programPrefsEl?.addEventListener("input", (event) => {
+      const cppInput = event.target.closest("[data-program-cpp]");
+      if (!cppInput) return;
+      actions.setProgramCustomCpp(cppInput.dataset.programCpp, cppInput.value);
+    });
     elements.lockedCardPicksEl?.addEventListener("click", (event) => {
       const btn = event.target.closest("[data-remove-id]");
       if (!btn) return;

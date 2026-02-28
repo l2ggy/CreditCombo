@@ -3,6 +3,7 @@ import { clampInt, readMonthlySpend, renderResult } from "../ui.js";
 import { candidatePools, kBounds, selectedLockedCardIds } from "./state.js";
 import { renderCardThumb, renderLockedChip } from "../shared/render.js";
 import { buildSearchText, scoreSearchMatch, tokenizeSearchQuery } from "../shared/search.js";
+import { escapeHtml } from "../shared/sanitize.js";
 
 export function createActions({ state, view, schema, programsMap, eligibleCards, eligibleCardIdSet, eligibleCardsById }) {
   const { elements } = view;
@@ -14,7 +15,8 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
 
   function syncStateFromControls() {
     state.valuationMode = elements.valuationModeEl?.value === "minimum_guaranteed" ? "minimum_guaranteed" : "estimated";
-    state.excludeFeeCards = Boolean(elements.excludeFeeCardsEl?.checked);
+    const maxAnnualFeeRaw = elements.maxAnnualFeeEl?.value?.trim?.() ?? "";
+    state.maxAnnualFee = maxAnnualFeeRaw === "" ? null : Math.max(0, Number(maxAnnualFeeRaw) || 0);
     state.excludeBusinessCards = Boolean(elements.excludeBusinessCardsEl?.checked);
     state.enableLockedCards = Boolean(elements.enableLockedCardsEl?.checked);
     state.k = Number(elements.kInput?.value || state.k || 0);
@@ -136,6 +138,68 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
     elements.lockedCardOptionsEl.append(fragment);
   }
 
+
+  function renderProgramPreferences() {
+    if (!elements.programPrefsEl) return;
+    const programs = [...programsMap.values()]
+      .sort((a, b) => String(a.program_name || a.program_id).localeCompare(String(b.program_name || b.program_id)));
+
+    elements.programPrefsEl.innerHTML = "";
+    const fragment = document.createDocumentFragment();
+
+    programs.forEach((program) => {
+      const row = document.createElement("div");
+      row.className = "programPrefRow";
+
+      const meta = document.createElement("div");
+      meta.className = "programPrefMeta";
+
+      const name = document.createElement("label");
+      name.className = "programPrefName";
+      name.htmlFor = `excludeProgram-${program.program_id}`;
+      name.textContent = program.program_name || program.program_id;
+
+      const type = document.createElement("span");
+      type.className = "programPrefType";
+      type.textContent = (program.program_type ?? "points") === "cashback" ? "Cashback" : "Points";
+
+      meta.append(name, type);
+
+      const inputWrap = document.createElement("div");
+      inputWrap.className = "programPrefInput";
+
+      const excludeLabel = document.createElement("label");
+      excludeLabel.className = "checkboxLabel";
+
+      const excludeInput = document.createElement("input");
+      excludeInput.type = "checkbox";
+      excludeInput.id = `excludeProgram-${program.program_id}`;
+      excludeInput.dataset.programExclude = program.program_id;
+      excludeInput.checked = state.excludedProgramIds.has(program.program_id);
+
+      excludeLabel.append(excludeInput, "Exclude");
+      inputWrap.append(excludeLabel);
+
+      if ((program.program_type ?? "points") !== "cashback") {
+        const cppInput = document.createElement("input");
+        cppInput.type = "number";
+        cppInput.step = "0.01";
+        cppInput.min = "0";
+        cppInput.dataset.programCpp = program.program_id;
+        cppInput.placeholder = String(program.cents_per_point ?? "");
+        const customValue = state.customProgramCpp[program.program_id];
+        cppInput.value = Number.isFinite(customValue) ? String(customValue) : "";
+        cppInput.setAttribute("aria-label", `Custom CPP for ${program.program_name || program.program_id}`);
+        inputWrap.append(cppInput);
+      }
+
+      row.append(meta, inputWrap);
+      fragment.append(row);
+    });
+
+    elements.programPrefsEl.append(fragment);
+  }
+
   function updateLockedCardsUi() {
     sanitizeLockedCardSelection();
     const enabled = state.enableLockedCards;
@@ -161,11 +225,13 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
   }
 
   function getBestComboSyncCache(additionalCards, annualSpend, monthlySpend, lockedIds) {
-    const excludeFeeCards = state.excludeFeeCards ? "excludeFee" : "allCards";
+    const maxAnnualFee = Number.isFinite(state.maxAnnualFee) ? state.maxAnnualFee : "none";
     const excludeBusinessCards = state.excludeBusinessCards ? "excludeBusiness" : "includeBusiness";
+    const excludedProgramsKey = [...state.excludedProgramIds].sort().join(",");
+    const customCppKey = Object.entries(state.customProgramCpp).sort(([a], [b]) => a.localeCompare(b)).map(([id, value]) => `${id}:${value}`).join(",");
     const lockKey = [...lockedIds].sort().join(",");
     const additionalIdsKey = additionalCards.map((card) => card.id).sort().join(",");
-    const key = `${spendKey(monthlySpend)}::${state.valuationMode}::${state.k}::${excludeFeeCards}::${excludeBusinessCards}::${lockKey}::${additionalIdsKey}`;
+    const key = `${spendKey(monthlySpend)}::${state.valuationMode}::${state.k}::${maxAnnualFee}::${excludeBusinessCards}::${excludedProgramsKey}::${customCppKey}::${lockKey}::${additionalIdsKey}`;
     return {
       key,
       cached: comboCache.get(key) || null,
@@ -176,6 +242,8 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
         k: state.k,
         annualSpend,
         valuationMode: state.valuationMode,
+        excludedProgramIds: [...state.excludedProgramIds],
+        customProgramCpp: state.customProgramCpp,
         lockedCardIds: lockedIds,
         additionalCardIds: additionalCards.map((card) => card.id)
       }
@@ -246,10 +314,10 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
       return;
     }
 
-    if (state.excludeFeeCards && state.k > 0 && !additionalCards.length) {
+    if (state.k > 0 && !additionalCards.length) {
       view.setLoadingState(false);
       elements.resultEl.classList.remove("hidden");
-      elements.resultEl.innerHTML = `<span class="badge bad">No result</span> No additional cards without annual fees are available.`;
+      elements.resultEl.innerHTML = `<span class="badge bad">No result</span> No additional cards match your advanced preferences.`;
       elements.runBtn.disabled = false;
       return;
     }
@@ -328,15 +396,38 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
     return runOptimization();
   }
 
-  function setExcludeFeeCards(enabled) {
-    state.excludeFeeCards = Boolean(enabled);
-    if (elements.excludeFeeCardsEl) elements.excludeFeeCardsEl.checked = state.excludeFeeCards;
+  function setMaxAnnualFee(value) {
+    const raw = String(value ?? "").trim();
+    state.maxAnnualFee = raw === "" ? null : Math.max(0, Number(raw) || 0);
+    if (elements.maxAnnualFeeEl) elements.maxAnnualFeeEl.value = raw;
     return runOptimization();
   }
 
   function setExcludeBusinessCards(enabled) {
     state.excludeBusinessCards = Boolean(enabled);
     if (elements.excludeBusinessCardsEl) elements.excludeBusinessCardsEl.checked = state.excludeBusinessCards;
+    return runOptimization();
+  }
+
+  function setProgramExcluded(programId, excluded) {
+    if (!programId) return runOptimization();
+    if (excluded) state.excludedProgramIds.add(programId);
+    else state.excludedProgramIds.delete(programId);
+    return runOptimization();
+  }
+
+  function setProgramCustomCpp(programId, rawValue) {
+    if (!programId) return runOptimization();
+    const raw = String(rawValue ?? "").trim();
+    if (!raw) {
+      delete state.customProgramCpp[programId];
+      return runOptimization();
+    }
+
+    const numeric = Number(raw);
+    if (Number.isFinite(numeric) && numeric >= 0) state.customProgramCpp[programId] = numeric;
+    else delete state.customProgramCpp[programId];
+
     return runOptimization();
   }
 
@@ -350,13 +441,16 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
     setK,
     addLockedCard,
     removeLockedCard,
-    setExcludeFeeCards,
+    setMaxAnnualFee,
     setExcludeBusinessCards,
+    setProgramExcluded,
+    setProgramCustomCpp,
     renderLockedSearchResults,
     syncInitialUi: () => {
       syncStateFromControls();
       updateLockedCardsUi();
       syncKBoundsFromState();
+      renderProgramPreferences();
       view.updateKValue(elements.kInput.value);
     },
     terminateWorker

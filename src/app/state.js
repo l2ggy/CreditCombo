@@ -2,8 +2,10 @@ export function createUiState() {
   return {
     lockedCardIds: new Set(),
     valuationMode: "estimated",
-    excludeFeeCards: false,
+    maxAnnualFee: null,
     excludeBusinessCards: false,
+    excludedProgramIds: new Set(),
+    customProgramCpp: {},
     enableLockedCards: false,
     k: 1
   };
@@ -18,12 +20,16 @@ export function candidatePools(state, eligibleCards, eligibleCardIdSet) {
   const selectedIds = new Set(selectedLockedCardIds(state, eligibleCardIdSet));
   let additionalCards = eligibleCards.filter((card) => !selectedIds.has(card.id));
 
-  if (state.excludeFeeCards) {
-    additionalCards = additionalCards.filter((card) => Number(card.annual_fee?.amount ?? 0) <= 0);
+  if (Number.isFinite(state.maxAnnualFee)) {
+    additionalCards = additionalCards.filter((card) => Number(card.annual_fee?.amount ?? 0) <= state.maxAnnualFee);
   }
 
   if (state.excludeBusinessCards) {
     additionalCards = additionalCards.filter((card) => !card.is_business_card);
+  }
+
+  if (state.excludedProgramIds?.size) {
+    additionalCards = additionalCards.filter((card) => !state.excludedProgramIds.has(card.rewards_program));
   }
 
   return {

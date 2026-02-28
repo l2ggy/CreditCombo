@@ -86,14 +86,22 @@
             </select>
           </div>
           <div class="full">
-            <label class="checkboxLabel" for="excludeFeeCards">
-              <input id="excludeFeeCards" type="checkbox" />
-              Exclude cards with annual fees
-            </label>
-            <label class="checkboxLabel" for="excludeBusinessCards">
-              <input id="excludeBusinessCards" type="checkbox" />
-              Exclude business credit cards
-            </label>
+            <details id="advancedPrefs" class="advancedPrefs">
+              <summary>Advanced preferences</summary>
+              <div class="advancedPrefsBody">
+                <label for="maxAnnualFee">Maximum annual fee (CAD)</label>
+                <input id="maxAnnualFee" type="number" min="0" step="1" placeholder="No maximum" />
+                <label class="checkboxLabel" for="excludeBusinessCards">
+                  <input id="excludeBusinessCards" type="checkbox" />
+                  Exclude business credit cards
+                </label>
+                <div class="advancedProgramPrefs">
+                  <h4>Rewards programs</h4>
+                  <p class="subtle">Exclude programs or set your own cents-per-point valuation.</p>
+                  <div id="programPrefs" class="programPrefs" aria-live="polite"></div>
+                </div>
+              </div>
+            </details>
           </div>
           <button id="runBtn" class="primary">Optimize</button>
         </div>
