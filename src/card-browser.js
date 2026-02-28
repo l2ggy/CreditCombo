@@ -240,7 +240,7 @@ function renderBrowserCardItem(card) {
   top.append(heading, fee);
 
   const topDivider = document.createElement("div");
-  topDivider.className = "divider";
+  topDivider.className = "divider cardDividerTop";
 
   const body = document.createElement("div");
   body.className = "splitBody";
@@ -248,18 +248,17 @@ function renderBrowserCardItem(card) {
   const earnSection = document.createElement("section");
   const earnTitle = document.createElement("h4");
   earnTitle.textContent = "Earn rates";
-  const earnDivider = document.createElement("div");
-  earnDivider.className = "divider";
-  earnSection.append(earnTitle, earnDivider, renderEarnRateList(card.earn_rates, card.rewards_program));
+  earnSection.append(earnTitle, renderEarnRateList(card.earn_rates, card.rewards_program));
+
+  const sectionDivider = document.createElement("div");
+  sectionDivider.className = "divider cardDividerSection";
 
   const capSection = document.createElement("section");
   const capTitle = document.createElement("h4");
   capTitle.textContent = "Caps";
-  const capDivider = document.createElement("div");
-  capDivider.className = "divider";
-  capSection.append(capTitle, capDivider, renderCapContent(card.caps));
+  capSection.append(capTitle, renderCapContent(card.caps));
 
-  body.append(earnSection, capSection);
+  body.append(earnSection, sectionDivider, capSection);
 
   article.append(top, topDivider, body);
   return article;

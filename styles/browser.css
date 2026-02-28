@@ -1,13 +1,14 @@
 .fieldGrid{display:grid;grid-template-columns:repeat(4,minmax(170px,1fr));gap:var(--space-4)}
 .cardList{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-5)}
 
-.card{display:grid;align-content:start;gap:var(--space-5)}
+.card{display:grid;align-content:start;gap:0}
 .card .split{align-items:flex-start}
 .card .inline{align-items:flex-start}
 .card .stack-end{align-items:flex-start;text-align:left}
 .card .subtle{margin:0}
-.card .splitBody{margin-top:0;align-items:start}
-.card .divider{margin:0}
+.card .cardDividerTop{margin:var(--space-4) 0}
+.card .splitBody{grid-template-columns:1.1fr 1px .9fr;gap:var(--space-5);margin-top:0;align-items:start}
+.card .cardDividerSection{margin:0;align-self:stretch;width:1px;height:auto}
 
 .card h3{margin:0 0 var(--space-1);font-size:var(--font-size-xl)}
 .card h4{margin:0 0 var(--space-3);font-size:var(--font-size-base);color:var(--color-muted);text-transform:uppercase;letter-spacing:.04em}
@@ -16,6 +17,6 @@
 .metricSubtle{color:color-mix(in srgb,var(--color-muted) 88%,var(--color-text) 12%);font-weight:500}
 .splitBody ul{margin:0;padding-left:18px;display:grid;gap:var(--space-2)}
 
-@media (max-width:900px){.fieldGrid{grid-template-columns:1fr 1fr}}
+@media (max-width:900px){.fieldGrid{grid-template-columns:1fr 1fr}.card .splitBody{grid-template-columns:1fr;gap:var(--space-4)}.card .cardDividerSection{width:100%;height:1px;align-self:auto}}
 @media (max-width:720px){.cardList{grid-template-columns:1fr}}
 @media (max-width:560px){.fieldGrid{grid-template-columns:1fr}}
