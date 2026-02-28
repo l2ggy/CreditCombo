@@ -20,10 +20,13 @@
 .checkboxLabel input[type="checkbox"]{width:var(--space-7);height:var(--space-7);accent-color:var(--color-accent)}
 .value-pill{display:inline-flex;align-items:center;justify-content:center;min-width:1.9em;margin-left:var(--space-2);padding:var(--space-1) var(--space-3);border:1px solid var(--color-border);border-radius:var(--radius-pill);background:color-mix(in srgb,var(--color-accent) 22%,transparent);font-size:var(--font-size-sm);font-weight:700}
 
-.loadingState{display:inline-flex;align-items:center;gap:var(--space-4);color:var(--color-muted)}
-.loadingSpinner{width:var(--space-6);height:var(--space-6);border:2px solid color-mix(in srgb,var(--color-accent) 20%,transparent);border-top-color:var(--color-accent);border-radius:50%;animation:spin .75s linear infinite}
+.loadingState{display:inline-flex;align-items:center;gap:var(--space-4);padding:var(--space-2) var(--space-4);border-radius:var(--radius-pill);background:color-mix(in srgb,var(--color-panel) 75%,transparent);color:var(--color-muted);animation:loadingFade 1.8s ease-in-out infinite}
+.loadingSpinner{width:var(--space-6);height:var(--space-6);border:2px solid color-mix(in srgb,var(--color-accent) 12%,var(--color-border) 88%);border-top-color:color-mix(in srgb,var(--color-accent) 70%,var(--color-muted) 30%);border-radius:50%;animation:spin .85s linear infinite}
 .resultPanel #result.is-loading{min-height:120px;display:flex;align-items:center;justify-content:center}
 @keyframes spin{to{transform:rotate(360deg)}}
+@keyframes loadingFade{0%,100%{opacity:.78}50%{opacity:1}}
+
+@media (prefers-reduced-motion:reduce){.loadingState,.loadingSpinner{animation:none}}
 
 #clearSpendBtn{border-color:var(--color-border);color:var(--color-muted)}
 #clearSpendBtn:hover{color:var(--color-text);border-color:color-mix(in srgb,var(--color-border) 75%,var(--color-text) 25%)}
