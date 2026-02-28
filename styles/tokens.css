@@ -7,9 +7,12 @@
   --color-accent: #6aa9ff;
   --color-accent-contrast: #06101f;
 
-  --bg-gradient-start: color-mix(in srgb, var(--color-accent) 12%, var(--color-bg));
-  --bg-gradient-end: color-mix(in srgb, var(--color-bg) 94%, #000);
-  --bg-noise-opacity: 0.025;
+  --bg-gradient-start: color-mix(in srgb, var(--color-accent) 14%, var(--color-bg));
+  --bg-gradient-end: color-mix(in srgb, var(--color-bg) 92%, #000);
+  --bg-aurora-a: color-mix(in srgb, var(--color-accent) 18%, transparent);
+  --bg-aurora-b: color-mix(in srgb, #8dd3ff 12%, transparent);
+  --bg-vignette-strength: 0.32;
+  --bg-noise-opacity: 0.02;
 
   --space-0: 0;
   --space-1: 4px;
