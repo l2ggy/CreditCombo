@@ -11,7 +11,9 @@
   <link rel="mask-icon" href="/safari-pinned-tab.svg?v=2" color="#1e3a8a" />
   <link rel="manifest" href="/icons/site.webmanifest?v=2" />
   <meta name="theme-color" content="#1e3a8a" />
-  <link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="./styles/tokens.css" />
+  <link rel="stylesheet" href="./styles/base.css" />
+  <link rel="stylesheet" href="./styles/optimizer.css" />
 </head>
 <body>
   <header class="container siteHeader">
@@ -51,7 +53,7 @@
 
         <div class="divider"></div>
         <div class="row">
-          <div class="field field-checkbox field-full">
+          <div class="full">
             <label class="checkboxLabel" for="enableLockedCards">
               <input id="enableLockedCards" type="checkbox" />
               I want to lock in cards I already have
@@ -60,29 +62,29 @@
         </div>
 
         <div class="row">
-          <div id="lockedCardsPanel" class="field field-full hidden">
+          <div id="lockedCardsPanel" class="full hidden">
             <label for="lockedCardSearch">Search and add cards you already have</label>
             <input id="lockedCardSearch" type="search" placeholder="Type card or issuer name" autocomplete="off" />
-            <div id="lockedCardOptions" class="lockedOptions hidden" role="listbox" aria-label="Matching cards"></div>
-            <div id="lockedCardPicks" class="lockedPicks muted">No locked cards selected.</div>
+            <div id="lockedCardOptions" class="listBox hidden" role="listbox" aria-label="Matching cards"></div>
+            <div id="lockedCardPicks" class="chipList muted">No locked cards selected.</div>
           </div>
         </div>
 
         <div id="lockedCardsDivider" class="divider hidden"></div>
 
         <div class="row">
-          <div class="field field-slider">
+          <div>
             <label for="k"><span id="kLabel">Number of cards</span> <span id="kValue" class="value-pill">3</span></label>
             <input id="k" type="range" min="0" max="5" value="3" step="1" />
           </div>
-          <div class="field field-select">
+          <div>
             <label for="valuationMode">Points valuation <a class="infoBadge" href="./valuations.html" aria-label="Learn how rewards valuations work" title="How valuation modes work">i</a></label>
             <select id="valuationMode">
               <option value="estimated" selected>Estimated value</option>
               <option value="minimum_guaranteed">Minimum guaranteed value</option>
             </select>
           </div>
-          <div class="field field-checkbox">
+          <div class="full">
             <label class="checkboxLabel" for="excludeFeeCards">
               <input id="excludeFeeCards" type="checkbox" />
               Exclude cards with annual fees

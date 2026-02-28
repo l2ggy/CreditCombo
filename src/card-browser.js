@@ -117,7 +117,7 @@ function isCashbackProgram(rewardsProgram) {
 
 function renderEarnRateList(earnRates, rewardsProgram) {
   const list = document.createElement("ul");
-  list.className = "browserRateList";
+  list.className = "dataList listClean";
 
   const entries = Object.entries(earnRates || {});
   if (!entries.length) {
@@ -144,7 +144,7 @@ function renderEarnRateList(earnRates, rewardsProgram) {
 
       if (cashbackProgram && earnPercent != null) {
         const percent = document.createElement("span");
-        percent.className = "browserEarnPercent";
+        percent.className = "metricSubtle";
         percent.textContent = `${earnPercent}%`;
         valueEl.append(percent);
       } else {
@@ -152,7 +152,7 @@ function renderEarnRateList(earnRates, rewardsProgram) {
         if (earnPercent != null) {
           valueEl.append(" ");
           const percent = document.createElement("span");
-          percent.className = "browserEarnPercent";
+          percent.className = "metricSubtle";
           percent.textContent = `(${earnPercent}%)`;
           valueEl.append(percent);
         }
@@ -203,18 +203,18 @@ function renderCapContent(caps) {
 
 function renderBrowserCardItem(card) {
   const article = document.createElement("article");
-  article.className = "panel browserCard";
+  article.className = "panel card";
 
   const top = document.createElement("div");
-  top.className = "browserCardTop";
+  top.className = "split";
 
   const heading = document.createElement("div");
-  heading.className = "browserCardHeading";
-  heading.append(renderCardThumb(card, { className: "browserCardThumb", withFrame: false }));
+  heading.className = "inline";
+  heading.append(renderCardThumb(card, { className: "thumb thumb-sm thumb-cover", withFrame: false }));
 
   const headingText = document.createElement("div");
   const title = document.createElement("h3");
-  title.className = "browserCardTitle";
+  
   title.textContent = card.card_name;
 
   const meta = document.createElement("p");
@@ -229,7 +229,7 @@ function renderBrowserCardItem(card) {
   heading.append(headingText);
 
   const fee = document.createElement("div");
-  fee.className = "browserFee";
+  fee.className = "stack-end";
   const feeLabel = document.createElement("span");
   feeLabel.className = "muted";
   feeLabel.textContent = "Annual fee";
@@ -240,7 +240,7 @@ function renderBrowserCardItem(card) {
   top.append(heading, fee);
 
   const body = document.createElement("div");
-  body.className = "browserCardBody";
+  body.className = "splitBody";
 
   const earnSection = document.createElement("section");
   const earnTitle = document.createElement("h4");

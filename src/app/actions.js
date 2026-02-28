@@ -62,14 +62,14 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
         fragment.append(renderLockedChip(card));
       } else {
         const chip = document.createElement("span");
-        chip.className = "lockedChip";
+        chip.className = "chip";
 
         const label = document.createElement("span");
         label.textContent = id;
 
         const remove = document.createElement("button");
         remove.type = "button";
-        remove.className = "lockedChipRemove";
+        remove.className = "chipRemove";
         remove.dataset.removeId = id;
         remove.setAttribute("aria-label", `Remove ${id}`);
         remove.textContent = "×";
@@ -100,10 +100,10 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
     matches.forEach((card) => {
       const button = document.createElement("button");
       button.type = "button";
-      button.className = "lockedOption";
+      button.className = "listOption";
       button.dataset.cardId = card.id;
 
-      button.append(renderCardThumb(card, { className: "lockedCardThumb", withFrame: false }));
+      button.append(renderCardThumb(card, { className: "thumb thumb-xs thumb-contain", withFrame: false }));
 
       const label = document.createElement("span");
       label.textContent = `${card.card_name} `;

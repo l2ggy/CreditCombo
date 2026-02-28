@@ -12,9 +12,9 @@ function bindThumbImageBehavior(img) {
 
 export function renderCardThumb(card, options = {}) {
   const {
-    className = "resultCardThumb",
+    className = "thumb thumb-md thumb-contain",
     withFrame = true,
-    frameClass = "thumbFrame"
+    frameClass = "thumbWrap"
   } = options;
 
   const img = document.createElement("img");
@@ -35,9 +35,9 @@ export function renderCardThumb(card, options = {}) {
 
 export function renderLockedChip(card) {
   const chip = document.createElement("span");
-  chip.className = "lockedChip";
+  chip.className = "chip";
 
-  chip.append(renderCardThumb(card, { className: "lockedCardThumb", withFrame: false }));
+  chip.append(renderCardThumb(card, { className: "thumb thumb-xs thumb-contain", withFrame: false }));
 
   const label = document.createElement("span");
   label.textContent = `${card.card_name} (${card.issuer})`;
@@ -45,7 +45,7 @@ export function renderLockedChip(card) {
 
   const remove = document.createElement("button");
   remove.type = "button";
-  remove.className = "lockedChipRemove";
+  remove.className = "chipRemove";
   remove.dataset.removeId = card.id;
   remove.setAttribute("aria-label", `Remove ${label.textContent}`);
   remove.textContent = "×";
@@ -56,7 +56,7 @@ export function renderLockedChip(card) {
 
 export function renderResultCardItem(card) {
   const item = document.createElement("li");
-  item.className = "resultCardItem";
+  item.className = "itemRow";
   item.append(renderCardThumb(card));
 
   const details = document.createElement("div");

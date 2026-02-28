@@ -11,7 +11,9 @@
   <link rel="mask-icon" href="/safari-pinned-tab.svg?v=2" color="#1e3a8a" />
   <link rel="manifest" href="/icons/site.webmanifest?v=2" />
   <meta name="theme-color" content="#1e3a8a" />
-  <link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="./styles/tokens.css" />
+  <link rel="stylesheet" href="./styles/base.css" />
+  <link rel="stylesheet" href="./styles/browser.css" />
 </head>
 <body>
   <header class="container siteHeader">
@@ -27,27 +29,27 @@
     </div>
   </header>
 
-  <main class="container browserLayout">
-    <section class="panel browserControls">
+  <main class="container pageStack">
+    <section class="panel">
       <div class="panelHeader">
         <h2>Filters</h2>
-        <button id="resetFiltersBtn" type="button" class="browserResetBtn">Reset filters</button>
+        <button id="resetFiltersBtn" type="button" class="btn-inline">Reset filters</button>
       </div>
       <div class="divider"></div>
-      <div class="browserFilterGrid">
-        <div class="field">
+      <div class="fieldGrid">
+        <div>
           <label for="searchInput">Search cards</label>
           <input id="searchInput" type="search" placeholder="Card name, issuer, network..." />
         </div>
-        <div class="field">
+        <div>
           <label for="issuerFilter">Issuer</label>
           <select id="issuerFilter"></select>
         </div>
-        <div class="field">
+        <div>
           <label for="programFilter">Rewards program</label>
           <select id="programFilter"></select>
         </div>
-        <div class="field">
+        <div>
           <label for="sortBy">Sort by</label>
           <select id="sortBy">
             <option value="name">Card name (A–Z)</option>
@@ -60,7 +62,7 @@
       <p id="browserSummary" class="subtle"></p>
     </section>
 
-    <section id="cardsList" class="browserCards"></section>
+    <section id="cardsList" class="cardList"></section>
     <section id="browserFatal" class="panel hidden"></section>
   </main>
 
