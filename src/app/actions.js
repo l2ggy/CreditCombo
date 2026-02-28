@@ -300,7 +300,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
 
   function clearSpend() {
     elements.spendTableEl.querySelectorAll("input[data-cat]").forEach((input) => {
-      input.value = "0";
+      input.value = "";
     });
     return runOptimization();
   }

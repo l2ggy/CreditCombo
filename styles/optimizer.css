@@ -37,6 +37,7 @@
 .spendMeta{min-width:0;overflow:hidden}
 .spendCat{display:block;font-size:var(--font-size-sm);line-height:var(--line-height-compact)}
 .spendRow input[type="number"].spend-input{width:100%;min-width:0;max-width:none;padding:var(--space-2) var(--space-3)}
+.spendRow input[type="number"].spend-input::placeholder{color:color-mix(in srgb,var(--color-muted) 72%,var(--color-bg) 28%);opacity:1}
 
 .spendDesc{margin-top:var(--space-1)}
 .spendDesc summary{display:inline-flex;align-items:center;gap:var(--space-1);list-style:none;color:var(--color-muted);font-size:var(--font-size-xs);line-height:var(--line-height-compact);cursor:pointer}

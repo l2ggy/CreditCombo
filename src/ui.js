@@ -16,7 +16,7 @@ export function renderSpendTable(el, schema, categoryDescriptions = {}) {
             <span class="mono spendCat">${cat}</span>
             ${spendDescriptionMarkup(categoryDescriptions[cat] || "")}
           </span>
-          <input id="spend-${cat}" class="spend-input" type="number" min="0" step="1" value="0" data-cat="${cat}" aria-label="Monthly spend for ${cat}" />
+          <input id="spend-${cat}" class="spend-input" type="number" min="0" step="1" value="" placeholder="0" data-cat="${cat}" aria-label="Monthly spend for ${cat}" />
         </label>
       `).join("")}
     </div>
@@ -43,10 +43,7 @@ export function renderSpendTable(el, schema, categoryDescriptions = {}) {
       if (inp.value === "0") inp.select();
     });
 
-    inp.addEventListener("blur", () => {
-      if (inp.value.trim() === "") inp.value = "0";
-      updateSpendTotal();
-    });
+    inp.addEventListener("blur", updateSpendTotal);
   });
 
   updateSpendTotal();
