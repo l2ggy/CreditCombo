@@ -18,7 +18,7 @@ What it does
 
 What it does NOT do (yet)
 -------------------------
-- Merchant- or portal-specific `special_earn_rules` are intentionally ignored.
+- Merchant- or portal-specific `special_earn_rules` are not yet modeled.
 - MCC quirks and acceptance constraints are not modeled.
 - One-time promotions and welcome bonuses are not modeled.
 

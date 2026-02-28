@@ -9,7 +9,7 @@ export const RULES_MANIFEST = {
   },
   out_of_scope_behaviors: {
     special_earn_rules:
-      "Merchant- or portal-specific special_earn_rules are intentionally ignored.",
+      "Merchant- or portal-specific special_earn_rules are not yet modeled.",
     mcc_quirks:
       "MCC quirks and acceptance constraints are not modeled.",
     promos:

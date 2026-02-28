@@ -119,10 +119,6 @@ export function renderResult(el, best, annualSpend, schema, valuationMode = "est
   const modeText = valuationMode === "minimum_guaranteed"
     ? "minimum guaranteed points redemption value"
     : "estimated points value";
-  const outOfScopeLabels = Object.keys(RULES_MANIFEST.out_of_scope_behaviors)
-    .map((key) => key === "mcc_quirks" ? "MCC quirks" : key)
-    .join(", ");
-  const outOfScopeDetails = Object.values(RULES_MANIFEST.out_of_scope_behaviors).join(" ");
 
   el.innerHTML = `
     <h2>Best combo</h2>
@@ -143,9 +139,8 @@ export function renderResult(el, best, annualSpend, schema, valuationMode = "est
       ${instructions.join("") || `<p class="muted">No spend entered.</p>`}
     </div>
 
-    <p class="muted">Mode: ${escapeHtml(modeText)}. ${escapeHtml(RULES_MANIFEST.modeled_behaviors.valuation_mode)}</p>
-    <p class="muted">Rules modeled: ${escapeHtml(RULES_MANIFEST.modeled_behaviors.caps_routing)} ${escapeHtml(RULES_MANIFEST.modeled_behaviors.fee_subtraction)}</p>
-    <p class="muted">Out of scope: <span class="mono">${escapeHtml(outOfScopeLabels)}</span>. ${escapeHtml(outOfScopeDetails)}</p>
+    <p class="muted">Mode: ${escapeHtml(modeText)}.</p>
+    <p class="muted">Modeling scope: ${escapeHtml(RULES_MANIFEST.modeled_behaviors.caps_routing)} ${escapeHtml(RULES_MANIFEST.modeled_behaviors.fee_subtraction)} Not yet modeled: ${escapeHtml(RULES_MANIFEST.out_of_scope_behaviors.special_earn_rules)} ${escapeHtml(RULES_MANIFEST.out_of_scope_behaviors.mcc_quirks)} ${escapeHtml(RULES_MANIFEST.out_of_scope_behaviors.promos)}</p>
   `;
 }
 
