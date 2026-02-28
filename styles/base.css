@@ -68,8 +68,10 @@ tbody tr:last-child td{border-bottom:none}
 .thumb-contain{object-fit:contain}
 .thumb-cover{object-fit:cover;overflow:hidden;flex:0 0 auto}
 
-.textLink{color:var(--color-accent);font-weight:600;text-decoration:none}
-.textLink:hover{text-decoration:underline}
+.textLink{position:relative;display:inline-block;color:var(--color-accent);font-weight:600;text-decoration:none}
+.textLink::after{content:"";position:absolute;left:0;bottom:-.12em;width:100%;height:1px;background:currentColor;transform:scaleX(0);transform-origin:left center;transition:transform .2s ease}
+.textLink:hover,.textLink:focus-visible{text-decoration:none}
+.textLink:hover::after,.textLink:focus-visible::after{transform:scaleX(1)}
 
 .siteFooter{padding-top:0;padding-bottom:var(--space-10)}
 .footerContent{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:var(--space-5);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-6);background:color-mix(in srgb,var(--color-panel) 65%,transparent)}
