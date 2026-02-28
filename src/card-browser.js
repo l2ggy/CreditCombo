@@ -244,9 +244,10 @@ function renderBrowserCardItem(card) {
   const fee = document.createElement("div");
   fee.className = "stack-end";
   const feeLabel = document.createElement("span");
-  feeLabel.className = "muted";
+  feeLabel.className = "muted cardFeeLabel";
   feeLabel.textContent = "Annual fee";
   const feeValue = document.createElement("strong");
+  feeValue.className = "cardFeeValue";
   feeValue.textContent = formatMoneyCAD(annualFeeAmount(card), { minimumFractionDigits: 0, maximumFractionDigits: 0 });
   fee.append(feeLabel, feeValue);
 

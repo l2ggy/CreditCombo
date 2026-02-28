@@ -6,6 +6,8 @@
 .card .inline{align-items:flex-start}
 .card .inline > div{min-width:0}
 .card .stack-end{align-items:flex-start;text-align:left}
+.card .cardFeeLabel{font-size:var(--font-size-xs);line-height:1.2}
+.card .cardFeeValue{font-size:var(--font-size-sm);line-height:1.2}
 .card .subtle{margin:0;font-size:var(--font-size-xs);line-height:1.3}
 .card .officialLink{margin-left:var(--space-1)}
 .card .subtle .mono{font-size:inherit}
