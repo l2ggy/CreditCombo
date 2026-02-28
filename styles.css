@@ -39,7 +39,6 @@ h3{margin:var(--space-3) 0 var(--space-2);font-size:14px;color:var(--muted)}
 @media (max-width:900px){.layout{grid-template-columns:1fr}.header{flex-direction:column;align-items:flex-start}}
 
 .panelHeader{display:flex;justify-content:space-between;gap:var(--space-2);align-items:flex-end}
-.panelHeader-result{align-items:center}
 .resultPanel .resultIntro{margin:0 0 var(--space-3);max-width:62ch;color:var(--muted)}
 
 .inputPanel{
