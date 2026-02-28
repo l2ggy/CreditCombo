@@ -29,8 +29,9 @@
 
 #clearSpendBtn{border-color:var(--color-border);color:var(--color-muted)}
 #clearSpendBtn:hover{color:var(--color-text);border-color:color-mix(in srgb,var(--color-border) 75%,var(--color-text) 25%)}
-.spendActions{display:flex;justify-content:flex-end;margin-top:var(--space-3)}
+.spendActions{display:flex;align-items:center;justify-content:space-between;gap:var(--space-3);margin-top:var(--space-3)}
 .spendActions button{width:auto;padding:var(--space-3) var(--space-5);font-size:var(--font-size-sm)}
+.spendTotal{margin:0;font-size:var(--font-size-sm)}
 
 .spendGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-3)}
 .spendRow{display:grid;grid-template-columns:minmax(0,1fr) 92px;align-items:center;gap:var(--space-3);margin:0;padding:var(--space-3);border:1px solid var(--color-border);border-radius:var(--radius-md);background:color-mix(in srgb,var(--color-panel) 75%,transparent)}
