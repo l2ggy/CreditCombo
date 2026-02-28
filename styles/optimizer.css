@@ -44,7 +44,7 @@
 .spendDesc[open] .spendDescCaret{transform:rotate(180deg)}
 .spendDescBody{margin-top:var(--space-1);font-size:var(--font-size-xs);line-height:1.25}
 
-.divider-tight{height:1px;margin-block:var(--space-5) var(--space-3);background:linear-gradient(90deg,transparent 0%,color-mix(in srgb,var(--color-border) 66%,transparent) 20%,color-mix(in srgb,var(--color-border) 66%,transparent) 80%,transparent 100%)}
+.divider-tight{margin-block:var(--space-5) var(--space-3)}
 .useHeading{margin-bottom:var(--space-3)}
 .tileGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--space-3)}
 .tile{display:flex;flex-direction:column;align-items:center;gap:var(--space-2);padding:var(--space-3);border:1px solid var(--color-border);border-radius:var(--radius-md);background:color-mix(in srgb,var(--color-panel) 75%,transparent);text-align:center}
