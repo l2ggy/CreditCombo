@@ -1,6 +1,13 @@
 .fieldGrid{display:grid;grid-template-columns:repeat(4,minmax(170px,1fr));gap:var(--space-4)}
 .cardList{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-5)}
 
+.card{display:grid;align-content:start;gap:var(--space-5)}
+.card .split{align-items:flex-start}
+.card .inline{align-items:flex-start}
+.card .stack-end{align-items:flex-start;text-align:left}
+.card .subtle{margin:0}
+.card .splitBody{margin-top:0;align-items:start}
+
 .card h3{margin:0 0 var(--space-1);font-size:var(--font-size-xl)}
 .card h4{margin:0 0 var(--space-3);font-size:var(--font-size-base);color:var(--color-muted);text-transform:uppercase;letter-spacing:.04em}
 .dataList li{display:flex;justify-content:space-between;gap:var(--space-3);padding-bottom:var(--space-2);border-bottom:1px solid var(--color-border)}
