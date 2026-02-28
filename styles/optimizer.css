@@ -3,7 +3,6 @@
 .inputPanel,.resultPanel{--r:var(--space-3)}
 
 .panelHeader-result{flex-direction:column;align-items:flex-start}
-.inputPanel .panelHeader,.resultPanel .panelHeader,.inputPanel .sectionTitle,.inputPanel .row,.inputPanel .issues,.inputPanel #spendTable,.inputPanel .divider,.resultPanel .divider{padding-inline:var(--r)}
 .inputPanel .sectionTitle,.inputPanel .panelHeader h2,.resultPanel .panelHeader h2{margin-block:0;line-height:var(--line-height-tight)}
 .inputPanel .sectionTitle{margin-bottom:var(--r)}
 .inputPanel .divider,.resultPanel .divider{margin-block:var(--r)}
