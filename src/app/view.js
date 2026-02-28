@@ -15,6 +15,7 @@ export function createView() {
     excludedProgramSearchEl: document.getElementById("excludedProgramSearch"),
     excludedProgramOptionsEl: document.getElementById("excludedProgramOptions"),
     excludedProgramPicksEl: document.getElementById("excludedProgramPicks"),
+    resetAdvancedPrefsBtn: document.getElementById("resetAdvancedPrefsBtn"),
     enableLockedCardsEl: document.getElementById("enableLockedCards"),
     lockedCardsPanelEl: document.getElementById("lockedCardsPanel"),
     lockedCardSearchEl: document.getElementById("lockedCardSearch"),

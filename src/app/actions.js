@@ -16,6 +16,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
   let optimizeWorker = null;
   let optimizeRequestId = 0;
   const pendingRequests = new Map();
+  let lastLockedCardPicksKey = null;
 
   function syncStateFromControls() {
     state.valuationMode = elements.valuationModeEl?.value === "minimum_guaranteed" ? "minimum_guaranteed" : "estimated";
@@ -70,6 +71,10 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
   function renderLockedCardPicks() {
     if (!elements.lockedCardPicksEl) return;
     const ids = selectedLockedCardIds(state, eligibleCardIdSet);
+    const key = ids.join("|");
+
+    if (key === lastLockedCardPicksKey) return;
+    lastLockedCardPicksKey = key;
     elements.lockedCardPicksEl.innerHTML = "";
 
     if (!ids.length) {
@@ -471,6 +476,22 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
     return runOptimization();
   }
 
+  function resetAdvancedPreferences() {
+    state.maxAnnualFee = null;
+    state.excludeBusinessCards = false;
+    state.excludeCashbackPrograms = false;
+    state.excludedProgramIds.clear();
+
+    if (elements.maxAnnualFeeEl) elements.maxAnnualFeeEl.value = "";
+    if (elements.excludeBusinessCardsEl) elements.excludeBusinessCardsEl.checked = false;
+    if (elements.excludeCashbackProgramsEl) elements.excludeCashbackProgramsEl.checked = false;
+    if (elements.excludedProgramSearchEl) elements.excludedProgramSearchEl.value = "";
+    elements.excludedProgramOptionsEl?.classList.add("hidden");
+    if (elements.excludedProgramOptionsEl) elements.excludedProgramOptionsEl.innerHTML = "";
+
+    return runOptimization();
+  }
+
   initWorker();
 
   return {
@@ -486,6 +507,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
     setExcludeCashbackPrograms,
     addExcludedProgram,
     removeExcludedProgram,
+    resetAdvancedPreferences,
     renderLockedSearchResults,
     renderExcludedProgramSearchResults,
     syncInitialUi: () => {
