@@ -1,4 +1,4 @@
-import { loadJson, normalizePrograms } from "./data.js";
+import { loadCoreData } from "./data-service.js";
 import { formatMoneyCAD, formatMultiplier } from "./shared/format.js";
 
 const state = {
@@ -213,12 +213,10 @@ function registerEvents() {
 
 async function init() {
   try {
-    const [cardsJson, programsJson] = await Promise.all([
-      loadJson("./data/cards.json"),
-      loadJson("./data/programs.json")
-    ]);
+    const { cardsJson, programsMap } = await loadCoreData();
 
-    state.programs = normalizePrograms(programsJson);
+    state.programs = programsMap;
+    // Card browser intentionally uses the full dataset rather than optimizer-eligible subset.
     state.cards = cardsJson?.cards ?? [];
 
     const issuers = [...new Set(state.cards.map((c) => c.issuer))].sort((a, b) => a.localeCompare(b));

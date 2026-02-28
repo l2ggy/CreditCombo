@@ -1,4 +1,4 @@
-import { loadJson, normalizePrograms, validateAndFilterCards } from "./data.js";
+import { loadOptimizerData } from "./data-service.js";
 import { renderIssues, renderSpendTable } from "./ui.js";
 import { createActions } from "./app/actions.js";
 import { createUiState } from "./app/state.js";
@@ -9,10 +9,7 @@ async function main() {
   const { elements } = view;
 
   try {
-    const [cardsJson, programsJson] = await Promise.all([loadJson("./data/cards.json"), loadJson("./data/programs.json")]);
-
-    const programsMap = normalizePrograms(programsJson);
-    const { schema, categoryDescriptions, eligibleCards, issues } = validateAndFilterCards(cardsJson, programsMap);
+    const { schema, categoryDescriptions, eligibleCards, issues, programsMap } = await loadOptimizerData();
     const eligibleCardIdSet = new Set(eligibleCards.map((card) => card.id));
     const eligibleCardsById = new Map(eligibleCards.map((card) => [card.id, card]));
 
