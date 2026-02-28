@@ -1,6 +1,5 @@
 import { formatMoneyCAD } from "./shared/format.js";
 import { escapeHtml } from "./shared/sanitize.js";
-import { RULES_MANIFEST } from "./domain/rules-manifest.js";
 
 export function clampInt(n, lo, hi) {
   n = Math.floor(Number(n) || lo);
@@ -116,10 +115,6 @@ export function renderResult(el, best, annualSpend, schema, valuationMode = "est
   }
 
   const useCols = Math.min(4, Math.max(1, instructions.length));
-  const modeText = valuationMode === "minimum_guaranteed"
-    ? "minimum guaranteed points redemption value"
-    : "estimated points value";
-
   el.innerHTML = `
     <h2>Best combo</h2>
     <ul class="comboList">${comboList}</ul>
@@ -139,8 +134,6 @@ export function renderResult(el, best, annualSpend, schema, valuationMode = "est
       ${instructions.join("") || `<p class="muted">No spend entered.</p>`}
     </div>
 
-    <p class="muted">Mode: ${escapeHtml(modeText)}.</p>
-    <p class="muted">Modeling scope: ${escapeHtml(RULES_MANIFEST.modeled_behaviors.caps_routing)} ${escapeHtml(RULES_MANIFEST.modeled_behaviors.fee_subtraction)} Not yet modeled: ${escapeHtml(RULES_MANIFEST.out_of_scope_behaviors.special_earn_rules)} ${escapeHtml(RULES_MANIFEST.out_of_scope_behaviors.mcc_quirks)} ${escapeHtml(RULES_MANIFEST.out_of_scope_behaviors.promos)}</p>
   `;
 }
 
