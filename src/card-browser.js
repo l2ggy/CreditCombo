@@ -249,7 +249,7 @@ function renderBrowserCardItem(card) {
 
   const officialLink = renderOfficialCardLink(card);
   if (officialLink) {
-    fee.append(officialLink);
+    meta.append(" · ", officialLink);
   }
 
   top.append(heading, fee);

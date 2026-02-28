@@ -5,8 +5,8 @@
 .card .split{align-items:flex-start}
 .card .inline{align-items:flex-start}
 .card .stack-end{align-items:flex-start;text-align:left}
-.card .stack-end .btn-inline{margin-top:var(--space-2)}
 .card .subtle{margin:0}
+.card .officialLink{margin-left:var(--space-1)}
 .card .cardDividerTop{margin:var(--space-4) 0}
 .card .splitBody{grid-template-columns:1.1fr 1px .9fr;gap:var(--space-5);margin-top:0;align-items:start}
 .card .cardDividerSection{margin:0;align-self:stretch;width:1px;height:auto}

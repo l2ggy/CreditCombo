@@ -63,16 +63,16 @@ export function getOfficialCardUrl(card) {
   return candidate || null;
 }
 
-export function renderOfficialCardLink(card, label = "Official page") {
+export function renderOfficialCardLink(card, label = "Official") {
   const officialUrl = getOfficialCardUrl(card);
   if (!officialUrl) return null;
 
   const link = document.createElement("a");
-  link.className = "btn-inline";
+  link.className = "textLink officialLink";
   link.href = officialUrl;
   link.target = "_blank";
   link.rel = "noopener noreferrer";
-  link.textContent = label;
+  link.textContent = `↗ ${label}`;
   link.setAttribute("aria-label", `Open official page for ${card.card_name}`);
   return link;
 }
@@ -106,8 +106,7 @@ export function renderResultCardItem(card) {
 
   const officialLink = renderOfficialCardLink(card);
   if (officialLink) {
-    officialLink.classList.add("itemRowLink");
-    details.append(" ", officialLink);
+    details.append(" · ", officialLink);
   }
 
   item.append(details);
