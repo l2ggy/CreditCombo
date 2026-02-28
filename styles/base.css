@@ -55,7 +55,7 @@ tbody tr:last-child td{border-bottom:none}
 
 .chipList{margin-top:var(--space-4);display:flex;flex-wrap:wrap;gap:var(--space-3)}
 .chip{display:inline-flex;align-items:center;gap:var(--space-2);padding:var(--space-3) var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-md);background:color-mix(in srgb,var(--color-accent) 12%,transparent);font-size:var(--font-size-sm);line-height:1.25;color:var(--color-text)}
-.chipRemove{display:inline-flex;align-items:center;justify-content:center;min-width:var(--space-9);min-height:var(--space-9);border:none;background:transparent;color:var(--color-muted);padding:0;line-height:1;font-size:var(--font-size-lg);font-weight:700;cursor:pointer}
+.chipRemove{display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;width:auto;min-width:var(--space-9);min-height:var(--space-9);border:none;background:transparent;color:var(--color-muted);padding:0;line-height:1;font-size:var(--font-size-lg);font-weight:700;cursor:pointer}
 .chipRemove:hover{color:var(--color-text)}
 
 .thumbWrap{width:44px;height:44px;display:inline-flex;align-items:center;justify-content:center;flex:0 0 44px}
