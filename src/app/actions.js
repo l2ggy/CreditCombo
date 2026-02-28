@@ -2,6 +2,7 @@ import { annualizeMonthlySpend } from "../optimizer.js";
 import { clampInt, readMonthlySpend, renderResult } from "../ui.js";
 import { candidatePools, kBounds, selectedLockedCardIds } from "./state.js";
 import { renderCardThumb, renderLockedChip } from "../shared/render.js";
+import { buildSearchText, matchesSearchTokens, tokenizeSearchQuery } from "../shared/search.js";
 
 export function createActions({ state, view, schema, programsMap, eligibleCards, eligibleCardIdSet, eligibleCardsById }) {
   const { elements } = view;
@@ -37,11 +38,15 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
   }
 
   function searchMatches(query) {
-    const q = query.trim().toLowerCase();
-    if (!q) return [];
+    const queryTokens = tokenizeSearchQuery(query);
+    if (!queryTokens.length) return [];
+
     return eligibleCards
       .filter((card) => !state.lockedCardIds.has(card.id))
-      .filter((card) => `${card.card_name} ${card.issuer} ${card.network}`.toLowerCase().includes(q))
+      .filter((card) => {
+        const searchText = buildSearchText([card.card_name, card.issuer, card.network]);
+        return matchesSearchTokens(searchText, queryTokens);
+      })
       .slice(0, 10);
   }
 

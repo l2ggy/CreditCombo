@@ -1,6 +1,7 @@
 import { loadCoreData } from "./data-service.js";
 import { formatMoneyCAD, formatMultiplier } from "./shared/format.js";
 import { renderCardThumb } from "./shared/render.js";
+import { buildSearchText, matchesSearchTokens, tokenizeSearchQuery } from "./shared/search.js";
 
 const state = {
   cards: [],
@@ -62,24 +63,23 @@ function updateResetButtonState() {
 }
 
 function cardMatches(card) {
-  const query = els.searchInput.value.trim().toLowerCase();
+  const queryTokens = tokenizeSearchQuery(els.searchInput.value);
   const issuer = els.issuerFilter.value;
   const program = els.programFilter.value;
 
   if (issuer && card.issuer !== issuer) return false;
   if (program && card.rewards_program !== program) return false;
+  if (!queryTokens.length) return true;
 
-  if (!query) return true;
-
-  const haystack = [
+  const searchText = buildSearchText([
     card.card_name,
     card.issuer,
     card.network,
     card.rewards_program,
     ...Object.keys(card.earn_rates || {})
-  ].join(" ").toLowerCase();
+  ]);
 
-  return haystack.includes(query);
+  return matchesSearchTokens(searchText, queryTokens);
 }
 
 function sortCards(cards) {
