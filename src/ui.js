@@ -151,6 +151,7 @@ export function renderResult(el, best, annualSpend, schema, valuationMode = "est
     const stack = document.createElement("div");
     stack.className = alloc.length > 1 ? "tileMedia tileMedia-stack" : "tileMedia tileMedia-single";
     stack.style.setProperty("--stack-count", String(alloc.length));
+    const thumbs = [];
 
     alloc.forEach(({ card, amt }, idx) => {
       const amountPart = alloc.length > 1 ? ` — ${formatMoneyCAD(amt)}` : "";
@@ -176,7 +177,28 @@ export function renderResult(el, best, annualSpend, schema, valuationMode = "est
       thumb.append(desc);
       thumb.append(renderCardThumb(card, { className: "thumb thumb-lg thumb-contain", withFrame: false }));
       stack.append(thumb);
+      thumbs.push(thumb);
     });
+
+    if (thumbs.length > 1) {
+      const setActiveThumbByY = (clientY) => {
+        const stackRect = stack.getBoundingClientRect();
+        const y = clientY - stackRect.top;
+        let active = thumbs[0];
+        for (const thumb of thumbs) {
+          if (y >= thumb.offsetTop) active = thumb;
+        }
+        for (const thumb of thumbs) {
+          if (thumb === active) thumb.dataset.hoverActive = "true";
+          else delete thumb.dataset.hoverActive;
+        }
+      };
+
+      stack.addEventListener("pointermove", (event) => setActiveThumbByY(event.clientY));
+      stack.addEventListener("pointerleave", () => {
+        for (const thumb of thumbs) delete thumb.dataset.hoverActive;
+      });
+    }
 
     tile.append(stack);
     instructions.push(tile);
