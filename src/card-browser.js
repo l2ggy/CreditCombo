@@ -1,7 +1,7 @@
 import { loadCoreData } from "./data-service.js";
 import { formatMoneyCAD, formatMultiplier } from "./shared/format.js";
 import { renderCardThumb } from "./shared/render.js";
-import { buildSearchText, matchesSearchTokens, tokenizeSearchQuery } from "./shared/search.js";
+import { buildSearchText, scoreSearchMatch, tokenizeSearchQuery } from "./shared/search.js";
 
 const state = {
   cards: [],
@@ -62,15 +62,7 @@ function updateResetButtonState() {
   els.resetFiltersBtn.disabled = !hasActiveFilters();
 }
 
-function cardMatches(card) {
-  const queryTokens = tokenizeSearchQuery(els.searchInput.value);
-  const issuer = els.issuerFilter.value;
-  const program = els.programFilter.value;
-
-  if (issuer && card.issuer !== issuer) return false;
-  if (program && card.rewards_program !== program) return false;
-  if (!queryTokens.length) return true;
-
+function cardSearchScore(card, queryTokens) {
   const searchText = buildSearchText([
     card.card_name,
     card.issuer,
@@ -79,10 +71,25 @@ function cardMatches(card) {
     ...Object.keys(card.earn_rates || {})
   ]);
 
-  return matchesSearchTokens(searchText, queryTokens);
+  const fullScore = scoreSearchMatch(searchText, queryTokens);
+  if (fullScore < 0) return -1;
+
+  const cardNameScore = scoreSearchMatch(buildSearchText(card.card_name), queryTokens);
+  return fullScore + (cardNameScore > 0 ? cardNameScore * 3 : 0);
 }
 
-function sortCards(cards) {
+function cardMatches(card, queryTokens) {
+  const issuer = els.issuerFilter.value;
+  const program = els.programFilter.value;
+
+  if (issuer && card.issuer !== issuer) return false;
+  if (program && card.rewards_program !== program) return false;
+  if (!queryTokens.length) return true;
+
+  return cardSearchScore(card, queryTokens) >= 0;
+}
+
+function cardSortComparator() {
   const sorters = {
     annualFeeAsc: (a, b) => annualFeeAmount(a) - annualFeeAmount(b) || a.card_name.localeCompare(b.card_name),
     annualFeeDesc: (a, b) => annualFeeAmount(b) - annualFeeAmount(a) || a.card_name.localeCompare(b.card_name),
@@ -90,8 +97,11 @@ function sortCards(cards) {
     name: (a, b) => a.card_name.localeCompare(b.card_name)
   };
 
-  const sorter = sorters[els.sortBy.value] ?? sorters.name;
-  return [...cards].sort(sorter);
+  return sorters[els.sortBy.value] ?? sorters.name;
+}
+
+function sortCards(cards) {
+  return [...cards].sort(cardSortComparator());
 }
 
 function formatEarnPercentRange(multiplierRate, rewardsProgram) {
@@ -265,7 +275,19 @@ function renderBrowserCardItem(card) {
 }
 
 function renderCards() {
-  state.filteredCards = sortCards(state.cards.filter(cardMatches));
+  const queryTokens = tokenizeSearchQuery(els.searchInput.value);
+  const sortComparator = cardSortComparator();
+
+  const filteredCards = state.cards
+    .filter((card) => cardMatches(card, queryTokens))
+    .map((card) => ({ card, score: queryTokens.length ? cardSearchScore(card, queryTokens) : 0 }));
+
+  filteredCards.sort((a, b) => {
+    if (queryTokens.length && b.score !== a.score) return b.score - a.score;
+    return sortComparator(a.card, b.card);
+  });
+
+  state.filteredCards = filteredCards.map(({ card }) => card);
 
   els.summary.textContent = `Showing ${state.filteredCards.length} of ${state.cards.length} cards.`;
   updateResetButtonState();
