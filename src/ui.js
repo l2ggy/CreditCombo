@@ -79,7 +79,7 @@ export function renderResult(el, best, annualSpend, schema, valuationMode = "est
   el.append(comboHeading);
 
   const comboList = document.createElement("ul");
-  comboList.className = "comboList";
+  comboList.className = "listClean";
   best.combo.forEach((card) => comboList.append(renderResultCardItem(card)));
   el.append(comboList);
 
@@ -139,16 +139,16 @@ export function renderResult(el, best, annualSpend, schema, valuationMode = "est
     if (!alloc.length) continue;
 
     const tile = document.createElement("div");
-    tile.className = "useTile";
+    tile.className = "tile";
     tile.setAttribute("role", "listitem");
 
     const category = document.createElement("div");
-    category.className = "mono useCategory";
+    category.className = "mono tileTitle";
     category.textContent = cat;
     tile.append(category);
 
     const stack = document.createElement("div");
-    stack.className = alloc.length > 1 ? "useCards useCardsStack" : "useCards useCardsSingle";
+    stack.className = alloc.length > 1 ? "tileMedia tileMedia-stack" : "tileMedia tileMedia-single";
     stack.style.setProperty("--stack-count", String(alloc.length));
 
     alloc.forEach(({ card, amt }, idx) => {
@@ -156,12 +156,12 @@ export function renderResult(el, best, annualSpend, schema, valuationMode = "est
       const label = `${card.card_name}${amountPart}`;
 
       const thumb = document.createElement("span");
-      thumb.className = "useCardThumb";
+      thumb.className = "tileThumb";
       thumb.style.setProperty("--stack-index", String(idx));
       thumb.title = label;
       thumb.dataset.card = label;
       thumb.setAttribute("aria-label", label);
-      thumb.append(renderCardThumb(card, { className: "useThumbImage", withFrame: false }));
+      thumb.append(renderCardThumb(card, { className: "thumb thumb-lg thumb-contain", withFrame: false }));
       stack.append(thumb);
     });
 
@@ -171,7 +171,7 @@ export function renderResult(el, best, annualSpend, schema, valuationMode = "est
 
   const useCols = Math.min(4, Math.max(1, instructions.length));
   const useGrid = document.createElement("div");
-  useGrid.className = "useGrid";
+  useGrid.className = "tileGrid";
   useGrid.setAttribute("role", "list");
   useGrid.setAttribute("aria-label", "Card to use by category");
   useGrid.style.setProperty("--use-cols", String(useCols));

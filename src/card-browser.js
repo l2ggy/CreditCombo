@@ -117,7 +117,7 @@ function isCashbackProgram(rewardsProgram) {
 
 function renderEarnRateList(earnRates, rewardsProgram) {
   const list = document.createElement("ul");
-  list.className = "dataList";
+  list.className = "dataList listClean";
 
   const entries = Object.entries(earnRates || {});
   if (!entries.length) {
@@ -203,14 +203,14 @@ function renderCapContent(caps) {
 
 function renderBrowserCardItem(card) {
   const article = document.createElement("article");
-  article.className = "card";
+  article.className = "panel card";
 
   const top = document.createElement("div");
   top.className = "cardTop";
 
   const heading = document.createElement("div");
   heading.className = "cardHeading";
-  heading.append(renderCardThumb(card, { className: "cardThumb cardThumb-sm", withFrame: false }));
+  heading.append(renderCardThumb(card, { className: "thumb thumb-sm thumb-cover", withFrame: false }));
 
   const headingText = document.createElement("div");
   const title = document.createElement("h3");

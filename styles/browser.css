@@ -2,12 +2,6 @@
   position: static;
 }
 
-.btn-inline {
-  width: auto;
-  padding: var(--space-3) var(--space-5);
-  font-size: var(--font-size-sm);
-}
-
 .fieldGrid {
   display: grid;
   grid-template-columns: repeat(4, minmax(170px, 1fr));
@@ -17,13 +11,6 @@
 .cardList {
   display: grid;
   gap: var(--space-5);
-}
-
-.card {
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-xl);
-  padding: var(--space-6);
-  background: var(--color-panel);
 }
 
 .cardTop {
@@ -38,24 +25,6 @@
   align-items: flex-start;
   gap: var(--space-5);
   min-width: 0;
-}
-
-.cardThumb {
-  object-fit: cover;
-  border-radius: var(--radius-card);
-  border: 1px solid var(--color-border);
-  display: block;
-  flex: 0 0 auto;
-  overflow: hidden;
-}
-
-.cardThumb-sm {
-  width: 72px;
-  height: 45px;
-}
-
-.cardThumb.is-portrait {
-  border-radius: var(--radius-card-portrait);
 }
 
 .cardTitle {
@@ -83,14 +52,6 @@
   color: var(--color-muted);
   text-transform: uppercase;
   letter-spacing: 0.04em;
-}
-
-.dataList {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: grid;
-  gap: var(--space-2);
 }
 
 .dataList li {
