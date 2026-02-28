@@ -275,7 +275,7 @@
     },
     {
       "id": "amex_business_platinum",
-      "card_name": "Business Platinum Card® from American Express",
+      "card_name": "Business Platinum Card\u00ae from American Express",
       "issuer": "American Express",
       "network": "American Express",
       "rewards_program": "amex_mr_ca",
@@ -349,7 +349,7 @@
     },
     {
       "id": "amex_simplycash",
-      "card_name": "SimplyCash® Card from American Express",
+      "card_name": "SimplyCash\u00ae Card from American Express",
       "issuer": "American Express",
       "network": "American Express",
       "rewards_program": "amex_cashback",
@@ -395,7 +395,7 @@
     },
     {
       "id": "amex_simplycash_preferred",
-      "card_name": "SimplyCash® Preferred Card from American Express",
+      "card_name": "SimplyCash\u00ae Preferred Card from American Express",
       "issuer": "American Express",
       "network": "American Express",
       "rewards_program": "amex_cashback",
@@ -441,7 +441,7 @@
     },
     {
       "id": "amex_platinum",
-      "card_name": "The Platinum Card® from American Express",
+      "card_name": "The Platinum Card\u00ae from American Express",
       "issuer": "American Express",
       "network": "American Express",
       "rewards_program": "amex_mr_ca",
@@ -469,7 +469,7 @@
     },
     {
       "id": "atb_gold_cash_rewards_mastercard",
-      "card_name": "ATB Gold Cash Rewards Mastercard®",
+      "card_name": "ATB Gold Cash Rewards Mastercard\u00ae",
       "issuer": "ATB",
       "network": "Mastercard",
       "rewards_program": "atb_cashback",
@@ -489,7 +489,7 @@
     },
     {
       "id": "atb_gold_my_rewards_mastercard",
-      "card_name": "ATB Gold My Rewards Mastercard®",
+      "card_name": "ATB Gold My Rewards Mastercard\u00ae",
       "issuer": "ATB",
       "network": "Mastercard",
       "rewards_program": "atb_rewards",
@@ -509,7 +509,7 @@
     },
     {
       "id": "atb_world_elite_mastercard",
-      "card_name": "ATB World Elite Mastercard®",
+      "card_name": "ATB World Elite Mastercard\u00ae",
       "issuer": "ATB",
       "network": "Mastercard",
       "rewards_program": "atb_rewards",
@@ -722,7 +722,7 @@
     },
     {
       "id": "bmo_cashback_mastercard",
-      "card_name": "BMO CashBack® Mastercard®*",
+      "card_name": "BMO CashBack\u00ae Mastercard\u00ae*",
       "issuer": "BMO",
       "network": "Mastercard",
       "rewards_program": "bmo_cashback",
@@ -771,7 +771,7 @@
     },
     {
       "id": "bmo_preferred_rate_mastercard",
-      "card_name": "BMO Preferred Rate Mastercard®",
+      "card_name": "BMO Preferred Rate Mastercard\u00ae",
       "issuer": "BMO",
       "network": "Mastercard",
       "rewards_program": "canadian_non_rewards",
@@ -796,7 +796,7 @@
     },
     {
       "id": "bmo_u_s_dollar_mastercard",
-      "card_name": "BMO U.S. Dollar Mastercard®*",
+      "card_name": "BMO U.S. Dollar Mastercard\u00ae*",
       "issuer": "BMO",
       "network": "Mastercard",
       "rewards_program": "canadian_non_rewards",
@@ -821,7 +821,7 @@
     },
     {
       "id": "bmo_viporter_mastercard",
-      "card_name": "BMO VIPorter Mastercard®∗",
+      "card_name": "BMO VIPorter Mastercard\u00ae\u2217",
       "issuer": "BMO",
       "network": "Mastercard",
       "rewards_program": "viporter",
@@ -846,7 +846,7 @@
     },
     {
       "id": "bmo_viporter_world_elite_mastercard",
-      "card_name": "BMO VIPorter World Elite Mastercard®∗",
+      "card_name": "BMO VIPorter World Elite Mastercard\u00ae\u2217",
       "issuer": "BMO",
       "network": "Mastercard",
       "rewards_program": "viporter",
@@ -875,7 +875,7 @@
     },
     {
       "id": "bmo_ascend_world_elite_business_mastercard",
-      "card_name": "BMO® Ascend World Elite®* Business Mastercard®*",
+      "card_name": "BMO\u00ae Ascend World Elite\u00ae* Business Mastercard\u00ae*",
       "issuer": "BMO",
       "network": "Mastercard",
       "rewards_program": "bmo_rewards",
@@ -900,7 +900,7 @@
     },
     {
       "id": "students_bmo_cashback_mastercard",
-      "card_name": "Students – BMO CashBack® Mastercard®*",
+      "card_name": "Students \u2013 BMO CashBack\u00ae Mastercard\u00ae*",
       "issuer": "BMO",
       "network": "Mastercard",
       "rewards_program": "bmo_cashback",
@@ -1251,7 +1251,7 @@
     },
     {
       "id": "capital_one_smart_rewards_mastercard",
-      "card_name": "Capital One Smart Rewards™ Mastercard®",
+      "card_name": "Capital One Smart Rewards\u2122 Mastercard\u00ae",
       "issuer": "Capital One",
       "network": "Mastercard",
       "rewards_program": "capital_one_smart_rewards",
@@ -1558,7 +1558,7 @@
     },
     {
       "id": "cibc_bizline_visa_card",
-      "card_name": "CIBC bizline® Visa* Card",
+      "card_name": "CIBC bizline\u00ae Visa* Card",
       "issuer": "CIBC",
       "network": "Visa",
       "rewards_program": "canadian_non_rewards",
@@ -1940,7 +1940,7 @@
     },
     {
       "id": "fidem_mastercard",
-      "card_name": "Fidem Mastercard®",
+      "card_name": "Fidem Mastercard\u00ae",
       "issuer": "Fidem",
       "network": "Mastercard",
       "rewards_program": "canadian_non_rewards",
@@ -2164,7 +2164,7 @@
     },
     {
       "id": "amazon_ca_rewards_mastercard",
-      "card_name": "Amazon.ca Rewards Mastercard®",
+      "card_name": "Amazon.ca Rewards Mastercard\u00ae",
       "issuer": "MBNA",
       "network": "Mastercard",
       "rewards_program": "amazon_rewards",
@@ -2228,7 +2228,7 @@
     },
     {
       "id": "mbna_smart_cash_platinum_plus_mastercard",
-      "card_name": "MBNA Smart Cash Platinum Plus® Mastercard®",
+      "card_name": "MBNA Smart Cash Platinum Plus\u00ae Mastercard\u00ae",
       "issuer": "MBNA",
       "network": "Mastercard",
       "rewards_program": "mbna_smart_cashback",
@@ -2250,7 +2250,7 @@
     },
     {
       "id": "mbna_smart_cash_world_mastercard",
-      "card_name": "MBNA Smart Cash® World Mastercard®",
+      "card_name": "MBNA Smart Cash\u00ae World Mastercard\u00ae",
       "issuer": "MBNA",
       "network": "Mastercard",
       "rewards_program": "mbna_smart_cashback",
@@ -2502,7 +2502,7 @@
     },
     {
       "id": "national_bank_allure_mastercard",
-      "card_name": "National Bank Allure® Mastercard®",
+      "card_name": "National Bank Allure\u00ae Mastercard\u00ae",
       "issuer": "National Bank",
       "network": "Mastercard",
       "rewards_program": "nb_echo_cashback",
@@ -2547,7 +2547,7 @@
     },
     {
       "id": "national_bank_echo_cashback_mastercard",
-      "card_name": "National Bank ECHO® Cashback Mastercard",
+      "card_name": "National Bank ECHO\u00ae Cashback Mastercard",
       "issuer": "National Bank",
       "network": "Mastercard",
       "rewards_program": "nb_echo_cashback",
@@ -2679,7 +2679,7 @@
     },
     {
       "id": "national_bank_world_elite",
-      "card_name": "National Bank® World Elite® Mastercard®",
+      "card_name": "National Bank\u00ae World Elite\u00ae Mastercard\u00ae",
       "issuer": "National Bank of Canada",
       "network": "Mastercard",
       "rewards_program": "nb_a_la_carte",
@@ -2713,7 +2713,7 @@
     },
     {
       "id": "neo_cathay_world_elite_mastercard",
-      "card_name": "Neo Cathay World Elite® Mastercard®",
+      "card_name": "Neo Cathay World Elite\u00ae Mastercard\u00ae",
       "issuer": "Neo Financial",
       "network": "Mastercard",
       "rewards_program": "asia_miles",
@@ -2723,17 +2723,29 @@
         "type": "annual"
       },
       "earn_rates": {
-        "dining": 2,
         "other": 1
       },
       "caps": [],
       "special_earn_rules": [
         {
+          "type": "category_restriction",
+          "description": "Base earn is 1 Asia Mile per CAD on purchases in Canada."
+        },
+        {
+          "type": "foreign_currency",
+          "description": "Earns 2 Asia Miles per CAD on purchases made in foreign currencies."
+        },
+        {
           "type": "merchant_specific",
-          "description": "Elevated earn on Cathay Pacific purchases and certain travel-related transactions is merchant-specific and not mapped to travel."
+          "description": "Earns an additional 3 Asia Miles per CAD (4 total) on Cathay Pacific tickets purchased online at cathaypacific.com/ca."
+        },
+        {
+          "type": "eligibility",
+          "description": "Published income requirement is $80,000 personal or $150,000 household; offer page indicates card not available in Quebec."
         }
       ],
       "sources": [
+        "https://cathay.neofinancial.com/",
         "https://www.neofinancial.com/credit"
       ]
     },
@@ -2742,33 +2754,40 @@
       "card_name": "Neo Mastercard",
       "issuer": "Neo Financial",
       "network": "Mastercard",
-      "rewards_program": "scotia_cashback",
+      "rewards_program": "neo_cashback",
       "is_business_card": false,
       "annual_fee": {
         "amount": 0,
         "type": "annual"
       },
       "earn_rates": {
-        "other": 1
+        "grocery": 1,
+        "gas": 1,
+        "other": 0.5
       },
       "caps": [],
       "special_earn_rules": [
         {
-          "type": "proxy_program",
-          "description": "Neo earn rates vary by merchant/partner; modeled as a conservative baseline cashback proxy."
+          "type": "category_restriction",
+          "description": "1% earn applies to eligible grocery and gas purchases; non-bonus spend earns 0.5%."
         },
         {
           "type": "merchant_specific",
-          "description": "Neo earn can vary by merchant-specific boosted offers and partner network promotions."
+          "description": "Neo partner offers can provide higher merchant-level cashback than base rates and are not modeled category-by-category."
+        },
+        {
+          "type": "eligibility",
+          "description": "Card marketed with guaranteed approval and no minimum income requirement, subject to Neo eligibility criteria."
         }
       ],
       "sources": [
+        "https://www.neofinancial.com/credit-cards/neo-mastercard",
         "https://www.neofinancial.com/credit"
       ]
     },
     {
       "id": "neo_world_elite_mastercard",
-      "card_name": "Neo World Elite® Mastercard®",
+      "card_name": "Neo World Elite\u00ae Mastercard\u00ae",
       "issuer": "Neo Financial",
       "network": "Mastercard",
       "rewards_program": "neo_cashback",
@@ -2778,27 +2797,34 @@
         "type": "annual"
       },
       "earn_rates": {
+        "grocery": 5,
+        "gas": 3,
+        "bills": 4,
         "other": 1
       },
       "caps": [],
       "special_earn_rules": [
         {
-          "type": "proxy_program",
-          "description": "Neo World Elite earn is heavily partner- and merchant-dependent; modeled as a conservative baseline cashback proxy instead of fixed category multipliers."
+          "type": "category_restriction",
+          "description": "5% grocery, 3% gas, and 4% recurring payments are category-specific; non-bonus spend earns 1%."
         },
         {
           "type": "merchant_specific",
-          "description": "Advertised earn is typically expressed as average or \"up to\" cashback with boosted Neo Partner offers, not a universal fixed category table."
+          "description": "Neo partner offers may stack/add additional merchant-level earn and are not modeled as fixed category multipliers."
+        },
+        {
+          "type": "eligibility",
+          "description": "Published minimum personal income requirement is $80,000/year."
         }
       ],
       "sources": [
-        "https://www.neofinancial.com/credit/world-elite-mastercard",
+        "https://www.neofinancial.com/credit-cards/neo-world-elite-mastercard",
         "https://www.neofinancial.com/credit"
       ]
     },
     {
       "id": "neo_world_mastercard",
-      "card_name": "Neo World Mastercard®",
+      "card_name": "Neo World Mastercard\u00ae",
       "issuer": "Neo Financial",
       "network": "Mastercard",
       "rewards_program": "neo_cashback",
@@ -2808,21 +2834,28 @@
         "type": "annual"
       },
       "earn_rates": {
-        "other": 1
+        "grocery": 2,
+        "gas": 2,
+        "bills": 2,
+        "other": 0.5
       },
       "caps": [],
       "special_earn_rules": [
         {
-          "type": "proxy_program",
-          "description": "Neo World earn is partner- and merchant-dependent; modeled as a conservative baseline cashback proxy instead of fixed category multipliers."
+          "type": "category_restriction",
+          "description": "2% earn applies to grocery, gas, and recurring payments; non-bonus spend earns 0.5%."
         },
         {
           "type": "merchant_specific",
-          "description": "Advertised earn is commonly shown as average or \"up to\" cashback with boosted Neo Partner offers, not a universal fixed category table."
+          "description": "Neo partner offers can materially increase cashback at participating merchants and are not modeled in optimizer logic."
+        },
+        {
+          "type": "eligibility",
+          "description": "Published minimum personal income requirement is $50,000/year."
         }
       ],
       "sources": [
-        "https://www.neofinancial.com/credit/world-mastercard",
+        "https://www.neofinancial.com/credit-cards/neo-world-mastercard",
         "https://www.neofinancial.com/credit"
       ]
     },
@@ -2848,7 +2881,7 @@
         },
         {
           "type": "merchant_specific",
-          "description": "30 PC Optimum pts/$ at Loblaw’s grocery stores, Esso gas, and PC Travel."
+          "description": "30 PC Optimum pts/$ at Loblaw\u2019s grocery stores, Esso gas, and PC Travel."
         },
         {
           "type": "merchant_specific",
@@ -2891,7 +2924,7 @@
     },
     {
       "id": "pc_insiders_world_elite_mastercard",
-      "card_name": "PC Insiders™ World Elite® Mastercard®",
+      "card_name": "PC Insiders\u2122 World Elite\u00ae Mastercard\u00ae",
       "issuer": "PC Financial",
       "network": "Mastercard",
       "rewards_program": "pc_optimum",
@@ -2973,7 +3006,7 @@
     },
     {
       "id": "rbc_cash_back_mastercard",
-      "card_name": "RBC® Cash Back Mastercard",
+      "card_name": "RBC\u00ae Cash Back Mastercard",
       "issuer": "RBC",
       "network": "Mastercard",
       "rewards_program": "rbc_cashback",
@@ -3015,7 +3048,7 @@
     },
     {
       "id": "rbc_cash_back_preferred_we",
-      "card_name": "RBC® Cash Back Preferred World Elite Mastercard",
+      "card_name": "RBC\u00ae Cash Back Preferred World Elite Mastercard",
       "issuer": "RBC",
       "network": "Mastercard",
       "rewards_program": "rbc_cashback",
@@ -3047,7 +3080,7 @@
     },
     {
       "id": "westjet_rbc_mastercard",
-      "card_name": "WestJet RBC® Mastercard",
+      "card_name": "WestJet RBC\u00ae Mastercard",
       "issuer": "RBC",
       "network": "Mastercard",
       "rewards_program": "westjet_rewards",
@@ -3084,7 +3117,7 @@
     },
     {
       "id": "westjet_rbc_world_elite",
-      "card_name": "WestJet RBC® World Elite Mastercardǂ",
+      "card_name": "WestJet RBC\u00ae World Elite Mastercard\u01c2",
       "issuer": "RBC",
       "network": "Mastercard",
       "rewards_program": "westjet_rewards",
@@ -3118,7 +3151,7 @@
     },
     {
       "id": "moi_rbc_visa",
-      "card_name": "moi RBC® Visa‡",
+      "card_name": "moi RBC\u00ae Visa\u2021",
       "issuer": "RBC",
       "network": "Visa",
       "rewards_program": "moi_rewards",
@@ -3445,7 +3478,7 @@
     },
     {
       "id": "rbc_avion_visa_platinum",
-      "card_name": "RBC® Avion Visa Platinum†",
+      "card_name": "RBC\u00ae Avion Visa Platinum\u2020",
       "issuer": "RBC",
       "network": "Visa",
       "rewards_program": "rbc_avion",
@@ -3471,7 +3504,7 @@
     },
     {
       "id": "rbc_british_airways_visa_infinite",
-      "card_name": "RBC® British Airways Visa Infinite‡",
+      "card_name": "RBC\u00ae British Airways Visa Infinite\u2021",
       "issuer": "RBC",
       "network": "Visa",
       "rewards_program": "rbc_avios",
@@ -3496,7 +3529,7 @@
     },
     {
       "id": "rbc_ion_visa",
-      "card_name": "RBC® ION Visa",
+      "card_name": "RBC\u00ae ION Visa",
       "issuer": "RBC",
       "network": "Visa",
       "rewards_program": "rbc_avion",
@@ -3816,7 +3849,7 @@
     },
     {
       "id": "scotia_momentum_for_business_visa_card",
-      "card_name": "Scotia Momentum® for business Visa* Card",
+      "card_name": "Scotia Momentum\u00ae for business Visa* Card",
       "issuer": "Scotiabank",
       "network": "Visa",
       "rewards_program": "scotia_cashback",
@@ -3934,7 +3967,7 @@
     },
     {
       "id": "scotiabank_passport_visa_infinite_privilege_card",
-      "card_name": "Scotiabank Passport® Visa Infinite* Privilege Card",
+      "card_name": "Scotiabank Passport\u00ae Visa Infinite* Privilege Card",
       "issuer": "Scotiabank",
       "network": "Visa",
       "rewards_program": "scene_plus",
@@ -3980,7 +4013,7 @@
     },
     {
       "id": "simplii_cash_back_visa",
-      "card_name": "Simplii Financial™ Cash Back Visa* Card",
+      "card_name": "Simplii Financial\u2122 Cash Back Visa* Card",
       "issuer": "Simplii Financial (CIBC)",
       "network": "Visa",
       "rewards_program": "simplii_cashback",
@@ -4618,7 +4651,7 @@
     },
     {
       "id": "td_first_class_travel_vi",
-      "card_name": "TD First Class Travel® Visa Infinite* Card",
+      "card_name": "TD First Class Travel\u00ae Visa Infinite* Card",
       "issuer": "TD Canada Trust",
       "network": "Visa",
       "rewards_program": "td_rewards",
@@ -4656,7 +4689,7 @@
       "special_earn_rules": [
         {
           "type": "portal_specific",
-          "description": "8 TD Rewards points per $ on travel booked through Expedia® for TD (not mapped to travel)."
+          "description": "8 TD Rewards points per $ on travel booked through Expedia\u00ae for TD (not mapped to travel)."
         },
         {
           "type": "category_out_of_schema",
@@ -4674,7 +4707,7 @@
     },
     {
       "id": "td_aeroplan_visa_business_card",
-      "card_name": "TD® Aeroplan® Visa* Business Card",
+      "card_name": "TD\u00ae Aeroplan\u00ae Visa* Business Card",
       "issuer": "TD Canada Trust",
       "network": "Visa",
       "rewards_program": "aeroplan",
@@ -4726,7 +4759,7 @@
     },
     {
       "id": "tims_mastercard",
-      "card_name": "Tims® Mastercard",
+      "card_name": "Tims\u00ae Mastercard",
       "issuer": "Tims Financial",
       "network": "Mastercard",
       "rewards_program": "tims_rewards",
