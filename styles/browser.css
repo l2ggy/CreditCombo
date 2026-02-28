@@ -2,6 +2,15 @@
 .cardList{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-5)}
 
 .card{display:grid;align-content:start;gap:0}
+.card{
+  background:color-mix(in srgb,var(--color-panel) 94%,var(--color-accent) 6%);
+  box-shadow:0 1px 3px color-mix(in srgb,var(--color-text) 8%,transparent);
+  transition:border-color .16s ease,box-shadow .16s ease,background-color .16s ease;
+}
+.card:hover,.card:focus-within{
+  border-color:color-mix(in srgb,var(--color-border) 75%,var(--color-text) 25%);
+  box-shadow:0 4px 10px color-mix(in srgb,var(--color-text) 10%,transparent);
+}
 .card .split{align-items:flex-start}
 .card .inline{align-items:flex-start}
 .card .stack-end{align-items:flex-start;text-align:left}
