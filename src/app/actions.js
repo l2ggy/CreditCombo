@@ -1,15 +1,7 @@
 import { annualizeMonthlySpend } from "../optimizer.js";
 import { clampInt, readMonthlySpend, renderResult } from "../ui.js";
 import { candidatePools, kBounds, selectedLockedCardIds } from "./state.js";
-
-function escapeHtml(s) {
-  return String(s)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
-}
+import { escapeHtml } from "../shared/sanitize.js";
 
 export function createActions({ state, view, schema, programsMap, eligibleCards, eligibleCardIdSet, eligibleCardsById }) {
   const { elements } = view;
