@@ -5,9 +5,18 @@ import { createUiState } from "./app/state.js";
 import { createView } from "./app/view.js";
 import { escapeHtml } from "./shared/sanitize.js";
 
+const STATUS_CLASSES = ["status--loading", "status--ready", "status--error"];
+
+function setStatusState(statusEl, statusClass) {
+  if (!statusEl) return;
+  statusEl.classList.remove(...STATUS_CLASSES);
+  if (statusClass) statusEl.classList.add(statusClass);
+}
+
 async function main() {
   const view = createView();
   const { elements } = view;
+  setStatusState(elements.statusEl, "status--loading");
 
   try {
     const { schema, categoryDescriptions, eligibleCards, issues, programsMap } = await loadOptimizerData();
@@ -18,6 +27,7 @@ async function main() {
       <span class="badge good">Loaded</span>
       <span class="muted">${eligibleCards.length} eligible cards · ${issues.length} excluded · ${programsMap.size} programs</span>
     `;
+    setStatusState(elements.statusEl, "status--ready");
 
     renderSpendTable(elements.spendTableEl, schema, categoryDescriptions);
     renderIssues(elements.issuesEl, issues);
@@ -61,6 +71,7 @@ async function main() {
     window.addEventListener("beforeunload", actions.terminateWorker);
   } catch (e) {
     elements.statusEl.innerHTML = `<span class="badge bad">Error</span> ${escapeHtml(e?.message || "Unknown error")}`;
+    setStatusState(elements.statusEl, "status--error");
   }
 }
 

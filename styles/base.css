@@ -27,6 +27,9 @@ h3{margin:var(--space-6) 0 var(--space-4);font-size:var(--font-size-md);color:va
 .row{display:flex;flex-wrap:wrap;gap:var(--space-4);align-items:stretch}
 
 .status{display:inline-flex;flex-wrap:wrap;gap:var(--space-1) var(--space-3);padding:var(--space-3) var(--space-5);border:1px solid var(--color-border);border-radius:var(--radius-lg);background:color-mix(in srgb,var(--color-panel) 60%,transparent);color:var(--color-muted);font-size:var(--font-size-base)}
+.status--loading{border-color:color-mix(in srgb,var(--color-border) 80%,var(--color-accent));background:color-mix(in srgb,var(--color-accent) 10%,var(--color-panel));}
+.status--ready{border-color:color-mix(in srgb,var(--color-border) 82%,#4f8f6a);background:color-mix(in srgb,#4f8f6a 9%,var(--color-panel));}
+.status--error{border-color:color-mix(in srgb,var(--color-border) 76%,#b96a73);background:color-mix(in srgb,#b96a73 11%,var(--color-panel));}
 
 label{display:block;margin:0 0 var(--space-2);font-size:var(--font-size-sm);color:var(--color-muted)}
 input[type="number"],input[type="search"],select{width:100%;border:1px solid var(--color-border);border-radius:var(--radius-lg);background:transparent;color:var(--color-text);outline:none}
