@@ -1,7 +1,5 @@
-export function money(x) {
-  const v = Math.round(Number(x) * 100) / 100;
-  return "$" + v.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-}
+import { formatMoneyCAD } from "./shared/format.js";
+import { escapeHtml } from "./shared/sanitize.js";
 
 export function clampInt(n, lo, hi) {
   n = Math.floor(Number(n) || lo);
@@ -83,7 +81,7 @@ export function renderResult(el, best, annualSpend, schema, valuationMode = "est
       <div>
         <b>${escapeHtml(c.card_name)}</b> <span class="muted">(${escapeHtml(c.issuer)})</span>
         — <span class="mono">${escapeHtml(c.network)}</span>
-        — fee <span class="mono">${money(fee)}/yr</span>
+        — fee <span class="mono">${formatMoneyCAD(fee)}/yr</span>
       </div>
     </li>`;
   }).join("");
@@ -102,7 +100,7 @@ export function renderResult(el, best, annualSpend, schema, valuationMode = "est
     if (!alloc.length) continue;
 
     const thumbs = alloc.map(({ c, amt }, idx) => {
-      const amountPart = alloc.length > 1 ? ` — ${money(amt)}` : "";
+      const amountPart = alloc.length > 1 ? ` — ${formatMoneyCAD(amt)}` : "";
       return `<span class="useCardThumb" style="--stack-index:${idx}" title="${escapeHtml(c.card_name)}${escapeHtml(amountPart)}" data-card="${escapeHtml(c.card_name)}${escapeHtml(amountPart)}" aria-label="${escapeHtml(c.card_name)}${escapeHtml(amountPart)}">${cardThumbMarkup(c, "useThumbImage", false)}</span>`;
     }).join("");
 
@@ -125,9 +123,9 @@ export function renderResult(el, best, annualSpend, schema, valuationMode = "est
     <h2>Annual value (${valuationMode === "minimum_guaranteed" ? "minimum guaranteed" : "estimated"})</h2>
     <table>
       <tbody>
-        <tr><th>Gross rewards value</th><td>${money(best.gross)}</td></tr>
-        <tr><th>Annual fees</th><td>${money(best.fees)}</td></tr>
-        <tr><th>Net value</th><td><b>${money(best.net)}</b></td></tr>
+        <tr><th>Gross rewards value</th><td>${formatMoneyCAD(best.gross)}</td></tr>
+        <tr><th>Annual fees</th><td>${formatMoneyCAD(best.fees)}</td></tr>
+        <tr><th>Net value</th><td><b>${formatMoneyCAD(best.net)}</b></td></tr>
       </tbody>
     </table>
 
@@ -152,11 +150,3 @@ function spendDescriptionMarkup(desc) {
   return `<details class="spendDesc"><summary><span class="spendDescLabel">Details</span><span class="spendDescCaret" aria-hidden="true">▾</span></summary><div class="spendDescBody muted">${escapeHtml(clean)}</div></details>`;
 }
 
-function escapeHtml(s) {
-  return String(s)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
-}
