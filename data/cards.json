@@ -78,7 +78,7 @@
   "cards": [
     {
       "id": "amex_aeroplan_business_reserve",
-      "card_name": "American Express Aeroplan Business Reserve Card",
+      "card_name": "American Express Aeroplan Business Reserve",
       "issuer": "American Express",
       "network": "American Express",
       "rewards_program": "aeroplan",
@@ -107,7 +107,7 @@
     },
     {
       "id": "amex_aeroplan_card",
-      "card_name": "American Express Aeroplan Card",
+      "card_name": "American Express Aeroplan",
       "issuer": "American Express",
       "network": "American Express",
       "rewards_program": "aeroplan",
@@ -133,7 +133,7 @@
     },
     {
       "id": "amex_aeroplan_reserve",
-      "card_name": "American Express Aeroplan Reserve Card",
+      "card_name": "American Express Aeroplan Reserve",
       "issuer": "American Express",
       "network": "American Express",
       "rewards_program": "aeroplan",
@@ -163,7 +163,7 @@
     },
     {
       "id": "amex_cobalt",
-      "card_name": "American Express Cobalt Card",
+      "card_name": "American Express Cobalt",
       "issuer": "American Express",
       "network": "American Express",
       "rewards_program": "amex_mr_ca",
@@ -202,7 +202,7 @@
     },
     {
       "id": "amex_gold_rewards",
-      "card_name": "American Express Gold Rewards Card",
+      "card_name": "American Express Gold Rewards",
       "issuer": "American Express",
       "network": "American Express",
       "rewards_program": "amex_mr_ca",
@@ -232,7 +232,7 @@
     },
     {
       "id": "amex_green",
-      "card_name": "American Express Green Card",
+      "card_name": "American Express Green",
       "issuer": "American Express",
       "network": "American Express",
       "rewards_program": "amex_mr_ca",
@@ -275,7 +275,7 @@
     },
     {
       "id": "amex_business_platinum",
-      "card_name": "Business Platinum Card\u00ae from American Express",
+      "card_name": "Business Platinum Card from American Express",
       "issuer": "American Express",
       "network": "American Express",
       "rewards_program": "amex_mr_ca",
@@ -301,7 +301,7 @@
     },
     {
       "id": "amex_marriott_bonvoy",
-      "card_name": "Marriott Bonvoy American Express Card",
+      "card_name": "Marriott Bonvoy American Express",
       "issuer": "American Express",
       "network": "American Express",
       "rewards_program": "marriott_bonvoy",
@@ -326,7 +326,7 @@
     },
     {
       "id": "amex_bonvoy_business",
-      "card_name": "Marriott Bonvoy Business American Express Card",
+      "card_name": "Marriott Bonvoy Business American Express",
       "issuer": "American Express",
       "network": "American Express",
       "rewards_program": "marriott_bonvoy",
@@ -349,7 +349,7 @@
     },
     {
       "id": "amex_simplycash",
-      "card_name": "SimplyCash\u00ae Card from American Express",
+      "card_name": "SimplyCash Card from American Express",
       "issuer": "American Express",
       "network": "American Express",
       "rewards_program": "amex_cashback",
@@ -395,7 +395,7 @@
     },
     {
       "id": "amex_simplycash_preferred",
-      "card_name": "SimplyCash\u00ae Preferred Card from American Express",
+      "card_name": "SimplyCash Preferred Card from American Express",
       "issuer": "American Express",
       "network": "American Express",
       "rewards_program": "amex_cashback",
@@ -441,7 +441,7 @@
     },
     {
       "id": "amex_platinum",
-      "card_name": "The Platinum Card\u00ae from American Express",
+      "card_name": "The Platinum Card from American Express",
       "issuer": "American Express",
       "network": "American Express",
       "rewards_program": "amex_mr_ca",
@@ -469,7 +469,7 @@
     },
     {
       "id": "atb_gold_cash_rewards_mastercard",
-      "card_name": "ATB Gold Cash Rewards Mastercard\u00ae",
+      "card_name": "ATB Gold Cash Rewards Mastercard",
       "issuer": "ATB",
       "network": "Mastercard",
       "rewards_program": "atb_cashback",
@@ -489,7 +489,7 @@
     },
     {
       "id": "atb_gold_my_rewards_mastercard",
-      "card_name": "ATB Gold My Rewards Mastercard\u00ae",
+      "card_name": "ATB Gold My Rewards Mastercard",
       "issuer": "ATB",
       "network": "Mastercard",
       "rewards_program": "atb_rewards",
@@ -509,7 +509,7 @@
     },
     {
       "id": "atb_world_elite_mastercard",
-      "card_name": "ATB World Elite Mastercard\u00ae",
+      "card_name": "ATB World Elite Mastercard",
       "issuer": "ATB",
       "network": "Mastercard",
       "rewards_program": "atb_rewards",
@@ -722,7 +722,7 @@
     },
     {
       "id": "bmo_cashback_mastercard",
-      "card_name": "BMO CashBack\u00ae Mastercard\u00ae*",
+      "card_name": "BMO CashBack Mastercard",
       "issuer": "BMO",
       "network": "Mastercard",
       "rewards_program": "bmo_cashback",
@@ -771,7 +771,7 @@
     },
     {
       "id": "bmo_preferred_rate_mastercard",
-      "card_name": "BMO Preferred Rate Mastercard\u00ae",
+      "card_name": "BMO Preferred Rate Mastercard",
       "issuer": "BMO",
       "network": "Mastercard",
       "rewards_program": "canadian_non_rewards",
@@ -796,7 +796,7 @@
     },
     {
       "id": "bmo_u_s_dollar_mastercard",
-      "card_name": "BMO U.S. Dollar Mastercard\u00ae*",
+      "card_name": "BMO U.S. Dollar Mastercard",
       "issuer": "BMO",
       "network": "Mastercard",
       "rewards_program": "canadian_non_rewards",
@@ -821,7 +821,7 @@
     },
     {
       "id": "bmo_viporter_mastercard",
-      "card_name": "BMO VIPorter Mastercard\u00ae\u2217",
+      "card_name": "BMO VIPorter Mastercard",
       "issuer": "BMO",
       "network": "Mastercard",
       "rewards_program": "viporter",
@@ -846,7 +846,7 @@
     },
     {
       "id": "bmo_viporter_world_elite_mastercard",
-      "card_name": "BMO VIPorter World Elite Mastercard\u00ae\u2217",
+      "card_name": "BMO VIPorter World Elite Mastercard",
       "issuer": "BMO",
       "network": "Mastercard",
       "rewards_program": "viporter",
@@ -875,7 +875,7 @@
     },
     {
       "id": "bmo_ascend_world_elite_business_mastercard",
-      "card_name": "BMO\u00ae Ascend World Elite\u00ae* Business Mastercard\u00ae*",
+      "card_name": "BMO Ascend World Elite Business Mastercard",
       "issuer": "BMO",
       "network": "Mastercard",
       "rewards_program": "bmo_rewards",
@@ -900,7 +900,7 @@
     },
     {
       "id": "students_bmo_cashback_mastercard",
-      "card_name": "Students \u2013 BMO CashBack\u00ae Mastercard\u00ae*",
+      "card_name": "Students – BMO CashBack Mastercard",
       "issuer": "BMO",
       "network": "Mastercard",
       "rewards_program": "bmo_cashback",
@@ -949,7 +949,7 @@
     },
     {
       "id": "bmo_eclipse_rise",
-      "card_name": "BMO eclipse rise Visa* Card",
+      "card_name": "BMO eclipse rise Visa",
       "issuer": "BMO",
       "network": "Visa",
       "rewards_program": "bmo_rewards",
@@ -978,7 +978,7 @@
     },
     {
       "id": "bmo_eclipse_vip",
-      "card_name": "BMO eclipse Visa Infinite Privilege* Card",
+      "card_name": "BMO eclipse Visa Infinite Privilege",
       "issuer": "BMO",
       "network": "Visa",
       "rewards_program": "bmo_rewards",
@@ -1024,7 +1024,7 @@
     },
     {
       "id": "bmo_eclipse_vi",
-      "card_name": "BMO eclipse Visa Infinite* Card",
+      "card_name": "BMO eclipse Visa Infinite",
       "issuer": "BMO",
       "network": "Visa",
       "rewards_program": "bmo_rewards",
@@ -1251,7 +1251,7 @@
     },
     {
       "id": "capital_one_smart_rewards_mastercard",
-      "card_name": "Capital One Smart Rewards\u2122 Mastercard\u00ae",
+      "card_name": "Capital One Smart Rewards Mastercard",
       "issuer": "Capital One",
       "network": "Mastercard",
       "rewards_program": "capital_one_smart_rewards",
@@ -1303,7 +1303,7 @@
     },
     {
       "id": "cibc_aeroplan_visa",
-      "card_name": "CIBC Aeroplan Visa Card",
+      "card_name": "CIBC Aeroplan Visa",
       "issuer": "CIBC",
       "network": "Visa",
       "rewards_program": "aeroplan",
@@ -1331,7 +1331,7 @@
     },
     {
       "id": "cibc_aeroplan_vi",
-      "card_name": "CIBC Aeroplan Visa Infinite Card",
+      "card_name": "CIBC Aeroplan Visa Infinite",
       "issuer": "CIBC",
       "network": "Visa",
       "rewards_program": "aeroplan",
@@ -1376,7 +1376,7 @@
     },
     {
       "id": "cibc_aeroplan_vip",
-      "card_name": "CIBC Aeroplan Visa Infinite Privilege Card",
+      "card_name": "CIBC Aeroplan Visa Infinite Privilege",
       "issuer": "CIBC",
       "network": "Visa",
       "rewards_program": "aeroplan",
@@ -1404,7 +1404,7 @@
     },
     {
       "id": "cibc_aventura_gold",
-      "card_name": "CIBC Aventura Gold Visa Card",
+      "card_name": "CIBC Aventura Gold Visa",
       "issuer": "CIBC",
       "network": "Visa",
       "rewards_program": "cibc_aventura",
@@ -1432,7 +1432,7 @@
     },
     {
       "id": "cibc_aventura_visa",
-      "card_name": "CIBC Aventura Visa Card",
+      "card_name": "CIBC Aventura Visa",
       "issuer": "CIBC",
       "network": "Visa",
       "rewards_program": "cibc_aventura",
@@ -1531,7 +1531,7 @@
     },
     {
       "id": "cibc_aventura_vip",
-      "card_name": "CIBC Aventura Visa Infinite Privilege Card",
+      "card_name": "CIBC Aventura Visa Infinite Privilege",
       "issuer": "CIBC",
       "network": "Visa",
       "rewards_program": "cibc_aventura",
@@ -1558,7 +1558,7 @@
     },
     {
       "id": "cibc_bizline_visa_card",
-      "card_name": "CIBC bizline\u00ae Visa* Card",
+      "card_name": "CIBC bizline Visa",
       "issuer": "CIBC",
       "network": "Visa",
       "rewards_program": "canadian_non_rewards",
@@ -1583,7 +1583,7 @@
     },
     {
       "id": "cibc_dividend_platinum",
-      "card_name": "CIBC Dividend Platinum Visa Card",
+      "card_name": "CIBC Dividend Platinum Visa",
       "issuer": "CIBC",
       "network": "Visa",
       "rewards_program": "cibc_dividend_cashback",
@@ -1606,7 +1606,7 @@
     },
     {
       "id": "cibc_dividend_no_fee",
-      "card_name": "CIBC Dividend Visa Card",
+      "card_name": "CIBC Dividend Visa",
       "issuer": "CIBC",
       "network": "Visa",
       "rewards_program": "cibc_dividend_cashback",
@@ -1667,7 +1667,7 @@
     },
     {
       "id": "cibc_select_visa_card",
-      "card_name": "CIBC Select Visa* Card",
+      "card_name": "CIBC Select Visa",
       "issuer": "CIBC",
       "network": "Visa",
       "rewards_program": "canadian_non_rewards",
@@ -1940,7 +1940,7 @@
     },
     {
       "id": "fidem_mastercard",
-      "card_name": "Fidem Mastercard\u00ae",
+      "card_name": "Fidem Mastercard",
       "issuer": "Fidem",
       "network": "Mastercard",
       "rewards_program": "canadian_non_rewards",
@@ -2121,7 +2121,7 @@
     },
     {
       "id": "manulife_moneyplus_visa_infinite",
-      "card_name": "ManulifeMONEY+ Visa Infinite Card",
+      "card_name": "ManulifeMONEY+ Visa Infinite",
       "issuer": "Manulife Bank",
       "network": "Visa",
       "rewards_program": "manulife_cashback",
@@ -2164,7 +2164,7 @@
     },
     {
       "id": "amazon_ca_rewards_mastercard",
-      "card_name": "Amazon.ca Rewards Mastercard\u00ae",
+      "card_name": "Amazon.ca Rewards Mastercard",
       "issuer": "MBNA",
       "network": "Mastercard",
       "rewards_program": "amazon_rewards",
@@ -2228,7 +2228,7 @@
     },
     {
       "id": "mbna_smart_cash_platinum_plus_mastercard",
-      "card_name": "MBNA Smart Cash Platinum Plus\u00ae Mastercard\u00ae",
+      "card_name": "MBNA Smart Cash Platinum Plus Mastercard",
       "issuer": "MBNA",
       "network": "Mastercard",
       "rewards_program": "mbna_smart_cashback",
@@ -2250,7 +2250,7 @@
     },
     {
       "id": "mbna_smart_cash_world_mastercard",
-      "card_name": "MBNA Smart Cash\u00ae World Mastercard\u00ae",
+      "card_name": "MBNA Smart Cash World Mastercard",
       "issuer": "MBNA",
       "network": "Mastercard",
       "rewards_program": "mbna_smart_cashback",
@@ -2375,7 +2375,7 @@
     },
     {
       "id": "meridian_visa_cash_back_card",
-      "card_name": "Meridian Visa Cash Back Card",
+      "card_name": "Meridian Visa Cash Back",
       "issuer": "Meridian",
       "network": "Visa",
       "rewards_program": "meridian_cashback",
@@ -2405,7 +2405,7 @@
     },
     {
       "id": "meridian_visa_infinite_travel_rewards_card",
-      "card_name": "Meridian Visa Infinite Travel Rewards Card",
+      "card_name": "Meridian Visa Infinite Travel Rewards",
       "issuer": "Meridian",
       "network": "Visa",
       "rewards_program": "meridian_rewards",
@@ -2436,7 +2436,7 @@
     },
     {
       "id": "meridian_visa_infinite_cash_back",
-      "card_name": "Meridian Visa Infinite* Cash Back",
+      "card_name": "Meridian Visa Infinite Cash Back",
       "issuer": "Meridian",
       "network": "Visa",
       "rewards_program": "meridian_cashback",
@@ -2481,7 +2481,7 @@
     },
     {
       "id": "meridian_visa_us_dollar_card",
-      "card_name": "Meridian Visa US Dollar Card",
+      "card_name": "Meridian Visa US Dollar",
       "issuer": "Meridian",
       "network": "Visa",
       "rewards_program": "meridian_rewards",
@@ -2507,7 +2507,7 @@
     },
     {
       "id": "national_bank_allure_mastercard",
-      "card_name": "National Bank Allure\u00ae Mastercard\u00ae",
+      "card_name": "National Bank Allure Mastercard",
       "issuer": "National Bank",
       "network": "Mastercard",
       "rewards_program": "nb_echo_cashback",
@@ -2552,7 +2552,7 @@
     },
     {
       "id": "national_bank_echo_cashback_mastercard",
-      "card_name": "National Bank ECHO\u00ae Cashback Mastercard",
+      "card_name": "National Bank ECHO Cashback Mastercard",
       "issuer": "National Bank",
       "network": "Mastercard",
       "rewards_program": "nb_echo_cashback",
@@ -2684,7 +2684,7 @@
     },
     {
       "id": "national_bank_world_elite",
-      "card_name": "National Bank\u00ae World Elite\u00ae Mastercard\u00ae",
+      "card_name": "National Bank World Elite Mastercard",
       "issuer": "National Bank of Canada",
       "network": "Mastercard",
       "rewards_program": "nb_a_la_carte",
@@ -2718,7 +2718,7 @@
     },
     {
       "id": "neo_cathay_world_elite_mastercard",
-      "card_name": "Neo Cathay World Elite\u00ae Mastercard\u00ae",
+      "card_name": "Neo Cathay World Elite Mastercard",
       "issuer": "Neo Financial",
       "network": "Mastercard",
       "rewards_program": "asia_miles",
@@ -2833,7 +2833,7 @@
     },
     {
       "id": "neo_world_elite_mastercard",
-      "card_name": "Neo World Elite\u00ae Mastercard\u00ae",
+      "card_name": "Neo World Elite Mastercard",
       "issuer": "Neo Financial",
       "network": "Mastercard",
       "rewards_program": "neo_cashback",
@@ -2906,7 +2906,7 @@
     },
     {
       "id": "neo_world_mastercard",
-      "card_name": "Neo World Mastercard\u00ae",
+      "card_name": "Neo World Mastercard",
       "issuer": "Neo Financial",
       "network": "Mastercard",
       "rewards_program": "neo_cashback",
@@ -3009,7 +3009,7 @@
         },
         {
           "type": "merchant_specific",
-          "description": "30 PC Optimum pts/$ at Loblaw\u2019s grocery stores, Esso gas, and PC Travel."
+          "description": "30 PC Optimum pts/$ at Loblaw’s grocery stores, Esso gas, and PC Travel."
         },
         {
           "type": "merchant_specific",
@@ -3052,7 +3052,7 @@
     },
     {
       "id": "pc_insiders_world_elite_mastercard",
-      "card_name": "PC Insiders\u2122 World Elite\u00ae Mastercard\u00ae",
+      "card_name": "PC Insiders World Elite Mastercard",
       "issuer": "PC Financial",
       "network": "Mastercard",
       "rewards_program": "pc_optimum",
@@ -3134,7 +3134,7 @@
     },
     {
       "id": "rbc_cash_back_mastercard",
-      "card_name": "RBC\u00ae Cash Back Mastercard",
+      "card_name": "RBC Cash Back Mastercard",
       "issuer": "RBC",
       "network": "Mastercard",
       "rewards_program": "rbc_cashback",
@@ -3176,7 +3176,7 @@
     },
     {
       "id": "rbc_cash_back_preferred_we",
-      "card_name": "RBC\u00ae Cash Back Preferred World Elite Mastercard",
+      "card_name": "RBC Cash Back Preferred World Elite Mastercard",
       "issuer": "RBC",
       "network": "Mastercard",
       "rewards_program": "rbc_cashback",
@@ -3208,7 +3208,7 @@
     },
     {
       "id": "westjet_rbc_mastercard",
-      "card_name": "WestJet RBC\u00ae Mastercard",
+      "card_name": "WestJet RBC Mastercard",
       "issuer": "RBC",
       "network": "Mastercard",
       "rewards_program": "westjet_rewards",
@@ -3245,7 +3245,7 @@
     },
     {
       "id": "westjet_rbc_world_elite",
-      "card_name": "WestJet RBC\u00ae World Elite Mastercard\u01c2",
+      "card_name": "WestJet RBC World Elite Mastercardǂ",
       "issuer": "RBC",
       "network": "Mastercard",
       "rewards_program": "westjet_rewards",
@@ -3279,7 +3279,7 @@
     },
     {
       "id": "moi_rbc_visa",
-      "card_name": "moi RBC\u00ae Visa\u2021",
+      "card_name": "moi RBC Visa‡",
       "issuer": "RBC",
       "network": "Visa",
       "rewards_program": "moi_rewards",
@@ -3606,7 +3606,7 @@
     },
     {
       "id": "rbc_avion_visa_platinum",
-      "card_name": "RBC\u00ae Avion Visa Platinum\u2020",
+      "card_name": "RBC Avion Visa Platinum†",
       "issuer": "RBC",
       "network": "Visa",
       "rewards_program": "rbc_avion",
@@ -3632,7 +3632,7 @@
     },
     {
       "id": "rbc_british_airways_visa_infinite",
-      "card_name": "RBC\u00ae British Airways Visa Infinite\u2021",
+      "card_name": "RBC British Airways Visa Infinite‡",
       "issuer": "RBC",
       "network": "Visa",
       "rewards_program": "rbc_avios",
@@ -3657,7 +3657,7 @@
     },
     {
       "id": "rbc_ion_visa",
-      "card_name": "RBC\u00ae ION Visa",
+      "card_name": "RBC ION Visa",
       "issuer": "RBC",
       "network": "Visa",
       "rewards_program": "rbc_avion",
@@ -3748,7 +3748,7 @@
     },
     {
       "id": "scotia_american_express",
-      "card_name": "Scotiabank American Express Card",
+      "card_name": "Scotiabank American Express",
       "issuer": "Scotiabank",
       "network": "American Express",
       "rewards_program": "scene_plus",
@@ -3772,7 +3772,7 @@
     },
     {
       "id": "scotia_gold_amex",
-      "card_name": "Scotiabank Gold American Express Card",
+      "card_name": "Scotiabank Gold American Express",
       "issuer": "Scotiabank",
       "network": "American Express",
       "rewards_program": "scene_plus",
@@ -3804,7 +3804,7 @@
     },
     {
       "id": "scotia_amex_platinum",
-      "card_name": "Scotiabank Platinum American Express Card",
+      "card_name": "Scotiabank Platinum American Express",
       "issuer": "Scotiabank",
       "network": "American Express",
       "rewards_program": "scene_plus",
@@ -3861,7 +3861,7 @@
     },
     {
       "id": "scotia_momentum_no_fee",
-      "card_name": "Scotia Momentum Visa Card",
+      "card_name": "Scotia Momentum Visa",
       "issuer": "Scotiabank",
       "network": "Visa",
       "rewards_program": "scotia_cashback",
@@ -3977,7 +3977,7 @@
     },
     {
       "id": "scotia_momentum_for_business_visa_card",
-      "card_name": "Scotia Momentum\u00ae for business Visa* Card",
+      "card_name": "Scotia Momentum for business Visa",
       "issuer": "Scotiabank",
       "network": "Visa",
       "rewards_program": "scotia_cashback",
@@ -4022,7 +4022,7 @@
     },
     {
       "id": "scotia_value_visa",
-      "card_name": "Scotia Value Visa Card",
+      "card_name": "Scotia Value Visa",
       "issuer": "Scotiabank",
       "network": "Visa",
       "rewards_program": "scotia_cashback",
@@ -4070,7 +4070,7 @@
     },
     {
       "id": "scotia_passport_vi",
-      "card_name": "Scotiabank Passport Visa Infinite Card",
+      "card_name": "Scotiabank Passport Visa Infinite",
       "issuer": "Scotiabank",
       "network": "Visa",
       "rewards_program": "scene_plus",
@@ -4095,7 +4095,7 @@
     },
     {
       "id": "scotiabank_passport_visa_infinite_privilege_card",
-      "card_name": "Scotiabank Passport\u00ae Visa Infinite* Privilege Card",
+      "card_name": "Scotiabank Passport Visa Infinite Privilege",
       "issuer": "Scotiabank",
       "network": "Visa",
       "rewards_program": "scene_plus",
@@ -4118,7 +4118,7 @@
     },
     {
       "id": "scotia_scene_visa",
-      "card_name": "Scotiabank Scene+ Visa Card",
+      "card_name": "Scotiabank Scene+ Visa",
       "issuer": "Scotiabank",
       "network": "Visa",
       "rewards_program": "scene_plus",
@@ -4141,7 +4141,7 @@
     },
     {
       "id": "simplii_cash_back_visa",
-      "card_name": "Simplii Financial\u2122 Cash Back Visa* Card",
+      "card_name": "Simplii Financial Cash Back Visa",
       "issuer": "Simplii Financial (CIBC)",
       "network": "Visa",
       "rewards_program": "simplii_cashback",
@@ -4293,7 +4293,7 @@
     },
     {
       "id": "td_aeroplan_vip",
-      "card_name": "TD Aeroplan Visa Infinite Privilege Card",
+      "card_name": "TD Aeroplan Visa Infinite Privilege",
       "issuer": "TD",
       "network": "Visa",
       "rewards_program": "aeroplan",
@@ -4322,7 +4322,7 @@
     },
     {
       "id": "td_aeroplan_visa_platinum",
-      "card_name": "TD Aeroplan Visa Platinum Card",
+      "card_name": "TD Aeroplan Visa Platinum",
       "issuer": "TD",
       "network": "Visa",
       "rewards_program": "aeroplan",
@@ -4350,7 +4350,7 @@
     },
     {
       "id": "td_business_cash_back_visa_card",
-      "card_name": "TD Business Cash Back Visa* Card",
+      "card_name": "TD Business Cash Back Visa",
       "issuer": "TD",
       "network": "Visa",
       "rewards_program": "td_cashback",
@@ -4396,7 +4396,7 @@
     },
     {
       "id": "td_business_travel_visa_card",
-      "card_name": "TD Business Travel Visa* Card",
+      "card_name": "TD Business Travel Visa",
       "issuer": "TD",
       "network": "Visa",
       "rewards_program": "td_rewards",
@@ -4442,7 +4442,7 @@
     },
     {
       "id": "td_low_rate_visa_credit_card",
-      "card_name": "TD Low Rate Visa* Credit Card",
+      "card_name": "TD Low Rate Visa Credit Card",
       "issuer": "TD",
       "network": "Visa",
       "rewards_program": "canadian_non_rewards",
@@ -4468,7 +4468,7 @@
     },
     {
       "id": "td_platinum_travel_visa",
-      "card_name": "TD Platinum Travel Visa Card",
+      "card_name": "TD Platinum Travel Visa",
       "issuer": "TD",
       "network": "Visa",
       "rewards_program": "td_rewards",
@@ -4516,7 +4516,7 @@
     },
     {
       "id": "td_rewards_visa",
-      "card_name": "TD Rewards Visa Card",
+      "card_name": "TD Rewards Visa",
       "issuer": "TD",
       "network": "Visa",
       "rewards_program": "td_rewards",
@@ -4543,7 +4543,7 @@
     },
     {
       "id": "td_aeroplan_vi",
-      "card_name": "TD Aeroplan Visa Infinite Card",
+      "card_name": "TD Aeroplan Visa Infinite",
       "issuer": "TD Canada Trust",
       "network": "Visa",
       "rewards_program": "aeroplan",
@@ -4589,7 +4589,7 @@
     },
     {
       "id": "td_cash_back_vi",
-      "card_name": "TD Cash Back Visa Infinite* Card",
+      "card_name": "TD Cash Back Visa Infinite",
       "issuer": "TD Canada Trust",
       "network": "Visa",
       "rewards_program": "td_cashback",
@@ -4686,7 +4686,7 @@
     },
     {
       "id": "td_cash_back_visa",
-      "card_name": "TD Cash Back Visa* Card",
+      "card_name": "TD Cash Back Visa",
       "issuer": "TD Canada Trust",
       "network": "Visa",
       "rewards_program": "td_cashback",
@@ -4779,7 +4779,7 @@
     },
     {
       "id": "td_first_class_travel_vi",
-      "card_name": "TD First Class Travel\u00ae Visa Infinite* Card",
+      "card_name": "TD First Class Travel Visa Infinite",
       "issuer": "TD Canada Trust",
       "network": "Visa",
       "rewards_program": "td_rewards",
@@ -4817,7 +4817,7 @@
       "special_earn_rules": [
         {
           "type": "portal_specific",
-          "description": "8 TD Rewards points per $ on travel booked through Expedia\u00ae for TD (not mapped to travel)."
+          "description": "8 TD Rewards points per $ on travel booked through Expedia® for TD (not mapped to travel)."
         },
         {
           "type": "category_out_of_schema",
@@ -4835,7 +4835,7 @@
     },
     {
       "id": "td_aeroplan_visa_business_card",
-      "card_name": "TD\u00ae Aeroplan\u00ae Visa* Business Card",
+      "card_name": "TD Aeroplan Visa Business",
       "issuer": "TD Canada Trust",
       "network": "Visa",
       "rewards_program": "aeroplan",
@@ -4887,7 +4887,7 @@
     },
     {
       "id": "tims_mastercard",
-      "card_name": "Tims\u00ae Mastercard",
+      "card_name": "Tims Mastercard",
       "issuer": "Tims Financial",
       "network": "Mastercard",
       "rewards_program": "tims_rewards",
@@ -4973,7 +4973,7 @@
     },
     {
       "id": "wealthsimple_visa_infinite_privilege",
-      "card_name": "Wealthsimple Visa Infinite Privilege*",
+      "card_name": "Wealthsimple Visa Infinite Privilege",
       "issuer": "Wealthsimple",
       "network": "Visa",
       "rewards_program": "wealthsimple_cashback",
@@ -4998,7 +4998,7 @@
     },
     {
       "id": "wealthsimple_visa_infinite",
-      "card_name": "Wealthsimple Visa Infinite*",
+      "card_name": "Wealthsimple Visa Infinite",
       "issuer": "Wealthsimple",
       "network": "Visa",
       "rewards_program": "wealthsimple_cashback",
