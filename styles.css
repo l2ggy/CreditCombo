@@ -117,6 +117,30 @@ input[type="search"]:focus{border-color:var(--accent)}
   flex:1 1 100%;
 }
 
+#optimizerLoading{margin-top:2px}
+
+
+.loadingIndicator{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  color:var(--muted);
+  font-size:12px;
+  line-height:1;
+}
+
+.loadingSpinner{
+  width:11px;
+  height:11px;
+  border-radius:50%;
+  border:2px solid color-mix(in srgb,var(--accent) 35%, transparent);
+  border-top-color:var(--accent);
+  animation:loadingSpin .55s linear infinite;
+}
+
+@keyframes loadingSpin{
+  to{transform:rotate(360deg)}
+}
 
 .field-full{flex-basis:100%;width:100%}
 #lockedCardsPanel{margin-top:0}
@@ -129,19 +153,6 @@ input[type="search"]:focus{border-color:var(--accent)}
   color:var(--text);font-weight:700;font-size:12px
 }
 
-.miniLoader{
-  width:11px;
-  height:11px;
-  margin-left:6px;
-  border-radius:50%;
-  border:2px solid color-mix(in srgb,var(--accent) 35%, transparent);
-  border-top-color:var(--accent);
-  animation:miniLoaderSpin .55s linear infinite;
-}
-
-@keyframes miniLoaderSpin{
-  to{transform:rotate(360deg)}
-}
 
 input[type="range"]{
   width:100%;accent-color:var(--accent);cursor:pointer

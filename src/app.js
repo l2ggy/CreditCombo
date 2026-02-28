@@ -1,5 +1,5 @@
 import { loadJson, normalizePrograms, validateAndFilterCards } from "./data.js";
-import { annualizeMonthlySpend, findBestCombo } from "./optimizer.js";
+import { annualizeMonthlySpend } from "./optimizer.js";
 import { clampInt, renderSpendTable, readMonthlySpend, renderIssues, renderResult } from "./ui.js";
 
 const statusEl = document.getElementById("status");
@@ -22,7 +22,7 @@ const lockedCardsDividerEl = document.getElementById("lockedCardsDivider");
 const kInput = document.getElementById("k");
 const kValueEl = document.getElementById("kValue");
 const kLabelEl = document.getElementById("kLabel");
-const kLoadingEl = document.getElementById("kLoading");
+const optimizerLoadingEl = document.getElementById("optimizerLoading");
 
 async function main() {
   try {
@@ -149,15 +149,15 @@ async function main() {
     const comboCache = new Map();
     let optimizeTimer = null;
     let optimizeRunToken = 0;
+    let activeOptimizeWorker = null;
 
     function updateKValue() {
       if (kValueEl) kValueEl.textContent = String(kInput.value);
     }
 
-    function setSliderLoading(isLoading) {
-      if (!kLoadingEl) return;
-      kLoadingEl.classList.toggle("hidden", !isLoading);
-      kLoadingEl.setAttribute("aria-hidden", isLoading ? "false" : "true");
+    function setOptimizerLoading(isLoading) {
+      if (!optimizerLoadingEl) return;
+      optimizerLoadingEl.classList.toggle("hidden", !isLoading);
     }
 
     function currentValuationMode() {
@@ -168,30 +168,66 @@ async function main() {
       return schema.map((cat) => `${cat}:${monthlySpend[cat] || 0}`).join("|");
     }
 
-    function getBestCombo(allCards, additionalCards, k, annualSpend, valuationMode, monthlySpend, lockedIds) {
+    function getBestComboCacheKey(additionalCards, k, valuationMode, monthlySpend, lockedIds) {
       const excludeFeeCards = excludeFeeCardsEl?.checked ? "excludeFee" : "allCards";
       const excludeBusinessCards = excludeBusinessCardsEl?.checked ? "excludeBusiness" : "includeBusiness";
       const lockKey = [...lockedIds].sort().join(",");
       const additionalIdsKey = additionalCards.map((card) => card.id).sort().join(",");
-      const key = `${spendKey(monthlySpend)}::${valuationMode}::${k}::${excludeFeeCards}::${excludeBusinessCards}::${lockKey}::${additionalIdsKey}`;
+      return `${spendKey(monthlySpend)}::${valuationMode}::${k}::${excludeFeeCards}::${excludeBusinessCards}::${lockKey}::${additionalIdsKey}`;
+    }
+
+    function runOptimizerInWorker(payload) {
+      if (activeOptimizeWorker) {
+        activeOptimizeWorker.terminate();
+        activeOptimizeWorker = null;
+      }
+
+      return new Promise((resolve, reject) => {
+        const worker = new Worker(new URL("./optimizer-worker.js", import.meta.url), { type: "module" });
+        activeOptimizeWorker = worker;
+
+        worker.onmessage = (event) => {
+          const { best, error } = event.data || {};
+          worker.terminate();
+          if (activeOptimizeWorker === worker) activeOptimizeWorker = null;
+          if (error) {
+            reject(new Error(error));
+            return;
+          }
+          resolve(best);
+        };
+
+        worker.onerror = (event) => {
+          worker.terminate();
+          if (activeOptimizeWorker === worker) activeOptimizeWorker = null;
+          reject(new Error(event.message || "Optimizer worker failed"));
+        };
+
+        worker.postMessage(payload);
+      });
+    }
+
+    async function getBestCombo(additionalCards, k, annualSpend, valuationMode, monthlySpend, lockedIds) {
+      const key = getBestComboCacheKey(additionalCards, k, valuationMode, monthlySpend, lockedIds);
       if (comboCache.has(key)) return comboCache.get(key);
 
-      const best = findBestCombo({
-        cards: allCards,
-        programsMap,
+      const best = await runOptimizerInWorker({
+        cards: eligibleCards,
+        programsJson,
         schema,
         k,
         annualSpend,
         valuationMode,
         lockedCardIds: lockedIds,
-        additionalCardIds: additionalCards.map((card) => card.id)
+        additionalCardIds: additionalCards.map((card) => card.id),
       });
+
       comboCache.set(key, best);
       return best;
     }
 
-    function runOptimizer() {
-      setSliderLoading(true);
+    async function runOptimizer(runToken) {
+      setOptimizerLoading(true);
       resultEl.classList.add("hidden");
       resultEl.textContent = "Computing…";
 
@@ -208,14 +244,14 @@ async function main() {
       if (!eligibleCards.length) {
         resultEl.classList.remove("hidden");
         resultEl.innerHTML = `<span class="badge bad">No result</span> No eligible cards are available for optimization.`;
-        setSliderLoading(false);
+        setOptimizerLoading(false);
         return;
       }
 
       if (excludeFeeCardsEl?.checked && k > 0 && !additionalCards.length) {
         resultEl.classList.remove("hidden");
         resultEl.innerHTML = `<span class="badge bad">No result</span> No additional cards without annual fees are available.`;
-        setSliderLoading(false);
+        setOptimizerLoading(false);
         return;
       }
 
@@ -225,15 +261,16 @@ async function main() {
       if (!hasSpend) {
         resultEl.classList.remove("hidden");
         resultEl.innerHTML = `<span class="muted">Enter monthly spend in at least one category to generate card recommendations.</span>`;
-        setSliderLoading(false);
+        setOptimizerLoading(false);
         return;
       }
 
       const annualSpend = annualizeMonthlySpend(monthlySpend, schema);
-      const best = getBestCombo(eligibleCards, additionalCards, k, annualSpend, valuationMode, monthlySpend, selectedLockedIds);
+      const best = await getBestCombo(additionalCards, k, annualSpend, valuationMode, monthlySpend, selectedLockedIds);
+      if (runToken !== optimizeRunToken) return;
 
       renderResult(resultEl, best, annualSpend, schema, valuationMode);
-      setSliderLoading(false);
+      setOptimizerLoading(false);
     }
 
     function scheduleOptimizer(delay = 0) {
@@ -241,12 +278,19 @@ async function main() {
       const runToken = optimizeRunToken;
       if (optimizeTimer) clearTimeout(optimizeTimer);
 
-      setSliderLoading(true);
+      setOptimizerLoading(true);
 
-      optimizeTimer = setTimeout(() => {
+      optimizeTimer = setTimeout(async () => {
         optimizeTimer = null;
         if (runToken !== optimizeRunToken) return;
-        runOptimizer();
+        try {
+          await runOptimizer(runToken);
+        } catch (error) {
+          if (runToken !== optimizeRunToken) return;
+          resultEl.classList.remove("hidden");
+          resultEl.innerHTML = `<span class="badge bad">Error</span> ${escapeHtml(error.message || "Optimization failed")}`;
+          setOptimizerLoading(false);
+        }
       }, delay);
     }
 
