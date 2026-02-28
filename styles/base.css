@@ -41,6 +41,10 @@ input[type="range"]{
   -webkit-appearance:none;
   background:transparent;
   cursor:pointer;
+  height:42px;
+  margin:0;
+  padding:0;
+  display:block;
 }
 input[type="range"]:focus-visible{outline:2px solid color-mix(in srgb,var(--color-accent) 55%,transparent);outline-offset:3px}
 input[type="range"]::-webkit-slider-runnable-track{
@@ -60,7 +64,7 @@ input[type="range"]::-webkit-slider-thumb{
   appearance:none;
   width:18px;
   height:18px;
-  margin-top:-6px;
+  margin-top:-5px;
   border-radius:50%;
   border:1px solid color-mix(in srgb,var(--color-accent) 65%,var(--color-border) 35%);
   background:var(--color-accent);
