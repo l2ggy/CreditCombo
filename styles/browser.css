@@ -1,0 +1,129 @@
+.browserLayout {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.browserControls {
+  position: static;
+}
+
+.browserResetBtn {
+  width: auto;
+  padding: var(--space-3) var(--space-5);
+  font-size: var(--font-size-sm);
+}
+
+.browserFilterGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(170px, 1fr));
+  gap: var(--space-4);
+}
+
+.browserCards {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.browserCardTop {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-6);
+  align-items: flex-start;
+}
+
+.browserCardHeading {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-5);
+  min-width: 0;
+}
+
+.browserCardThumb {
+  width: 72px;
+  height: 45px;
+  object-fit: cover;
+  border-radius: var(--radius-card);
+  border: 1px solid var(--color-border);
+  display: block;
+  flex: 0 0 auto;
+  overflow: hidden;
+}
+
+.browserCardThumb.is-portrait {
+  border-radius: var(--radius-card-portrait);
+}
+
+.browserCardTitle {
+  margin: 0 0 var(--space-1);
+  font-size: var(--font-size-xl);
+}
+
+.browserFee {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--space-1);
+}
+
+.browserCardBody {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: var(--space-7);
+  margin-top: var(--space-5);
+}
+
+.browserCardBody h4 {
+  margin: 0 0 var(--space-3);
+  font-size: var(--font-size-base);
+  color: var(--color-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.browserRateList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: var(--space-2);
+}
+
+.browserRateList li {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.browserRateList li:last-child {
+  border-bottom: none;
+}
+
+.browserEarnPercent {
+  color: color-mix(in srgb, var(--color-muted) 88%, var(--color-text) 12%);
+  font-weight: 500;
+}
+
+.browserCardBody ul {
+  margin: 0;
+  padding-left: 18px;
+  display: grid;
+  gap: var(--space-2);
+}
+
+@media (max-width: 900px) {
+  .browserFilterGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .browserCardBody {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .browserFilterGrid {
+    grid-template-columns: 1fr;
+  }
+}
