@@ -62,6 +62,18 @@
         Use estimated value if you actively optimize redemptions. Use minimum guaranteed value if you want a safer, lower-bound comparison.
       </p>
     </section>
+
+    <section class="panel">
+      <h2>Rules scope used by CreditCombo</h2>
+      <ul>
+        <li>Two valuation modes are modeled: estimated points value and minimum guaranteed redemption value.</li>
+        <li>Category spend is assigned to the best card, cap overflow is rerouted to the next-best card, and residual overflow can earn at the above-cap rate.</li>
+        <li>Annual fees are subtracted from gross rewards to report net annual value.</li>
+      </ul>
+      <p class="subtle">
+        Not yet modeled: merchant- or portal-specific <code>special_earn_rules</code>. Also not modeled: MCC quirks and acceptance constraints, and one-time promotions or welcome bonuses.
+      </p>
+    </section>
   </main>
 </body>
 </html>

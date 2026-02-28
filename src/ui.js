@@ -115,7 +115,6 @@ export function renderResult(el, best, annualSpend, schema, valuationMode = "est
   }
 
   const useCols = Math.min(4, Math.max(1, instructions.length));
-
   el.innerHTML = `
     <h2>Best combo</h2>
     <ul class="comboList">${comboList}</ul>
@@ -135,8 +134,6 @@ export function renderResult(el, best, annualSpend, schema, valuationMode = "est
       ${instructions.join("") || `<p class="muted">No spend entered.</p>`}
     </div>
 
-    <p class="muted">Mode: ${valuationMode === "minimum_guaranteed" ? "minimum guaranteed points redemption value" : "estimated points value"}.</p>
-    <p class="muted">Note: <span class="mono">special_earn_rules</span> are ignored in this MVP.</p>
   `;
 }
 
@@ -149,4 +146,3 @@ function spendDescriptionMarkup(desc) {
 
   return `<details class="spendDesc"><summary><span class="spendDescLabel">Details</span><span class="spendDescCaret" aria-hidden="true">▾</span></summary><div class="spendDescBody muted">${escapeHtml(clean)}</div></details>`;
 }
-
