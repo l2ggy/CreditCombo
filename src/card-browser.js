@@ -210,7 +210,7 @@ function renderBrowserCardItem(card) {
 
   const heading = document.createElement("div");
   heading.className = "inline";
-  heading.append(renderCardThumb(card, { className: "thumb thumb-sm thumb-cover", withFrame: false }));
+  heading.append(renderCardThumb(card, { className: "thumb thumb-sm thumb-contain", withFrame: false }));
 
   const headingText = document.createElement("div");
   const title = document.createElement("h3");
