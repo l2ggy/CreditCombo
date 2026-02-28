@@ -2745,12 +2745,17 @@
           "description": "Earns an additional 3 Asia Miles per CAD (4 total) on Cathay Pacific tickets purchased online at cathaypacific.com/ca."
         },
         {
+          "type": "cap_disclosure",
+          "description": "No fixed monthly or annual earn-rate spending cap is publicly disclosed; published terms state Asia Miles earn may be limited and can vary by perks, offers, and partner-specific conditions."
+        },
+        {
           "type": "eligibility",
           "description": "Published income requirement is $80,000 personal or $150,000 household; offer page indicates card not available in Quebec."
         }
       ],
       "sources": [
         "https://cathay.neofinancial.com/",
+        "https://pay.cathaypacific.com/en_CA/offers/cathay-neo-15-off.html",
         "https://www.neofinancial.com/credit"
       ]
     },
@@ -2770,11 +2775,46 @@
         "gas": 1,
         "other": 0.5
       },
-      "caps": [],
+      "caps": [
+        {
+          "scope": "per_category",
+          "categories": [
+            "gas"
+          ],
+          "cap_amount": 500,
+          "cap_period": "monthly",
+          "earn_rate_above_cap": 0,
+          "notes": "Support article says gas cashback drops to 0% after $500 monthly gas spend."
+        },
+        {
+          "scope": "per_category",
+          "categories": [
+            "grocery"
+          ],
+          "cap_amount": 500,
+          "cap_period": "monthly",
+          "earn_rate_above_cap": 0,
+          "notes": "Support article says grocery cashback drops to 0% after $500 monthly grocery spend."
+        },
+        {
+          "scope": "per_category",
+          "categories": [
+            "other"
+          ],
+          "cap_amount": 1667,
+          "cap_period": "monthly",
+          "earn_rate_above_cap": 0,
+          "notes": "Support article says base/everything-else cashback drops to 0% after $1,667 monthly spend in all other categories."
+        }
+      ],
       "special_earn_rules": [
         {
           "type": "category_restriction",
-          "description": "1% earn applies to eligible grocery and gas purchases; non-bonus spend earns 0.5%."
+          "description": "Public Neo product page advertises 1% cashback on eligible grocery and gas purchases, with 0.5% on other spend."
+        },
+        {
+          "type": "spend_cap",
+          "description": "Published support terms disclose monthly spend caps: gas $500, groceries $500, and everything-else $1,667. Above those monthly thresholds, category cashback drops to 0% until monthly reset."
         },
         {
           "type": "merchant_specific",
@@ -2787,6 +2827,7 @@
       ],
       "sources": [
         "https://www.neofinancial.com/credit-cards/neo-mastercard",
+        "https://support.neofinancial.com/hc/en-001/articles/4403398606733-How-Neo-s-cashback-works",
         "https://www.neofinancial.com/credit"
       ]
     },
@@ -2807,11 +2848,46 @@
         "bills": 4,
         "other": 1
       },
-      "caps": [],
+      "caps": [
+        {
+          "scope": "per_category",
+          "categories": [
+            "gas"
+          ],
+          "cap_amount": 1000,
+          "cap_period": "monthly",
+          "earn_rate_above_cap": 1,
+          "notes": "Support article says gas cashback drops to 1% after $1,000 monthly gas spend."
+        },
+        {
+          "scope": "per_category",
+          "categories": [
+            "grocery"
+          ],
+          "cap_amount": 1000,
+          "cap_period": "monthly",
+          "earn_rate_above_cap": 1,
+          "notes": "Support article says grocery cashback drops to 1% after $1,000 monthly grocery spend."
+        },
+        {
+          "scope": "per_category",
+          "categories": [
+            "bills"
+          ],
+          "cap_amount": 500,
+          "cap_period": "monthly",
+          "earn_rate_above_cap": 1,
+          "notes": "Support article says recurring-payment cashback drops to 1% after $500 monthly recurring spend."
+        }
+      ],
       "special_earn_rules": [
         {
           "type": "category_restriction",
-          "description": "5% grocery, 3% gas, and 4% recurring payments are category-specific; non-bonus spend earns 1%."
+          "description": "Public Neo product page advertises 5% grocery, 3% gas, and 4% recurring payment earn, with 1% on other spend."
+        },
+        {
+          "type": "spend_cap",
+          "description": "Published support terms disclose monthly spend caps: gas $1,000, groceries $1,000, and recurring payments $500. Above those monthly thresholds, cashback in those categories drops to 1% until monthly reset."
         },
         {
           "type": "merchant_specific",
@@ -2824,6 +2900,7 @@
       ],
       "sources": [
         "https://www.neofinancial.com/credit-cards/neo-world-elite-mastercard",
+        "https://support.neofinancial.com/hc/en-001/articles/4403398606733-How-Neo-s-cashback-works",
         "https://www.neofinancial.com/credit"
       ]
     },
@@ -2844,11 +2921,56 @@
         "bills": 2,
         "other": 0.5
       },
-      "caps": [],
+      "caps": [
+        {
+          "scope": "per_category",
+          "categories": [
+            "gas"
+          ],
+          "cap_amount": 1000,
+          "cap_period": "monthly",
+          "earn_rate_above_cap": 0.5,
+          "notes": "Support article says gas cashback drops to 0.5% after $1,000 monthly gas spend."
+        },
+        {
+          "scope": "per_category",
+          "categories": [
+            "grocery"
+          ],
+          "cap_amount": 1000,
+          "cap_period": "monthly",
+          "earn_rate_above_cap": 0.5,
+          "notes": "Support article says grocery cashback drops to 0.5% after $1,000 monthly grocery spend."
+        },
+        {
+          "scope": "per_category",
+          "categories": [
+            "bills"
+          ],
+          "cap_amount": 500,
+          "cap_period": "monthly",
+          "earn_rate_above_cap": 0.5,
+          "notes": "Support article says recurring-payment cashback drops to 0.5% after $500 monthly recurring spend."
+        },
+        {
+          "scope": "per_category",
+          "categories": [
+            "other"
+          ],
+          "cap_amount": 2500,
+          "cap_period": "monthly",
+          "earn_rate_above_cap": 0.5,
+          "notes": "Support article says everything-else cashback drops to 0.5% after $2,500 monthly spend in all other categories."
+        }
+      ],
       "special_earn_rules": [
         {
           "type": "category_restriction",
-          "description": "2% earn applies to grocery, gas, and recurring payments; non-bonus spend earns 0.5%."
+          "description": "Public Neo product page advertises 2% cashback on eligible grocery, gas, and recurring payment purchases, with 0.5% on other spend."
+        },
+        {
+          "type": "spend_cap",
+          "description": "Published support terms disclose monthly spend caps: gas $1,000, groceries $1,000, recurring payments $500, and everything-else $2,500. Above those monthly thresholds, cashback reverts to 0.5% until monthly reset."
         },
         {
           "type": "merchant_specific",
@@ -2861,6 +2983,7 @@
       ],
       "sources": [
         "https://www.neofinancial.com/credit-cards/neo-world-mastercard",
+        "https://support.neofinancial.com/hc/en-001/articles/4403398606733-How-Neo-s-cashback-works",
         "https://www.neofinancial.com/credit"
       ]
     },
