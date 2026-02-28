@@ -80,8 +80,9 @@
 .advancedPrefs[open] summary::after{transform:rotate(180deg)}
 .advancedPrefsBody{display:grid;gap:var(--space-3);margin-top:var(--space-3)}
 
-.advancedProgramPrefs .listBox{margin-top:var(--space-2)}
 #excludedProgramPicks .chip{border:1px solid color-mix(in srgb,#dc2626 35%,var(--color-border));border-radius:var(--radius-sm);background:color-mix(in srgb,#dc2626 14%,transparent)}
+.advancedProgramPrefs{display:grid;gap:var(--space-3)}
+.advancedProgramPrefs h4{margin:0}
 
 @media (prefers-reduced-motion:reduce){.spendDescCaret,.issues summary::after,.spendDescBody,.issuesBody{transition:none}.spendDescBody,.issuesBody{transform:none}}
 
