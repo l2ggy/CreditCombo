@@ -40,47 +40,44 @@ h3{margin:var(--space-3) 0 var(--space-2);font-size:14px;color:var(--muted)}
 
 .panelHeader{display:flex;justify-content:space-between;gap:var(--space-2);align-items:flex-end}
 
-.resultPanel{
-  --result-rhythm:8px;
+.panelStructured{
+  --panel-rhythm:8px;
+  padding:12px;
 }
 
-.resultPanel .panelHeader,
-.resultPanel .divider,
-.resultPanel .resultIntro{
-  padding-inline:var(--result-rhythm);
+.panelStructured .panelHeader,
+.panelStructured .divider,
+.panelStructured .panelIntro{
+  padding-inline:var(--panel-rhythm);
 }
 
-.resultPanel .panelHeader h2{
+.panelStructured .panelHeader h2{
   line-height:1.15;
   margin-block:0;
 }
 
-.resultPanel .divider{
-  margin-block:var(--result-rhythm);
+.panelStructured .divider{
+  margin-block:var(--panel-rhythm);
 }
 
-.resultPanel .resultIntro{
-  margin:0 0 var(--result-rhythm);
+.panelStructured .panelIntro{
+  margin:0 0 var(--panel-rhythm);
   max-width:62ch;
   color:var(--muted);
 }
 
-
 .inputPanel{
-  --input-rhythm:8px;
-  padding:12px;
+  --input-rhythm:var(--panel-rhythm);
 }
 
 .inputPanel .panelHeader,
 .inputPanel .sectionTitle,
-.inputPanel .divider,
 .inputPanel .row,
 .inputPanel .issues,
 .inputPanel #spendTable{
   padding-inline:var(--input-rhythm);
 }
 
-.inputPanel .panelHeader h2,
 .inputPanel .sectionTitle{
   line-height:1.15;
   margin-block:0;
@@ -90,9 +87,6 @@ h3{margin:var(--space-3) 0 var(--space-2);font-size:14px;color:var(--muted)}
   margin-bottom:var(--input-rhythm);
 }
 
-.inputPanel .divider{
-  margin-block:var(--input-rhythm);
-}
 
 .inputPanel .row{
   gap:var(--input-rhythm);
