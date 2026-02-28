@@ -244,14 +244,12 @@ async function main() {
       if (!eligibleCards.length) {
         resultEl.classList.remove("hidden");
         resultEl.innerHTML = `<span class="badge bad">No result</span> No eligible cards are available for optimization.`;
-        setOptimizerLoading(false);
         return;
       }
 
       if (excludeFeeCardsEl?.checked && k > 0 && !additionalCards.length) {
         resultEl.classList.remove("hidden");
         resultEl.innerHTML = `<span class="badge bad">No result</span> No additional cards without annual fees are available.`;
-        setOptimizerLoading(false);
         return;
       }
 
@@ -261,7 +259,6 @@ async function main() {
       if (!hasSpend) {
         resultEl.classList.remove("hidden");
         resultEl.innerHTML = `<span class="muted">Enter monthly spend in at least one category to generate card recommendations.</span>`;
-        setOptimizerLoading(false);
         return;
       }
 
@@ -270,6 +267,11 @@ async function main() {
       if (runToken !== optimizeRunToken) return;
 
       renderResult(resultEl, best, annualSpend, schema, valuationMode);
+    }
+
+    function finalizeOptimizerLoading(runToken) {
+      if (runToken !== optimizeRunToken) return;
+      if (optimizeTimer) return;
       setOptimizerLoading(false);
     }
 
@@ -282,14 +284,19 @@ async function main() {
 
       optimizeTimer = setTimeout(async () => {
         optimizeTimer = null;
-        if (runToken !== optimizeRunToken) return;
+        if (runToken !== optimizeRunToken) {
+          finalizeOptimizerLoading(runToken);
+          return;
+        }
+
         try {
           await runOptimizer(runToken);
         } catch (error) {
           if (runToken !== optimizeRunToken) return;
           resultEl.classList.remove("hidden");
           resultEl.innerHTML = `<span class="badge bad">Error</span> ${escapeHtml(error.message || "Optimization failed")}`;
-          setOptimizerLoading(false);
+        } finally {
+          finalizeOptimizerLoading(runToken);
         }
       }, delay);
     }
