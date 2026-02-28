@@ -7,12 +7,13 @@
   --color-accent: #6aa9ff;
   --color-accent-contrast: #06101f;
 
-  --bg-gradient-start: color-mix(in srgb, var(--color-accent) 14%, var(--color-bg));
-  --bg-gradient-end: color-mix(in srgb, var(--color-bg) 92%, #000);
-  --bg-aurora-a: color-mix(in srgb, var(--color-accent) 18%, transparent);
-  --bg-aurora-b: color-mix(in srgb, #8dd3ff 12%, transparent);
-  --bg-vignette-strength: 0.32;
-  --bg-noise-opacity: 0.02;
+  --bg-gradient-start: color-mix(in srgb, var(--color-accent) 10%, var(--color-bg));
+  --bg-gradient-end: color-mix(in srgb, var(--color-bg) 94%, #000);
+  --bg-bloom-a: color-mix(in srgb, var(--color-accent) 22%, transparent);
+  --bg-bloom-b: color-mix(in srgb, #9bd0ff 16%, transparent);
+  --bg-vignette-strength: 0.38;
+  --bg-star-opacity: 0.12;
+  --bg-star-soft-opacity: 0.06;
 
   --space-0: 0;
   --space-1: 4px;
