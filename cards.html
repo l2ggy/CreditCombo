@@ -29,14 +29,14 @@
     </div>
   </header>
 
-  <main class="container browserLayout">
-    <section class="panel browserControls">
+  <main class="container pageStack">
+    <section class="panel controls">
       <div class="panelHeader">
         <h2>Filters</h2>
-        <button id="resetFiltersBtn" type="button" class="browserResetBtn">Reset filters</button>
+        <button id="resetFiltersBtn" type="button" class="btn-inline">Reset filters</button>
       </div>
       <div class="divider"></div>
-      <div class="browserFilterGrid">
+      <div class="fieldGrid">
         <div class="field">
           <label for="searchInput">Search cards</label>
           <input id="searchInput" type="search" placeholder="Card name, issuer, network..." />
@@ -62,7 +62,7 @@
       <p id="browserSummary" class="subtle"></p>
     </section>
 
-    <section id="cardsList" class="browserCards"></section>
+    <section id="cardsList" class="cardList"></section>
     <section id="browserFatal" class="panel hidden"></section>
   </main>
 

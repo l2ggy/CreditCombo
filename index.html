@@ -53,7 +53,7 @@
 
         <div class="divider"></div>
         <div class="row">
-          <div class="field field-checkbox field-full">
+          <div class="field field-full">
             <label class="checkboxLabel" for="enableLockedCards">
               <input id="enableLockedCards" type="checkbox" />
               I want to lock in cards I already have
@@ -73,18 +73,18 @@
         <div id="lockedCardsDivider" class="divider hidden"></div>
 
         <div class="row">
-          <div class="field field-slider">
+          <div class="field field-grow">
             <label for="k"><span id="kLabel">Number of cards</span> <span id="kValue" class="value-pill">3</span></label>
             <input id="k" type="range" min="0" max="5" value="3" step="1" />
           </div>
-          <div class="field field-select">
+          <div class="field field-grow">
             <label for="valuationMode">Points valuation <a class="infoBadge" href="./valuations.html" aria-label="Learn how rewards valuations work" title="How valuation modes work">i</a></label>
             <select id="valuationMode">
               <option value="estimated" selected>Estimated value</option>
               <option value="minimum_guaranteed">Minimum guaranteed value</option>
             </select>
           </div>
-          <div class="field field-checkbox">
+          <div class="field field-full">
             <label class="checkboxLabel" for="excludeFeeCards">
               <input id="excludeFeeCards" type="checkbox" />
               Exclude cards with annual fees

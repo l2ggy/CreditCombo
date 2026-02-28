@@ -99,6 +99,11 @@ h3 {
   align-items: flex-end;
 }
 
+.pageStack {
+  display: grid;
+  gap: var(--space-6);
+}
+
 .divider {
   height: 1px;
   background: var(--color-border);

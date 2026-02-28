@@ -59,25 +59,23 @@
   margin-top: var(--input-rhythm);
 }
 
-.row > .field-slider,
-.row > .field-select {
+.row > .field-grow {
   flex: 1 1 0;
   min-width: 0;
 }
 
-.row > .field-slider label,
-.row > .field-select label {
+.row > .field-grow label {
   min-height: var(--space-9);
   display: flex;
   align-items: center;
 }
 
-.row > .field-slider input[type="range"],
-.row > .field-select select {
+.row > .field-grow input[type="range"],
+.row > .field-grow select {
   min-height: 42px;
 }
 
-.row > .field-checkbox,
+.row > .field-full,
 .row > button {
   flex: 1 1 100%;
 }
@@ -305,8 +303,7 @@ input[type="number"].spend-input {
   margin-top: var(--space-3);
 }
 
-.spendActions button,
-.browserResetBtn {
+.spendActions button {
   width: auto;
   padding: var(--space-3) var(--space-5);
   font-size: var(--font-size-sm);
