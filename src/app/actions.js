@@ -6,10 +6,53 @@ import { renderCardThumb, renderLockedChip } from "../shared/render.js";
 export function createActions({ state, view, schema, programsMap, eligibleCards, eligibleCardIdSet, eligibleCardsById }) {
   const { elements } = view;
   const comboCache = new Map();
+  const chipAnimationMs = 160;
 
   let optimizeWorker = null;
   let optimizeRequestId = 0;
   const pendingRequests = new Map();
+  let lockedChipRenderToken = 0;
+
+  function prefersReducedMotion() {
+    return typeof window.matchMedia === "function" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  }
+
+  function createLockedChipNode(id) {
+    const card = eligibleCardsById.get(id);
+    const chip = card ? renderLockedChip(card) : document.createElement("span");
+
+    if (!card) {
+      chip.className = "chip";
+
+      const label = document.createElement("span");
+      label.textContent = id;
+
+      const remove = document.createElement("button");
+      remove.type = "button";
+      remove.className = "chipRemove";
+      remove.dataset.removeId = id;
+      remove.setAttribute("aria-label", `Remove ${id}`);
+      remove.textContent = "×";
+
+      chip.append(label, " ", remove);
+    }
+
+    chip.dataset.lockedCardId = id;
+    return chip;
+  }
+
+  function removeChipNode(chip, reducedMotion) {
+    if (reducedMotion) {
+      chip.remove();
+      return;
+    }
+
+    chip.classList.remove("chip-enter");
+    chip.classList.add("chip-exit");
+    window.setTimeout(() => {
+      chip.remove();
+    }, chipAnimationMs);
+  }
 
   function syncStateFromControls() {
     state.valuationMode = elements.valuationModeEl?.value === "minimum_guaranteed" ? "minimum_guaranteed" : "estimated";
@@ -48,40 +91,48 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
   function renderLockedCardPicks() {
     if (!elements.lockedCardPicksEl) return;
     const ids = selectedLockedCardIds(state, eligibleCardIdSet);
-    elements.lockedCardPicksEl.innerHTML = "";
+    const picksEl = elements.lockedCardPicksEl;
+    const reducedMotion = prefersReducedMotion();
+    const renderToken = ++lockedChipRenderToken;
+
+    const currentChips = new Map(
+      [...picksEl.querySelectorAll(".chip[data-locked-card-id]")].map((chip) => [chip.dataset.lockedCardId, chip])
+    );
+    const nextIdSet = new Set(ids);
+
+    if (!picksEl.querySelector(".chip") && picksEl.textContent?.trim()) picksEl.textContent = "";
+
+    currentChips.forEach((chip, id) => {
+      if (!nextIdSet.has(id)) removeChipNode(chip, reducedMotion);
+    });
 
     if (!ids.length) {
-      elements.lockedCardPicksEl.textContent = "No locked cards selected.";
+      if (reducedMotion || currentChips.size === 0) {
+        picksEl.textContent = "No locked cards selected.";
+      } else {
+        window.setTimeout(() => {
+          if (renderToken !== lockedChipRenderToken) return;
+          if (picksEl.querySelector(".chip")) return;
+          picksEl.textContent = "No locked cards selected.";
+        }, chipAnimationMs);
+      }
       return;
     }
 
-    const fragment = document.createDocumentFragment();
-    ids.forEach((id, idx) => {
-      const card = eligibleCardsById.get(id);
-      if (card) {
-        fragment.append(renderLockedChip(card));
-      } else {
-        const chip = document.createElement("span");
-        chip.className = "chip";
-
-        const label = document.createElement("span");
-        label.textContent = id;
-
-        const remove = document.createElement("button");
-        remove.type = "button";
-        remove.className = "chipRemove";
-        remove.dataset.removeId = id;
-        remove.setAttribute("aria-label", `Remove ${id}`);
-        remove.textContent = "×";
-
-        chip.append(label, " ", remove);
-        fragment.append(chip);
+    ids.forEach((id) => {
+      let chip = currentChips.get(id);
+      if (!chip) {
+        chip = createLockedChipNode(id);
+        if (!reducedMotion) {
+          chip.classList.add("chip-enter");
+          window.requestAnimationFrame(() => {
+            chip.classList.remove("chip-enter");
+          });
+        }
       }
 
-      if (idx < ids.length - 1) fragment.append(" ");
+      picksEl.append(chip);
     });
-
-    elements.lockedCardPicksEl.append(fragment);
   }
 
   function renderLockedSearchResults() {
