@@ -40,8 +40,9 @@ async function main() {
     elements.clearSpendBtn?.addEventListener("click", actions.clearSpend);
     elements.kInput.addEventListener("input", () => actions.setK(elements.kInput.value));
     elements.valuationModeEl?.addEventListener("change", () => actions.setValuationMode(elements.valuationModeEl.value));
-    elements.excludeFeeCardsEl?.addEventListener("change", () => actions.setExcludeFeeCards(elements.excludeFeeCardsEl.checked));
     elements.excludeBusinessCardsEl?.addEventListener("change", () => actions.setExcludeBusinessCards(elements.excludeBusinessCardsEl.checked));
+    elements.excludeCashbackProgramsEl?.addEventListener("change", () => actions.setExcludeCashbackPrograms(elements.excludeCashbackProgramsEl.checked));
+    elements.maxAnnualFeeEl?.addEventListener("input", () => actions.setMaxAnnualFee(elements.maxAnnualFeeEl.value));
     elements.enableLockedCardsEl?.addEventListener("change", actions.toggleLockedCards);
 
     elements.lockedCardSearchEl?.addEventListener("input", actions.renderLockedSearchResults);
@@ -50,6 +51,21 @@ async function main() {
       const btn = event.target.closest("[data-card-id]");
       if (!btn) return;
       actions.addLockedCard(btn.dataset.cardId);
+    });
+
+
+    elements.excludedProgramSearchEl?.addEventListener("input", actions.renderExcludedProgramSearchResults);
+
+    elements.excludedProgramOptionsEl?.addEventListener("click", (event) => {
+      const btn = event.target.closest("[data-program-id]");
+      if (!btn) return;
+      actions.addExcludedProgram(btn.dataset.programId);
+    });
+
+    elements.excludedProgramPicksEl?.addEventListener("click", (event) => {
+      const btn = event.target.closest("[data-remove-program-id]");
+      if (!btn) return;
+      actions.removeExcludedProgram(btn.dataset.removeProgramId);
     });
 
     elements.lockedCardPicksEl?.addEventListener("click", (event) => {
