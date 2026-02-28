@@ -2,7 +2,7 @@
   "meta": {
     "currency": "CAD",
     "spend_time_basis": "monthly_input_annualized",
-    "last_verified": "2026-02-26",
+    "last_verified": "2026-02-28",
     "category_schema_modeled": [
       "grocery",
       "dining",
@@ -3680,6 +3680,9 @@
         "gas": 1,
         "grocery": 1,
         "drugstore": 1,
+        "utilities": 1,
+        "streaming": 1,
+        "digital": 1,
         "bills": 1,
         "other": 0.5
       },
@@ -3687,7 +3690,7 @@
       "special_earn_rules": [
         {
           "type": "merchant_specific",
-          "description": "1% category includes recurring bill payments; mapped to bills based on issuer terms."
+          "description": "1% recurring bill payments include telecom, insurance, memberships, and subscription-based purchases; mapped across bills/utilities/streaming/digital to avoid undercount from category tie-breaks."
         }
       ],
       "sources": [
@@ -3712,8 +3715,10 @@
         "transit": 1,
         "rideshare": 1,
         "drugstore": 1,
+        "utilities": 1,
         "bills": 1,
         "streaming": 1,
+        "digital": 1,
         "dining": 1,
         "other": 0.5
       },
@@ -3726,8 +3731,10 @@
             "transit",
             "rideshare",
             "drugstore",
+            "utilities",
             "bills",
             "streaming",
+            "digital",
             "dining"
           ],
           "cap_amount": 15000,
@@ -3738,7 +3745,7 @@
       "special_earn_rules": [
         {
           "type": "merchant_specific",
-          "description": "Food delivery and food subscription services are modeled in dining/streaming proxies based on issuer wording."
+          "description": "Recurring bill payments include telecom, insurance, memberships, and subscription-based purchases; modeled across bills/utilities/streaming/digital per issuer definition."
         }
       ],
       "sources": [
@@ -3759,6 +3766,9 @@
       },
       "earn_rates": {
         "grocery": 4,
+        "utilities": 4,
+        "streaming": 4,
+        "digital": 4,
         "bills": 4,
         "gas": 2,
         "transit": 2,
@@ -3771,6 +3781,9 @@
           "scope": "shared",
           "categories": [
             "grocery",
+            "utilities",
+            "streaming",
+            "digital",
             "bills"
           ],
           "cap_amount": 25000,
@@ -3793,7 +3806,7 @@
       "special_earn_rules": [
         {
           "type": "merchant_specific",
-          "description": "2% bucket includes select food-delivery MCCs/merchants per Scotiabank terms; keep separate if you later model it precisely."
+          "description": "4% recurring bill payments are defined by issuer as monthly/regular automatic billing and typically include telecom, insurance, memberships, and subscription-based purchases; mapped across bills/utilities/streaming/digital. 2% bucket includes select food-delivery MCCs/merchants per Scotiabank terms."
         }
       ],
       "sources": [
