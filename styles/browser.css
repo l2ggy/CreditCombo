@@ -1,43 +1,15 @@
-.controls {
-  position: static;
-}
-
 .fieldGrid {
   display: grid;
   grid-template-columns: repeat(4, minmax(170px, 1fr));
   gap: var(--space-4);
 }
 
-.cardList {
-  display: grid;
-  gap: var(--space-5);
-}
+.cardList { display: grid; gap: var(--space-5); }
 
-.cardTop {
-  display: flex;
-  justify-content: space-between;
-  gap: var(--space-6);
-  align-items: flex-start;
-}
-
-.cardHeading {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--space-5);
-  min-width: 0;
-}
-
-.cardTitle {
-  margin: 0 0 var(--space-1);
-  font-size: var(--font-size-xl);
-}
-
-.statCol {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: var(--space-1);
-}
+.cardTop { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--space-6); }
+.cardHeading { display: flex; align-items: flex-start; gap: var(--space-5); min-width: 0; }
+.cardTitle { margin: 0 0 var(--space-1); font-size: var(--font-size-xl); }
+.statCol { display: flex; flex-direction: column; align-items: flex-end; gap: var(--space-1); }
 
 .cardBody {
   display: grid;
@@ -61,35 +33,16 @@
   padding-bottom: var(--space-2);
   border-bottom: 1px solid var(--color-border);
 }
+.dataList li:last-child { border-bottom: none; }
+.metricSubtle { color: color-mix(in srgb, var(--color-muted) 88%, var(--color-text) 12%); font-weight: 500; }
 
-.dataList li:last-child {
-  border-bottom: none;
-}
-
-.metricSubtle {
-  color: color-mix(in srgb, var(--color-muted) 88%, var(--color-text) 12%);
-  font-weight: 500;
-}
-
-.cardBody ul {
-  margin: 0;
-  padding-left: 18px;
-  display: grid;
-  gap: var(--space-2);
-}
+.cardBody ul { margin: 0; padding-left: 18px; display: grid; gap: var(--space-2); }
 
 @media (max-width: 900px) {
-  .fieldGrid {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .cardBody {
-    grid-template-columns: 1fr;
-  }
+  .fieldGrid { grid-template-columns: 1fr 1fr; }
+  .cardBody { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 560px) {
-  .fieldGrid {
-    grid-template-columns: 1fr;
-  }
+  .fieldGrid { grid-template-columns: 1fr; }
 }
