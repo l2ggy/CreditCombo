@@ -16,6 +16,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
   let optimizeWorker = null;
   let optimizeRequestId = 0;
   const pendingRequests = new Map();
+  let shouldRenderLockedCardPicks = true;
 
   function syncStateFromControls() {
     state.valuationMode = elements.valuationModeEl?.value === "minimum_guaranteed" ? "minimum_guaranteed" : "estimated";
@@ -231,7 +232,11 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
   }
 
   function updateLockedCardsUi() {
+    const lockedCardCountBeforeSanitize = state.lockedCardIds.size;
     sanitizeLockedCardSelection();
+    if (state.lockedCardIds.size !== lockedCardCountBeforeSanitize) {
+      shouldRenderLockedCardPicks = true;
+    }
     for (const programId of [...state.excludedProgramIds]) {
       if (!programsMap.has(programId)) state.excludedProgramIds.delete(programId);
     }
@@ -249,7 +254,10 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
       elements.kLabelEl.textContent = enabled ? "Additional cards" : "Number of cards";
     }
 
-    renderLockedCardPicks();
+    if (shouldRenderLockedCardPicks) {
+      renderLockedCardPicks();
+      shouldRenderLockedCardPicks = false;
+    }
     renderLockedSearchResults();
     renderExcludedProgramPicks();
     renderExcludedProgramSearchResults();
@@ -402,6 +410,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
 
   function toggleLockedCards() {
     syncStateFromControls();
+    shouldRenderLockedCardPicks = true;
     return runOptimization();
   }
 
@@ -426,12 +435,14 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
 
   function addLockedCard(cardId) {
     state.lockedCardIds.add(cardId);
+    shouldRenderLockedCardPicks = true;
     if (elements.lockedCardSearchEl) elements.lockedCardSearchEl.value = "";
     return runOptimization();
   }
 
   function removeLockedCard(cardId) {
     state.lockedCardIds.delete(cardId);
+    shouldRenderLockedCardPicks = true;
     return runOptimization();
   }
 
@@ -471,6 +482,22 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
     return runOptimization();
   }
 
+  function resetAdvancedPreferences() {
+    state.maxAnnualFee = null;
+    state.excludeBusinessCards = false;
+    state.excludeCashbackPrograms = false;
+    state.excludedProgramIds.clear();
+
+    if (elements.maxAnnualFeeEl) elements.maxAnnualFeeEl.value = "";
+    if (elements.excludeBusinessCardsEl) elements.excludeBusinessCardsEl.checked = false;
+    if (elements.excludeCashbackProgramsEl) elements.excludeCashbackProgramsEl.checked = false;
+    if (elements.excludedProgramSearchEl) elements.excludedProgramSearchEl.value = "";
+    elements.excludedProgramOptionsEl?.classList.add("hidden");
+    if (elements.excludedProgramOptionsEl) elements.excludedProgramOptionsEl.innerHTML = "";
+
+    return runOptimization();
+  }
+
   initWorker();
 
   return {
@@ -486,10 +513,12 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
     setExcludeCashbackPrograms,
     addExcludedProgram,
     removeExcludedProgram,
+    resetAdvancedPreferences,
     renderLockedSearchResults,
     renderExcludedProgramSearchResults,
     syncInitialUi: () => {
       syncStateFromControls();
+      shouldRenderLockedCardPicks = true;
       updateLockedCardsUi();
       syncKBoundsFromState();
       view.updateKValue(elements.kInput.value);
