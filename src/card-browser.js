@@ -14,6 +14,7 @@ const els = {
   issuerFilter: document.getElementById("issuerFilter"),
   programFilter: document.getElementById("programFilter"),
   sortBy: document.getElementById("sortBy"),
+  sortEarnCategoryField: document.getElementById("sortEarnCategoryField"),
   sortEarnCategory: document.getElementById("sortEarnCategory"),
   resetFiltersBtn: document.getElementById("resetFiltersBtn"),
   cardsList: document.getElementById("cardsList"),
@@ -61,12 +62,16 @@ function resetFilters() {
   updateSortEarnCategoryState();
 }
 
-function sortEarnRateForCategory(card, category) {
-  return Number(card?.earn_rates?.[category] ?? 0);
+function sortEarnPercentRateForCategory(card, category) {
+  const earnMultiplier = Number(card?.earn_rates?.[category] ?? 0);
+  const centsPerPoint = Number(state.programs.get(card?.rewards_program)?.cents_per_point ?? 0);
+  if (!Number.isFinite(earnMultiplier) || !Number.isFinite(centsPerPoint)) return 0;
+  return earnMultiplier * centsPerPoint;
 }
 
 function updateSortEarnCategoryState() {
   const isCategorySort = els.sortBy.value === "earnRateCategoryDesc";
+  els.sortEarnCategoryField.hidden = !isCategorySort;
   els.sortEarnCategory.disabled = !isCategorySort;
   if (!isCategorySort) {
     els.sortEarnCategory.value = "";
@@ -112,7 +117,7 @@ function cardSortComparator() {
     issuer: (a, b) => a.issuer.localeCompare(b.issuer) || a.card_name.localeCompare(b.card_name),
     earnRateCategoryDesc: (a, b) => {
       const category = els.sortEarnCategory.value;
-      const rateDiff = sortEarnRateForCategory(b, category) - sortEarnRateForCategory(a, category);
+      const rateDiff = sortEarnPercentRateForCategory(b, category) - sortEarnPercentRateForCategory(a, category);
       return rateDiff || a.card_name.localeCompare(b.card_name);
     },
     name: (a, b) => a.card_name.localeCompare(b.card_name)
