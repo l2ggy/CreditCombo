@@ -187,7 +187,7 @@ export function renderResult(el, best, annualSpend, schema, valuationMode = "est
 
   if (chexySummary?.enabled) {
     const chexyCallout = document.createElement("p");
-    chexyCallout.className = "earnRateCallout";
+    chexyCallout.className = "chexyCallout muted";
     const isWorthIt = Boolean(chexySummary.isWorthIt);
     const deltaText = formatMoneyCAD(Math.abs(chexySummary.incrementalNetValue || 0));
     chexyCallout.textContent = isWorthIt
