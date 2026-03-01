@@ -16,9 +16,14 @@ h3{margin:var(--space-6) 0 var(--space-4);font-size:var(--font-size-md);color:va
 .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:var(--font-size-base)}
 
 .siteHeader{display:grid;gap:var(--space-4)}
-.topNav{display:flex;justify-content:flex-end;flex-wrap:wrap;align-items:center;gap:var(--space-6)}
-.header{display:flex;justify-content:space-between;align-items:flex-end;gap:var(--space-5)}
+.topNav{display:flex;justify-content:space-between;flex-wrap:wrap;align-items:center;gap:var(--space-6)}
+.topNavLinks{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:var(--space-6)}
+.header{display:flex;justify-content:space-between;align-items:center;gap:var(--space-5)}
 .headerActions{display:flex;align-items:center;gap:var(--space-5)}
+
+.siteBrand{display:inline-block;color:var(--color-accent);font-size:var(--font-size-xl);font-weight:800;letter-spacing:.01em;text-decoration:none;line-height:1.1}
+.siteBrand:hover,.siteBrand:focus-visible{text-decoration:underline}
+.pageTitle{margin:0 0 var(--space-2)}
 
 .panel{border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-6);background:var(--color-panel)}
 .panelHeader,.split{display:flex;justify-content:space-between;align-items:flex-end;gap:var(--space-4)}
@@ -103,4 +108,4 @@ tbody tr:last-child td{border-bottom:none}
 
 @media (prefers-reduced-motion:reduce){.contactBtn{transition:none}.contactBtn:hover,.contactBtn:focus-visible{animation:none}}
 @media (min-width:901px){.status .muted{white-space:nowrap}}
-@media (max-width:900px){.topNav{justify-content:flex-start}.header{flex-direction:column;align-items:flex-start}.headerActions{width:100%;justify-content:space-between}.footerContent{align-items:flex-start}.splitBody{grid-template-columns:1fr}}
+@media (max-width:900px){.topNav{justify-content:flex-start}.topNavLinks{justify-content:flex-start}.header{flex-direction:column;align-items:flex-start}.headerActions{width:100%;justify-content:space-between}.footerContent{align-items:flex-start}.splitBody{grid-template-columns:1fr}}
