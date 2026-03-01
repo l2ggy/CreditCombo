@@ -3,6 +3,7 @@
 body{margin:0;background:var(--color-bg);color:var(--color-text);font:var(--font-size-lg)/var(--line-height-base)system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
 
 h1{margin:0 0 var(--space-2);font-size:var(--font-size-3xl)}
+.pageTitle{font-size:var(--font-size-2xl);line-height:var(--line-height-tight)}
 h2{margin:0;font-size:var(--font-size-2xl)}
 h3{margin:var(--space-6) 0 var(--space-4);font-size:var(--font-size-md);color:var(--color-muted)}
 
@@ -17,6 +18,8 @@ h3{margin:var(--space-6) 0 var(--space-4);font-size:var(--font-size-md);color:va
 
 .siteHeader{display:grid;gap:var(--space-4)}
 .topNav{display:flex;justify-content:flex-end;flex-wrap:wrap;align-items:center;gap:var(--space-6)}
+.topNavLinks{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-6);margin-left:auto}
+.siteBrand{color:var(--color-brand-highlight);font-size:calc(var(--font-size-2xl) + 2px);line-height:var(--line-height-tight);font-weight:700}
 .header{display:flex;justify-content:space-between;align-items:flex-end;gap:var(--space-5)}
 .headerActions{display:flex;align-items:center;gap:var(--space-5)}
 
