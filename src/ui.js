@@ -18,19 +18,7 @@ export function renderSpendTable(el, schema, categoryDescriptions = {}, subcateg
   el.innerHTML = `
     <div class="spendGrid" role="group" aria-label="Monthly spend by category">
       ${schema.map((cat) => {
-    const row = `
-          <label class="spendRow" for="spend-${cat}">
-            <span class="spendMeta">
-              <span class="mono spendCat">${cat}</span>
-              ${spendDescriptionMarkup(categoryDescriptions[cat] || "")}
-            </span>
-            <input id="spend-${cat}" class="spend-input" type="number" min="0" step="1" value="" placeholder="0" data-cat="${cat}" aria-label="Monthly spend for ${cat}" />
-          </label>
-        `;
-
     const subcategories = subcategoriesByParent.get(cat) || [];
-    if (!subcategories.length) return row;
-
     const subRows = subcategories.map((subcategory) => `
       <label id="subcat-row-${subcategory.key}" class="spendRow spendRow-sub hidden" for="subcat-value-${subcategory.key}" data-subcategory-key="${subcategory.key}" data-parent-cat="${subcategory.parentCategory}">
         <span class="spendMeta">
@@ -41,11 +29,20 @@ export function renderSpendTable(el, schema, categoryDescriptions = {}, subcateg
       </label>
     `).join("");
 
-    return `${row}
-      <details class="subcategoryDetails" data-parent-cat="${cat}">
-        <summary>Subcategories</summary>
-        <div class="subcategoryRows">${subRows}</div>
-      </details>`;
+    const subcategoryDetails = subcategories.length
+      ? `<details class="subcategoryDetails" data-parent-cat="${cat}"><summary>Subcategories</summary><div class="subcategoryRows">${subRows}</div></details>`
+      : "";
+
+    return `
+          <label class="spendRow" for="spend-${cat}">
+            <span class="spendMeta">
+              <span class="mono spendCat">${cat}</span>
+              ${spendDescriptionMarkup(categoryDescriptions[cat] || "")}
+              ${subcategoryDetails}
+            </span>
+            <input id="spend-${cat}" class="spend-input" type="number" min="0" step="1" value="" placeholder="0" data-cat="${cat}" aria-label="Monthly spend for ${cat}" />
+          </label>
+        `;
   }).join("")}
     </div>
   `;
