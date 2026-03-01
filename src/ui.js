@@ -32,19 +32,20 @@ export function renderSpendTable(el, schema, categoryDescriptions = {}, subcateg
     if (!subcategories.length) return row;
 
     const subRows = subcategories.map((subcategory) => `
-      <label id="subcat-row-${subcategory.key}" class="spendRow spendRow-sub hidden" for="subcat-${subcategory.key}" data-subcategory-key="${subcategory.key}" data-parent-cat="${subcategory.parentCategory}">
+      <label id="subcat-row-${subcategory.key}" class="spendRow spendRow-sub hidden" for="subcat-value-${subcategory.key}" data-subcategory-key="${subcategory.key}" data-parent-cat="${subcategory.parentCategory}">
         <span class="spendMeta">
           <span class="mono spendCat">${escapeHtml(subcategory.label || subcategory.key)}</span>
           <span class="muted chexyHint">${escapeHtml(subcategory.description || "")}</span>
         </span>
-        <div class="chexySliderWrap">
-          <input id="subcat-${subcategory.key}" class="chexy-spend-slider" type="range" min="0" max="0" step="1" value="0" data-subcategory-key="${subcategory.key}" data-subcategory-role="slider" aria-label="Monthly spend for ${escapeHtml(subcategory.label || subcategory.key)}" />
-          <input id="subcat-value-${subcategory.key}" class="spend-input chexy-spend-input" type="number" min="0" step="1" value="0" data-subcategory-key="${subcategory.key}" data-subcategory-role="value" aria-label="Monthly spend value for ${escapeHtml(subcategory.label || subcategory.key)}" />
-        </div>
+        <input id="subcat-value-${subcategory.key}" class="spend-input chexy-spend-input" type="number" min="0" step="1" value="0" data-subcategory-key="${subcategory.key}" data-subcategory-role="value" aria-label="Monthly spend value for ${escapeHtml(subcategory.label || subcategory.key)}" />
       </label>
     `).join("");
 
-    return `${row}${subRows}`;
+    return `${row}
+      <details class="subcategoryDetails" data-parent-cat="${cat}">
+        <summary>Subcategories</summary>
+        <div class="subcategoryRows">${subRows}</div>
+      </details>`;
   }).join("")}
     </div>
   `;
@@ -54,20 +55,16 @@ export function renderSpendTable(el, schema, categoryDescriptions = {}, subcateg
   const syncSubcategoryInputs = () => {
     subcategoryConfigs.forEach((subcategory) => {
       const parentInput = el.querySelector(`input[data-cat="${subcategory.parentCategory}"]`);
-      const slider = document.getElementById(`subcat-${subcategory.key}`);
       const valueInput = document.getElementById(`subcat-value-${subcategory.key}`);
-      if (!slider) return;
+      if (!valueInput) return;
 
       const parentValue = Math.max(0, Number(parentInput?.value ?? 0) || 0);
       const maxValue = Math.floor(parentValue);
-      slider.max = String(maxValue);
-      if (valueInput) valueInput.max = String(maxValue);
+      valueInput.max = String(maxValue);
 
-      const sliderValue = Number(slider.value);
-      const clampedValue = Math.max(0, Math.min(maxValue, Number.isFinite(sliderValue) ? sliderValue : 0));
-      slider.value = String(Math.floor(clampedValue));
-
-      if (valueInput && document.activeElement !== valueInput) {
+      const currentValue = Number(valueInput.value);
+      const clampedValue = Math.max(0, Math.min(maxValue, Number.isFinite(currentValue) ? currentValue : 0));
+      if (document.activeElement !== valueInput) {
         valueInput.value = String(Math.floor(clampedValue));
       }
     });
@@ -98,26 +95,18 @@ export function renderSpendTable(el, schema, categoryDescriptions = {}, subcateg
   });
 
   subcategoryConfigs.forEach((subcategory) => {
-    const slider = document.getElementById(`subcat-${subcategory.key}`);
     const valueInput = document.getElementById(`subcat-value-${subcategory.key}`);
-    if (!slider || !valueInput) return;
-
-    const syncFromSlider = () => {
-      valueInput.value = String(Math.floor(Number(slider.value) || 0));
-      updateSpendTotal();
-    };
+    if (!valueInput) return;
 
     const syncFromValue = () => {
       const parentInput = el.querySelector(`input[data-cat="${subcategory.parentCategory}"]`);
       const maxValue = Math.max(0, Math.floor(Number(parentInput?.value ?? 0) || 0));
       const raw = Number(valueInput.value);
       const value = Math.max(0, Math.min(maxValue, Number.isFinite(raw) ? raw : 0));
-      slider.value = String(Math.floor(value));
+      valueInput.value = String(Math.floor(value));
       updateSpendTotal();
     };
 
-    slider.addEventListener("input", syncFromSlider);
-    slider.addEventListener("change", syncFromSlider);
     valueInput.addEventListener("input", syncFromValue);
     valueInput.addEventListener("change", syncFromValue);
   });
@@ -126,9 +115,9 @@ export function renderSpendTable(el, schema, categoryDescriptions = {}, subcateg
 }
 
 export function readSubcategoryMonthlySpend(key) {
-  const slider = document.getElementById(`subcat-${key}`);
-  if (!slider) return 0;
-  const value = Number(slider.value);
+  const valueInput = document.getElementById(`subcat-value-${key}`);
+  if (!valueInput) return 0;
+  const value = Number(valueInput.value);
   return Number.isFinite(value) && value >= 0 ? value : 0;
 }
 
@@ -139,9 +128,7 @@ export function setSubcategoryVisibility(key, visible) {
 }
 
 export function resetSubcategorySpend(key) {
-  const slider = document.getElementById(`subcat-${key}`);
   const valueInput = document.getElementById(`subcat-value-${key}`);
-  if (slider) slider.value = "0";
   if (valueInput) valueInput.value = "0";
 }
 

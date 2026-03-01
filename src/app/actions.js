@@ -25,7 +25,6 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
     state.maxAnnualFee = maxAnnualFeeRaw === "" ? null : Math.max(0, Number(maxAnnualFeeRaw) || 0);
     state.excludeBusinessCards = Boolean(elements.excludeBusinessCardsEl?.checked);
     state.excludeCashbackPrograms = Boolean(elements.excludeCashbackProgramsEl?.checked);
-    state.useChexy = Boolean(elements.useChexyEl?.checked);
     state.chexyFeePercent = Math.max(0, Number(elements.chexyFeePercentEl?.value ?? state.chexyFeePercent ?? 1.75) || 0);
     state.enableLockedCards = Boolean(elements.enableLockedCardsEl?.checked);
     state.k = Number(elements.kInput?.value || state.k || 0);
@@ -267,19 +266,22 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
   }
 
   function spendKey(monthlySpend) {
-    return schema.map((cat) => `${cat}:${monthlySpend[cat] || 0}`).join("|");
+    const baseKey = schema.map((cat) => `${cat}:${monthlySpend[cat] || 0}`).join("|");
+    const subcategoryKey = subcategoryConfigs
+      .map((subcategory) => `${subcategory.key}:${readSubcategoryMonthlySpend(subcategory.key)}`)
+      .join("|");
+    return `${baseKey}::${subcategoryKey}`;
   }
 
   function getBestComboSyncCache(additionalCards, annualSpend, monthlySpend, lockedIds) {
     const maxAnnualFee = Number.isFinite(state.maxAnnualFee) ? state.maxAnnualFee : "none";
     const excludeBusinessCards = state.excludeBusinessCards ? "excludeBusiness" : "includeBusiness";
     const excludeCashbackPrograms = state.excludeCashbackPrograms ? "excludeCashback" : "includeCashback";
-    const useChexy = state.useChexy ? "useChexy" : "noChexy";
     const chexyFeePercent = Number(state.chexyFeePercent ?? 1.75).toFixed(2);
     const excludedProgramsKey = [...state.excludedProgramIds].sort().join(",");
     const lockKey = [...lockedIds].sort().join(",");
     const additionalIdsKey = additionalCards.map((card) => card.id).sort().join(",");
-    const key = `${spendKey(monthlySpend)}::${state.valuationMode}::${state.k}::${maxAnnualFee}::${excludeBusinessCards}::${excludeCashbackPrograms}::${useChexy}::${chexyFeePercent}::${excludedProgramsKey}::${lockKey}::${additionalIdsKey}`;
+    const key = `${spendKey(monthlySpend)}::${state.valuationMode}::${state.k}::${maxAnnualFee}::${excludeBusinessCards}::${excludeCashbackPrograms}::${chexyFeePercent}::${excludedProgramsKey}::${lockKey}::${additionalIdsKey}`;
     return {
       key,
       cached: comboCache.get(key) || null,
@@ -384,8 +386,8 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
       return;
     }
 
-    const chexyMonthlyBaseSpend = state.useChexy ? readSubcategoryMonthlySpend("chexy_bills") : 0;
-    const { annualSpend, chexy } = state.useChexy
+    const chexyMonthlyBaseSpend = readSubcategoryMonthlySpend("chexy_bills");
+    const { annualSpend, chexy } = chexyMonthlyBaseSpend > 0
       ? chexyAdjustedAnnualSpend(monthlySpend, schema, {
         chexyMonthlyBaseSpend,
         chexyFeePercent: state.chexyFeePercent,
@@ -513,17 +515,6 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
     return runOptimization();
   }
 
-  function setUseChexy(enabled) {
-    state.useChexy = Boolean(enabled);
-    if (elements.useChexyEl) elements.useChexyEl.checked = state.useChexy;
-
-    const chexyAdvancedPanel = elements.chexyAdvancedPanelEl;
-    setSubcategoryVisibility("chexy_bills", state.useChexy);
-    chexyAdvancedPanel?.classList.toggle("hidden", !state.useChexy);
-    if (!state.useChexy) resetSubcategorySpend("chexy_bills");
-
-    return runOptimization();
-  }
 
   function setProgramExcluded(programId, excluded) {
     if (!programId) return;
@@ -546,17 +537,13 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
     state.maxAnnualFee = null;
     state.excludeBusinessCards = false;
     state.excludeCashbackPrograms = false;
-    state.useChexy = false;
     state.chexyFeePercent = 1.75;
     state.excludedProgramIds.clear();
 
     if (elements.maxAnnualFeeEl) elements.maxAnnualFeeEl.value = "";
     if (elements.excludeBusinessCardsEl) elements.excludeBusinessCardsEl.checked = false;
     if (elements.excludeCashbackProgramsEl) elements.excludeCashbackProgramsEl.checked = false;
-    if (elements.useChexyEl) elements.useChexyEl.checked = false;
     if (elements.chexyFeePercentEl) elements.chexyFeePercentEl.value = "1.75";
-    elements.chexyAdvancedPanelEl?.classList.add("hidden");
-    setSubcategoryVisibility("chexy_bills", false);
     resetSubcategorySpend("chexy_bills");
     if (elements.excludedProgramSearchEl) elements.excludedProgramSearchEl.value = "";
     elements.excludedProgramOptionsEl?.classList.add("hidden");
@@ -578,7 +565,6 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
     setMaxAnnualFee,
     setExcludeBusinessCards,
     setExcludeCashbackPrograms,
-    setUseChexy,
     setChexyFeePercent,
     addExcludedProgram,
     removeExcludedProgram,
@@ -587,8 +573,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
     renderExcludedProgramSearchResults,
     syncInitialUi: () => {
       syncStateFromControls();
-      elements.chexyAdvancedPanelEl?.classList.toggle("hidden", !state.useChexy);
-      setSubcategoryVisibility("chexy_bills", state.useChexy);
+      subcategoryConfigs.forEach((subcategory) => setSubcategoryVisibility(subcategory.key, true));
       shouldRenderLockedCardPicks = true;
       updateLockedCardsUi();
       syncKBoundsFromState();
