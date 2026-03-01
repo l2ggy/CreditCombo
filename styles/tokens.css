@@ -25,8 +25,8 @@
   --radius-lg: 12px;
   --radius-xl: 14px;
   --radius-pill: 999px;
-  --card-aspect-ratio: 85.6 / 53.98;
-  --card-aspect-ratio-portrait: 53.98 / 85.6;
+  --card-aspect-ratio: 85 / 53.98;
+  --card-aspect-ratio-portrait: 53.98 / 85;
   --radius-card: 4px;
 
   --font-size-xs: 10px;
