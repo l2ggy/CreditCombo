@@ -75,7 +75,7 @@ data/cards.json
 Card naming conventions
 - Prefer issuer/product display names without a trailing "Card" or "Credit Card" suffix.
 - Keep "Card" in the display name only when removing it would change the product meaning or brand form (for example: "The Platinum Card" and "EQ Bank Card").
-- Preserve official special characters in display names when present (for example: ™, †, ‡, or +).
+- Remove non-accent special characters from card display names (for example: ™, ®, ©, †, ‡, *, and similar symbols), while keeping normal letters/accents.
   - rewards_program: program_id (string)
   - annual_fee: { amount, type }
   - earn_rates: { category: number, other: number }

@@ -253,7 +253,7 @@
     },
     {
       "id": "amex_essential",
-      "card_name": "American Express Essential™",
+      "card_name": "American Express Essential",
       "issuer": "American Express",
       "network": "American Express",
       "rewards_program": "amex_mr_ca",
