@@ -1,11 +1,11 @@
 import { annualizeMonthlySpend, chexyAdjustedAnnualSpend } from "../optimizer.js";
-import { clampInt, readMonthlySpend, renderResult } from "../ui.js";
+import { clampInt, readMonthlySpend, readSubcategoryMonthlySpend, renderResult, resetSubcategorySpend, setSubcategoryVisibility } from "../ui.js";
 import { candidatePools, kBounds, selectedLockedCardIds } from "./state.js";
 import { renderCardThumb, renderLockedChip } from "../shared/render.js";
 import { buildSearchText, scoreSearchMatch, tokenizeSearchQuery } from "../shared/search.js";
 import { escapeHtml } from "../shared/sanitize.js";
 
-export function createActions({ state, view, schema, programsMap, eligibleCards, eligibleCardIdSet, eligibleCardsById }) {
+export function createActions({ state, view, schema, programsMap, eligibleCards, eligibleCardIdSet, eligibleCardsById, subcategoryConfigs = [] }) {
   const { elements } = view;
   const comboCache = new Map();
 
@@ -384,7 +384,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
       return;
     }
 
-    const chexyMonthlyBaseSpend = state.useChexy ? Math.max(0, Number(document.getElementById("chexySpend")?.value ?? 0) || 0) : 0;
+    const chexyMonthlyBaseSpend = state.useChexy ? readSubcategoryMonthlySpend("chexy_bills") : 0;
     const { annualSpend, chexy } = state.useChexy
       ? chexyAdjustedAnnualSpend(monthlySpend, schema, {
         chexyMonthlyBaseSpend,
@@ -458,8 +458,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
     elements.spendTableEl.querySelectorAll("input[data-cat]").forEach((input) => {
       input.value = "";
     });
-    const chexySpendInput = document.getElementById("chexySpend");
-    if (chexySpendInput) chexySpendInput.value = "0";
+    subcategoryConfigs.forEach((subcategory) => resetSubcategorySpend(subcategory.key));
     return runOptimization();
   }
 
@@ -518,12 +517,10 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
     state.useChexy = Boolean(enabled);
     if (elements.useChexyEl) elements.useChexyEl.checked = state.useChexy;
 
-    const chexySpendRow = document.getElementById("chexySpendRow");
-    const chexySpendInput = document.getElementById("chexySpend");
     const chexyAdvancedPanel = elements.chexyAdvancedPanelEl;
-    chexySpendRow?.classList.toggle("hidden", !state.useChexy);
+    setSubcategoryVisibility("chexy_bills", state.useChexy);
     chexyAdvancedPanel?.classList.toggle("hidden", !state.useChexy);
-    if (!state.useChexy && chexySpendInput) chexySpendInput.value = "0";
+    if (!state.useChexy) resetSubcategorySpend("chexy_bills");
 
     return runOptimization();
   }
@@ -559,9 +556,8 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
     if (elements.useChexyEl) elements.useChexyEl.checked = false;
     if (elements.chexyFeePercentEl) elements.chexyFeePercentEl.value = "1.75";
     elements.chexyAdvancedPanelEl?.classList.add("hidden");
-    document.getElementById("chexySpendRow")?.classList.add("hidden");
-    const chexySpendInput = document.getElementById("chexySpend");
-    if (chexySpendInput) chexySpendInput.value = "0";
+    setSubcategoryVisibility("chexy_bills", false);
+    resetSubcategorySpend("chexy_bills");
     if (elements.excludedProgramSearchEl) elements.excludedProgramSearchEl.value = "";
     elements.excludedProgramOptionsEl?.classList.add("hidden");
     if (elements.excludedProgramOptionsEl) elements.excludedProgramOptionsEl.innerHTML = "";
@@ -592,7 +588,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
     syncInitialUi: () => {
       syncStateFromControls();
       elements.chexyAdvancedPanelEl?.classList.toggle("hidden", !state.useChexy);
-      document.getElementById("chexySpendRow")?.classList.toggle("hidden", !state.useChexy);
+      setSubcategoryVisibility("chexy_bills", state.useChexy);
       shouldRenderLockedCardPicks = true;
       updateLockedCardsUi();
       syncKBoundsFromState();

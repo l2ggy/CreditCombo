@@ -7,10 +7,17 @@ export function clampInt(n, lo, hi) {
   return Math.max(lo, Math.min(hi, n));
 }
 
-export function renderSpendTable(el, schema, categoryDescriptions = {}) {
+export function renderSpendTable(el, schema, categoryDescriptions = {}, subcategoryConfigs = []) {
+  const subcategoriesByParent = new Map();
+  for (const config of subcategoryConfigs) {
+    const parent = config.parentCategory;
+    if (!subcategoriesByParent.has(parent)) subcategoriesByParent.set(parent, []);
+    subcategoriesByParent.get(parent).push(config);
+  }
+
   el.innerHTML = `
     <div class="spendGrid" role="group" aria-label="Monthly spend by category">
-      ${schema.map(cat => {
+      ${schema.map((cat) => {
     const row = `
           <label class="spendRow" for="spend-${cat}">
             <span class="spendMeta">
@@ -21,59 +28,66 @@ export function renderSpendTable(el, schema, categoryDescriptions = {}) {
           </label>
         `;
 
-    if (cat !== "bills") return row;
+    const subcategories = subcategoriesByParent.get(cat) || [];
+    if (!subcategories.length) return row;
 
-    return `${row}
-        <label id="chexySpendRow" class="spendRow spendRow-sub hidden" for="chexySpend">
-          <span class="spendMeta">
-            <span class="mono spendCat">↳ chexy (monthly, included in bills)</span>
-            <span class="muted chexyHint">Charged with fee. Defaults to 1.75% fee, adjustable in Advanced.</span>
-          </span>
-          <div class="chexySliderWrap">
-            <input id="chexySpend" class="chexy-spend-slider" type="range" min="0" max="0" step="1" value="0" aria-label="Monthly bills spend paid via Chexy" />
-            <input id="chexySpendValue" class="spend-input chexy-spend-input" type="number" min="0" step="1" value="0" aria-label="Monthly Chexy spend value" />
-          </div>
-        </label>`;
+    const subRows = subcategories.map((subcategory) => `
+      <label id="subcat-row-${subcategory.key}" class="spendRow spendRow-sub hidden" for="subcat-${subcategory.key}" data-subcategory-key="${subcategory.key}" data-parent-cat="${subcategory.parentCategory}">
+        <span class="spendMeta">
+          <span class="mono spendCat">${escapeHtml(subcategory.label || subcategory.key)}</span>
+          <span class="muted chexyHint">${escapeHtml(subcategory.description || "")}</span>
+        </span>
+        <div class="chexySliderWrap">
+          <input id="subcat-${subcategory.key}" class="chexy-spend-slider" type="range" min="0" max="0" step="1" value="0" data-subcategory-key="${subcategory.key}" data-subcategory-role="slider" aria-label="Monthly spend for ${escapeHtml(subcategory.label || subcategory.key)}" />
+          <input id="subcat-value-${subcategory.key}" class="spend-input chexy-spend-input" type="number" min="0" step="1" value="0" data-subcategory-key="${subcategory.key}" data-subcategory-role="value" aria-label="Monthly spend value for ${escapeHtml(subcategory.label || subcategory.key)}" />
+        </div>
+      </label>
+    `).join("");
+
+    return `${row}${subRows}`;
   }).join("")}
     </div>
   `;
 
   const spendTotalEl = document.getElementById("spendTotal");
 
-  const updateSpendTotal = () => {
-    const billsInput = el.querySelector('input[data-cat="bills"]');
-    const chexyInput = document.getElementById("chexySpend");
-    const chexyValueEl = document.getElementById("chexySpendValue");
+  const syncSubcategoryInputs = () => {
+    subcategoryConfigs.forEach((subcategory) => {
+      const parentInput = el.querySelector(`input[data-cat="${subcategory.parentCategory}"]`);
+      const slider = document.getElementById(`subcat-${subcategory.key}`);
+      const valueInput = document.getElementById(`subcat-value-${subcategory.key}`);
+      if (!slider) return;
 
+      const parentValue = Math.max(0, Number(parentInput?.value ?? 0) || 0);
+      const maxValue = Math.floor(parentValue);
+      slider.max = String(maxValue);
+      if (valueInput) valueInput.max = String(maxValue);
+
+      const sliderValue = Number(slider.value);
+      const clampedValue = Math.max(0, Math.min(maxValue, Number.isFinite(sliderValue) ? sliderValue : 0));
+      slider.value = String(Math.floor(clampedValue));
+
+      if (valueInput && document.activeElement !== valueInput) {
+        valueInput.value = String(Math.floor(clampedValue));
+      }
+    });
+  };
+
+  const updateSpendTotal = () => {
     const total = [...el.querySelectorAll("input[data-cat]")].reduce((sum, input) => {
       const value = Number(input.value);
       if (!Number.isFinite(value) || value < 0) return sum;
       return sum + value;
     }, 0);
 
-    if (chexyInput) {
-      const billsValue = Math.max(0, Number(billsInput?.value ?? 0) || 0);
-      const maxValue = Math.floor(billsValue);
-      chexyInput.max = String(maxValue);
-      if (chexyValueEl) chexyValueEl.max = String(maxValue);
-
-      const sliderValue = Number(chexyInput.value);
-      const clampedValue = Math.max(0, Math.min(maxValue, Number.isFinite(sliderValue) ? sliderValue : 0));
-      chexyInput.value = String(Math.floor(clampedValue));
-
-      if (chexyValueEl) {
-        if (document.activeElement !== chexyValueEl) {
-          chexyValueEl.value = String(Math.floor(clampedValue));
-        }
-      }
-    }
+    syncSubcategoryInputs();
 
     if (spendTotalEl) {
       spendTotalEl.textContent = `Total monthly spend: ${formatMoneyCAD(total, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
     }
   };
 
-  el.querySelectorAll('input[data-cat]').forEach((inp) => {
+  el.querySelectorAll("input[data-cat]").forEach((inp) => {
     inp.addEventListener("input", updateSpendTotal);
 
     inp.addEventListener("focus", () => {
@@ -83,28 +97,52 @@ export function renderSpendTable(el, schema, categoryDescriptions = {}) {
     inp.addEventListener("blur", updateSpendTotal);
   });
 
-  const chexyInput = document.getElementById("chexySpend");
-  if (chexyInput) {
-    chexyInput.addEventListener("input", updateSpendTotal);
-    chexyInput.addEventListener("change", updateSpendTotal);
-  }
+  subcategoryConfigs.forEach((subcategory) => {
+    const slider = document.getElementById(`subcat-${subcategory.key}`);
+    const valueInput = document.getElementById(`subcat-value-${subcategory.key}`);
+    if (!slider || !valueInput) return;
 
-  const chexyValueInput = document.getElementById("chexySpendValue");
-  if (chexyInput && chexyValueInput) {
-    const syncSliderFromText = () => {
-      const billsInput = el.querySelector('input[data-cat="bills"]');
-      const maxValue = Math.max(0, Math.floor(Number(billsInput?.value ?? 0) || 0));
-      const raw = Number(chexyValueInput.value);
-      const value = Math.max(0, Math.min(maxValue, Number.isFinite(raw) ? raw : 0));
-      chexyInput.value = String(Math.floor(value));
+    const syncFromSlider = () => {
+      valueInput.value = String(Math.floor(Number(slider.value) || 0));
       updateSpendTotal();
     };
 
-    chexyValueInput.addEventListener("input", syncSliderFromText);
-    chexyValueInput.addEventListener("change", syncSliderFromText);
-  }
+    const syncFromValue = () => {
+      const parentInput = el.querySelector(`input[data-cat="${subcategory.parentCategory}"]`);
+      const maxValue = Math.max(0, Math.floor(Number(parentInput?.value ?? 0) || 0));
+      const raw = Number(valueInput.value);
+      const value = Math.max(0, Math.min(maxValue, Number.isFinite(raw) ? raw : 0));
+      slider.value = String(Math.floor(value));
+      updateSpendTotal();
+    };
+
+    slider.addEventListener("input", syncFromSlider);
+    slider.addEventListener("change", syncFromSlider);
+    valueInput.addEventListener("input", syncFromValue);
+    valueInput.addEventListener("change", syncFromValue);
+  });
 
   updateSpendTotal();
+}
+
+export function readSubcategoryMonthlySpend(key) {
+  const slider = document.getElementById(`subcat-${key}`);
+  if (!slider) return 0;
+  const value = Number(slider.value);
+  return Number.isFinite(value) && value >= 0 ? value : 0;
+}
+
+export function setSubcategoryVisibility(key, visible) {
+  document.querySelectorAll(`[data-subcategory-key="${key}"]`).forEach((row) => {
+    row.classList.toggle("hidden", !visible);
+  });
+}
+
+export function resetSubcategorySpend(key) {
+  const slider = document.getElementById(`subcat-${key}`);
+  const valueInput = document.getElementById(`subcat-value-${key}`);
+  if (slider) slider.value = "0";
+  if (valueInput) valueInput.value = "0";
 }
 
 export function readMonthlySpend(schema) {

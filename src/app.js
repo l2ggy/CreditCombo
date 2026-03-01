@@ -6,6 +6,15 @@ import { createView } from "./app/view.js";
 import { escapeHtml } from "./shared/sanitize.js";
 
 async function main() {
+  const subcategoryConfigs = [
+    {
+      key: "chexy_bills",
+      parentCategory: "bills",
+      label: "↳ chexy (monthly, included in bills)",
+      description: "Charged with fee. Defaults to 1.75% fee, adjustable in Advanced."
+    }
+  ];
+
   const view = createView();
   const { elements } = view;
 
@@ -19,7 +28,7 @@ async function main() {
       <span class="muted">${eligibleCards.length} eligible cards · ${issues.length} excluded · ${programsMap.size} programs</span>
     `;
 
-    renderSpendTable(elements.spendTableEl, schema, categoryDescriptions);
+    renderSpendTable(elements.spendTableEl, schema, categoryDescriptions, subcategoryConfigs);
     renderIssues(elements.issuesEl, issues);
     view.syncIssuesVisibility(issues.length);
 
@@ -30,7 +39,8 @@ async function main() {
       programsMap,
       eligibleCards,
       eligibleCardIdSet,
-      eligibleCardsById
+      eligibleCardsById,
+      subcategoryConfigs
     });
 
     actions.syncInitialUi();
