@@ -76,7 +76,7 @@ tbody tr:last-child td{border-bottom:none}
 .chipRemove:hover{color:var(--color-text)}
 
 .thumbWrap{width:44px;height:44px;display:inline-flex;align-items:center;justify-content:center;flex:0 0 44px}
-.thumb{display:block;aspect-ratio:var(--card-aspect-ratio);box-sizing:border-box;border:.75px solid var(--color-border);border-radius:var(--thumb-radius,var(--radius-card))}
+.thumb{display:block;aspect-ratio:var(--card-aspect-ratio);box-sizing:border-box;border:1px solid var(--color-border);border-radius:var(--thumb-radius,var(--radius-card))}
 .thumb.is-portrait{aspect-ratio:var(--card-aspect-ratio-portrait)}
 .thumb-xs{--thumb-radius:2px;height:var(--space-9);width:auto}
 .thumb-xs.is-portrait{width:var(--space-9);height:auto}
