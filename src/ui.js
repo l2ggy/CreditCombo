@@ -24,7 +24,7 @@ export function renderSpendTable(el, schema, categoryDescriptions = {}) {
     if (cat !== "bills") return row;
 
     return `${row}
-        <label class="spendRow spendRow-sub" for="chexySpend">
+        <label id="chexySpendRow" class="spendRow spendRow-sub hidden" for="chexySpend">
           <span class="spendMeta">
             <span class="mono spendCat">↳ chexy (monthly, included in bills)</span>
             <span class="muted chexyHint">Charged with fee. Defaults to 1.75% fee, adjustable in Advanced preferences.</span>
@@ -53,9 +53,13 @@ export function renderSpendTable(el, schema, categoryDescriptions = {}) {
 
     if (chexyInput) {
       const billsValue = Math.max(0, Number(billsInput?.value ?? 0) || 0);
+      const chexyRowEl = document.getElementById("chexySpendRow");
+      const showChexyInput = billsValue > 0;
+      chexyRowEl?.classList.toggle("hidden", !showChexyInput);
+
       chexyInput.max = String(Math.floor(billsValue));
+      if (!showChexyInput) chexyInput.value = "0";
       if (Number(chexyInput.value) > billsValue) chexyInput.value = String(Math.floor(billsValue));
-      chexyInput.disabled = billsValue <= 0;
 
       if (chexyValueEl) {
         chexyValueEl.textContent = formatMoneyCAD(Number(chexyInput.value) || 0, {

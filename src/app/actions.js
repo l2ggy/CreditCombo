@@ -394,6 +394,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
       let chexySummary = chexy;
       if (chexy.enabled) {
         const baselineAnnualSpend = annualizeMonthlySpend(monthlySpend, schema);
+        baselineAnnualSpend.bills = Math.max(0, (baselineAnnualSpend.bills || 0) - chexy.chexyAnnualBaseSpend);
         const baselinePayload = { ...payload, annualSpend: baselineAnnualSpend };
         const baseline = await runOptimizationInWorker(baselinePayload);
         chexySummary = {
@@ -417,6 +418,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
       let chexySummary = chexy;
       if (chexy.enabled) {
         const baselineAnnualSpend = annualizeMonthlySpend(monthlySpend, schema);
+        baselineAnnualSpend.bills = Math.max(0, (baselineAnnualSpend.bills || 0) - chexy.chexyAnnualBaseSpend);
         const baselinePayload = { ...payload, annualSpend: baselineAnnualSpend };
         const baseline = await runOptimizationInWorker(baselinePayload);
         chexySummary = {
@@ -451,6 +453,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
     });
     const chexySpendInput = document.getElementById("chexySpend");
     if (chexySpendInput) chexySpendInput.value = "0";
+    document.getElementById("chexySpendRow")?.classList.add("hidden");
     return runOptimization();
   }
 
