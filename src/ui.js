@@ -27,7 +27,7 @@ export function renderSpendTable(el, schema, categoryDescriptions = {}) {
         <label id="chexySpendRow" class="spendRow spendRow-sub hidden" for="chexySpend">
           <span class="spendMeta">
             <span class="mono spendCat">↳ chexy (monthly, included in bills)</span>
-            <span class="muted chexyHint">Charged with fee. Defaults to 1.75% fee, adjustable in Advanced preferences.</span>
+            <span class="muted chexyHint">Charged with fee. Defaults to 1.75% fee, adjustable in Advanced.</span>
           </span>
           <div class="chexySliderWrap">
             <input id="chexySpend" class="chexy-spend-slider" type="range" min="0" max="0" step="1" value="0" aria-label="Monthly bills spend paid via Chexy" />
@@ -53,12 +53,7 @@ export function renderSpendTable(el, schema, categoryDescriptions = {}) {
 
     if (chexyInput) {
       const billsValue = Math.max(0, Number(billsInput?.value ?? 0) || 0);
-      const chexyRowEl = document.getElementById("chexySpendRow");
-      const showChexyInput = billsValue > 0;
-      chexyRowEl?.classList.toggle("hidden", !showChexyInput);
-
       chexyInput.max = String(Math.floor(billsValue));
-      if (!showChexyInput) chexyInput.value = "0";
       if (Number(chexyInput.value) > billsValue) chexyInput.value = String(Math.floor(billsValue));
 
       if (chexyValueEl) {

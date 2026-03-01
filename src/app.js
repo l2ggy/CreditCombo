@@ -42,6 +42,7 @@ async function main() {
     elements.valuationModeEl?.addEventListener("change", () => actions.setValuationMode(elements.valuationModeEl.value));
     elements.excludeBusinessCardsEl?.addEventListener("change", () => actions.setExcludeBusinessCards(elements.excludeBusinessCardsEl.checked));
     elements.excludeCashbackProgramsEl?.addEventListener("change", () => actions.setExcludeCashbackPrograms(elements.excludeCashbackProgramsEl.checked));
+    elements.useChexyEl?.addEventListener("change", () => actions.setUseChexy(elements.useChexyEl.checked));
     elements.chexyFeePercentEl?.addEventListener("input", () => actions.setChexyFeePercent(elements.chexyFeePercentEl.value));
     elements.resetAdvancedPrefsBtn?.addEventListener("click", actions.resetAdvancedPreferences);
     elements.maxAnnualFeeEl?.addEventListener("input", () => actions.setMaxAnnualFee(elements.maxAnnualFeeEl.value));

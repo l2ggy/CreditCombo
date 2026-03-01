@@ -5,6 +5,7 @@ export function createUiState() {
     maxAnnualFee: null,
     excludeBusinessCards: false,
     excludeCashbackPrograms: false,
+    useChexy: false,
     chexyFeePercent: 1.75,
     excludedProgramIds: new Set(),
     enableLockedCards: false,
