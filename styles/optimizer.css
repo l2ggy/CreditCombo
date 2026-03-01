@@ -92,5 +92,5 @@
 
 @media (prefers-reduced-motion:reduce){.spendDescCaret,.issues summary::after,.spendDescBody,.issuesBody{transition:none}.spendDescBody,.issuesBody{transform:none}.resultPanel #result .resultContent--enter{animation:none;transform:none}}
 
-@media (max-width:900px){.layout{grid-template-columns:1fr}.spendRow{grid-template-columns:minmax(0,1fr) minmax(56px,76px);gap:var(--space-2)}.spendCat{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.tileGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:900px){.layout{grid-template-columns:1fr}.spendRow{grid-template-columns:1fr;align-items:start;gap:var(--space-2)}.spendMeta{overflow:visible}.spendCat{white-space:normal;overflow:visible;text-overflow:clip}.tileGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:380px){.tileGrid{grid-template-columns:1fr}}
