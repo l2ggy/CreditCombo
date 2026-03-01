@@ -252,6 +252,36 @@
       ]
     },
     {
+      "id": "amex_essential",
+      "card_name": "American Express Essential™",
+      "issuer": "American Express",
+      "network": "American Express",
+      "rewards_program": "amex_mr_ca",
+      "is_business_card": false,
+      "annual_fee": {
+        "amount": 25,
+        "type": "annual"
+      },
+      "earn_rates": {
+        "other": 1
+      },
+      "caps": [],
+      "special_earn_rules": [
+        {
+          "type": "merchant_specific",
+          "description": "Earn 1 Membership Rewards point per $1 on eligible purchases with no category multipliers."
+        },
+        {
+          "type": "modeling_note",
+          "description": "Card is primarily a low-interest product; optimization value reflects base Membership Rewards earn only."
+        }
+      ],
+      "sources": [
+        "https://www.americanexpress.com/ca/en/credit-cards/essential-credit-card/",
+        "https://www.ratehub.ca/credit-cards/card/amex-essential"
+      ]
+    },
+    {
       "id": "amex_business_gold_rewards",
       "card_name": "Business Gold Rewards Card from American Express",
       "issuer": "American Express",
