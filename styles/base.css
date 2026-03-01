@@ -76,14 +76,13 @@ tbody tr:last-child td{border-bottom:none}
 .chipRemove:hover{color:var(--color-text)}
 
 .thumbWrap{width:44px;height:44px;display:inline-flex;align-items:center;justify-content:center;flex:0 0 44px}
-.thumb{display:block;border:1px solid var(--color-border);border-radius:var(--radius-card)}
-.thumb.is-portrait{border-radius:var(--radius-card-portrait)}
-.thumb-xs{height:var(--space-9);width:calc(var(--space-9) * 86 / 54);aspect-ratio:86/54}
-.thumb-xs.is-portrait{width:var(--space-9);height:calc(var(--space-9) * 86 / 54);aspect-ratio:54/86}
-.thumb-sm{width:72px;aspect-ratio:86/54;height:auto}
-.thumb-sm.is-portrait{width:auto;height:72px;aspect-ratio:54/86}
-.thumb-md{width:44px;aspect-ratio:86/54;height:auto}
-.thumb-md.is-portrait{width:auto;height:44px;aspect-ratio:54/86}
+.thumb{display:block;aspect-ratio:var(--card-aspect-ratio);border:1px solid var(--color-border);border-radius:var(--radius-card)}
+.thumb.is-portrait{aspect-ratio:var(--card-aspect-ratio-portrait)}
+.thumb-xs{height:var(--space-9);width:auto}
+.thumb-xs.is-portrait{width:var(--space-9);height:auto}
+.thumb-sm{height:45px;width:auto}
+.thumb-sm.is-portrait{width:45px;height:auto}
+.thumb-md{max-width:44px;max-height:44px;width:auto;height:auto}
 .thumb-lg{width:100%;height:100%;padding:0;border:none}
 .thumb-contain{object-fit:contain}
 .thumb-cover{object-fit:cover;overflow:hidden;flex:0 0 auto}
