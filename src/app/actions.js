@@ -517,7 +517,9 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
 
     const chexySpendRow = document.getElementById("chexySpendRow");
     const chexySpendInput = document.getElementById("chexySpend");
+    const chexyAdvancedPanel = elements.chexyAdvancedPanelEl;
     chexySpendRow?.classList.toggle("hidden", !state.useChexy);
+    chexyAdvancedPanel?.classList.toggle("hidden", !state.useChexy);
     if (!state.useChexy && chexySpendInput) chexySpendInput.value = "0";
 
     return runOptimization();
@@ -553,6 +555,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
     if (elements.excludeCashbackProgramsEl) elements.excludeCashbackProgramsEl.checked = false;
     if (elements.useChexyEl) elements.useChexyEl.checked = false;
     if (elements.chexyFeePercentEl) elements.chexyFeePercentEl.value = "1.75";
+    elements.chexyAdvancedPanelEl?.classList.add("hidden");
     document.getElementById("chexySpendRow")?.classList.add("hidden");
     const chexySpendInput = document.getElementById("chexySpend");
     if (chexySpendInput) chexySpendInput.value = "0";
@@ -585,6 +588,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
     renderExcludedProgramSearchResults,
     syncInitialUi: () => {
       syncStateFromControls();
+      elements.chexyAdvancedPanelEl?.classList.toggle("hidden", !state.useChexy);
       document.getElementById("chexySpendRow")?.classList.toggle("hidden", !state.useChexy);
       shouldRenderLockedCardPicks = true;
       updateLockedCardsUi();

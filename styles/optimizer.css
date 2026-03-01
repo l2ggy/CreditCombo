@@ -44,6 +44,7 @@
 .spendRow input[type="number"].spend-input{width:100%;min-width:0;max-width:none;padding:var(--space-2) var(--space-3)}
 .spendRow input[type="number"].spend-input::placeholder{color:color-mix(in srgb,var(--color-muted) 72%,var(--color-bg) 28%);opacity:1}
 .spendRow-sub{grid-column:1/-1;background:color-mix(in srgb,var(--color-accent) 6%,var(--color-panel));border-style:dashed}
+.spendRow.hidden{display:none}
 .chexySliderWrap{display:grid;gap:var(--space-1);justify-items:end}
 .chexy-spend-slider{width:180px}
 .chexyHint{display:block;font-size:var(--font-size-xs);line-height:1.2;margin-top:var(--space-1)}
