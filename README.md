@@ -1,127 +1,73 @@
-CreditCombo (MVP)
-========================
+# CreditCombo
 
-A small static web app that recommends an “ideal” long‑term Canadian credit‑card combo (1–5 cards) based on your monthly spend by category. It loads card and rewards-program data from JSON files, estimates annual rewards value minus fees, and outputs simple “use this card for this category” instructions.
+CreditCombo is a static web app that helps you build a long-term Canadian credit-card setup based on your monthly spending.
 
-What it does
-------------
-- Prompts for:
-  - Number of cards to hold (1–5)
-  - Monthly spend per category (from data/cards.json schema)
-  - Points valuation mode: estimated vs minimum guaranteed redemption value
-- Computes:
-  - Best card set (searches all set sizes from 1..k)
-  - Annual gross rewards value (based on selected valuation mode)
-  - Annual fees
-  - Net value (gross − fees)
-  - Category-by-category usage instructions
+## What the app does
 
-What it does NOT do (yet)
--------------------------
-- Merchant- or portal-specific `special_earn_rules` are not yet modeled.
-- MCC quirks and acceptance constraints are not modeled.
-- One-time promotions and welcome bonuses are not modeled.
+- Recommends an optimal card combo from available data.
+- Lets you choose up to 5 cards (or 0 to clear results).
+- Supports two valuation modes:
+  - **Estimated value**
+  - **Minimum guaranteed value**
+- Applies annual fees and returns net annual value.
+- Shows category-by-category card usage guidance.
+- Supports practical filters such as:
+  - Locking in cards you already have
+  - Excluding business cards
+  - Excluding cashback programs
+  - Excluding specific rewards programs
+  - Setting a maximum annual fee
 
-Eligibility rules for cards
----------------------------
-Cards are excluded from optimization if:
-- rewards_program is missing, OR
-- rewards_program is not found in data/programs.json, OR
-- program_type is "points" and cents_per_point is null
-  (minimum_cents_per_point is used for minimum guaranteed mode and is populated for all current points programs)
+## Current modeling limits
 
-Excluded cards (and reasons) appear under “Data issues” in the UI.
+- Merchant-specific and portal-specific multipliers are not modeled.
+- MCC edge cases and card acceptance constraints are not modeled.
+- Welcome bonuses and short-term promos are not modeled.
 
-Project structure
------------------
-your-folder/
-  index.html
-  styles.css
-  data/
-    cards.json
-    programs.json
-  src/
-    app.js        # bootstraps UI, loads data, runs optimizer
-    data.js       # fetch + normalization + card eligibility filtering
-    optimizer.js  # combo search + cap handling + scoring
-    ui.js         # rendering + input helpers
+## Run locally
 
+```bash
+npx serve .
+```
 
-Deploy on Cloudflare Workers
-----------------------------
-Use one Worker + static assets for both production and previews.
-Worker entrypoint: `src/worker.js`.
+Then open the local URL printed in your terminal.
 
+## Deploy (Cloudflare Workers)
 
-- Production: `npx wrangler deploy`
-- Branch previews: `npx wrangler versions upload --preview-alias <branch-name>`
+`wrangler.toml` is configured to serve this repo as static assets through a Worker (`src/worker.js`).
 
-This works because `versions upload` versions a Worker script (`main`), while the Worker serves your static files through the `ASSETS` binding.
+```bash
+npx wrangler deploy
+```
 
-Run locally
------------
-1) Keep data files in ./data (cards.json and programs.json) beside index.html and styles.css.
-2) Start a static server:
-   npx serve .
-3) Open the local URL shown in the terminal.
+## Data files
 
-Data format (high level)
-------------------------
-data/cards.json
-- meta.category_schema_modeled: list of categories (strings)
-- cards[] items include:
-  - id, card_name, issuer, network
+- `data/cards.json`
+- `data/programs.json`
 
-Card naming conventions
-- Prefer issuer/product display names without a trailing "Card" or "Credit Card" suffix.
-- Keep "Card" in the display name only when removing it would change the product meaning or brand form (for example: "The Platinum Card" and "EQ Bank Card").
-- Remove non-accent special characters from card display names (for example: ™, ®, ©, †, ‡, *, and similar symbols), while keeping normal letters/accents.
-  - rewards_program: program_id (string)
-  - annual_fee: { amount, type }
-  - earn_rates: { category: number, other: number }
-  - caps: optional list of cap rules
-  - special_earn_rules: optional list (ignored by optimizer for now)
+Cards without valid rewards-program valuation data are excluded from optimization and surfaced in the UI under **Data issues**.
 
-data/programs.json
-- programs[] items include:
-  - program_id
-  - program_name
-  - program_type: "points" | "cashback"
-  - cents_per_point (required for "points"; cashback is always treated as face-value cashback, i.e. 1.0 cpp equivalent)
-  - minimum_cents_per_point (used in minimum guaranteed mode; populated for all current points programs)
-  - minimum_valuation_note (short rationale/source for the minimum floor)
+## Project structure
 
-Optimizer notes
---------------
-- Rules modeled in scoring are intentionally narrow:
-  - Two valuation modes are modeled: estimated points value and minimum guaranteed redemption value.
-  - Category spend is assigned to the best card, cap overflow is rerouted to the next-best card, and residual overflow can earn at the above-cap rate.
-  - Annual fees are subtracted from gross rewards to report net annual value.
-- Reward value per $ is computed as:
-  - points programs: `(points per $) * (effective cents per point) / 100`
-    - effective cpp = `cents_per_point` in estimated mode
-    - effective cpp = `minimum_cents_per_point` in minimum guaranteed mode (falls back to `cents_per_point` if a future program entry omits it)
-  - cashback programs: `(percent) / 100` (cashback is treated as a fixed 1.0 cpp equivalent)
-- To keep runtime practical on large card sets, it narrows to a candidate pool before evaluating all combinations from size 1..k. The pool is built by combining:
-  - top cards per active spend category (high value-per-dollar in that category),
-  - top cards by overall weighted potential (using your spend mix and annual fees),
-  - a small set of lowest-fee cards (to preserve low-fee combo options),
-  then trimming that merged set to a size limit derived from a target max combination count.
+```text
+index.html            # Optimizer page
+cards.html            # Card browser page
+valuations.html       # Valuation guide page
+src/
+  app.js
+  optimizer.js
+  optimizer-worker.js
+  data-service.js
+  worker.js
+styles/
+  base.css
+  optimizer.css
+  browser.css
+data/
+  cards.json
+  programs.json
+```
 
-Contribution guidance
----------------------
+## Disclaimer
 
-### CSS Philosophy (Minimal by Default)
-- Prefer generic reusable classes over page-specific selectors.
-- Add new classes only when composition cannot solve the need.
-- Keep feature styles in `styles/browser.css` or `styles/optimizer.css` and shared primitives in `styles/base.css`.
-- Require visual parity for tiny UX details (chips, tooltip labels, hover states) when simplifying styles.
-
-CSS change checklist:
-- Did this reduce or preserve selector/class count?
-- Could this be done with existing primitives?
-- Did I verify chip/tooltip/hover micro-styles still look correct?
-
-License / disclaimer
---------------------
-This is an MVP for experimentation. Numbers are estimates; real-world results depend on merchant coding, acceptance, and redemption choices.
+This project is for estimation and comparison only. Real-world value depends on redemption method, merchant coding, and card acceptance.
