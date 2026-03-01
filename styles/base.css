@@ -16,7 +16,9 @@ h3{margin:var(--space-6) 0 var(--space-4);font-size:var(--font-size-md);color:va
 .subtle2{display:block;margin-top:var(--space-1);font-size:var(--font-size-base)}
 .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:var(--font-size-base)}
 
-.siteHeader{display:grid;gap:var(--space-4)}
+.siteHeader{display:grid;gap:var(--space-4);padding-bottom:var(--space-4)}
+main.container{padding-top:var(--space-5)}
+.header .subtle{margin:0}
 .topNav{display:flex;justify-content:flex-end;flex-wrap:wrap;align-items:center;gap:var(--space-6)}
 .topNavLinks{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-6);margin-left:auto}
 .siteBrand{color:var(--color-brand-highlight);font-size:calc(var(--font-size-2xl) + 2px);line-height:var(--line-height-tight);font-weight:700}
@@ -90,6 +92,8 @@ tbody tr:last-child td{border-bottom:none}
 .textLink::after{content:"";position:absolute;left:0;bottom:-.12em;width:100%;height:1px;background:currentColor;transform:scaleX(0);transform-origin:left center;transition:transform .2s ease}
 .textLink:hover,.textLink:focus-visible{text-decoration:none}
 .textLink:hover::after,.textLink:focus-visible::after{transform:scaleX(1)}
+.textLink[aria-current="page"]{color:var(--color-text)}
+.textLink[aria-current="page"]::after{transform:scaleX(1);height:2px}
 
 .siteFooter{padding-top:0;padding-bottom:var(--space-10)}
 .footerContent{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:var(--space-5);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-6);background:color-mix(in srgb,var(--color-panel) 65%,transparent)}
