@@ -61,6 +61,11 @@
         "If terms cite portal-only travel acceleration, keep baseline travel in travel and capture portal uplift in special_earn_rules."
       ]
     },
+    "card_naming_conventions": [
+      "Prefer issuer/product display names without a trailing 'Card' or 'Credit Card' suffix.",
+      "Keep 'Card' in the display name only when removing it would change product meaning or brand form (e.g., 'The Platinum Card', 'EQ Bank Card').",
+      "Remove non-accent special characters from display names (e.g., ™, ®, ©, †, ‡, *, and similar symbols), while keeping normal letters/accents."
+    ],
     "cards_sort_order": "cards[] are sorted by issuer (asc), network (asc), card_name (asc), then id (asc); keep this order when adding/updating cards.",
     "card_item_required_fields": [
       "id",
