@@ -38,9 +38,9 @@ export function renderSpendTable(el, schema, categoryDescriptions = {}, subcateg
             <span class="spendMeta">
               <span class="mono spendCat">${cat}</span>
               ${spendDescriptionMarkup(categoryDescriptions[cat] || "")}
-              ${subcategoryDetails}
             </span>
             <input id="spend-${cat}" class="spend-input" type="number" min="0" step="1" value="" placeholder="0" data-cat="${cat}" aria-label="Monthly spend for ${cat}" />
+            ${subcategoryDetails}
           </label>
         `;
   }).join("")}
