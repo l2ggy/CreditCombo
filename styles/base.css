@@ -38,6 +38,9 @@ main.container{padding-top:var(--space-5)}
 label{display:block;margin:0 0 var(--space-2);font-size:var(--font-size-sm);color:var(--color-muted)}
 input[type="number"],input[type="search"],select{width:100%;border:1px solid var(--color-border);border-radius:var(--radius-lg);background:transparent;color:var(--color-text);outline:none}
 input[type="number"],input[type="search"]{padding:var(--space-4)}
+input[type="number"]{-moz-appearance:textfield;appearance:textfield}
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
 select{appearance:none;padding:var(--space-4) 36px var(--space-4) var(--space-4);background:linear-gradient(45deg,transparent 50%,var(--color-muted) 50%) calc(100% - 20px) calc(50% - 2px)/6px 6px no-repeat,linear-gradient(135deg,var(--color-muted) 50%,transparent 50%) calc(100% - 14px) calc(50% - 2px)/6px 6px no-repeat,transparent}
 select[multiple]{min-width:320px;max-width:100%;padding:var(--space-3);appearance:auto;background:transparent}
 input[type="number"]:focus,input[type="search"]:focus,select:focus{border-color:var(--color-accent)}
