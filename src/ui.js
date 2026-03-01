@@ -31,7 +31,7 @@ export function renderSpendTable(el, schema, categoryDescriptions = {}) {
           </span>
           <div class="chexySliderWrap">
             <input id="chexySpend" class="chexy-spend-slider" type="range" min="0" max="0" step="1" value="0" aria-label="Monthly bills spend paid via Chexy" />
-            <output id="chexySpendValue" class="muted" for="chexySpend">$0</output>
+            <input id="chexySpendValue" class="spend-input chexy-spend-input" type="number" min="0" step="1" value="0" aria-label="Monthly Chexy spend value" />
           </div>
         </label>`;
   }).join("")}
@@ -53,14 +53,18 @@ export function renderSpendTable(el, schema, categoryDescriptions = {}) {
 
     if (chexyInput) {
       const billsValue = Math.max(0, Number(billsInput?.value ?? 0) || 0);
-      chexyInput.max = String(Math.floor(billsValue));
-      if (Number(chexyInput.value) > billsValue) chexyInput.value = String(Math.floor(billsValue));
+      const maxValue = Math.floor(billsValue);
+      chexyInput.max = String(maxValue);
+      if (chexyValueEl) chexyValueEl.max = String(maxValue);
+
+      const sliderValue = Number(chexyInput.value);
+      const clampedValue = Math.max(0, Math.min(maxValue, Number.isFinite(sliderValue) ? sliderValue : 0));
+      chexyInput.value = String(Math.floor(clampedValue));
 
       if (chexyValueEl) {
-        chexyValueEl.textContent = formatMoneyCAD(Number(chexyInput.value) || 0, {
-          minimumFractionDigits: 0,
-          maximumFractionDigits: 0
-        });
+        if (document.activeElement !== chexyValueEl) {
+          chexyValueEl.value = String(Math.floor(clampedValue));
+        }
       }
     }
 
@@ -83,6 +87,21 @@ export function renderSpendTable(el, schema, categoryDescriptions = {}) {
   if (chexyInput) {
     chexyInput.addEventListener("input", updateSpendTotal);
     chexyInput.addEventListener("change", updateSpendTotal);
+  }
+
+  const chexyValueInput = document.getElementById("chexySpendValue");
+  if (chexyInput && chexyValueInput) {
+    const syncSliderFromText = () => {
+      const billsInput = el.querySelector('input[data-cat="bills"]');
+      const maxValue = Math.max(0, Math.floor(Number(billsInput?.value ?? 0) || 0));
+      const raw = Number(chexyValueInput.value);
+      const value = Math.max(0, Math.min(maxValue, Number.isFinite(raw) ? raw : 0));
+      chexyInput.value = String(Math.floor(value));
+      updateSpendTotal();
+    };
+
+    chexyValueInput.addEventListener("input", syncSliderFromText);
+    chexyValueInput.addEventListener("change", syncSliderFromText);
   }
 
   updateSpendTotal();

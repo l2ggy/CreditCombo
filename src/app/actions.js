@@ -15,6 +15,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
 
   let optimizeWorker = null;
   let optimizeRequestId = 0;
+  let runTokenCounter = 0;
   const pendingRequests = new Map();
   let shouldRenderLockedCardPicks = true;
 
@@ -345,6 +346,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
   }
 
   async function runOptimization() {
+    const runToken = ++runTokenCounter;
     syncStateFromControls();
     elements.runBtn.disabled = true;
     view.setLoadingState(true);
@@ -401,22 +403,22 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
         baselineAnnualSpend.bills = Math.max(0, (baselineAnnualSpend.bills || 0) - chexy.chexyAnnualBaseSpend);
         const baselinePayload = { ...payload, annualSpend: baselineAnnualSpend };
         const baseline = await runOptimizationInWorker(baselinePayload);
+        if (runToken !== runTokenCounter) return;
         chexySummary = {
           ...chexy,
           incrementalNetValue: (cached.net - chexy.chexyAnnualFee) - baseline.net,
           isWorthIt: ((cached.net - chexy.chexyAnnualFee) - baseline.net) > 0
         };
       }
+      if (runToken !== runTokenCounter) return;
       renderResult(elements.resultEl, cached, annualSpend, schema, state.valuationMode, chexySummary);
-      elements.runBtn.disabled = false;
+      if (runToken === runTokenCounter) elements.runBtn.disabled = false;
       return;
     }
 
-    const requestId = optimizeRequestId + 1;
-
     try {
       const best = await runOptimizationInWorker(payload);
-      if (requestId !== optimizeRequestId) return;
+      if (runToken !== runTokenCounter) return;
       comboCache.set(key, best);
 
       let chexySummary = chexy;
@@ -425,6 +427,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
         baselineAnnualSpend.bills = Math.max(0, (baselineAnnualSpend.bills || 0) - chexy.chexyAnnualBaseSpend);
         const baselinePayload = { ...payload, annualSpend: baselineAnnualSpend };
         const baseline = await runOptimizationInWorker(baselinePayload);
+        if (runToken !== runTokenCounter) return;
         chexySummary = {
           ...chexy,
           incrementalNetValue: (best.net - chexy.chexyAnnualFee) - baseline.net,
@@ -435,13 +438,13 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
       view.setLoadingState(false);
       renderResult(elements.resultEl, best, annualSpend, schema, state.valuationMode, chexySummary);
     } catch (error) {
-      if (requestId !== optimizeRequestId) return;
+      if (runToken !== runTokenCounter) return;
       view.setLoadingState(false);
       elements.resultEl.classList.remove("hidden");
       elements.resultEl.classList.remove("resultEmpty");
       elements.resultEl.innerHTML = `<span class="badge bad">Error</span> ${escapeHtml(error?.message || "Failed to optimize")}`;
     } finally {
-      if (requestId === optimizeRequestId) elements.runBtn.disabled = false;
+      if (runToken === runTokenCounter) elements.runBtn.disabled = false;
     }
   }
 

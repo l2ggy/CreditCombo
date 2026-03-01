@@ -45,8 +45,9 @@
 .spendRow input[type="number"].spend-input::placeholder{color:color-mix(in srgb,var(--color-muted) 72%,var(--color-bg) 28%);opacity:1}
 .spendRow-sub{grid-column:1/-1;background:color-mix(in srgb,var(--color-accent) 6%,var(--color-panel));border-style:dashed}
 .spendRow.hidden{display:none}
-.chexySliderWrap{display:grid;gap:var(--space-1);justify-items:end}
-.chexy-spend-slider{width:180px}
+.chexySliderWrap{display:grid;grid-template-columns:1fr 92px;gap:var(--space-2);align-items:center}
+.chexy-spend-slider{width:100%}
+.chexy-spend-input{width:100%;padding:var(--space-2) var(--space-3)}
 .chexyHint{display:block;font-size:var(--font-size-xs);line-height:1.2;margin-top:var(--space-1)}
 
 .spendDesc{margin-top:var(--space-1)}
