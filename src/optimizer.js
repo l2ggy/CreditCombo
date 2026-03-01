@@ -4,6 +4,37 @@ export function annualizeMonthlySpend(monthlySpend, schema) {
   return annual;
 }
 
+export function chexyAdjustedAnnualSpend(monthlySpend, schema, options = {}) {
+  const annualSpend = annualizeMonthlySpend(monthlySpend, schema);
+  const category = options.category || "bills";
+  const categoryMonthlySpend = Math.max(0, Number(monthlySpend?.[category] ?? 0) || 0);
+  const monthlyBaseSpendRaw = Math.max(0, Number(options.chexyMonthlyBaseSpend ?? 0) || 0);
+  const chexyMonthlyBaseSpend = Math.min(categoryMonthlySpend, monthlyBaseSpendRaw);
+  const chexyFeePercent = Math.max(0, Number(options.chexyFeePercent ?? 1.75) || 0);
+  const chexyFeeRate = chexyFeePercent / 100;
+  const chexyMonthlyChargedSpend = chexyMonthlyBaseSpend * (1 + chexyFeeRate);
+  const chexyMonthlyFee = chexyMonthlyChargedSpend - chexyMonthlyBaseSpend;
+
+  if (schema.includes(category)) {
+    annualSpend[category] = (annualSpend[category] || 0) + (chexyMonthlyFee * 12);
+  }
+
+  return {
+    annualSpend,
+    chexy: {
+      category,
+      chexyFeePercent,
+      chexyMonthlyBaseSpend,
+      chexyMonthlyChargedSpend,
+      chexyMonthlyFee,
+      chexyAnnualBaseSpend: chexyMonthlyBaseSpend * 12,
+      chexyAnnualChargedSpend: chexyMonthlyChargedSpend * 12,
+      chexyAnnualFee: chexyMonthlyFee * 12,
+      enabled: chexyMonthlyBaseSpend > 0
+    }
+  };
+}
+
 function cardRate(card, cat) {
   const er = card.earn_rates || {};
   if (er[cat] != null) return Number(er[cat]);

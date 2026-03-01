@@ -11,6 +11,7 @@ export function createView() {
     valuationModeEl: document.getElementById("valuationMode"),
     excludeBusinessCardsEl: document.getElementById("excludeBusinessCards"),
     excludeCashbackProgramsEl: document.getElementById("excludeCashbackPrograms"),
+    chexyFeePercentEl: document.getElementById("chexyFeePercent"),
     maxAnnualFeeEl: document.getElementById("maxAnnualFee"),
     excludedProgramSearchEl: document.getElementById("excludedProgramSearch"),
     excludedProgramOptionsEl: document.getElementById("excludedProgramOptions"),
