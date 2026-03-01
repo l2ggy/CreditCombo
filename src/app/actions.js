@@ -16,7 +16,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
   let optimizeWorker = null;
   let optimizeRequestId = 0;
   const pendingRequests = new Map();
-  let lastLockedCardPicksKey = null;
+  let shouldRenderLockedCardPicks = true;
 
   function syncStateFromControls() {
     state.valuationMode = elements.valuationModeEl?.value === "minimum_guaranteed" ? "minimum_guaranteed" : "estimated";
@@ -71,10 +71,6 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
   function renderLockedCardPicks() {
     if (!elements.lockedCardPicksEl) return;
     const ids = selectedLockedCardIds(state, eligibleCardIdSet);
-    const key = ids.join("|");
-
-    if (key === lastLockedCardPicksKey) return;
-    lastLockedCardPicksKey = key;
     elements.lockedCardPicksEl.innerHTML = "";
 
     if (!ids.length) {
@@ -236,7 +232,11 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
   }
 
   function updateLockedCardsUi() {
+    const lockedCardCountBeforeSanitize = state.lockedCardIds.size;
     sanitizeLockedCardSelection();
+    if (state.lockedCardIds.size !== lockedCardCountBeforeSanitize) {
+      shouldRenderLockedCardPicks = true;
+    }
     for (const programId of [...state.excludedProgramIds]) {
       if (!programsMap.has(programId)) state.excludedProgramIds.delete(programId);
     }
@@ -254,7 +254,10 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
       elements.kLabelEl.textContent = enabled ? "Additional cards" : "Number of cards";
     }
 
-    renderLockedCardPicks();
+    if (shouldRenderLockedCardPicks) {
+      renderLockedCardPicks();
+      shouldRenderLockedCardPicks = false;
+    }
     renderLockedSearchResults();
     renderExcludedProgramPicks();
     renderExcludedProgramSearchResults();
@@ -407,6 +410,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
 
   function toggleLockedCards() {
     syncStateFromControls();
+    shouldRenderLockedCardPicks = true;
     return runOptimization();
   }
 
@@ -431,12 +435,14 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
 
   function addLockedCard(cardId) {
     state.lockedCardIds.add(cardId);
+    shouldRenderLockedCardPicks = true;
     if (elements.lockedCardSearchEl) elements.lockedCardSearchEl.value = "";
     return runOptimization();
   }
 
   function removeLockedCard(cardId) {
     state.lockedCardIds.delete(cardId);
+    shouldRenderLockedCardPicks = true;
     return runOptimization();
   }
 
@@ -512,6 +518,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
     renderExcludedProgramSearchResults,
     syncInitialUi: () => {
       syncStateFromControls();
+      shouldRenderLockedCardPicks = true;
       updateLockedCardsUi();
       syncKBoundsFromState();
       view.updateKValue(elements.kInput.value);
