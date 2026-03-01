@@ -14,6 +14,7 @@ const els = {
   issuerFilter: document.getElementById("issuerFilter"),
   programFilter: document.getElementById("programFilter"),
   sortBy: document.getElementById("sortBy"),
+  sortEarnCategory: document.getElementById("sortEarnCategory"),
   resetFiltersBtn: document.getElementById("resetFiltersBtn"),
   cardsList: document.getElementById("cardsList"),
   summary: document.getElementById("browserSummary"),
@@ -47,6 +48,7 @@ function hasActiveFilters() {
     || els.issuerFilter.value
     || els.programFilter.value
     || els.sortBy.value !== "name"
+    || els.sortEarnCategory.value
   );
 }
 
@@ -55,6 +57,20 @@ function resetFilters() {
   els.issuerFilter.value = "";
   els.programFilter.value = "";
   els.sortBy.value = "name";
+  els.sortEarnCategory.value = "";
+  updateSortEarnCategoryState();
+}
+
+function sortEarnRateForCategory(card, category) {
+  return Number(card?.earn_rates?.[category] ?? 0);
+}
+
+function updateSortEarnCategoryState() {
+  const isCategorySort = els.sortBy.value === "earnRateCategoryDesc";
+  els.sortEarnCategory.disabled = !isCategorySort;
+  if (!isCategorySort) {
+    els.sortEarnCategory.value = "";
+  }
 }
 
 function updateResetButtonState() {
@@ -94,6 +110,11 @@ function cardSortComparator() {
     annualFeeAsc: (a, b) => annualFeeAmount(a) - annualFeeAmount(b) || a.card_name.localeCompare(b.card_name),
     annualFeeDesc: (a, b) => annualFeeAmount(b) - annualFeeAmount(a) || a.card_name.localeCompare(b.card_name),
     issuer: (a, b) => a.issuer.localeCompare(b.issuer) || a.card_name.localeCompare(b.card_name),
+    earnRateCategoryDesc: (a, b) => {
+      const category = els.sortEarnCategory.value;
+      const rateDiff = sortEarnRateForCategory(b, category) - sortEarnRateForCategory(a, category);
+      return rateDiff || a.card_name.localeCompare(b.card_name);
+    },
     name: (a, b) => a.card_name.localeCompare(b.card_name)
   };
 
@@ -319,10 +340,17 @@ function renderCards() {
 }
 
 function registerEvents() {
-  [els.searchInput, els.issuerFilter, els.programFilter, els.sortBy].forEach((el) => {
+  [els.searchInput, els.issuerFilter, els.programFilter].forEach((el) => {
     el.addEventListener("input", renderCards);
     el.addEventListener("change", renderCards);
   });
+
+  els.sortBy.addEventListener("change", () => {
+    updateSortEarnCategoryState();
+    renderCards();
+  });
+  els.sortEarnCategory.addEventListener("input", renderCards);
+  els.sortEarnCategory.addEventListener("change", renderCards);
 
   if (els.resetFiltersBtn) {
     els.resetFiltersBtn.addEventListener("click", () => {
@@ -342,11 +370,15 @@ async function init() {
 
     const issuers = [...new Set(state.cards.map((c) => c.issuer))].sort((a, b) => a.localeCompare(b));
     const programs = [...new Set(state.cards.map((c) => c.rewards_program))].sort((a, b) => a.localeCompare(b));
+    const earnCategories = [...new Set(state.cards.flatMap((card) => Object.keys(card.earn_rates || {})))]
+      .sort((a, b) => a.localeCompare(b));
 
     populateSelect(els.issuerFilter, issuers, "All issuers");
     populateSelect(els.programFilter, programs, "All programs");
+    populateSelect(els.sortEarnCategory, earnCategories, "Select category");
 
     registerEvents();
+    updateSortEarnCategoryState();
     renderCards();
   } catch (error) {
     els.fatal.classList.remove("hidden");
