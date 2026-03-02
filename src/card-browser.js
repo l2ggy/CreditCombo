@@ -7,6 +7,7 @@ import { merchantPortalConfigs, subcategoryRateForCard } from "./subcategory-con
 const state = {
   cards: [],
   programs: new Map(),
+  subcategoryConfigs: {},
   filteredCards: []
 };
 
@@ -161,7 +162,7 @@ function cardRate(card, cat) {
 }
 
 function merchantPortalEntriesForCard(card) {
-  return merchantPortalConfigs()
+  return merchantPortalConfigs(state.subcategoryConfigs)
     .map((config) => ({
       ...config,
       rate: subcategoryRateForCard(config, card, config.parentCategory, cardRate)
@@ -421,7 +422,9 @@ function registerEvents() {
 
 async function init() {
   try {
-    const { cardsJson, programsMap } = await loadCoreData();
+    const { cardsJson, programsMap, subcategoryConfigs } = await loadCoreData();
+
+    state.subcategoryConfigs = subcategoryConfigs || {};
 
     state.programs = programsMap;
     // Card browser intentionally uses the full dataset rather than optimizer-eligible subset.

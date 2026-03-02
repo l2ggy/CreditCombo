@@ -4,15 +4,13 @@ import { createActions } from "./app/actions.js";
 import { createUiState } from "./app/state.js";
 import { createView } from "./app/view.js";
 import { escapeHtml } from "./shared/sanitize.js";
-import { subcategoryConfigs } from "./subcategory-config.js";
-
 
 async function main() {
   const view = createView();
   const { elements } = view;
 
   try {
-    const { schema, categoryDescriptions, eligibleCards, issues, programsMap } = await loadOptimizerData();
+    const { schema, categoryDescriptions, eligibleCards, issues, programsMap, subcategoryConfigs } = await loadOptimizerData();
     const eligibleCardIdSet = new Set(eligibleCards.map((card) => card.id));
     const eligibleCardsById = new Map(eligibleCards.map((card) => [card.id, card]));
 
