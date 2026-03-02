@@ -11,7 +11,7 @@ const subcategoryConfigs = {
     {
       key: "grocery_costco",
       label: "Costco",
-      helperText: "Mastercard only.",
+      helperText: "Warehouse groceries.",
       logicAdjustment: "network_category_override",
       acceptedNetworks: ["mastercard"],
       networkCategoryMap: {
@@ -21,8 +21,7 @@ const subcategoryConfigs = {
     {
       key: "grocery_george_weston",
       label: "Weston brands",
-      helperText: "Mastercard/Visa accepted.",
-      hoverDetails: "Includes Loblaws, No Frills, Real Canadian Superstore, Maxi, Provigo, Zehrs, and Fortinos.",
+      helperText: "Loblaws, No Frills, Real Canadian Superstore, T&T, Fortinos, and more.",
       logicAdjustment: "network_category_override",
       acceptedNetworks: ["mastercard", "visa"],
       networkCategoryMap: {
@@ -33,7 +32,7 @@ const subcategoryConfigs = {
     {
       key: "grocery_walmart",
       label: "Walmart",
-      helperText: "Mastercard: grocery. Visa/Amex: other.",
+      helperText: "Walmart groceries.",
       logicAdjustment: "network_category_override",
       acceptedNetworks: ["mastercard", "visa", "amex"],
       networkCategoryMap: {
@@ -47,7 +46,7 @@ const subcategoryConfigs = {
     {
       key: "gas_costco",
       label: "Costco gas",
-      helperText: "Mastercard only.",
+      helperText: "Costco fuel stations.",
       logicAdjustment: "network_category_override",
       acceptedNetworks: ["mastercard"],
       networkCategoryMap: {
@@ -57,8 +56,7 @@ const subcategoryConfigs = {
     {
       key: "gas_esso_mobil",
       label: "Esso & Mobil",
-      helperText: "Merchant multiplier ready.",
-      hoverDetails: "Use this for Esso and Mobil spend. This subcategory is ready for merchant or portal earn multipliers."
+      helperText: "Esso and Mobil fuel stations."
     }
   ],
   bills: [
