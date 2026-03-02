@@ -40,7 +40,8 @@ export function chexyAdjustedAnnualSpend({ annualSpend, monthlySpend = {}, subca
       delta: adjustedAnnualTotal - baselineAnnualTotal
     },
     chexyAdjustedAnnualSpend,
-    chexyBaseAnnualSpend
+    chexyBaseAnnualSpend,
+    chexyChargedAnnualSpend: chexyBaseAnnualSpend + chexyAdjustedAnnualSpend
   };
 }
 

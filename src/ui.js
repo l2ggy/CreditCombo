@@ -290,7 +290,8 @@ function formatPercent(value) {
 function renderChexyWorthItCallout(chexySummary, effectiveEarnRate) {
   if (!chexySummary?.chexyBaseAnnualSpend || chexySummary.chexyBaseAnnualSpend <= 0) return null;
 
-  const rewardsValue = Number.isFinite(effectiveEarnRate) ? chexySummary.chexyBaseAnnualSpend * effectiveEarnRate : 0;
+  const chargedAnnual = Number(chexySummary.chexyChargedAnnualSpend || 0);
+  const rewardsValue = Number.isFinite(effectiveEarnRate) ? chargedAnnual * effectiveEarnRate : 0;
   const fee = Number(chexySummary.chexyAdjustedAnnualSpend || 0);
   const netLift = rewardsValue - fee;
 
