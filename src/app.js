@@ -6,6 +6,21 @@ import { createView } from "./app/view.js";
 import { escapeHtml } from "./shared/sanitize.js";
 
 async function main() {
+  const subcategoryConfigs = [
+    {
+      key: "chexy_bills",
+      parentCategory: "bills",
+      label: "↳ chexy (included in bills)",
+      description: "Charged with fee. Set fee in Advanced."
+    },
+    {
+      key: "dummy_bills",
+      parentCategory: "bills",
+      label: "↳ dummy subcategory",
+      description: "Example secondary subcategory."
+    }
+  ];
+
   const view = createView();
   const { elements } = view;
 
@@ -19,7 +34,7 @@ async function main() {
       <span class="muted">${eligibleCards.length} eligible cards · ${issues.length} excluded · ${programsMap.size} programs</span>
     `;
 
-    renderSpendTable(elements.spendTableEl, schema, categoryDescriptions);
+    renderSpendTable(elements.spendTableEl, schema, categoryDescriptions, subcategoryConfigs);
     renderIssues(elements.issuesEl, issues);
     view.syncIssuesVisibility(issues.length);
 
@@ -30,7 +45,8 @@ async function main() {
       programsMap,
       eligibleCards,
       eligibleCardIdSet,
-      eligibleCardsById
+      eligibleCardsById,
+      subcategoryConfigs
     });
 
     actions.syncInitialUi();
@@ -42,6 +58,7 @@ async function main() {
     elements.valuationModeEl?.addEventListener("change", () => actions.setValuationMode(elements.valuationModeEl.value));
     elements.excludeBusinessCardsEl?.addEventListener("change", () => actions.setExcludeBusinessCards(elements.excludeBusinessCardsEl.checked));
     elements.excludeCashbackProgramsEl?.addEventListener("change", () => actions.setExcludeCashbackPrograms(elements.excludeCashbackProgramsEl.checked));
+    elements.chexyFeePercentEl?.addEventListener("input", () => actions.setChexyFeePercent(elements.chexyFeePercentEl.value));
     elements.resetAdvancedPrefsBtn?.addEventListener("click", actions.resetAdvancedPreferences);
     elements.maxAnnualFeeEl?.addEventListener("input", () => actions.setMaxAnnualFee(elements.maxAnnualFeeEl.value));
     elements.enableLockedCardsEl?.addEventListener("change", actions.toggleLockedCards);

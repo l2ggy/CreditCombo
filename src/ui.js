@@ -7,22 +7,65 @@ export function clampInt(n, lo, hi) {
   return Math.max(lo, Math.min(hi, n));
 }
 
-export function renderSpendTable(el, schema, categoryDescriptions = {}) {
+export function renderSpendTable(el, schema, categoryDescriptions = {}, subcategoryConfigs = []) {
+  const subcategoriesByParent = new Map();
+  for (const config of subcategoryConfigs) {
+    const parent = config.parentCategory;
+    if (!subcategoriesByParent.has(parent)) subcategoriesByParent.set(parent, []);
+    subcategoriesByParent.get(parent).push(config);
+  }
+
   el.innerHTML = `
     <div class="spendGrid" role="group" aria-label="Monthly spend by category">
-      ${schema.map(cat => `
-        <label class="spendRow" for="spend-${cat}">
-          <span class="spendMeta">
-            <span class="mono spendCat">${cat}</span>
-            ${spendDescriptionMarkup(categoryDescriptions[cat] || "")}
-          </span>
-          <input id="spend-${cat}" class="spend-input" type="number" min="0" step="1" value="" placeholder="0" data-cat="${cat}" aria-label="Monthly spend for ${cat}" />
-        </label>
-      `).join("")}
+      ${schema.map((cat) => {
+    const subcategories = subcategoriesByParent.get(cat) || [];
+    const subRows = subcategories.map((subcategory) => `
+      <label id="subcat-row-${subcategory.key}" class="spendRow spendRow-sub hidden" for="subcat-value-${subcategory.key}" data-subcategory-key="${subcategory.key}" data-parent-cat="${subcategory.parentCategory}">
+        <span class="spendMeta">
+          <span class="mono spendCat">${escapeHtml(subcategory.label || subcategory.key)}</span>
+          <span class="muted chexyHint">Part of ${escapeHtml(subcategory.parentCategory)} spend${subcategory.description ? ` · ${escapeHtml(subcategory.description)}` : ""}</span>
+        </span>
+        <input id="subcat-value-${subcategory.key}" class="spend-input chexy-spend-input" type="number" min="0" step="1" value="0" data-subcategory-key="${subcategory.key}" data-subcategory-role="value" aria-label="Spend value for ${escapeHtml(subcategory.label || subcategory.key)}" />
+      </label>
+    `).join("");
+
+    const subcategoryDetails = subcategories.length
+      ? `<details class="subcategoryDetails" data-parent-cat="${cat}"><summary>Subcategories</summary><div class="subcategoryRows">${subRows}</div></details>`
+      : "";
+
+    return `
+          <label class="spendRow" for="spend-${cat}">
+            <span class="spendMeta">
+              <span class="mono spendCat">${cat}</span>
+              ${spendDescriptionMarkup(categoryDescriptions[cat] || "")}
+            </span>
+            <input id="spend-${cat}" class="spend-input" type="number" min="0" step="1" value="" placeholder="0" data-cat="${cat}" aria-label="Monthly spend for ${cat}" />
+            ${subcategoryDetails}
+          </label>
+        `;
+  }).join("")}
     </div>
   `;
 
   const spendTotalEl = document.getElementById("spendTotal");
+
+  const syncSubcategoryInputs = () => {
+    subcategoryConfigs.forEach((subcategory) => {
+      const parentInput = el.querySelector(`input[data-cat="${subcategory.parentCategory}"]`);
+      const valueInput = document.getElementById(`subcat-value-${subcategory.key}`);
+      if (!valueInput) return;
+
+      const parentValue = Math.max(0, Number(parentInput?.value ?? 0) || 0);
+      const maxValue = Math.floor(parentValue);
+      valueInput.max = String(maxValue);
+
+      const currentValue = Number(valueInput.value);
+      const clampedValue = Math.max(0, Math.min(maxValue, Number.isFinite(currentValue) ? currentValue : 0));
+      if (document.activeElement !== valueInput) {
+        valueInput.value = String(Math.floor(clampedValue));
+      }
+    });
+  };
 
   const updateSpendTotal = () => {
     const total = [...el.querySelectorAll("input[data-cat]")].reduce((sum, input) => {
@@ -31,12 +74,14 @@ export function renderSpendTable(el, schema, categoryDescriptions = {}) {
       return sum + value;
     }, 0);
 
+    syncSubcategoryInputs();
+
     if (spendTotalEl) {
       spendTotalEl.textContent = `Total monthly spend: ${formatMoneyCAD(total, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
     }
   };
 
-  el.querySelectorAll('input[data-cat]').forEach((inp) => {
+  el.querySelectorAll("input[data-cat]").forEach((inp) => {
     inp.addEventListener("input", updateSpendTotal);
 
     inp.addEventListener("focus", () => {
@@ -46,7 +91,42 @@ export function renderSpendTable(el, schema, categoryDescriptions = {}) {
     inp.addEventListener("blur", updateSpendTotal);
   });
 
+  subcategoryConfigs.forEach((subcategory) => {
+    const valueInput = document.getElementById(`subcat-value-${subcategory.key}`);
+    if (!valueInput) return;
+
+    const syncFromValue = () => {
+      const parentInput = el.querySelector(`input[data-cat="${subcategory.parentCategory}"]`);
+      const maxValue = Math.max(0, Math.floor(Number(parentInput?.value ?? 0) || 0));
+      const raw = Number(valueInput.value);
+      const value = Math.max(0, Math.min(maxValue, Number.isFinite(raw) ? raw : 0));
+      valueInput.value = String(Math.floor(value));
+      updateSpendTotal();
+    };
+
+    valueInput.addEventListener("input", syncFromValue);
+    valueInput.addEventListener("change", syncFromValue);
+  });
+
   updateSpendTotal();
+}
+
+export function readSubcategoryMonthlySpend(key) {
+  const valueInput = document.getElementById(`subcat-value-${key}`);
+  if (!valueInput) return 0;
+  const value = Number(valueInput.value);
+  return Number.isFinite(value) && value >= 0 ? value : 0;
+}
+
+export function setSubcategoryVisibility(key, visible) {
+  document.querySelectorAll(`[data-subcategory-key="${key}"]`).forEach((row) => {
+    row.classList.toggle("hidden", !visible);
+  });
+}
+
+export function resetSubcategorySpend(key) {
+  const valueInput = document.getElementById(`subcat-value-${key}`);
+  if (valueInput) valueInput.value = "0";
 }
 
 export function readMonthlySpend(schema) {
@@ -78,7 +158,7 @@ export function renderIssues(el, issues) {
 }
 
 
-export function renderResult(el, best, annualSpend, schema, valuationMode = "estimated") {
+export function renderResult(el, best, annualSpend, schema, valuationMode = "estimated", chexySummary = null) {
   el.classList.remove("hidden");
   el.classList.remove("resultEmpty");
   el.innerHTML = "";
@@ -112,10 +192,12 @@ export function renderResult(el, best, annualSpend, schema, valuationMode = "est
   const tbody = document.createElement("tbody");
   const totalAnnualSpend = schema.reduce((sum, cat) => sum + (annualSpend[cat] || 0), 0);
   const effectiveEarnRate = totalAnnualSpend > 0 ? best.gross / totalAnnualSpend : null;
+  const netValue = best.net - (chexySummary?.enabled ? chexySummary.chexyAnnualFee : 0);
   const rows = [
     ["Gross rewards value", formatMoneyCAD(best.gross)],
     ["Annual fees", formatMoneyCAD(best.fees)],
-    ["Net value", formatMoneyCAD(best.net)]
+    ...(chexySummary?.enabled ? [["Chexy fees", formatMoneyCAD(chexySummary.chexyAnnualFee)]] : []),
+    ["Net value", formatMoneyCAD(netValue)]
   ];
 
   rows.forEach(([label, value], idx) => {
@@ -143,6 +225,17 @@ export function renderResult(el, best, annualSpend, schema, valuationMode = "est
   effectiveRateCallout.className = "earnRateCallout";
   effectiveRateCallout.textContent = `Earn rate: ${formatPercent(effectiveEarnRate)}`;
   resultContent.append(effectiveRateCallout);
+
+  if (chexySummary?.enabled) {
+    const chexyCallout = document.createElement("p");
+    chexyCallout.className = "chexyCallout muted";
+    const isWorthIt = Boolean(chexySummary.isWorthIt);
+    const deltaText = formatMoneyCAD(Math.abs(chexySummary.incrementalNetValue || 0));
+    chexyCallout.textContent = isWorthIt
+      ? `Chexy looks worth it: +${deltaText}/year after fees.`
+      : `Chexy does not look worth it: -${deltaText}/year after fees.`;
+    resultContent.append(chexyCallout);
+  }
 
   const divider = document.createElement("div");
   divider.className = "divider divider-tight";
