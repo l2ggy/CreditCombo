@@ -3,6 +3,51 @@ function getSystemTheme() {
   return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 }
 
+const THEME_STORAGE_KEY = "creditcombo-theme";
+const THEME_SYSTEM_STORAGE_KEY = "creditcombo-theme-system";
+
+function readStoredThemePreference() {
+  try {
+    const storedTheme = window.localStorage.getItem(THEME_STORAGE_KEY);
+    const storedSystemTheme = window.localStorage.getItem(THEME_SYSTEM_STORAGE_KEY);
+
+    if ((storedTheme !== "light" && storedTheme !== "dark") ||
+      (storedSystemTheme !== "light" && storedSystemTheme !== "dark")) {
+      return null;
+    }
+
+    return { theme: storedTheme, systemTheme: storedSystemTheme };
+  } catch {
+    return null;
+  }
+}
+
+function persistThemePreference(theme, systemTheme) {
+  try {
+    window.localStorage.setItem(THEME_STORAGE_KEY, theme);
+    window.localStorage.setItem(THEME_SYSTEM_STORAGE_KEY, systemTheme);
+  } catch {
+    // Ignore localStorage failures (privacy mode, disabled storage, etc.)
+  }
+}
+
+function resolveInitialTheme() {
+  const systemTheme = getSystemTheme();
+  const storedPreference = readStoredThemePreference();
+
+  if (!storedPreference) {
+    persistThemePreference(systemTheme, systemTheme);
+    return systemTheme;
+  }
+
+  if (storedPreference.systemTheme !== systemTheme) {
+    persistThemePreference(systemTheme, systemTheme);
+    return systemTheme;
+  }
+
+  return storedPreference.theme;
+}
+
 function applyTheme(theme) {
   const root = document.documentElement;
   root.dataset.theme = theme;
@@ -21,7 +66,7 @@ const systemThemeQuery = window.matchMedia
   ? window.matchMedia("(prefers-color-scheme: dark)")
   : null;
 
-applyTheme(getSystemTheme());
+applyTheme(resolveInitialTheme());
 
 document.addEventListener("DOMContentLoaded", () => {
   const themeToggle = document.querySelector("[data-theme-toggle]");
@@ -29,10 +74,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
   themeToggle.addEventListener("click", () => {
     const currentTheme = document.documentElement.dataset.theme === "light" ? "light" : "dark";
-    applyTheme(currentTheme === "dark" ? "light" : "dark");
+    const nextTheme = currentTheme === "dark" ? "light" : "dark";
+    applyTheme(nextTheme);
+    persistThemePreference(nextTheme, getSystemTheme());
   });
 
-  const syncToSystemTheme = () => applyTheme(getSystemTheme());
+  const syncToSystemTheme = () => {
+    const systemTheme = getSystemTheme();
+    applyTheme(systemTheme);
+    persistThemePreference(systemTheme, systemTheme);
+  };
 
   if (systemThemeQuery) {
     if (typeof systemThemeQuery.addEventListener === "function") {
@@ -41,6 +92,4 @@ document.addEventListener("DOMContentLoaded", () => {
       systemThemeQuery.addListener(syncToSystemTheme);
     }
   }
-
-  syncToSystemTheme();
 });
