@@ -151,17 +151,17 @@ export function renderResult(el, best, annualSpend, schema, valuationMode = "est
   const table = document.createElement("table");
   const tbody = document.createElement("tbody");
   const totalAnnualSpend = schema.reduce((sum, cat) => sum + (annualSpend[cat] || 0), 0);
+  const cardAnnualFees = Number(best.fees || 0);
   const chexyFeeCost = Number(chexySummary?.chexyAdjustedAnnualSpend || 0);
   const netAfterChexy = best.net - chexyFeeCost;
-  const totalSpendWithFees = totalAnnualSpend + Number(best.fees || 0) + chexyFeeCost;
+  const totalSpendWithFees = totalAnnualSpend + cardAnnualFees + chexyFeeCost;
   const effectiveEarnRate = totalSpendWithFees > 0 ? netAfterChexy / totalSpendWithFees : null;
   const grossEarnRate = totalAnnualSpend > 0 ? best.gross / totalAnnualSpend : null;
-  const rows = [
-    ["Gross rewards value", formatMoneyCAD(best.gross)],
-    ["Card annual fees", formatMoneyCAD(best.fees)],
-    ["Chexy fees", formatMoneyCAD(chexyFeeCost)],
-    ["Net value", formatMoneyCAD(netAfterChexy)]
-  ];
+
+  const rows = [["Gross rewards value", formatMoneyCAD(best.gross)]];
+  if (cardAnnualFees > 0) rows.push(["Card annual fees", formatMoneyCAD(cardAnnualFees)]);
+  if (chexyFeeCost > 0) rows.push(["Chexy fees", formatMoneyCAD(chexyFeeCost)]);
+  rows.push(["Net value", formatMoneyCAD(netAfterChexy)]);
 
   rows.forEach(([label, value], idx) => {
     const tr = document.createElement("tr");
