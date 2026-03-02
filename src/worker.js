@@ -1,5 +1,6 @@
 const ROOT_ICON_REWRITES = {
   "/favicon.ico": "/icons/favicon.ico",
+  "/favicon-32x32.png": "/icons/favicon-32x32.png",
   "/apple-touch-icon.png": "/icons/apple-touch-icon.png",
   "/apple-touch-icon-precomposed.png": "/icons/apple-touch-icon.png",
   "/safari-pinned-tab.svg": "/icons/safari-pinned-tab.svg",
@@ -9,13 +10,27 @@ const ROOT_ICON_REWRITES = {
 };
 
 export default {
-  fetch(request, env) {
+  async fetch(request, env) {
     const url = new URL(request.url);
     const rewrittenPath = ROOT_ICON_REWRITES[url.pathname];
 
     if (rewrittenPath) {
       url.pathname = rewrittenPath;
-      return env.ASSETS.fetch(new Request(url.toString(), request));
+      const assetRequest = new Request(url.toString(), {
+        method: "GET",
+        headers: request.headers,
+      });
+      const assetResponse = await env.ASSETS.fetch(assetRequest);
+
+      if (request.method === "HEAD") {
+        return new Response(null, {
+          status: assetResponse.status,
+          statusText: assetResponse.statusText,
+          headers: assetResponse.headers,
+        });
+      }
+
+      return assetResponse;
     }
 
     return env.ASSETS.fetch(request);
