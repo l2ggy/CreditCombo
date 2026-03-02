@@ -1,4 +1,6 @@
 export function createView() {
+  ensureChexyFeeField();
+
   const elements = {
     statusEl: document.getElementById("status"),
     appEl: document.getElementById("app"),
@@ -12,6 +14,7 @@ export function createView() {
     includeBusinessCardsEl: document.getElementById("includeBusinessCards"),
     excludeCashbackProgramsEl: document.getElementById("excludeCashbackPrograms"),
     maxAnnualFeeEl: document.getElementById("maxAnnualFee"),
+    chexyFeePercentEl: document.getElementById("chexyFeePercent"),
     excludedProgramSearchEl: document.getElementById("excludedProgramSearch"),
     excludedProgramOptionsEl: document.getElementById("excludedProgramOptions"),
     excludedProgramPicksEl: document.getElementById("excludedProgramPicks"),
@@ -51,4 +54,26 @@ export function createView() {
       else elements.issuesWrapEl.classList.add("hidden");
     }
   };
+}
+
+function ensureChexyFeeField() {
+  const existing = document.getElementById("chexyFeePercent");
+  if (existing) return;
+
+  const advancedBody = document.querySelector("#advancedPrefs .advancedPrefsBody");
+  if (!advancedBody) return;
+
+  const maxAnnualFee = document.getElementById("maxAnnualFee");
+  const wrapper = document.createElement("div");
+  wrapper.className = "advancedField";
+  wrapper.innerHTML = `
+    <label for="chexyFeePercent">Chexy fee (%)</label>
+    <input id="chexyFeePercent" type="number" min="0" max="100" step="0.01" value="1.75" />
+  `;
+
+  if (maxAnnualFee?.nextSibling) {
+    advancedBody.insertBefore(wrapper, maxAnnualFee.nextSibling);
+  } else {
+    advancedBody.append(wrapper);
+  }
 }

@@ -1,11 +1,11 @@
-import { annualizeMonthlySpend } from "../optimizer.js";
-import { clampInt, readMonthlySpend, renderResult } from "../ui.js";
+import { annualizeMonthlySpend, chexyAdjustedAnnualSpend } from "../optimizer.js";
+import { clampInt, readMonthlySpend, readSubcategoryMonthlySpend, renderResult, resetSubcategorySpend } from "../ui.js";
 import { candidatePools, kBounds, selectedLockedCardIds } from "./state.js";
 import { renderCardThumb, renderLockedChip } from "../shared/render.js";
 import { buildSearchText, scoreSearchMatch, tokenizeSearchQuery } from "../shared/search.js";
 import { escapeHtml } from "../shared/sanitize.js";
 
-export function createActions({ state, view, schema, programsMap, eligibleCards, eligibleCardIdSet, eligibleCardsById }) {
+export function createActions({ state, view, schema, programsMap, eligibleCards, eligibleCardIdSet, eligibleCardsById, subcategoryConfigs = {} }) {
   const { elements } = view;
   const comboCache = new Map();
 
@@ -14,7 +14,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
     .map((program) => program.program_id));
 
   let optimizeWorker = null;
-  let optimizeRequestId = 0;
+  let runTokenCounter = 0;
   const pendingRequests = new Map();
   let shouldRenderLockedCardPicks = true;
 
@@ -22,6 +22,8 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
     state.valuationMode = elements.valuationModeEl?.value === "minimum_guaranteed" ? "minimum_guaranteed" : "estimated";
     const maxAnnualFeeRaw = elements.maxAnnualFeeEl?.value?.trim?.() ?? "";
     state.maxAnnualFee = maxAnnualFeeRaw === "" ? null : Math.max(0, Number(maxAnnualFeeRaw) || 0);
+    const chexyFeeRaw = elements.chexyFeePercentEl?.value?.trim?.() ?? "";
+    state.chexyFeePercent = chexyFeeRaw === "" ? 0 : Math.max(0, Number(chexyFeeRaw) || 0);
     state.includeBusinessCards = Boolean(elements.includeBusinessCardsEl?.checked);
     state.excludeCashbackPrograms = Boolean(elements.excludeCashbackProgramsEl?.checked);
     state.enableLockedCards = Boolean(elements.enableLockedCardsEl?.checked);
@@ -263,18 +265,39 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
     renderExcludedProgramSearchResults();
   }
 
+  function serializeCacheParts(parts) {
+    return parts.join("::");
+  }
+
   function spendKey(monthlySpend) {
     return schema.map((cat) => `${cat}:${monthlySpend[cat] || 0}`).join("|");
   }
 
-  function getBestComboSyncCache(additionalCards, annualSpend, monthlySpend, lockedIds) {
+  function subcategorySpendKey(subcategorySpend) {
+    const keys = Object.values(subcategoryConfigs).flat().map((config) => config.key).sort();
+    return keys.map((key) => `${key}:${subcategorySpend[key] || 0}`).join("|");
+  }
+
+  function getBestComboSyncCache(additionalCards, annualSpend, monthlySpend, subcategorySpend, lockedIds) {
     const maxAnnualFee = Number.isFinite(state.maxAnnualFee) ? state.maxAnnualFee : "none";
     const includeBusinessCards = state.includeBusinessCards ? "includeBusiness" : "excludeBusiness";
     const excludeCashbackPrograms = state.excludeCashbackPrograms ? "excludeCashback" : "includeCashback";
     const excludedProgramsKey = [...state.excludedProgramIds].sort().join(",");
     const lockKey = [...lockedIds].sort().join(",");
     const additionalIdsKey = additionalCards.map((card) => card.id).sort().join(",");
-    const key = `${spendKey(monthlySpend)}::${state.valuationMode}::${state.k}::${maxAnnualFee}::${includeBusinessCards}::${excludeCashbackPrograms}::${excludedProgramsKey}::${lockKey}::${additionalIdsKey}`;
+    const key = serializeCacheParts([
+      spendKey(monthlySpend),
+      subcategorySpendKey(subcategorySpend),
+      `chexyFee:${state.chexyFeePercent || 0}`,
+      state.valuationMode,
+      String(state.k),
+      String(maxAnnualFee),
+      includeBusinessCards,
+      excludeCashbackPrograms,
+      excludedProgramsKey,
+      lockKey,
+      additionalIdsKey
+    ]);
     return {
       key,
       cached: comboCache.get(key) || null,
@@ -330,8 +353,8 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
 
   function runOptimizationInWorker(payload) {
     initWorker();
-    optimizeRequestId += 1;
-    const requestId = optimizeRequestId;
+    runTokenCounter += 1;
+    const requestId = runTokenCounter;
 
     return new Promise((resolve, reject) => {
       pendingRequests.set(requestId, { resolve, reject });
@@ -368,6 +391,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
     }
 
     const monthlySpend = readMonthlySpend(schema);
+    const subcategorySpend = readSubcategoryMonthlySpend(subcategoryConfigs);
     const hasSpend = schema.some((cat) => (monthlySpend[cat] || 0) > 0);
     if (!hasSpend) {
       view.setLoadingState(false);
@@ -379,32 +403,41 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
     }
 
     const annualSpend = annualizeMonthlySpend(monthlySpend, schema);
+    const chexySummary = chexyAdjustedAnnualSpend({
+      annualSpend,
+      monthlySpend,
+      subcategorySpend,
+      subcategoryConfigs,
+      chexyFeePercent: state.chexyFeePercent
+    });
+    const adjustedAnnualSpend = chexySummary.adjustedAnnualSpend;
+
     const selectedLockedIds = selectedLockedCardIds(state, eligibleCardIdSet);
-    const { key, cached, payload } = getBestComboSyncCache(additionalCards, annualSpend, monthlySpend, selectedLockedIds);
+    const { key, cached, payload } = getBestComboSyncCache(additionalCards, adjustedAnnualSpend, monthlySpend, subcategorySpend, selectedLockedIds);
 
     if (cached) {
       view.setLoadingState(false);
-      renderResult(elements.resultEl, cached, annualSpend, schema, state.valuationMode);
+      renderResult(elements.resultEl, cached, adjustedAnnualSpend, schema, state.valuationMode, chexySummary);
       elements.runBtn.disabled = false;
       return;
     }
 
-    const requestId = optimizeRequestId + 1;
+    const requestId = runTokenCounter + 1;
 
     try {
       const best = await runOptimizationInWorker(payload);
-      if (requestId !== optimizeRequestId) return;
+      if (requestId !== runTokenCounter) return;
       comboCache.set(key, best);
       view.setLoadingState(false);
-      renderResult(elements.resultEl, best, annualSpend, schema, state.valuationMode);
+      renderResult(elements.resultEl, best, adjustedAnnualSpend, schema, state.valuationMode, chexySummary);
     } catch (error) {
-      if (requestId !== optimizeRequestId) return;
+      if (requestId !== runTokenCounter) return;
       view.setLoadingState(false);
       elements.resultEl.classList.remove("hidden");
       elements.resultEl.classList.remove("resultEmpty");
       elements.resultEl.innerHTML = `<span class="badge bad">Error</span> ${escapeHtml(error?.message || "Failed to optimize")}`;
     } finally {
-      if (requestId === optimizeRequestId) elements.runBtn.disabled = false;
+      if (requestId === runTokenCounter) elements.runBtn.disabled = false;
     }
   }
 
@@ -418,6 +451,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
     elements.spendTableEl.querySelectorAll("input[data-cat]").forEach((input) => {
       input.value = "";
     });
+    Object.values(subcategoryConfigs).flat().forEach((config) => resetSubcategorySpend(config.key));
     return runOptimization();
   }
 
@@ -484,12 +518,14 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
 
   function resetAdvancedPreferences() {
     state.maxAnnualFee = null;
+    state.chexyFeePercent = 1.75;
     state.includeBusinessCards = false;
     state.excludeCashbackPrograms = false;
     state.excludedProgramIds.clear();
 
     if (elements.maxAnnualFeeEl) elements.maxAnnualFeeEl.value = "";
     if (elements.includeBusinessCardsEl) elements.includeBusinessCardsEl.checked = false;
+    if (elements.chexyFeePercentEl) elements.chexyFeePercentEl.value = "1.75";
     if (elements.excludeCashbackProgramsEl) elements.excludeCashbackProgramsEl.checked = false;
     if (elements.excludedProgramSearchEl) elements.excludedProgramSearchEl.value = "";
     elements.excludedProgramOptionsEl?.classList.add("hidden");
@@ -517,6 +553,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
     renderLockedSearchResults,
     renderExcludedProgramSearchResults,
     syncInitialUi: () => {
+      if (elements.chexyFeePercentEl && !elements.chexyFeePercentEl.value) elements.chexyFeePercentEl.value = "1.75";
       syncStateFromControls();
       shouldRenderLockedCardPicks = true;
       updateLockedCardsUi();

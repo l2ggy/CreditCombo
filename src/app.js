@@ -5,6 +5,18 @@ import { createUiState } from "./app/state.js";
 import { createView } from "./app/view.js";
 import { escapeHtml } from "./shared/sanitize.js";
 
+
+const subcategoryConfigs = {
+  bills: [
+    {
+      key: "chexy_bills",
+      label: "Chexy bills",
+      helperText: "Portion of bills spend.",
+      feeAdjustment: "chexy"
+    }
+  ]
+};
+
 async function main() {
   const view = createView();
   const { elements } = view;
@@ -19,7 +31,7 @@ async function main() {
       <span class="muted">${eligibleCards.length} eligible cards · ${issues.length} excluded · ${programsMap.size} programs</span>
     `;
 
-    renderSpendTable(elements.spendTableEl, schema, categoryDescriptions);
+    renderSpendTable(elements.spendTableEl, schema, categoryDescriptions, subcategoryConfigs);
     renderIssues(elements.issuesEl, issues);
     view.syncIssuesVisibility(issues.length);
 
@@ -30,7 +42,8 @@ async function main() {
       programsMap,
       eligibleCards,
       eligibleCardIdSet,
-      eligibleCardsById
+      eligibleCardsById,
+      subcategoryConfigs
     });
 
     actions.syncInitialUi();
@@ -44,6 +57,7 @@ async function main() {
     elements.excludeCashbackProgramsEl?.addEventListener("change", () => actions.setExcludeCashbackPrograms(elements.excludeCashbackProgramsEl.checked));
     elements.resetAdvancedPrefsBtn?.addEventListener("click", actions.resetAdvancedPreferences);
     elements.maxAnnualFeeEl?.addEventListener("input", () => actions.setMaxAnnualFee(elements.maxAnnualFeeEl.value));
+    elements.chexyFeePercentEl?.addEventListener("input", actions.runOptimization);
     elements.enableLockedCardsEl?.addEventListener("change", actions.toggleLockedCards);
 
     elements.lockedCardSearchEl?.addEventListener("input", actions.renderLockedSearchResults);
