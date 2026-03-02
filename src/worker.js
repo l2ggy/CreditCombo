@@ -1,5 +1,6 @@
 const ROOT_ICON_REWRITES = {
   "/favicon.ico": "/icons/favicon.ico",
+  "/favicon-32x32.png": "/icons/favicon-32x32.png",
   "/apple-touch-icon.png": "/icons/apple-touch-icon.png",
   "/apple-touch-icon-precomposed.png": "/icons/apple-touch-icon.png",
   "/safari-pinned-tab.svg": "/icons/safari-pinned-tab.svg",
