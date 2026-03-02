@@ -48,7 +48,6 @@
 .spendControlLabel{text-decoration:underline}
 .spendControlCaret{display:inline-block;font-size:var(--font-size-2xl);line-height:1;transition:transform .2s ease}
 .spendControl[open] .spendControlCaret{transform:rotate(180deg)}
-.spendControlBody{margin-top:var(--space-2);font-size:var(--font-size-xs);line-height:1.25}
 .spendRow input[type="number"].spend-input{width:100%;min-width:0;max-width:none;padding:var(--space-2) var(--space-3)}
 .spendRow input[type="number"].spend-input::placeholder{color:color-mix(in srgb,var(--color-muted) 72%,var(--color-bg) 28%);opacity:1}
 .spendControlPanel{display:none;grid-column:1/-1;font-size:var(--font-size-xs);line-height:1.25}

@@ -73,14 +73,6 @@ export function readSubcategoryMonthlySpend(subcategoryConfigs = {}) {
   return spend;
 }
 
-export function setSubcategoryVisibility(key, visible) {
-  if (!key) return;
-  document.querySelectorAll(`[data-subcategory-key="${cssEscape(key)}"]`).forEach((input) => {
-    const row = input.closest(".subcategoryItem");
-    if (!row) return;
-    row.classList.toggle("hidden", !visible);
-  });
-}
 
 export function resetSubcategorySpend(key) {
   if (!key) return;
