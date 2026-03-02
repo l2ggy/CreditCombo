@@ -32,7 +32,8 @@ export function renderSpendTable(el, schema, categoryDescriptions = {}, subcateg
     }
   };
 
-  el.querySelectorAll("input[data-cat], input[data-subcategory-key]").forEach((inp) => {
+  const spendInputs = [...el.querySelectorAll("input[data-cat], input[data-subcategory-key]")];
+  spendInputs.forEach((inp, index) => {
     inp.addEventListener("input", () => updateSpendTotal(inp));
 
     inp.addEventListener("focus", () => {
@@ -40,6 +41,15 @@ export function renderSpendTable(el, schema, categoryDescriptions = {}, subcateg
     });
 
     inp.addEventListener("blur", () => updateSpendTotal(inp));
+
+    inp.addEventListener("keydown", (event) => {
+      if (event.key !== "Enter") return;
+      event.preventDefault();
+      const nextInput = spendInputs[index + 1];
+      if (!nextInput) return;
+      nextInput.focus();
+      nextInput.select?.();
+    });
   });
 
 

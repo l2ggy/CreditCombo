@@ -16,7 +16,8 @@ const el = {
   stepPanel: document.getElementById("stepPanel"),
   backBtn: document.getElementById("backBtn"),
   nextBtn: document.getElementById("nextBtn"),
-  progressFill: document.getElementById("progressFill")
+  progressFill: document.getElementById("progressFill"),
+  progressText: document.getElementById("progressText")
 };
 
 const data = await loadOptimizerData();
@@ -28,7 +29,7 @@ function getSteps() {
   return [
     { key: "goal", render: renderGoal },
     ...spendSteps,
-    { key: "cards", render: renderCards },
+    ...(state.goal === "current_cards" ? [{ key: "cards", render: renderCards }] : []),
     ...(state.goal === "ideal_combo" ? [{ key: "k", render: renderK }] : []),
     { key: "valuation", render: renderValuation }
   ];
@@ -43,6 +44,10 @@ el.backBtn.addEventListener("click", () => {
 
 el.nextBtn.addEventListener("click", () => {
   if (!validateStep()) return;
+  goNext();
+});
+
+function goNext() {
   const steps = getSteps();
   if (stepIndex >= steps.length - 1) {
     window.location.href = buildOptimizerUrl(state);
@@ -50,7 +55,7 @@ el.nextBtn.addEventListener("click", () => {
   }
   stepIndex += 1;
   renderStep();
-});
+}
 
 function renderStep() {
   const steps = getSteps();
@@ -61,16 +66,12 @@ function renderStep() {
 
   const progress = ((stepIndex + 1) / steps.length) * 100;
   el.progressFill.style.width = `${progress}%`;
+  const progressBar = document.querySelector(".progressBar");
+  progressBar?.setAttribute("aria-valuenow", String(Math.round(progress)));
+  if (el.progressText) el.progressText.textContent = `${Math.round(progress)}% complete`;
 
   el.backBtn.disabled = stepIndex === 0;
   el.nextBtn.textContent = stepIndex === steps.length - 1 ? "See recommendations" : "Next";
-}
-
-function advanceStep() {
-  const steps = getSteps();
-  if (stepIndex >= steps.length - 1) return;
-  stepIndex += 1;
-  renderStep();
 }
 
 function renderGoal() {
@@ -91,7 +92,7 @@ function renderGoal() {
     state.goal = goal;
     if (goal === "current_cards") state.k = 0;
     else if (state.k < 1) state.k = 1;
-    advanceStep();
+    goNext();
   });
 }
 
@@ -102,17 +103,26 @@ function renderSpendCategory(category) {
     <p class="stepHelp">Enter an average monthly amount in CAD.</p>
     <input id="spendInput" class="bigInput" type="number" min="0" step="1" value="${value}" placeholder="0" />
   `;
+
+  const spendInput = document.getElementById("spendInput");
+  requestAnimationFrame(() => {
+    spendInput?.focus();
+    spendInput?.select();
+  });
+  spendInput?.addEventListener("keydown", (event) => {
+    if (event.key !== "Enter") return;
+    event.preventDefault();
+    if (!validateStep()) return;
+    goNext();
+  });
 }
 
 function renderCards() {
   const cardChips = state.lockedCardIds.map((id) => `<span class="chip">${cardsById.get(id)?.card_name || id}</span>`).join(" ") || "No cards selected yet.";
-  const helper = state.goal === "current_cards"
-    ? "Add the cards you currently have. We will optimize usage with these cards only."
-    : "Add cards you already have if you want them included in your ideal combo.";
 
   el.stepPanel.innerHTML = `
     <h2 class="stepTitle">Which cards do you have right now?</h2>
-    <p class="stepHelp">${helper}</p>
+    <p class="stepHelp">Add the cards you currently have. We will optimize usage with these cards only.</p>
     <input id="cardSearch" class="bigInput" type="search" placeholder="Type a card or issuer name" />
     <div id="cardMatches" class="choiceList"></div>
     <div class="cardPick">${cardChips}</div>
@@ -120,6 +130,7 @@ function renderCards() {
 
   const searchEl = document.getElementById("cardSearch");
   const matchesEl = document.getElementById("cardMatches");
+  requestAnimationFrame(() => searchEl?.focus());
 
   searchEl.addEventListener("input", () => {
     const matches = findCardMatches(data.eligibleCards, searchEl.value || "", {

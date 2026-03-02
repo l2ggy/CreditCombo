@@ -22,7 +22,8 @@
 
   <main class="container quickSetup" id="quickSetupApp">
     <div class="progressWrap" aria-label="Progress">
-      <div class="progressBar" aria-hidden="true"><span id="progressFill"></span></div>
+      <div class="progressBar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="Quick setup progress"><span id="progressFill"></span></div>
+      <p id="progressText" class="subtle">0% complete</p>
     </div>
 
     <section class="panel stepPanel" id="stepPanel"></section>
