@@ -7,6 +7,41 @@ import { escapeHtml } from "./shared/sanitize.js";
 
 
 const subcategoryConfigs = {
+  grocery: [
+    {
+      key: "grocery_costco",
+      label: "Costco",
+      helperText: "Mastercard only. Non-Mastercard cards cannot be used.",
+      logicAdjustment: "network_category_override",
+      acceptedNetworks: ["Mastercard"],
+      networkCategoryMap: {
+        Mastercard: "grocery"
+      }
+    },
+    {
+      key: "grocery_george_weston",
+      label: "George Weston Groceries",
+      helperText: "Loblaws, No Frills, Real Canadian Superstore, Maxi, Provigo, Zehrs, Fortinos. Mastercard/Visa accepted; Amex not accepted.",
+      logicAdjustment: "network_category_override",
+      acceptedNetworks: ["Mastercard", "Visa"],
+      networkCategoryMap: {
+        Mastercard: "grocery",
+        Visa: "grocery"
+      }
+    },
+    {
+      key: "grocery_walmart",
+      label: "Walmart",
+      helperText: "Only Mastercard earns grocery coding; Visa/Amex should be treated as other.",
+      logicAdjustment: "network_category_override",
+      acceptedNetworks: ["Mastercard", "Visa", "American Express"],
+      networkCategoryMap: {
+        Mastercard: "grocery",
+        Visa: "other",
+        "American Express": "other"
+      }
+    }
+  ],
   bills: [
     {
       key: "chexy_bills",
