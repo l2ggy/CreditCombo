@@ -3,7 +3,7 @@ export function createUiState() {
     lockedCardIds: new Set(),
     valuationMode: "estimated",
     maxAnnualFee: null,
-    excludeBusinessCards: false,
+    includeBusinessCards: false,
     excludeCashbackPrograms: false,
     chexyFeePercent: 1.75,
     excludedProgramIds: new Set(),
@@ -25,7 +25,7 @@ export function candidatePools(state, eligibleCards, eligibleCardIdSet, cashback
     additionalCards = additionalCards.filter((card) => Number(card.annual_fee?.amount ?? 0) <= state.maxAnnualFee);
   }
 
-  if (state.excludeBusinessCards) {
+  if (!state.includeBusinessCards) {
     additionalCards = additionalCards.filter((card) => !card.is_business_card);
   }
 
