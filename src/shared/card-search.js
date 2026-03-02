@@ -26,6 +26,8 @@ export function findCardMatches(cards, query, { excludedIds = new Set(), limit =
 export function renderCardSearchOption(card, {
   className = "listOption",
   thumbClassName = "thumb thumb-xs thumb-contain",
+  thumbWithFrame = false,
+  thumbFrameClass = "thumbWrap",
   ariaPrefix = "Select card",
   subtitleClassName = "muted"
 } = {}) {
@@ -35,7 +37,11 @@ export function renderCardSearchOption(card, {
   button.dataset.cardId = card.id;
   button.setAttribute("aria-label", `${ariaPrefix} ${card.card_name} (${card.issuer})`);
 
-  button.append(renderCardThumb(card, { className: thumbClassName, withFrame: false }));
+  button.append(renderCardThumb(card, {
+    className: thumbClassName,
+    withFrame: thumbWithFrame,
+    frameClass: thumbFrameClass
+  }));
 
   const label = document.createElement("span");
   label.textContent = `${card.card_name} `;

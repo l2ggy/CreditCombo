@@ -20,6 +20,7 @@ export function parseOptimizerParams(search, { schema = [], eligibleCardIdSet = 
 
   return {
     autorun: params.get("autorun") === "1",
+    mode: params.get("mode") === "current_cards" ? "current_cards" : "ideal_combo",
     valuationMode: params.get("valuationMode") === "minimum_guaranteed" ? "minimum_guaranteed" : "estimated",
     spend,
     lockedCardIds,
@@ -31,6 +32,9 @@ export function buildOptimizerUrl(payload = {}) {
   const params = new URLSearchParams();
   params.set("source", "quick-setup");
   params.set("autorun", "1");
+
+  const mode = payload.goal === "current_cards" ? "current_cards" : "ideal_combo";
+  params.set("mode", mode);
 
   if (payload.valuationMode === "minimum_guaranteed") params.set("valuationMode", "minimum_guaranteed");
 

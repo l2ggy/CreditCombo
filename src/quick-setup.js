@@ -134,7 +134,9 @@ function renderCards() {
     matches.forEach((card) => {
       fragment.append(renderCardSearchOption(card, {
         className: "choiceBtn quickSearchOption",
-        thumbClassName: "thumb thumb-md thumb-contain",
+        thumbClassName: "thumb thumb-sm thumb-contain",
+        thumbWithFrame: true,
+        thumbFrameClass: "quickThumbWrap",
         ariaPrefix: "Add card"
       }));
     });
@@ -154,14 +156,15 @@ function renderK() {
   el.stepPanel.innerHTML = `
     <h2 class="stepTitle">How many cards do you want in your combo?</h2>
     <p class="stepHelp">Move the slider to choose your target combo size.</p>
-    <input id="kInput" class="bigInput" type="range" min="1" max="5" value="${state.k}" />
-    <p class="kValue">${state.k} card(s)</p>
+    <label for="kInput"><span>Number of cards</span> <span id="kValue" class="value-pill">${state.k}</span></label>
+    <input id="kInput" class="quickKInput" type="range" min="1" max="5" value="${state.k}" step="1" />
   `;
 
   const kInput = document.getElementById("kInput");
+  const kValueEl = document.getElementById("kValue");
   kInput.addEventListener("input", () => {
     state.k = Number(kInput.value);
-    renderK();
+    if (kValueEl) kValueEl.textContent = String(state.k);
   });
 }
 

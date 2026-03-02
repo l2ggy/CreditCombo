@@ -515,10 +515,14 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
   function hydrateFromDeepLink(deepLinkState) {
     if (!deepLinkState) return;
 
-    if (Array.isArray(deepLinkState.lockedCardIds) && deepLinkState.lockedCardIds.length) {
+    const currentCardsMode = deepLinkState.mode === "current_cards";
+    const hasLockedCards = Array.isArray(deepLinkState.lockedCardIds) && deepLinkState.lockedCardIds.length > 0;
+    if (currentCardsMode || hasLockedCards) {
       state.enableLockedCards = true;
       if (elements.enableLockedCardsEl) elements.enableLockedCardsEl.checked = true;
+    }
 
+    if (hasLockedCards) {
       deepLinkState.lockedCardIds.forEach((id) => {
         if (eligibleCardIdSet.has(id)) state.lockedCardIds.add(id);
       });
