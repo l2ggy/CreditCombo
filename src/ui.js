@@ -311,7 +311,7 @@ function spendRowMarkup(category, desc, subcategories) {
     <div class="spendRow" data-spend-row data-cat-row="${escapeHtml(category)}">
       <div class="spendRowTop">
         <div class="spendMeta">
-          <div class="mono spendCat">${escapeHtml(category)}</div>
+          <span class="mono spendCat">${escapeHtml(category)}</span>
           ${controlsMarkup ? `<div class="spendMetaControls">${controlsMarkup}</div>` : ""}
         </div>
         <div class="spendInputWrap">
