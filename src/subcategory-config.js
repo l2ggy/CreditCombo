@@ -60,7 +60,11 @@ export const subcategoryConfigs = {
       networkCategoryMap: {
         mastercard: "grocery",
         visa: "grocery"
-      }
+      },
+      cardRateOverrides: {
+        pc_financial_world_elite: 30
+      },
+      browserTag: "merchant"
     },
     {
       key: "grocery_walmart",
@@ -73,15 +77,6 @@ export const subcategoryConfigs = {
         visa: "other",
         amex: "other"
       }
-    },
-    {
-      key: "grocery_loblaws_partner",
-      label: "Loblaw partner groceries",
-      helperText: "Loblaw-banner grocery stores for PC Financial merchant-specific earn.",
-      cardRateOverrides: {
-        pc_financial_world_elite: 30
-      },
-      browserTag: "merchant"
     }
   ],
   gas: [
@@ -123,6 +118,14 @@ export const subcategoryConfigs = {
       helperText: "Direct Air Canada and Air Canada Vacations purchases.",
       cardRateOverrides: {
         amex_aeroplan_business_reserve: 3,
+        amex_aeroplan_card: 2,
+        amex_aeroplan_reserve: 3,
+        cibc_aeroplan_visa: 1.5,
+        cibc_aeroplan_vi: 2,
+        cibc_aeroplan_vip: 2,
+        td_aeroplan_visa_platinum: 2,
+        td_aeroplan_vi: 2,
+        td_aeroplan_vip: 2,
         td_aeroplan_visa_business_card: 2
       },
       browserTag: "merchant"

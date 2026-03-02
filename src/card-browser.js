@@ -344,9 +344,10 @@ function renderBrowserCardItem(card) {
   earnSection.append(earnTitle, renderEarnRateList(card.earn_rates, card.rewards_program));
 
   const merchantSection = document.createElement("section");
-  const merchantTitle = document.createElement("h4");
+  const merchantTitle = document.createElement("h5");
   merchantTitle.textContent = "Merchant & portal rates";
   merchantSection.append(merchantTitle, renderMerchantPortalRateList(card));
+  earnSection.append(merchantSection);
 
   const sectionDivider = document.createElement("div");
   sectionDivider.className = "divider cardDividerSection";
@@ -356,7 +357,7 @@ function renderBrowserCardItem(card) {
   capTitle.textContent = "Caps";
   capSection.append(capTitle, renderCapContent(card.caps));
 
-  body.append(earnSection, sectionDivider, merchantSection, sectionDivider.cloneNode(), capSection);
+  body.append(earnSection, sectionDivider, capSection);
 
   article.append(top, topDivider, body);
   return article;
