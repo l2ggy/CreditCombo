@@ -30,7 +30,7 @@ export function renderSpendTable(el, schema, categoryDescriptions = {}, subcateg
     `).join("");
 
     const subcategoryDetails = subcategories.length
-      ? `<details class="subcategoryDetails" data-parent-cat="${cat}"><summary>Subcategories</summary><div class="subcategoryRows">${subRows}</div></details>`
+      ? `<details class="spendDesc subcategoryDetails" data-parent-cat="${cat}"><summary><span class="spendDescLabel">Subcategories</span><span class="spendDescCaret" aria-hidden="true">▾</span></summary><div class="subcategoryRows">${subRows}</div></details>`
       : "";
 
     return `
