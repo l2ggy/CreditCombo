@@ -330,15 +330,20 @@ function renderBrowserCardItem(card) {
     earnSection.append(merchantSection);
   }
 
-  const sectionDivider = document.createElement("div");
-  sectionDivider.className = "divider cardDividerSection";
+  const hasCaps = Array.isArray(card.caps) && card.caps.length > 0;
+  if (hasCaps) {
+    const sectionDivider = document.createElement("div");
+    sectionDivider.className = "divider cardDividerSection";
 
-  const capSection = document.createElement("section");
-  const capTitle = document.createElement("h4");
-  capTitle.textContent = "Caps";
-  capSection.append(capTitle, renderCapContent(card.caps));
+    const capSection = document.createElement("section");
+    const capTitle = document.createElement("h4");
+    capTitle.textContent = "Caps";
+    capSection.append(capTitle, renderCapContent(card.caps));
 
-  body.append(earnSection, sectionDivider, capSection);
+    body.append(earnSection, sectionDivider, capSection);
+  } else {
+    body.append(earnSection);
+  }
 
   article.append(top, topDivider, body);
   return article;
