@@ -1,3 +1,8 @@
+export function normalizeIssuerName(issuer) {
+  if (!issuer) return "";
+  return String(issuer).trim().toLowerCase();
+}
+
 export function normalizeCardNetwork(network) {
   if (!network) return "";
   const normalized = String(network).trim().toLowerCase();
@@ -28,6 +33,10 @@ export function subcategoryRateForCard(config, card, parentCategory, readCardRat
 
   const eligibleCardIds = new Set(config?.eligibleCardIds || []);
   if (eligibleCardIds.size && !eligibleCardIds.has(card?.id)) return 0;
+
+  const eligibleIssuers = new Set((config?.eligibleIssuers || []).map(normalizeIssuerName));
+  const cardIssuer = normalizeIssuerName(card?.issuer);
+  if (eligibleIssuers.size && !eligibleIssuers.has(cardIssuer)) return 0;
 
   const mappedCategory = subcategoryMappedCategory(config, cardNetwork, parentCategory);
   const directRate = Number(card?.subcategory_earn_rates?.[config?.key]);
