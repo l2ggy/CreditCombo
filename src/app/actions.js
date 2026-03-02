@@ -417,7 +417,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
 
     if (cached) {
       view.setLoadingState(false);
-      renderResult(elements.resultEl, cached, adjustedAnnualSpend, schema, state.valuationMode);
+      renderResult(elements.resultEl, cached, adjustedAnnualSpend, schema, state.valuationMode, chexySummary);
       elements.runBtn.disabled = false;
       return;
     }
@@ -429,7 +429,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
       if (requestId !== runTokenCounter) return;
       comboCache.set(key, best);
       view.setLoadingState(false);
-      renderResult(elements.resultEl, best, adjustedAnnualSpend, schema, state.valuationMode);
+      renderResult(elements.resultEl, best, adjustedAnnualSpend, schema, state.valuationMode, chexySummary);
     } catch (error) {
       if (requestId !== runTokenCounter) return;
       view.setLoadingState(false);

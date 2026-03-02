@@ -10,6 +10,7 @@ export function chexyAdjustedAnnualSpend({ annualSpend, monthlySpend = {}, subca
   const baselineAnnualTotal = Object.values(annualSpend || {}).reduce((sum, value) => sum + (Number(value) || 0), 0);
   const safeChexyFeePercent = Number.isFinite(Number(chexyFeePercent)) ? Math.max(0, Number(chexyFeePercent)) : 0;
   let chexyAdjustedAnnualSpend = 0;
+  let chexyBaseAnnualSpend = 0;
 
   for (const [parentCategory, configs] of Object.entries(subcategoryConfigs || {})) {
     const parentAnnual = Number(annualSpend?.[parentCategory] ?? 0);
@@ -22,6 +23,7 @@ export function chexyAdjustedAnnualSpend({ annualSpend, monthlySpend = {}, subca
       const annualSubSpend = Math.min(parentAnnual, monthlyValue * 12);
       if (annualSubSpend <= 0) continue;
 
+      chexyBaseAnnualSpend += annualSubSpend;
       const feeAmount = annualSubSpend * (safeChexyFeePercent / 100);
       chexyAdjustedAnnualSpend += feeAmount;
       adjustedAnnualSpend[parentCategory] = (Number(adjustedAnnualSpend[parentCategory]) || 0) + feeAmount;
@@ -37,7 +39,8 @@ export function chexyAdjustedAnnualSpend({ annualSpend, monthlySpend = {}, subca
       adjustedAnnualTotal,
       delta: adjustedAnnualTotal - baselineAnnualTotal
     },
-    chexyAdjustedAnnualSpend
+    chexyAdjustedAnnualSpend,
+    chexyBaseAnnualSpend
   };
 }
 

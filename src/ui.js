@@ -40,21 +40,6 @@ export function renderSpendTable(el, schema, categoryDescriptions = {}, subcateg
     inp.addEventListener("blur", updateSpendTotal);
   });
 
-  el.querySelectorAll("[data-subcategory-enabled]").forEach((toggle) => {
-    const key = toggle.dataset.subcategoryEnabled;
-    const input = el.querySelector(`input[data-subcategory-key="${cssEscape(key)}"]`);
-    if (!input) return;
-
-    const syncEnabled = () => {
-      const enabled = Boolean(toggle.checked);
-      input.disabled = !enabled;
-      if (!enabled) input.value = "";
-      updateSpendTotal();
-    };
-
-    toggle.addEventListener("change", syncEnabled);
-    syncEnabled();
-  });
 
   updateSpendTotal();
 }
@@ -80,7 +65,7 @@ export function readSubcategoryMonthlySpend(subcategoryConfigs = {}) {
 
   document.querySelectorAll("input[data-subcategory-key]").forEach((input) => {
     const key = input.dataset.subcategoryKey;
-    if (!validKeys.has(key) || input.disabled) return;
+    if (!validKeys.has(key)) return;
     const value = Number(input.value);
     spend[key] = Number.isFinite(value) && value > 0 ? value : 0;
   });
@@ -101,10 +86,6 @@ export function resetSubcategorySpend(key) {
   if (!key) return;
   document.querySelectorAll(`[data-subcategory-key="${cssEscape(key)}"]`).forEach((input) => {
     input.value = "";
-    input.disabled = true;
-  });
-  document.querySelectorAll(`[data-subcategory-enabled="${cssEscape(key)}"]`).forEach((toggle) => {
-    toggle.checked = false;
   });
 }
 
@@ -121,7 +102,7 @@ export function renderIssues(el, issues) {
   `;
 }
 
-export function renderResult(el, best, annualSpend, schema, valuationMode = "estimated") {
+export function renderResult(el, best, annualSpend, schema, valuationMode = "estimated", chexySummary = null) {
   el.classList.remove("hidden");
   el.classList.remove("resultEmpty");
   el.innerHTML = "";
@@ -186,6 +167,9 @@ export function renderResult(el, best, annualSpend, schema, valuationMode = "est
   effectiveRateCallout.className = "earnRateCallout";
   effectiveRateCallout.textContent = `Earn rate: ${formatPercent(effectiveEarnRate)}`;
   resultContent.append(effectiveRateCallout);
+
+  const chexyCallout = renderChexyWorthItCallout(chexySummary, effectiveEarnRate);
+  if (chexyCallout) resultContent.append(chexyCallout);
 
   const divider = document.createElement("div");
   divider.className = "divider divider-tight";
@@ -281,6 +265,20 @@ function formatPercent(value) {
   }).format(value);
 }
 
+
+function renderChexyWorthItCallout(chexySummary, effectiveEarnRate) {
+  if (!chexySummary?.chexyBaseAnnualSpend || chexySummary.chexyBaseAnnualSpend <= 0) return null;
+
+  const rewardsValue = Number.isFinite(effectiveEarnRate) ? chexySummary.chexyBaseAnnualSpend * effectiveEarnRate : 0;
+  const fee = Number(chexySummary.chexyAdjustedAnnualSpend || 0);
+  const netLift = rewardsValue - fee;
+
+  const line = document.createElement("p");
+  line.className = "muted chexyWorthIt";
+  line.textContent = `Chexy check (vs not putting that spend on a card): rewards ${formatMoneyCAD(rewardsValue)} − fee ${formatMoneyCAD(fee)} = ${formatMoneyCAD(netLift)} (${netLift >= 0 ? "worth it" : "not worth it"}).`;
+  return line;
+}
+
 function spendRowMarkup(category, desc, subcategories) {
   const details = detailsControlMarkup(desc);
   const subcats = subcategoryControlMarkup(category, subcategories);
@@ -318,15 +316,11 @@ function subcategoryControlMarkup(parentCategory, configs) {
   const subcategoryItems = configs.map((config) => {
     const label = escapeHtml(config.label || config.key);
     const key = escapeHtml(config.key);
-    const helper = escapeHtml(config.helperText || "Subset of this category spend.");
+    const helper = escapeHtml(config.helperText || "Portion of the parent category spend.");
     return `
       <div class="subcategoryItem">
-        <label class="checkboxLabel" for="subcategory-enabled-${key}">
-          <input id="subcategory-enabled-${key}" type="checkbox" data-subcategory-enabled="${key}" />
-          ${label}
-        </label>
-        <label class="srOnly" for="subcategory-${key}">Amount for ${label}</label>
-        <input id="subcategory-${key}" class="spend-input" type="number" min="0" step="1" value="" placeholder="0" data-subcategory-key="${key}" data-subcategory-parent="${escapeHtml(parentCategory)}" disabled />
+        <label for="subcategory-${key}">${label}</label>
+        <input id="subcategory-${key}" class="spend-input" type="number" min="0" step="1" value="" placeholder="0" data-subcategory-key="${key}" data-subcategory-parent="${escapeHtml(parentCategory)}" />
         <p class="subtle subcategoryHint">${helper}</p>
       </div>
     `;

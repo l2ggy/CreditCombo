@@ -11,13 +11,13 @@ const subcategoryConfigs = {
     {
       key: "chexy_bills",
       label: "Chexy bills",
-      helperText: "Subset of bills spend. Chexy fee is applied in Advanced.",
+      helperText: "Portion of bills spend. Chexy fee set in Advanced.",
       feeAdjustment: "chexy"
     },
     {
       key: "bills_dummy_portal",
       label: "Portal-paid bills",
-      helperText: "Subset of bills spend."
+      helperText: "Portion of bills spend."
     }
   ]
 };
