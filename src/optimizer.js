@@ -1,3 +1,5 @@
+import { normalizeCardNetwork, subcategoryMappedCategory, subcategoryRateForCard } from "./subcategory-config.js";
+
 export function annualizeMonthlySpend(monthlySpend, schema) {
   const annual = {};
   for (const cat of schema) annual[cat] = (Number(monthlySpend[cat] ?? 0) || 0) * 12;
@@ -45,29 +47,6 @@ export function chexyAdjustedAnnualSpend({ annualSpend, monthlySpend = {}, subca
   };
 }
 
-function normalizeCardNetwork(network) {
-  if (!network) return "";
-  const normalized = String(network).trim().toLowerCase();
-  if (normalized === "mastercard") return "mastercard";
-  if (normalized === "visa") return "visa";
-  if (normalized === "american express" || normalized === "amex") return "amex";
-  return normalized;
-}
-
-function subcategoryMappedCategory(config, cardNetwork, parentCategory) {
-  if (config?.logicAdjustment !== "network_category_override") return parentCategory;
-  const networkCategoryMap = config.networkCategoryMap || {};
-  return networkCategoryMap[cardNetwork] || parentCategory;
-}
-
-function subcategoryRateMultiplier(config, cardNetwork) {
-  const base = Number(config?.merchantMultiplier ?? 1);
-  const safeBase = Number.isFinite(base) && base >= 0 ? base : 1;
-  const networkMultiplier = Number(config?.networkMerchantMultiplier?.[cardNetwork] ?? 1);
-  const safeNetwork = Number.isFinite(networkMultiplier) && networkMultiplier >= 0 ? networkMultiplier : 1;
-  return safeBase * safeNetwork;
-}
-
 function applySubcategoryLogic({ cards, schema, annualSpend, subcategorySpend = {}, subcategoryConfigs = {} }) {
   const transformedAnnualSpend = { ...annualSpend };
   const transformedSchema = [...schema];
@@ -99,18 +78,9 @@ function applySubcategoryLogic({ cards, schema, annualSpend, subcategorySpend = 
       transformedAnnualSpend[virtualCategory] = (Number(transformedAnnualSpend[virtualCategory]) || 0) + subAnnualSpend;
       if (!transformedSchema.includes(virtualCategory)) transformedSchema.push(virtualCategory);
 
-      const acceptedNetworks = new Set((config.acceptedNetworks || []).map(normalizeCardNetwork));
-
       transformedCards.forEach((card) => {
-        const cardNetwork = normalizeCardNetwork(card.network);
-        if (acceptedNetworks.size && !acceptedNetworks.has(cardNetwork)) {
-          card.earn_rates[virtualCategory] = 0;
-          return;
-        }
-
-        const mappedCategory = subcategoryMappedCategory(config, cardNetwork, parentCategory);
-        const multiplier = subcategoryRateMultiplier(config, cardNetwork);
-        card.earn_rates[virtualCategory] = cardRate(card, mappedCategory) * multiplier;
+        const mappedCategory = subcategoryMappedCategory(config, normalizeCardNetwork(card.network), parentCategory);
+        card.earn_rates[virtualCategory] = subcategoryRateForCard(config, card, parentCategory, cardRate);
 
         for (const cap of card.caps || []) {
           const capCats = cap.categories || [];
