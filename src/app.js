@@ -11,7 +11,7 @@ const subcategoryConfigs = {
     {
       key: "grocery_costco",
       label: "Costco",
-      helperText: "Mastercard only. Non-Mastercard cards cannot be used.",
+      helperText: "Mastercard only.",
       logicAdjustment: "network_category_override",
       acceptedNetworks: ["mastercard"],
       networkCategoryMap: {
@@ -21,7 +21,7 @@ const subcategoryConfigs = {
     {
       key: "grocery_george_weston",
       label: "George Weston Groceries",
-      helperText: "Loblaws, No Frills, Real Canadian Superstore, Maxi, Provigo, Zehrs, Fortinos. Mastercard/Visa accepted; Amex not accepted.",
+      helperText: "Mastercard/Visa accepted.",
       logicAdjustment: "network_category_override",
       acceptedNetworks: ["mastercard", "visa"],
       networkCategoryMap: {
@@ -32,7 +32,7 @@ const subcategoryConfigs = {
     {
       key: "grocery_walmart",
       label: "Walmart",
-      helperText: "Only Mastercard earns grocery coding; Visa/Amex should be treated as other.",
+      helperText: "Mastercard: grocery. Visa/Amex: other.",
       logicAdjustment: "network_category_override",
       acceptedNetworks: ["mastercard", "visa", "amex"],
       networkCategoryMap: {

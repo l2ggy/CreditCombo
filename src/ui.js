@@ -118,7 +118,7 @@ export function renderIssues(el, issues) {
   `;
 }
 
-export function renderResult(el, best, annualSpend, schema, valuationMode = "estimated", chexySummary = null) {
+export function renderResult(el, best, annualSpend, schema, valuationMode = "estimated", chexySummary = null, subcategoryConfigs = {}) {
   el.classList.remove("hidden");
   el.classList.remove("resultEmpty");
   el.innerHTML = "";
@@ -203,13 +203,29 @@ export function renderResult(el, best, annualSpend, schema, valuationMode = "est
 
   const instructions = [];
   let useCardDescIndex = 0;
+
+  const subcategoryKeysByParent = Object.fromEntries(
+    Object.entries(subcategoryConfigs || {}).map(([parentCategory, configs]) => [
+      parentCategory,
+      (configs || []).map((config) => `subcategory_${config.key}`)
+    ])
+  );
+
   for (const cat of schema) {
     const total = annualSpend[cat] || 0;
     if (total <= 0) continue;
 
-    const alloc = best.combo
-      .map((card) => ({ card, amt: (best.assigned?.[card.id]?.[cat] || 0) }))
-      .filter((x) => x.amt > 1e-6)
+    const allocByCard = new Map();
+
+    best.combo.forEach((card) => {
+      const baseAmount = Number(best.assigned?.[card.id]?.[cat] || 0);
+      const subcategoryAmount = (subcategoryKeysByParent[cat] || [])
+        .reduce((sum, subcategoryKey) => sum + Number(best.assigned?.[card.id]?.[subcategoryKey] || 0), 0);
+      const totalAmount = baseAmount + subcategoryAmount;
+      if (totalAmount > 1e-6) allocByCard.set(card.id, { card, amt: totalAmount });
+    });
+
+    const alloc = [...allocByCard.values()]
       .sort((a, b) => b.amt - a.amt)
       .slice(0, 3);
 
