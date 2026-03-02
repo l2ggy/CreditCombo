@@ -230,32 +230,33 @@ function renderCapContent(caps) {
   if (!Array.isArray(caps) || !caps.length) {
     const empty = document.createElement("p");
     empty.className = "muted";
-    empty.textContent = "No spend caps listed.";
+    empty.textContent = "No caps.";
     return empty;
   }
 
   const list = document.createElement("ul");
+  list.className = "dataList listClean";
 
   caps.forEach((cap) => {
     const item = document.createElement("li");
-    const categories = (cap.categories || []).join(", ") || "multiple categories";
+    const categories = (cap.categories || []).join(", ") || "multiple";
     const limit = formatMoneyCAD(Number(cap.cap_amount ?? 0), { minimumFractionDigits: 0, maximumFractionDigits: 0 });
-    const aboveCapRate = cap.earn_rate_above_cap == null ? "n/a" : formatMultiplier(cap.earn_rate_above_cap);
-    const capPeriod = String(cap.cap_period || "period").toLowerCase();
-    const periodLabel = capPeriod === "monthly"
-      ? "month"
-      : capPeriod === "annual"
-        ? "year"
-        : capPeriod;
+    const aboveCapRate = cap.earn_rate_above_cap == null ? "n/a" : `${formatMultiplier(cap.earn_rate_above_cap)}×`;
+    const period = String(cap.cap_period || "period").toLowerCase();
+    const shortPeriod = period === "monthly" ? "/mo" : period === "annual" ? "/yr" : `/${period}`;
 
     const categoriesEl = document.createElement("span");
     categoriesEl.className = "mono";
     categoriesEl.textContent = categories;
 
-    const limitEl = document.createElement("strong");
-    limitEl.textContent = limit;
+    const valueEl = document.createElement("strong");
+    valueEl.textContent = `${limit}${shortPeriod}`;
 
-    item.append(categoriesEl, " capped at ", limitEl, ` per ${periodLabel} (above cap: ${aboveCapRate}×)`);
+    const aboveEl = document.createElement("span");
+    aboveEl.className = "metricSubtle";
+    aboveEl.textContent = `↑ ${aboveCapRate}`;
+
+    item.append(categoriesEl, valueEl, aboveEl);
     list.append(item);
   });
 
@@ -323,7 +324,7 @@ function renderBrowserCardItem(card) {
   const merchantEntries = merchantPortalEntriesForCard(card);
   if (merchantEntries.length) {
     const merchantSection = document.createElement("section");
-    const merchantTitle = document.createElement("h5");
+    const merchantTitle = document.createElement("h4");
     merchantTitle.textContent = "Merchant & portal rates";
     merchantSection.append(merchantTitle, renderRateList(merchantEntries, card.rewards_program, "No merchant/portal-specific rates modeled."));
     earnSection.append(merchantSection);
