@@ -343,7 +343,7 @@ function subcategoryControlMarkup(parentCategory, configs) {
     const helper = escapeHtml(config.helperText || "Portion of the parent category spend.");
     return `
       <div class="subcategoryItem">
-        <label for="subcategory-${key}">${label}</label>
+        <label class="mono spendCat" for="subcategory-${key}">${label}</label>
         <input id="subcategory-${key}" class="spend-input" type="number" min="0" step="1" value="" placeholder="0" data-subcategory-key="${key}" data-subcategory-parent="${escapeHtml(parentCategory)}" />
         <p class="subtle subcategoryHint">${helper}</p>
       </div>
