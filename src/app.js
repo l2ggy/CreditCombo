@@ -16,8 +16,7 @@ const subcategoryConfigs = {
       acceptedNetworks: ["mastercard"],
       networkCategoryMap: {
         mastercard: "grocery"
-      },
-      merchantMultiplier: 1
+      }
     },
     {
       key: "grocery_george_weston",
@@ -29,8 +28,7 @@ const subcategoryConfigs = {
       networkCategoryMap: {
         mastercard: "grocery",
         visa: "grocery"
-      },
-      merchantMultiplier: 1
+      }
     },
     {
       key: "grocery_walmart",
@@ -42,12 +40,6 @@ const subcategoryConfigs = {
         mastercard: "grocery",
         visa: "other",
         amex: "other"
-      },
-      merchantMultiplier: 1,
-      networkMerchantMultiplier: {
-        mastercard: 1,
-        visa: 1,
-        amex: 1
       }
     }
   ],
@@ -60,20 +52,13 @@ const subcategoryConfigs = {
       acceptedNetworks: ["mastercard"],
       networkCategoryMap: {
         mastercard: "gas"
-      },
-      merchantMultiplier: 1
+      }
     },
     {
       key: "gas_esso_mobil",
       label: "Esso & Mobil",
       helperText: "Merchant multiplier ready.",
-      hoverDetails: "Use this for Esso and Mobil spend. This subcategory is ready for merchant or portal earn multipliers.",
-      merchantMultiplier: 1,
-      networkMerchantMultiplier: {
-        mastercard: 1,
-        visa: 1,
-        amex: 1
-      }
+      hoverDetails: "Use this for Esso and Mobil spend. This subcategory is ready for merchant or portal earn multipliers."
     }
   ],
   bills: [
