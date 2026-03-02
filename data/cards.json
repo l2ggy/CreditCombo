@@ -3084,6 +3084,10 @@
       "special_earn_rules": [
         {
           "type": "merchant_specific",
+          "description": "Earn rates include 35 points/$ at Shoppers Drug Mart/Pharmaprix, 20 points/$ at participating Loblaw-banner grocery stores, and at least 30 points/litre at Esso/Mobil (fuel program unit differs from points/$ categories)."
+        },
+        {
+          "type": "merchant_specific",
           "description": "Higher earn applies at Loblaw-banner stores, Shoppers Drug Mart, Esso/Mobil, and PC Travel partner channels; these are merchant-specific and excluded from base earn_rates."
         },
         {
@@ -3092,6 +3096,7 @@
         }
       ],
       "sources": [
+        "https://www.pcfinancial.ca/en/credit-cards/world-mastercard/",
         "https://www.pcfinancial.ca/en/credit-cards/"
       ]
     },
@@ -3113,6 +3118,10 @@
       "special_earn_rules": [
         {
           "type": "merchant_specific",
+          "description": "Earn rates include 50 points/$ at Shoppers Drug Mart/Pharmaprix and 40 points/$ at participating Loblaw-banner grocery stores; Esso/Mobil fuel earn is disclosed in points-per-litre with additional tier bonuses."
+        },
+        {
+          "type": "merchant_specific",
           "description": "Higher earn applies at Loblaw-banner stores, Shoppers Drug Mart, Esso/Mobil, and PC Travel partner channels; these are merchant-specific and excluded from base earn_rates."
         },
         {
@@ -3125,6 +3134,7 @@
         }
       ],
       "sources": [
+        "https://www.pcfinancial.ca/en/credit-cards/insiders/",
         "https://www.pcfinancial.ca/en/credit-cards/"
       ]
     },
@@ -3146,6 +3156,10 @@
       "special_earn_rules": [
         {
           "type": "merchant_specific",
+          "description": "Earn rates include 25 points/$ at Shoppers Drug Mart/Pharmaprix and 10 points/$ at participating Loblaw-banner grocery stores; Esso/Mobil fuel earn is disclosed primarily in points-per-litre."
+        },
+        {
+          "type": "merchant_specific",
           "description": "Higher earn applies at Loblaw-banner stores, Shoppers Drug Mart, Esso/Mobil, and PC Travel partner channels; these are merchant-specific and excluded from base earn_rates."
         },
         {
@@ -3154,6 +3168,7 @@
         }
       ],
       "sources": [
+        "https://www.pcfinancial.ca/en/credit-cards/pc-mastercard/",
         "https://www.pcfinancial.ca/en/credit-cards/"
       ]
     },

@@ -62,7 +62,10 @@ export const subcategoryConfigs = {
         visa: "grocery"
       },
       cardRateOverrides: {
-        pc_financial_world_elite: 30
+        pc_financial_world_elite: 30,
+        pc_financial_world_mastercard: 20,
+        pc_insiders_world_elite_mastercard: 40,
+        pc_financial_mastercard: 10
       },
       browserTag: "merchant"
     },
@@ -95,7 +98,10 @@ export const subcategoryConfigs = {
       label: "Esso & Mobil",
       helperText: "Esso and Mobil fuel stations.",
       cardRateOverrides: {
-        pc_financial_world_elite: 30
+        pc_financial_world_elite: 30,
+        pc_financial_world_mastercard: 20,
+        pc_insiders_world_elite_mastercard: 40,
+        pc_financial_mastercard: 10
       },
       browserTag: "merchant"
     }
@@ -106,7 +112,10 @@ export const subcategoryConfigs = {
       label: "Shoppers Drug Mart",
       helperText: "Shoppers Drug Mart merchant-specific rates.",
       cardRateOverrides: {
-        pc_financial_world_elite: 45
+        pc_financial_world_elite: 45,
+        pc_financial_world_mastercard: 35,
+        pc_insiders_world_elite_mastercard: 50,
+        pc_financial_mastercard: 25
       },
       browserTag: "merchant"
     }
@@ -183,7 +192,10 @@ export const subcategoryConfigs = {
       label: "PC Travel",
       helperText: "PC Travel merchant-partner bookings.",
       cardRateOverrides: {
-        pc_financial_world_elite: 30
+        pc_financial_world_elite: 30,
+        pc_financial_world_mastercard: 20,
+        pc_insiders_world_elite_mastercard: 40,
+        pc_financial_mastercard: 10
       },
       browserTag: "portal"
     },
