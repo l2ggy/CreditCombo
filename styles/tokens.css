@@ -44,3 +44,15 @@
 
   --container-max-width: 1100px;
 }
+
+
+:root[data-theme="light"] {
+  --color-bg: #f4f7fb;
+  --color-panel: #ffffff;
+  --color-text: #152238;
+  --color-muted: #56657c;
+  --color-border: #d3dcea;
+  --color-accent: #225ec8;
+  --color-accent-contrast: #f5f9ff;
+  --color-brand-highlight: #4b2f9b;
+}
