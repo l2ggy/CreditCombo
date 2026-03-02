@@ -40,11 +40,30 @@ function capAnnual(cap) {
   return period === "monthly" ? amt * 12 : amt;
 }
 
-function nextBestCard(combo, current, cat, programsMap, valuationMode) {
-  const ranked = [...combo].sort((a, b) => valuePerDollar(b, cat, programsMap, valuationMode) - valuePerDollar(a, cat, programsMap, valuationMode));
-  if (ranked.length <= 1) return null;
-  if (ranked[0].id !== current.id) return ranked[0];
-  return ranked[1];
+function marginalDelta(card, assignedForCard, cat, schema, programsMap, valuationMode, direction) {
+  const current = Number(assignedForCard?.[cat] ?? 0);
+  if (direction === "remove" && current <= 0) return -Infinity;
+
+  const beforeValue = valueWithWithinCardCaps(card, assignedForCard, schema, programsMap, valuationMode);
+  const nextAssigned = { ...assignedForCard, [cat]: current + (direction === "add" ? 1 : -1) };
+  const afterValue = valueWithWithinCardCaps(card, nextAssigned, schema, programsMap, valuationMode);
+  return direction === "add" ? (afterValue - beforeValue) : (beforeValue - afterValue);
+}
+
+function bestDestinationCard(combo, current, cat, assigned, schema, programsMap, valuationMode) {
+  let best = null;
+  let bestGain = -Infinity;
+
+  for (const card of combo) {
+    if (card.id === current.id) continue;
+    const gain = marginalDelta(card, assigned[card.id], cat, schema, programsMap, valuationMode, "add");
+    if (gain > bestGain) {
+      best = card;
+      bestGain = gain;
+    }
+  }
+
+  return { card: best, gain: bestGain };
 }
 
 function initialAssignment(combo, annualSpend, schema, programsMap, valuationMode) {
@@ -85,20 +104,21 @@ function enforceCapsByRerouting(combo, assigned, schema, programsMap, valuationM
           const amtInCat = assigned[card.id][cat] || 0;
           if (amtInCat <= 0) continue;
 
-          const nb = nextBestCard(combo, card, cat, programsMap, valuationMode);
-          if (!nb) continue;
+          const sourceLoss = marginalDelta(card, assigned[card.id], cat, schema, programsMap, valuationMode, "remove");
+          const destination = bestDestinationCard(combo, card, cat, assigned, schema, programsMap, valuationMode);
+          if (!destination.card) continue;
 
-          const loss = valuePerDollar(card, cat, programsMap, valuationMode) - valuePerDollar(nb, cat, programsMap, valuationMode);
-          moves.push({ loss, cat, amtInCat, nb });
+          const netLoss = sourceLoss - destination.gain;
+          moves.push({ netLoss, cat, amtInCat, destination });
         }
 
-        moves.sort((a, b) => a.loss - b.loss);
+        moves.sort((a, b) => a.netLoss - b.netLoss);
 
         for (const m of moves) {
           if (overflow <= 1e-9) break;
           const mv = Math.min(m.amtInCat, overflow);
           assigned[card.id][m.cat] -= mv;
-          assigned[m.nb.id][m.cat] += mv;
+          assigned[m.destination.card.id][m.cat] += mv;
           overflow -= mv;
           changed = true;
         }
