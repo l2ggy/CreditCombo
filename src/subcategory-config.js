@@ -186,6 +186,15 @@ export const subcategoryConfigs = {
         neo_cathay_world_elite_mastercard: 4
       },
       browserTag: "merchant"
+    },
+    {
+      key: "travel_marriott_bonvoy_properties",
+      label: "Marriott Bonvoy properties",
+      helperText: "Participating Marriott Bonvoy hotel property spend.",
+      cardRateOverrides: {
+        amex_marriott_bonvoy: 5
+      },
+      browserTag: "merchant"
     }
   ],
   bills: [
