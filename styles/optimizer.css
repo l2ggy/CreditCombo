@@ -39,9 +39,9 @@
 
 .spendGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-3)}
 .spendRow{display:grid;grid-template-columns:minmax(0,1fr) 92px;align-items:center;gap:var(--space-3);margin:0;padding:var(--space-3);border:1px solid var(--color-border);border-radius:var(--radius-md);background:color-mix(in srgb,var(--color-panel) 75%,transparent)}
-.spendMeta{min-width:0;overflow:hidden}
+.spendMeta{min-width:0;overflow:hidden;display:flex;align-items:center;justify-content:space-between;gap:var(--space-2)}
 .spendCat{display:block;font-size:var(--font-size-sm);line-height:var(--line-height-compact)}
-.spendMetaControls{display:flex;align-items:center;gap:var(--space-3);margin-top:var(--space-1)}
+.spendMetaControls{display:flex;align-items:center;gap:var(--space-3);flex:0 0 auto}
 .spendControl summary{list-style:none;cursor:pointer;color:var(--color-muted);font-size:var(--font-size-xs);line-height:var(--line-height-compact);display:inline-flex;align-items:center;gap:var(--space-1)}
 .spendControl summary::-webkit-details-marker{display:none}
 .spendControlLabel{text-decoration:underline}
@@ -100,5 +100,5 @@
 
 @media (prefers-reduced-motion:reduce){.spendControlCaret,.issues summary::after,.issuesBody{transition:none}.issuesBody{transform:none}.resultPanel #result .resultContent--enter{animation:none;transform:none}}
 
-@media (max-width:900px){.layout{grid-template-columns:1fr}.spendRowTop,.subcategoryItem{grid-template-columns:1fr;align-items:start;gap:var(--space-2)}.spendRow.is-subcategories-open .subcategoryPanel{grid-template-columns:1fr}.spendMeta{overflow:visible}.spendCat{white-space:normal;overflow:visible;text-overflow:clip}.tileGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:900px){.layout{grid-template-columns:1fr}.spendRowTop,.subcategoryItem{grid-template-columns:1fr;align-items:start;gap:var(--space-2)}.spendRow.is-subcategories-open .subcategoryPanel{grid-template-columns:1fr}.spendMeta{overflow:visible;align-items:flex-start}.spendCat{white-space:normal;overflow:visible;text-overflow:clip}.tileGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:380px){.tileGrid{grid-template-columns:1fr}}
