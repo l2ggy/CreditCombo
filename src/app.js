@@ -40,7 +40,7 @@ async function main() {
     elements.clearSpendBtn?.addEventListener("click", actions.clearSpend);
     elements.kInput.addEventListener("input", () => actions.setK(elements.kInput.value));
     elements.valuationModeEl?.addEventListener("change", () => actions.setValuationMode(elements.valuationModeEl.value));
-    elements.excludeBusinessCardsEl?.addEventListener("change", () => actions.setExcludeBusinessCards(elements.excludeBusinessCardsEl.checked));
+    elements.includeBusinessCardsEl?.addEventListener("change", () => actions.setIncludeBusinessCards(elements.includeBusinessCardsEl.checked));
     elements.excludeCashbackProgramsEl?.addEventListener("change", () => actions.setExcludeCashbackPrograms(elements.excludeCashbackProgramsEl.checked));
     elements.resetAdvancedPrefsBtn?.addEventListener("click", actions.resetAdvancedPreferences);
     elements.maxAnnualFeeEl?.addEventListener("input", () => actions.setMaxAnnualFee(elements.maxAnnualFeeEl.value));

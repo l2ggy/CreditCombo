@@ -13,7 +13,7 @@ CreditCombo is a static web app that helps you build a long-term Canadian credit
 - Shows category-by-category card usage guidance.
 - Supports practical filters such as:
   - Locking in cards you already have
-  - Excluding business cards
+  - Including business cards
   - Excluding cashback programs
   - Excluding specific rewards programs
   - Setting a maximum annual fee
