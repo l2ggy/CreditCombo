@@ -1,7 +1,8 @@
 import { annualizeMonthlySpend, chexyAdjustedAnnualSpend } from "../optimizer.js";
 import { clampInt, readMonthlySpend, readSubcategoryMonthlySpend, renderResult, resetSubcategorySpend } from "../ui.js";
 import { candidatePools, kBounds, selectedLockedCardIds } from "./state.js";
-import { renderCardThumb, renderLockedChip } from "../shared/render.js";
+import { renderLockedChip } from "../shared/render.js";
+import { findCardMatches, renderCardSearchOption } from "../shared/card-search.js";
 import { buildSearchText, scoreSearchMatch, tokenizeSearchQuery } from "../shared/search.js";
 import { escapeHtml } from "../shared/sanitize.js";
 
@@ -48,27 +49,12 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
   }
 
   function searchMatches(query) {
-    const queryTokens = tokenizeSearchQuery(query);
-    if (!queryTokens.length) return [];
-
-    return eligibleCards
-      .filter((card) => !state.lockedCardIds.has(card.id))
-      .map((card) => {
-        const cardNameText = buildSearchText(card.card_name);
-        const fullSearchText = buildSearchText([card.card_name, card.issuer, card.network]);
-        const fullScore = scoreSearchMatch(fullSearchText, queryTokens);
-
-        if (fullScore < 0) return null;
-
-        const nameScore = scoreSearchMatch(cardNameText, queryTokens);
-        const totalScore = fullScore + (nameScore > 0 ? nameScore * 3 : 0);
-        return { card, totalScore };
-      })
-      .filter(Boolean)
-      .sort((a, b) => b.totalScore - a.totalScore || a.card.card_name.localeCompare(b.card.card_name))
-      .slice(0, 10)
-      .map(({ card }) => card);
+    return findCardMatches(eligibleCards, query, {
+      excludedIds: state.lockedCardIds,
+      limit: 10
+    });
   }
+
 
   function renderLockedCardPicks() {
     if (!elements.lockedCardPicksEl) return;
@@ -123,24 +109,11 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
 
     const fragment = document.createDocumentFragment();
     matches.forEach((card) => {
-      const button = document.createElement("button");
-      button.type = "button";
-      button.className = "listOption";
-      button.dataset.cardId = card.id;
-      button.setAttribute("aria-label", `Add locked card ${card.card_name} (${card.issuer})`);
-
-      button.append(renderCardThumb(card, { className: "thumb thumb-xs thumb-contain", withFrame: false }));
-
-      const label = document.createElement("span");
-      label.textContent = `${card.card_name} `;
-
-      const issuer = document.createElement("span");
-      issuer.className = "muted";
-      issuer.textContent = `(${card.issuer})`;
-
-      label.append(issuer);
-      button.append(label);
-      fragment.append(button);
+      fragment.append(renderCardSearchOption(card, {
+        className: "listOption",
+        thumbClassName: "thumb thumb-xs thumb-contain",
+        ariaPrefix: "Add locked card"
+      }));
     });
 
     elements.lockedCardOptionsEl.append(fragment);
@@ -444,15 +417,6 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
   }
 
 
-  function setGoal(goalMode) {
-    const currentCardsMode = goalMode === "current_cards";
-    state.enableLockedCards = currentCardsMode;
-    if (elements.enableLockedCardsEl) elements.enableLockedCardsEl.checked = currentCardsMode;
-    if (elements.goalEl) elements.goalEl.value = currentCardsMode ? "current_cards" : "ideal_combo";
-    shouldRenderLockedCardPicks = true;
-    return runOptimization();
-  }
-
   function toggleLockedCards() {
     syncStateFromControls();
     shouldRenderLockedCardPicks = true;
@@ -551,12 +515,10 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
   function hydrateFromDeepLink(deepLinkState) {
     if (!deepLinkState) return;
 
-    const currentCardsMode = deepLinkState.goal === "current_cards";
-    state.enableLockedCards = currentCardsMode;
-    if (elements.enableLockedCardsEl) elements.enableLockedCardsEl.checked = currentCardsMode;
-    if (elements.goalEl) elements.goalEl.value = currentCardsMode ? "current_cards" : "ideal_combo";
+    if (Array.isArray(deepLinkState.lockedCardIds) && deepLinkState.lockedCardIds.length) {
+      state.enableLockedCards = true;
+      if (elements.enableLockedCardsEl) elements.enableLockedCardsEl.checked = true;
 
-    if (Array.isArray(deepLinkState.lockedCardIds)) {
       deepLinkState.lockedCardIds.forEach((id) => {
         if (eligibleCardIdSet.has(id)) state.lockedCardIds.add(id);
       });
@@ -568,6 +530,11 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
       state.k = Number(deepLinkState.k);
     }
 
+    if (deepLinkState.valuationMode && elements.valuationModeEl) {
+      elements.valuationModeEl.value = deepLinkState.valuationMode;
+      state.valuationMode = deepLinkState.valuationMode;
+    }
+
     syncStateFromControls();
     updateLockedCardsUi();
     syncKBoundsFromState();
@@ -577,7 +544,6 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
   return {
     runOptimization,
     toggleLockedCards,
-    setGoal,
     clearSpend,
     setValuationMode,
     setK,

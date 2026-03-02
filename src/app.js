@@ -36,9 +36,11 @@ async function main() {
     });
 
     actions.syncInitialUi();
+
     const deepLinkState = parseOptimizerParams(window.location.search, { schema, eligibleCardIdSet });
-    applyDeepLinkAssumptions(deepLinkState, elements);
+    applyDeepLinkAssumptions(deepLinkState);
     actions.hydrateFromDeepLink(deepLinkState);
+
     elements.appEl.classList.remove("hidden");
 
     elements.runBtn.addEventListener("click", actions.runOptimization);
@@ -51,7 +53,6 @@ async function main() {
     elements.maxAnnualFeeEl?.addEventListener("input", () => actions.setMaxAnnualFee(elements.maxAnnualFeeEl.value));
     elements.chexyFeePercentEl?.addEventListener("input", actions.runOptimization);
     elements.enableLockedCardsEl?.addEventListener("change", actions.toggleLockedCards);
-    elements.goalEl?.addEventListener("change", () => actions.setGoal(elements.goalEl.value));
 
     elements.lockedCardSearchEl?.addEventListener("input", actions.renderLockedSearchResults);
 
@@ -60,7 +61,6 @@ async function main() {
       if (!btn) return;
       actions.addLockedCard(btn.dataset.cardId);
     });
-
 
     elements.excludedProgramSearchEl?.addEventListener("input", actions.renderExcludedProgramSearchResults);
 
@@ -92,7 +92,7 @@ async function main() {
   }
 }
 
-function applyDeepLinkAssumptions(deepLinkState, elements) {
+function applyDeepLinkAssumptions(deepLinkState) {
   Object.entries(deepLinkState.spend || {}).forEach(([category, value]) => {
     const input = document.querySelector(`input[data-cat="${cssEscape(category)}"]`);
     if (!input) return;
@@ -100,18 +100,10 @@ function applyDeepLinkAssumptions(deepLinkState, elements) {
     input.dispatchEvent(new Event("input", { bubbles: true }));
   });
 
-  if (elements.onboardingSourceEl && deepLinkState.source) {
-    elements.onboardingSourceEl.textContent = "Quick setup assumptions imported. You can edit them here anytime.";
-    elements.onboardingSourceEl.classList.remove("hidden");
+  const valuationModeEl = document.getElementById("valuationMode");
+  if (valuationModeEl) {
+    valuationModeEl.value = deepLinkState.valuationMode === "minimum_guaranteed" ? "minimum_guaranteed" : "estimated";
   }
-
-  if (elements.countryEl) elements.countryEl.value = deepLinkState.country || "CA";
-  if (elements.creditScoreEl) elements.creditScoreEl.value = deepLinkState.creditScore || "";
-  if (elements.annualIncomeEl) elements.annualIncomeEl.value = deepLinkState.annualIncome || "";
-
-  if (elements.goalEl) elements.goalEl.value = deepLinkState.goal;
-  if (elements.valuationModeEl) elements.valuationModeEl.value = deepLinkState.valuationMode === "minimum_guaranteed" ? "minimum_guaranteed" : "estimated";
-
 }
 
 function cssEscape(value) {

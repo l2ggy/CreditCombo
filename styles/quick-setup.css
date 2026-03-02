@@ -23,11 +23,6 @@
   transition: width .25s ease;
 }
 
-.progressPercent {
-  margin: 10px 0 0;
-  color: var(--text-muted);
-  font-size: 0.95rem;
-}
 
 .stepPanel {
   padding: 28px;
@@ -103,11 +98,15 @@
   font-size: 1.1rem;
 }
 
-.comingSoonNote {
-  margin-top: 18px;
-  padding: 12px 14px;
-  border: 1px dashed var(--border);
-  border-radius: 12px;
-  color: var(--text-muted);
-  font-size: 0.96rem;
+
+.quickSearchOption {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 1.06rem;
+}
+
+.quickSearchOption .thumb {
+  width: 54px;
+  height: 34px;
 }

@@ -27,12 +27,7 @@ export function createView() {
     lockedCardsDividerEl: document.getElementById("lockedCardsDivider"),
     kInput: document.getElementById("k"),
     kValueEl: document.getElementById("kValue"),
-    kLabelEl: document.getElementById("kLabel"),
-    goalEl: document.getElementById("goalMode"),
-    countryEl: document.getElementById("country"),
-    creditScoreEl: document.getElementById("creditScore"),
-    annualIncomeEl: document.getElementById("annualIncome"),
-    onboardingSourceEl: document.getElementById("onboardingSource")
+    kLabelEl: document.getElementById("kLabel")
   };
 
   return {

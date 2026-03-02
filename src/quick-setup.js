@@ -1,6 +1,9 @@
 import { loadOptimizerData } from "./data-service.js";
 import { buildOptimizerUrl } from "./app/deeplink.js";
+import { findCardMatches, renderCardSearchOption } from "./shared/card-search.js";
 
+// TODO(quick-setup-future): add country, credit score, and income questions once
+// optimizer constraints support those fields end-to-end.
 const state = {
   goal: "ideal_combo",
   spend: {},
@@ -13,8 +16,7 @@ const el = {
   stepPanel: document.getElementById("stepPanel"),
   backBtn: document.getElementById("backBtn"),
   nextBtn: document.getElementById("nextBtn"),
-  progressFill: document.getElementById("progressFill"),
-  progressPercent: document.getElementById("progressPercent")
+  progressFill: document.getElementById("progressFill")
 };
 
 const data = await loadOptimizerData();
@@ -59,7 +61,6 @@ function renderStep() {
 
   const progress = ((stepIndex + 1) / steps.length) * 100;
   el.progressFill.style.width = `${progress}%`;
-  el.progressPercent.textContent = `${Math.round(progress)}% complete`;
 
   el.backBtn.disabled = stepIndex === 0;
   el.nextBtn.textContent = stepIndex === steps.length - 1 ? "See recommendations" : "Next";
@@ -107,12 +108,12 @@ function renderCards() {
   const cardChips = state.lockedCardIds.map((id) => `<span class="chip">${cardsById.get(id)?.card_name || id}</span>`).join(" ") || "No cards selected yet.";
   const helper = state.goal === "current_cards"
     ? "Add the cards you currently have. We will optimize usage with these cards only."
-    : "Add any cards you already have if you want them locked into recommendations.";
+    : "Add cards you already have if you want them included in your ideal combo.";
 
   el.stepPanel.innerHTML = `
     <h2 class="stepTitle">Which cards do you have right now?</h2>
     <p class="stepHelp">${helper}</p>
-    <input id="cardSearch" class="bigInput" type="search" placeholder="Type a card name" />
+    <input id="cardSearch" class="bigInput" type="search" placeholder="Type a card or issuer name" />
     <div id="cardMatches" class="choiceList"></div>
     <div class="cardPick">${cardChips}</div>
   `;
@@ -121,24 +122,31 @@ function renderCards() {
   const matchesEl = document.getElementById("cardMatches");
 
   searchEl.addEventListener("input", () => {
-    const q = searchEl.value.trim().toLowerCase();
-    matchesEl.innerHTML = "";
-    if (!q) return;
+    const matches = findCardMatches(data.eligibleCards, searchEl.value || "", {
+      excludedIds: new Set(state.lockedCardIds),
+      limit: 8
+    });
 
-    data.eligibleCards
-      .filter((card) => card.card_name.toLowerCase().includes(q))
-      .slice(0, 8)
-      .forEach((card) => {
-        const btn = document.createElement("button");
-        btn.className = "choiceBtn";
-        btn.type = "button";
-        btn.textContent = `${card.card_name} (${card.issuer})`;
-        btn.addEventListener("click", () => {
-          if (!state.lockedCardIds.includes(card.id)) state.lockedCardIds.push(card.id);
-          renderStep();
-        });
-        matchesEl.append(btn);
-      });
+    matchesEl.innerHTML = "";
+    if (!matches.length) return;
+
+    const fragment = document.createDocumentFragment();
+    matches.forEach((card) => {
+      fragment.append(renderCardSearchOption(card, {
+        className: "choiceBtn quickSearchOption",
+        thumbClassName: "thumb thumb-md thumb-contain",
+        ariaPrefix: "Add card"
+      }));
+    });
+
+    matchesEl.append(fragment);
+  });
+
+  matchesEl.addEventListener("click", (event) => {
+    const btn = event.target.closest("[data-card-id]");
+    if (!btn) return;
+    if (!state.lockedCardIds.includes(btn.dataset.cardId)) state.lockedCardIds.push(btn.dataset.cardId);
+    renderStep();
   });
 }
 
