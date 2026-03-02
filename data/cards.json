@@ -2212,9 +2212,19 @@
         "other": 1
       },
       "caps": [],
-      "special_earn_rules": [],
+      "special_earn_rules": [
+        {
+          "type": "merchant_specific",
+          "description": "Earn 1.5% back on eligible Amazon.ca and Whole Foods Market purchases; eligible Prime members can earn 2.5% back."
+        },
+        {
+          "type": "merchant_specific",
+          "description": "Eligible foreign currency transactions earn 1% back; eligible Prime members can earn 2.5% back."
+        }
+      ],
       "sources": [
-        "https://www.mbna.ca/en/credit-cards"
+        "https://www.mbna.ca/en/credit-cards",
+        "https://www.amazon.ca/Rewards-Mastercard-Credit-Card/dp/B07MJM4F44"
       ]
     },
     {

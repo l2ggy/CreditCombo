@@ -216,6 +216,15 @@ export const subcategoryConfigs = {
         canadian_tire_triangle_we: 4
       },
       browserTag: "merchant"
+    },
+    {
+      key: "other_amazon_ca_whole_foods",
+      label: "Amazon.ca & Whole Foods",
+      helperText: "Eligible Amazon.ca and Whole Foods purchases (Prime may earn higher rates).",
+      cardRateOverrides: {
+        amazon_ca_rewards_mastercard: 1.5
+      },
+      browserTag: "merchant"
     }
   ],
   bills: [
