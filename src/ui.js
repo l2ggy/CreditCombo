@@ -112,6 +112,21 @@ export function renderSpendTable(el, schema, categoryDescriptions = {}, subcateg
     valueInput.addEventListener("change", syncFromValue);
   });
 
+  el.querySelectorAll(".spendMeta details > summary").forEach((summaryEl) => {
+    summaryEl.addEventListener("mousedown", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+    });
+
+    summaryEl.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      const detailsEl = summaryEl.parentElement;
+      if (!detailsEl) return;
+      detailsEl.open = !detailsEl.open;
+    });
+  });
+
   el.querySelectorAll(".subcategoryDetails").forEach((detailsEl) => {
     const spendRow = detailsEl.closest(".spendRow");
     if (!spendRow) return;
