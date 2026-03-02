@@ -7,20 +7,14 @@ export function clampInt(n, lo, hi) {
   return Math.max(lo, Math.min(hi, n));
 }
 
-export function renderSpendTable(el, schema, categoryDescriptions = {}) {
+export function renderSpendTable(el, schema, categoryDescriptions = {}, subcategoryConfigs = {}) {
   el.innerHTML = `
     <div class="spendGrid" role="group" aria-label="Monthly spend by category">
-      ${schema.map(cat => `
-        <label class="spendRow" for="spend-${cat}">
-          <span class="spendMeta">
-            <span class="mono spendCat">${cat}</span>
-            ${spendDescriptionMarkup(categoryDescriptions[cat] || "")}
-          </span>
-          <input id="spend-${cat}" class="spend-input" type="number" min="0" step="1" value="" placeholder="0" data-cat="${cat}" aria-label="Monthly spend for ${cat}" />
-        </label>
-      `).join("")}
+      ${schema.map((cat) => spendRowMarkup(cat, categoryDescriptions[cat] || "", subcategoryConfigs[cat] || [])).join("")}
     </div>
   `;
+
+  bindSpendRowDetailsControls(el);
 
   const spendTotalEl = document.getElementById("spendTotal");
 
@@ -36,7 +30,7 @@ export function renderSpendTable(el, schema, categoryDescriptions = {}) {
     }
   };
 
-  el.querySelectorAll('input[data-cat]').forEach((inp) => {
+  el.querySelectorAll("input[data-cat], input[data-subcategory-key]").forEach((inp) => {
     inp.addEventListener("input", updateSpendTotal);
 
     inp.addEventListener("focus", () => {
@@ -44,6 +38,22 @@ export function renderSpendTable(el, schema, categoryDescriptions = {}) {
     });
 
     inp.addEventListener("blur", updateSpendTotal);
+  });
+
+  el.querySelectorAll("[data-subcategory-enabled]").forEach((toggle) => {
+    const key = toggle.dataset.subcategoryEnabled;
+    const input = el.querySelector(`input[data-subcategory-key="${cssEscape(key)}"]`);
+    if (!input) return;
+
+    const syncEnabled = () => {
+      const enabled = Boolean(toggle.checked);
+      input.disabled = !enabled;
+      if (!enabled) input.value = "";
+      updateSpendTotal();
+    };
+
+    toggle.addEventListener("change", syncEnabled);
+    syncEnabled();
   });
 
   updateSpendTotal();
@@ -64,6 +74,40 @@ export function readMonthlySpend(schema) {
   return spend;
 }
 
+export function readSubcategoryMonthlySpend(subcategoryConfigs = {}) {
+  const spend = {};
+  const validKeys = new Set(Object.values(subcategoryConfigs).flat().map((config) => config.key));
+
+  document.querySelectorAll("input[data-subcategory-key]").forEach((input) => {
+    const key = input.dataset.subcategoryKey;
+    if (!validKeys.has(key) || input.disabled) return;
+    const value = Number(input.value);
+    spend[key] = Number.isFinite(value) && value > 0 ? value : 0;
+  });
+
+  return spend;
+}
+
+export function setSubcategoryVisibility(key, visible) {
+  if (!key) return;
+  document.querySelectorAll(`[data-subcategory-key="${cssEscape(key)}"]`).forEach((input) => {
+    const row = input.closest(".subcategoryItem");
+    if (!row) return;
+    row.classList.toggle("hidden", !visible);
+  });
+}
+
+export function resetSubcategorySpend(key) {
+  if (!key) return;
+  document.querySelectorAll(`[data-subcategory-key="${cssEscape(key)}"]`).forEach((input) => {
+    input.value = "";
+    input.disabled = true;
+  });
+  document.querySelectorAll(`[data-subcategory-enabled="${cssEscape(key)}"]`).forEach((toggle) => {
+    toggle.checked = false;
+  });
+}
+
 export function renderIssues(el, issues) {
   if (!issues.length) {
     el.innerHTML = "";
@@ -76,7 +120,6 @@ export function renderIssues(el, issues) {
     </ul>
   `;
 }
-
 
 export function renderResult(el, best, annualSpend, schema, valuationMode = "estimated") {
   el.classList.remove("hidden");
@@ -238,10 +281,80 @@ function formatPercent(value) {
   }).format(value);
 }
 
+function spendRowMarkup(category, desc, subcategories) {
+  const details = detailsControlMarkup(desc);
+  const subcats = subcategoryControlMarkup(category, subcategories);
 
-function spendDescriptionMarkup(desc) {
+  return `
+    <div class="spendRow" data-spend-row data-cat-row="${escapeHtml(category)}">
+      <div class="spendRowTop">
+        <div class="spendMeta">
+          <div class="mono spendCat">${escapeHtml(category)}</div>
+          <div class="spendMetaControls">${details.control}${subcats.control}</div>
+        </div>
+        <div class="spendInputWrap">
+          <label class="srOnly" for="spend-${escapeHtml(category)}">Spend for ${escapeHtml(category)}</label>
+          <input id="spend-${escapeHtml(category)}" class="spend-input" type="number" min="0" step="1" value="" placeholder="0" data-cat="${escapeHtml(category)}" aria-label="Spend for ${escapeHtml(category)}" />
+        </div>
+      </div>
+      ${details.panel}
+      ${subcats.panel}
+    </div>
+  `;
+}
+
+function detailsControlMarkup(desc) {
   const clean = String(desc || "").trim().replace(/\s+/g, " ");
-  if (!clean) return "";
+  if (!clean) return { control: "", panel: "" };
+  return {
+    control: '<details class="spendControl" data-spend-control="details"><summary>Details</summary></details>',
+    panel: `<div class="spendControlPanel spendDetailsPanel muted">${escapeHtml(clean)}</div>`
+  };
+}
 
-  return `<details class="spendDesc"><summary><span class="spendDescLabel">Details</span><span class="spendDescCaret" aria-hidden="true">▾</span></summary><div class="spendDescBody muted">${escapeHtml(clean)}</div></details>`;
+function subcategoryControlMarkup(parentCategory, configs) {
+  if (!configs.length) return { control: "", panel: "" };
+
+  const subcategoryItems = configs.map((config) => {
+    const label = escapeHtml(config.label || config.key);
+    const key = escapeHtml(config.key);
+    const helper = escapeHtml(config.helperText || "Subset of this category spend.");
+    return `
+      <div class="subcategoryItem">
+        <label class="checkboxLabel" for="subcategory-enabled-${key}">
+          <input id="subcategory-enabled-${key}" type="checkbox" data-subcategory-enabled="${key}" />
+          ${label}
+        </label>
+        <label class="srOnly" for="subcategory-${key}">Amount for ${label}</label>
+        <input id="subcategory-${key}" class="spend-input" type="number" min="0" step="1" value="" placeholder="0" data-subcategory-key="${key}" data-subcategory-parent="${escapeHtml(parentCategory)}" disabled />
+        <p class="subtle subcategoryHint">${helper}</p>
+      </div>
+    `;
+  }).join("");
+
+  return {
+    control: '<details class="spendControl" data-spend-control="subcategories"><summary>Subcategories</summary></details>',
+    panel: `<div class="spendControlPanel subcategoryPanel">${subcategoryItems}</div>`
+  };
+}
+
+function bindSpendRowDetailsControls(root) {
+  const controls = root.querySelectorAll(".spendControl[data-spend-control]");
+  controls.forEach((details) => {
+    const kind = details.dataset.spendControl;
+    const row = details.closest("[data-spend-row]");
+    if (!row || !kind) return;
+
+    details.addEventListener("toggle", () => {
+      row.classList.toggle(`is-${kind}-open`, details.open);
+    });
+
+    details.open = false;
+    row.classList.remove(`is-${kind}-open`);
+  });
+}
+
+function cssEscape(value) {
+  if (typeof CSS !== "undefined" && typeof CSS.escape === "function") return CSS.escape(value);
+  return String(value).replace(/["\\]/g, "\\$&");
 }

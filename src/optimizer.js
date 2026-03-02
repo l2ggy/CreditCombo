@@ -4,6 +4,43 @@ export function annualizeMonthlySpend(monthlySpend, schema) {
   return annual;
 }
 
+
+export function chexyAdjustedAnnualSpend({ annualSpend, monthlySpend = {}, subcategorySpend = {}, subcategoryConfigs = {}, chexyFeePercent = 0 }) {
+  const adjustedAnnualSpend = { ...annualSpend };
+  const baselineAnnualTotal = Object.values(annualSpend || {}).reduce((sum, value) => sum + (Number(value) || 0), 0);
+  const safeChexyFeePercent = Number.isFinite(Number(chexyFeePercent)) ? Math.max(0, Number(chexyFeePercent)) : 0;
+  let chexyAdjustedAnnualSpend = 0;
+
+  for (const [parentCategory, configs] of Object.entries(subcategoryConfigs || {})) {
+    const parentAnnual = Number(annualSpend?.[parentCategory] ?? 0);
+    if (parentAnnual <= 0) continue;
+
+    for (const config of configs || []) {
+      if (config?.feeAdjustment !== "chexy") continue;
+      const monthlyValue = Number(subcategorySpend?.[config.key] ?? monthlySpend?.[config.key] ?? 0);
+      if (!Number.isFinite(monthlyValue) || monthlyValue <= 0) continue;
+      const annualSubSpend = Math.min(parentAnnual, monthlyValue * 12);
+      if (annualSubSpend <= 0) continue;
+
+      const feeAmount = annualSubSpend * (safeChexyFeePercent / 100);
+      chexyAdjustedAnnualSpend += feeAmount;
+      adjustedAnnualSpend[parentCategory] = (Number(adjustedAnnualSpend[parentCategory]) || 0) + feeAmount;
+    }
+  }
+
+  const adjustedAnnualTotal = Object.values(adjustedAnnualSpend).reduce((sum, value) => sum + (Number(value) || 0), 0);
+
+  return {
+    adjustedAnnualSpend,
+    baselineVsChexy: {
+      baselineAnnualTotal,
+      adjustedAnnualTotal,
+      delta: adjustedAnnualTotal - baselineAnnualTotal
+    },
+    chexyAdjustedAnnualSpend
+  };
+}
+
 function cardRate(card, cat) {
   const er = card.earn_rates || {};
   if (er[cat] != null) return Number(er[cat]);

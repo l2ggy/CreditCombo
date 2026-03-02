@@ -3,6 +3,7 @@ export function createUiState() {
     lockedCardIds: new Set(),
     valuationMode: "estimated",
     maxAnnualFee: null,
+    chexyFeePercent: 1.75,
     includeBusinessCards: false,
     excludeCashbackPrograms: false,
     excludedProgramIds: new Set(),
