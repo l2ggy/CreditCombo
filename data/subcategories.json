@@ -80,25 +80,42 @@
         "key": "travel_scene_plus_portal",
         "label": "Scene+ Travel",
         "helperText": "Hotels and car rentals via Scene+ Travel.",
-        "browserTag": "portal"
+        "browserTag": "portal",
+        "eligibleCardIds": [
+          "scotia_scene_visa",
+          "scotia_passport_vi",
+          "scotiabank_passport_visa_infinite_privilege_card"
+        ]
       },
       {
         "key": "travel_expedia_for_td",
         "label": "Expedia for TD",
         "helperText": "Flights, hotels, and car rentals via ExpediaForTD.",
-        "browserTag": "portal"
+        "browserTag": "portal",
+        "eligibleCardIds": [
+          "td_business_travel_visa_card",
+          "td_first_class_travel_vi",
+          "td_platinum_travel_visa",
+          "td_rewards_visa"
+        ]
       },
       {
         "key": "travel_cibc_rewards_centre",
         "label": "CIBC Rewards",
         "helperText": "Flights, hotels, and car rentals via CIBC Rewards Centre.",
-        "browserTag": "portal"
+        "browserTag": "portal",
+        "eligibleCardIds": [
+          "cibc_aventura_vi"
+        ]
       },
       {
         "key": "travel_bmo_rewards_portal",
         "label": "BMO Rewards Travel",
         "helperText": "Flights, hotels, and car rentals via BMO Rewards Travel.",
-        "browserTag": "portal"
+        "browserTag": "portal",
+        "eligibleCardIds": [
+          "bmo_ascend_world_elite_business_mastercard"
+        ]
       },
       {
         "key": "travel_porter",
@@ -122,7 +139,13 @@
         "key": "travel_pc_travel",
         "label": "PC Travel",
         "helperText": "Flights, hotels, vacation packages via PC Travel.",
-        "browserTag": "portal"
+        "browserTag": "portal",
+        "eligibleCardIds": [
+          "pc_financial_world_elite",
+          "pc_financial_world_mastercard",
+          "pc_insiders_world_elite_mastercard",
+          "pc_financial_mastercard"
+        ]
       },
       {
         "key": "travel_cathay_pacific",

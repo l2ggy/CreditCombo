@@ -26,6 +26,9 @@ export function subcategoryRateForCard(config, card, parentCategory, readCardRat
   const acceptedNetworks = new Set((config?.acceptedNetworks || []).map(normalizeCardNetwork));
   if (acceptedNetworks.size && !acceptedNetworks.has(cardNetwork)) return 0;
 
+  const eligibleCardIds = new Set(config?.eligibleCardIds || []);
+  if (eligibleCardIds.size && !eligibleCardIds.has(card?.id)) return 0;
+
   const mappedCategory = subcategoryMappedCategory(config, cardNetwork, parentCategory);
   const directRate = Number(card?.subcategory_earn_rates?.[config?.key]);
   if (Number.isFinite(directRate) && directRate >= 0) return directRate;
