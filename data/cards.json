@@ -2579,12 +2579,32 @@
         "type": "annual"
       },
       "earn_rates": {
-        "other": 1
+        "grocery": 1.5,
+        "gas": 1.5,
+        "other": 1.0
       },
-      "caps": [],
-      "special_earn_rules": [],
+      "caps": [
+        {
+          "scope": "shared",
+          "categories": [
+            "grocery",
+            "gas"
+          ],
+          "cap_amount": 25000,
+          "cap_period": "annual",
+          "earn_rate_above_cap": 1.0,
+          "notes": "0.5% bonus cashback on gas and grocery purchases applies on first $25,000 in annual eligible purchases."
+        }
+      ],
+      "special_earn_rules": [
+        {
+          "type": "merchant_specific",
+          "description": "An additional 0.5% cashback category includes internet purchases, but this dataset does not model a dedicated “online purchases” merchant category."
+        }
+      ],
       "sources": [
-        "https://www.nbc.ca/personal/mastercard-credit-cards.html"
+        "https://www.nbc.ca/personal/mastercard-credit-cards/cashback.html",
+        "https://www.nbc.ca/content/dam/bnc/particuliers/pdf/tarification-carte/echo-cashback-rewards.pdf"
       ]
     },
     {
@@ -2599,13 +2619,15 @@
         "type": "annual"
       },
       "earn_rates": {
+        "dining": 1.0,
+        "bills": 1.0,
         "other": 0.5
       },
       "caps": [],
       "special_earn_rules": [
         {
-          "type": "product_feature",
-          "description": "Entry-level card; modeled with baseline earn for comparison."
+          "type": "merchant_specific",
+          "description": "1% applies to restaurant transactions and recurring pre-authorized payments; all other eligible purchases earn 0.5% cashback."
         }
       ],
       "sources": [
@@ -2629,7 +2651,8 @@
       "caps": [],
       "special_earn_rules": [],
       "sources": [
-        "https://www.nbc.ca/personal/mastercard-credit-cards.html"
+        "https://www.nbc.ca/business/credit-cards.html",
+        "https://www.nbc.ca/business/credit-cards/platinum-mastercard.html"
       ]
     },
     {
@@ -2702,7 +2725,7 @@
     {
       "id": "national_bank_world_elite",
       "card_name": "National Bank World Elite Mastercard",
-      "issuer": "National Bank of Canada",
+      "issuer": "National Bank",
       "network": "Mastercard",
       "rewards_program": "nb_a_la_carte",
       "is_business_card": false,
@@ -2713,24 +2736,34 @@
       "earn_rates": {
         "grocery": 2,
         "dining": 2,
-        "gas": 2,
-        "bills": 2,
         "other": 1
       },
-      "caps": [],
+      "caps": [
+        {
+          "scope": "shared",
+          "categories": [
+            "grocery",
+            "dining"
+          ],
+          "cap_amount": 2500,
+          "cap_period": "monthly",
+          "earn_rate_above_cap": 2,
+          "notes": "First $2,500 in gross monthly purchases earns an elevated 5 points/$ on grocery and restaurant purchases; threshold is based on total monthly gross purchases regardless of category."
+        }
+      ],
       "special_earn_rules": [
         {
           "type": "bonus_structure",
-          "description": "Issuer terms indicate a monthly first-spend tier (5 points per dollar on the first $2,500 in gross monthly purchases, regardless of category), after which regular category rates apply."
+          "description": "Grocery and restaurant purchases earn 5 points per $ on the first $2,500 in gross monthly purchases, then 2 points per $ after the threshold."
         },
         {
           "type": "merchant_specific",
-          "description": "Regular earn categories are merchant-code dependent (e.g., grocery/restaurant, gas and recurring bill payments)."
+          "description": "Category eligibility is based on merchant category code definitions for grocery stores and restaurants."
         }
       ],
       "sources": [
         "https://www.nbc.ca/personal/mastercard-credit-cards/world-elite.html",
-        "https://www.nbc.ca/personal/mastercard-credit-cards.html"
+        "https://www.nbc.ca/content/dam/bnc/particuliers/pdf/tarification-carte/rewards-plan-30464-002.pdf"
       ]
     },
     {
