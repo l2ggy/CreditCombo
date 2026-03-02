@@ -3,6 +3,7 @@ import { renderIssues, renderSpendTable } from "./ui.js";
 import { createActions } from "./app/actions.js";
 import { createUiState } from "./app/state.js";
 import { createView } from "./app/view.js";
+import { readOptimizerDeepLink } from "./app/deeplink.js";
 import { escapeHtml } from "./shared/sanitize.js";
 
 async function main() {
@@ -35,6 +36,22 @@ async function main() {
     });
 
     actions.syncInitialUi();
+
+    const deepLinkState = readOptimizerDeepLink(window.location.search, {
+      schema,
+      subcategoryConfigs,
+      eligibleCardIdSet
+    });
+
+    const hasDeepLinkValues = Boolean(
+      deepLinkState.lockedCardIds.length
+      || Object.keys(deepLinkState.spend).length
+      || Object.keys(deepLinkState.subcategorySpend).length
+      || deepLinkState.k !== 1
+      || deepLinkState.valuationMode !== "estimated"
+    );
+
+    if (hasDeepLinkValues) actions.hydrateFromDeepLink(deepLinkState);
     elements.appEl.classList.remove("hidden");
 
     elements.runBtn.addEventListener("click", actions.runOptimization);
