@@ -37,7 +37,7 @@
       {
         "key": "grocery_sobeys_partner",
         "label": "Sobeys Brands",
-        "helperText": "Sobeys, Safeway, FreshCo, Foodland, participating IGA/Co-ops.",
+        "helperText": "Sobeys, Safeway, FreshCo, Foodland, IGA.",
         "browserTag": "merchant"
       }
     ],
@@ -57,7 +57,7 @@
       {
         "key": "gas_esso_mobil",
         "label": "Esso / Mobil",
-        "helperText": "Esso and Mobil fuel stations.",
+        "helperText": "Esso and Mobil stations (including Speedpass+).",
         "browserTag": "merchant"
       }
     ],
@@ -79,25 +79,25 @@
       {
         "key": "travel_scene_plus_portal",
         "label": "Scene+ Travel",
-        "helperText": "Scene+ Travel (Powered by Expedia).",
+        "helperText": "Hotels and car rentals via Scene+ Travel.",
         "browserTag": "portal"
       },
       {
         "key": "travel_expedia_for_td",
         "label": "Expedia for TD",
-        "helperText": "ExpediaForTD bookings.",
+        "helperText": "Flights, hotels, and car rentals via ExpediaForTD.",
         "browserTag": "portal"
       },
       {
         "key": "travel_cibc_rewards_centre",
         "label": "CIBC Rewards",
-        "helperText": "CIBC Rewards Centre bookings.",
+        "helperText": "Flights, hotels, and car rentals via CIBC Rewards Centre.",
         "browserTag": "portal"
       },
       {
         "key": "travel_bmo_rewards_portal",
         "label": "BMO Rewards Travel",
-        "helperText": "BMO Rewards Travel portal bookings.",
+        "helperText": "Flights, hotels, and car rentals via BMO Rewards Travel.",
         "browserTag": "portal"
       },
       {
@@ -121,7 +121,7 @@
       {
         "key": "travel_pc_travel",
         "label": "PC Travel",
-        "helperText": "PC Travel bookings.",
+        "helperText": "Flights, hotels, vacation packages via PC Travel.",
         "browserTag": "portal"
       },
       {
@@ -133,7 +133,7 @@
       {
         "key": "travel_marriott_bonvoy_properties",
         "label": "Marriott Bonvoy",
-        "helperText": "Participating Marriott Bonvoy properties.",
+        "helperText": "Marriott, Sheraton, Westin, Delta Hotels.",
         "browserTag": "merchant"
       }
     ],
@@ -147,13 +147,13 @@
       {
         "key": "other_amazon_ca_whole_foods",
         "label": "Amazon / Whole Foods",
-        "helperText": "Amazon.ca and Whole Foods.",
+        "helperText": "Amazon.ca retail orders, Whole Foods Market stores.",
         "browserTag": "merchant"
       },
       {
         "key": "other_walmart",
         "label": "Walmart",
-        "helperText": "Walmart stores and Walmart.ca.",
+        "helperText": "Walmart Supercentre, Walmart.ca, Walmart app.",
         "logicAdjustment": "network_category_override",
         "acceptedNetworks": [
           "mastercard",
@@ -170,7 +170,7 @@
       {
         "key": "other_more_rewards_partners",
         "label": "More Rewards Partners",
-        "helperText": "Participating More Rewards merchants.",
+        "helperText": "Save-On-Foods, Urban Fare, PriceSmart Foods, Buy-Low Foods.",
         "browserTag": "merchant"
       }
     ],
