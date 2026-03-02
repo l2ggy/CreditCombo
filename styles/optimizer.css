@@ -46,8 +46,8 @@
 .spendRow input[type="number"].spend-input::placeholder{color:color-mix(in srgb,var(--color-muted) 72%,var(--color-bg) 28%);opacity:1}
 .spendRow-sub{grid-column:1/-1;background:color-mix(in srgb,var(--color-accent) 6%,var(--color-panel));border-style:dashed}
 .spendRow.hidden{display:none}
-.subcategoryDetails{position:absolute;right:var(--space-3);bottom:var(--space-2);z-index:2}
-.subcategoryDetails summary{cursor:pointer;font-size:11px;color:var(--color-muted);list-style:none;text-decoration:underline}
+.subcategoryDetails{position:absolute;right:var(--space-3);top:var(--space-2);z-index:2}
+.subcategoryDetails summary{cursor:pointer;font-size:11px;color:var(--color-muted);list-style:none;text-decoration:underline;background:color-mix(in srgb,var(--color-panel) 75%,transparent);padding:0 2px}
 .subcategoryDetails summary::-webkit-details-marker{display:none}
 .subcategoryDetails:not([open]) .subcategoryRows{display:none}
 .spendRow--expanded .subcategoryDetails{position:static;grid-column:1/-1;width:100%;box-sizing:border-box;margin-top:var(--space-2);border:1px dashed color-mix(in srgb,var(--color-accent) 25%,var(--color-border));border-radius:var(--radius-md);padding:var(--space-2) var(--space-3);background:color-mix(in srgb,var(--color-accent) 4%,transparent)}
