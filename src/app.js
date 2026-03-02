@@ -12,7 +12,6 @@ const subcategoryConfigs = {
       key: "grocery_costco",
       label: "Costco",
       helperText: "Mastercard only.",
-      optimizeWithSubcategory: true,
       logicAdjustment: "network_category_override",
       acceptedNetworks: ["mastercard"],
       networkCategoryMap: {
@@ -25,7 +24,6 @@ const subcategoryConfigs = {
       label: "Weston brands",
       helperText: "Mastercard/Visa accepted.",
       hoverDetails: "Includes Loblaws, No Frills, Real Canadian Superstore, Maxi, Provigo, Zehrs, and Fortinos.",
-      optimizeWithSubcategory: true,
       logicAdjustment: "network_category_override",
       acceptedNetworks: ["mastercard", "visa"],
       networkCategoryMap: {
@@ -38,7 +36,6 @@ const subcategoryConfigs = {
       key: "grocery_walmart",
       label: "Walmart",
       helperText: "Mastercard: grocery. Visa/Amex: other.",
-      optimizeWithSubcategory: true,
       logicAdjustment: "network_category_override",
       acceptedNetworks: ["mastercard", "visa", "amex"],
       networkCategoryMap: {

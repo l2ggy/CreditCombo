@@ -54,14 +54,8 @@ function normalizeCardNetwork(network) {
   return normalized;
 }
 
-function toSubcategoryAdjustments(config) {
-  if (Array.isArray(config?.logicAdjustments)) return config.logicAdjustments;
-  if (config?.logicAdjustment) return [config.logicAdjustment];
-  return [];
-}
-
 function subcategoryMappedCategory(config, cardNetwork, parentCategory) {
-  if (!toSubcategoryAdjustments(config).includes("network_category_override")) return parentCategory;
+  if (config?.logicAdjustment !== "network_category_override") return parentCategory;
   const networkCategoryMap = config.networkCategoryMap || {};
   return networkCategoryMap[cardNetwork] || parentCategory;
 }
@@ -90,7 +84,7 @@ function applySubcategoryLogic({ cards, schema, annualSpend, subcategorySpend = 
     if (parentRemainingAnnual <= 0) continue;
 
     for (const config of configs || []) {
-      if (!config?.optimizeWithSubcategory) continue;
+      if (config?.logicAdjustment !== "network_category_override") continue;
 
       const monthlyValue = Number(subcategorySpend?.[config.key] ?? 0);
       if (!Number.isFinite(monthlyValue) || monthlyValue <= 0) continue;
