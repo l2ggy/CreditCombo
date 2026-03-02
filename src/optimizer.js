@@ -68,6 +68,20 @@ function subcategoryRateMultiplier(config, cardNetwork) {
   return safeBase * safeNetwork;
 }
 
+function shouldApplySubcategoryConfig(config) {
+  if (!config?.key) return false;
+  if (config.logicAdjustment === "network_category_override") return true;
+
+  const base = Number(config?.merchantMultiplier ?? 1);
+  if (Number.isFinite(base) && Math.abs(base - 1) > 1e-9) return true;
+
+  const networkMultipliers = config?.networkMerchantMultiplier || {};
+  return Object.values(networkMultipliers).some((value) => {
+    const numericValue = Number(value);
+    return Number.isFinite(numericValue) && Math.abs(numericValue - 1) > 1e-9;
+  });
+}
+
 function applySubcategoryLogic({ cards, schema, annualSpend, subcategorySpend = {}, subcategoryConfigs = {} }) {
   const transformedAnnualSpend = { ...annualSpend };
   const transformedSchema = [...schema];
@@ -84,7 +98,7 @@ function applySubcategoryLogic({ cards, schema, annualSpend, subcategorySpend = 
     if (parentRemainingAnnual <= 0) continue;
 
     for (const config of configs || []) {
-      if (config?.logicAdjustment !== "network_category_override") continue;
+      if (!shouldApplySubcategoryConfig(config)) continue;
 
       const monthlyValue = Number(subcategorySpend?.[config.key] ?? 0);
       if (!Number.isFinite(monthlyValue) || monthlyValue <= 0) continue;

@@ -51,6 +51,31 @@ const subcategoryConfigs = {
       }
     }
   ],
+  gas: [
+    {
+      key: "gas_costco",
+      label: "Costco gas",
+      helperText: "Mastercard only.",
+      logicAdjustment: "network_category_override",
+      acceptedNetworks: ["mastercard"],
+      networkCategoryMap: {
+        mastercard: "gas"
+      },
+      merchantMultiplier: 1
+    },
+    {
+      key: "gas_esso_mobil",
+      label: "Esso & Mobil",
+      helperText: "Merchant multiplier ready.",
+      hoverDetails: "Use this for Esso and Mobil spend. This subcategory is ready for merchant or portal earn multipliers.",
+      merchantMultiplier: 1,
+      networkMerchantMultiplier: {
+        mastercard: 1,
+        visa: 1,
+        amex: 1
+      }
+    }
+  ],
   bills: [
     {
       key: "chexy_bills",
