@@ -19,6 +19,8 @@ export function renderSpendTable(el, schema, categoryDescriptions = {}, subcateg
   const spendTotalEl = document.getElementById("spendTotal");
 
   const updateSpendTotal = () => {
+    syncParentSpendFromSubcategories(el, subcategoryConfigs);
+
     const total = [...el.querySelectorAll("input[data-cat]")].reduce((sum, input) => {
       const value = Number(input.value);
       if (!Number.isFinite(value) || value < 0) return sum;
@@ -42,6 +44,28 @@ export function renderSpendTable(el, schema, categoryDescriptions = {}, subcateg
 
 
   updateSpendTotal();
+}
+
+
+function syncParentSpendFromSubcategories(el, subcategoryConfigs = {}) {
+  for (const [parentCategory, configs] of Object.entries(subcategoryConfigs || {})) {
+    if (!configs?.length) continue;
+
+    const parentInput = el.querySelector(`input[data-cat="${cssEscape(parentCategory)}"]`);
+    if (!parentInput) continue;
+
+    const subcategoryTotal = configs.reduce((sum, config) => {
+      const input = el.querySelector(`input[data-subcategory-key="${cssEscape(config.key)}"]`);
+      if (!input) return sum;
+      const value = Number(input.value);
+      if (!Number.isFinite(value) || value <= 0) return sum;
+      return sum + value;
+    }, 0);
+
+    const parentValue = Number(parentInput.value);
+    const safeParentValue = Number.isFinite(parentValue) && parentValue >= 0 ? parentValue : 0;
+    if (subcategoryTotal > safeParentValue) parentInput.value = String(Math.round(subcategoryTotal));
+  }
 }
 
 export function readMonthlySpend(schema) {
@@ -127,9 +151,11 @@ export function renderResult(el, best, annualSpend, schema, valuationMode = "est
   const table = document.createElement("table");
   const tbody = document.createElement("tbody");
   const totalAnnualSpend = schema.reduce((sum, cat) => sum + (annualSpend[cat] || 0), 0);
-  const effectiveEarnRate = totalAnnualSpend > 0 ? best.gross / totalAnnualSpend : null;
   const chexyFeeCost = Number(chexySummary?.chexyAdjustedAnnualSpend || 0);
   const netAfterChexy = best.net - chexyFeeCost;
+  const totalSpendWithFees = totalAnnualSpend + Number(best.fees || 0) + chexyFeeCost;
+  const effectiveEarnRate = totalSpendWithFees > 0 ? netAfterChexy / totalSpendWithFees : null;
+  const grossEarnRate = totalAnnualSpend > 0 ? best.gross / totalAnnualSpend : null;
   const rows = [
     ["Gross rewards value", formatMoneyCAD(best.gross)],
     ["Card annual fees", formatMoneyCAD(best.fees)],
@@ -163,7 +189,7 @@ export function renderResult(el, best, annualSpend, schema, valuationMode = "est
   effectiveRateCallout.textContent = `Earn rate: ${formatPercent(effectiveEarnRate)}`;
   resultContent.append(effectiveRateCallout);
 
-  const chexyCallout = renderChexyWorthItCallout(chexySummary, effectiveEarnRate);
+  const chexyCallout = renderChexyWorthItCallout(chexySummary, grossEarnRate);
   if (chexyCallout) resultContent.append(chexyCallout);
 
   const divider = document.createElement("div");
