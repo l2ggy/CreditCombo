@@ -322,16 +322,17 @@ function renderBrowserCardItem(card) {
   earnSection.append(earnTitle, renderEarnRateList(card.earn_rates, card.rewards_program));
 
   const merchantEntries = merchantPortalEntriesForCard(card);
-  if (merchantEntries.length) {
-    const merchantSection = document.createElement("section");
-    const merchantTitle = document.createElement("h4");
-    merchantTitle.textContent = "Merchant & portal rates";
-    merchantSection.append(merchantTitle, renderRateList(merchantEntries, card.rewards_program, "No merchant/portal-specific rates modeled."));
-    earnSection.append(merchantSection);
-  }
-
   const hasCaps = Array.isArray(card.caps) && card.caps.length > 0;
+
   if (hasCaps) {
+    if (merchantEntries.length) {
+      const merchantSection = document.createElement("section");
+      const merchantTitle = document.createElement("h4");
+      merchantTitle.textContent = "Merchant & portal rates";
+      merchantSection.append(merchantTitle, renderRateList(merchantEntries, card.rewards_program, "No merchant/portal-specific rates modeled."));
+      earnSection.append(merchantSection);
+    }
+
     const sectionDivider = document.createElement("div");
     sectionDivider.className = "divider cardDividerSection";
 
@@ -341,6 +342,15 @@ function renderBrowserCardItem(card) {
     capSection.append(capTitle, renderCapContent(card.caps));
 
     body.append(earnSection, sectionDivider, capSection);
+  } else if (merchantEntries.length) {
+    body.classList.add("splitBodyNoCaps");
+
+    const merchantSection = document.createElement("section");
+    const merchantTitle = document.createElement("h4");
+    merchantTitle.textContent = "Merchant & portal rates";
+    merchantSection.append(merchantTitle, renderRateList(merchantEntries, card.rewards_program, "No merchant/portal-specific rates modeled."));
+
+    body.append(earnSection, merchantSection);
   } else {
     body.append(earnSection);
   }

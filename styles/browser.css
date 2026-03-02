@@ -20,7 +20,10 @@
 .dataList li{position:relative;display:flex;justify-content:space-between;gap:var(--space-3);padding-bottom:var(--space-2)}
 .dataList li:not(:last-child)::after{content:"";position:absolute;inset:auto 0 0;height:1px;background:var(--divider-gradient-horizontal)}
 .metricSubtle{color:color-mix(in srgb,var(--color-muted) 88%,var(--color-text) 12%);font-weight:500}
-.splitBody ul{margin:0;padding-left:18px;display:grid;gap:var(--space-2)}
+.splitBody ul{margin:0;display:grid;gap:var(--space-2)}
+.splitBody ul:not(.listClean){padding-left:18px}
+.splitBody ul.listClean{padding-left:0}
+.card .splitBody.splitBodyNoCaps{grid-template-columns:1fr 1fr}
 
 @media (max-width:900px){.fieldGrid{grid-template-columns:1fr 1fr}.card .splitBody{grid-template-columns:1fr;gap:var(--space-4)}.card .cardDividerSection{--divider-size:1px;--divider-gradient:var(--divider-gradient-horizontal);width:100%;height:1px;align-self:auto}}
 @media (max-width:720px){.cardList{grid-template-columns:1fr}}
