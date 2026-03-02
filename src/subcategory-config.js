@@ -207,6 +207,17 @@ export const subcategoryConfigs = {
       browserTag: "merchant"
     }
   ],
+  other: [
+    {
+      key: "other_canadian_tire_family",
+      label: "Canadian Tire family stores",
+      helperText: "Canadian Tire, Sport Chek, Mark's, and PartSource merchant-specific earn.",
+      cardRateOverrides: {
+        canadian_tire_triangle_we: 4
+      },
+      browserTag: "merchant"
+    }
+  ],
   bills: [
     {
       key: "chexy_bills",
