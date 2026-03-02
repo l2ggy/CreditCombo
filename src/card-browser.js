@@ -168,8 +168,7 @@ function merchantPortalEntriesForCard(card) {
       rate: subcategoryRateForCard(config, card, config.parentCategory, cardRate),
       explicitRate: Number(card?.subcategory_earn_rates?.[config.key])
     }))
-    .filter((entry) => Number.isFinite(entry.rate) && entry.rate > 0 && entry.explicitRate === entry.rate)
-    .sort((a, b) => b.rate - a.rate || a.label.localeCompare(b.label));
+    .filter((entry) => Number.isFinite(entry.rate) && entry.rate > 0 && entry.explicitRate === entry.rate);
 }
 
 function renderRateList(entries, rewardsProgram, emptyMessage) {
@@ -227,13 +226,6 @@ function renderEarnRateList(earnRates, rewardsProgram) {
 }
 
 function renderCapContent(caps) {
-  if (!Array.isArray(caps) || !caps.length) {
-    const empty = document.createElement("p");
-    empty.className = "muted";
-    empty.textContent = "No caps.";
-    return empty;
-  }
-
   const list = document.createElement("ul");
   list.className = "dataList listClean";
 
@@ -329,7 +321,7 @@ function renderBrowserCardItem(card) {
       const merchantSection = document.createElement("section");
       const merchantTitle = document.createElement("h4");
       merchantTitle.textContent = "Merchant & portal rates";
-      merchantSection.append(merchantTitle, renderRateList(merchantEntries, card.rewards_program, "No merchant/portal-specific rates modeled."));
+      merchantSection.append(merchantTitle, renderRateList(merchantEntries, card.rewards_program, ""));
       earnSection.append(merchantSection);
     }
 
@@ -348,7 +340,7 @@ function renderBrowserCardItem(card) {
     const merchantSection = document.createElement("section");
     const merchantTitle = document.createElement("h4");
     merchantTitle.textContent = "Merchant & portal rates";
-    merchantSection.append(merchantTitle, renderRateList(merchantEntries, card.rewards_program, "No merchant/portal-specific rates modeled."));
+    merchantSection.append(merchantTitle, renderRateList(merchantEntries, card.rewards_program, ""));
 
     body.append(earnSection, merchantSection);
   } else {
