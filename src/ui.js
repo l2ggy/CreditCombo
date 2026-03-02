@@ -404,11 +404,69 @@ function bindSpendRowDetailsControls(root) {
 
     details.addEventListener("toggle", () => {
       row.classList.toggle(`is-${kind}-open`, details.open);
+      if (kind === "more-details") {
+        applyExpandedRowOrdering(row, details.open);
+      }
     });
 
     details.open = false;
     row.classList.remove(`is-${kind}-open`);
+    if (kind === "more-details") {
+      applyExpandedRowOrdering(row, false);
+    }
   });
+}
+
+function applyExpandedRowOrdering(row, isOpen) {
+  if (!row || !row.parentElement) return;
+
+  if (!isOpen) {
+    restoreExpandedRowOrdering(row);
+    return;
+  }
+
+  if (row.dataset.moreDetailsSwapPlaceholderId) return;
+  if (!isRightColumnRow(row) || !spendGridHasMultipleColumns(row.parentElement)) return;
+
+  const previousRow = row.previousElementSibling;
+  if (!previousRow || !previousRow.matches("[data-spend-row]")) return;
+
+  const placeholder = document.createElement("span");
+  const placeholderId = `spend-swap-placeholder-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+  placeholder.hidden = true;
+  placeholder.dataset.spendSwapPlaceholder = placeholderId;
+
+  row.parentElement.insertBefore(placeholder, row);
+  row.parentElement.insertBefore(row, previousRow);
+  row.dataset.moreDetailsSwapPlaceholderId = placeholderId;
+}
+
+function restoreExpandedRowOrdering(row) {
+  const placeholderId = row.dataset.moreDetailsSwapPlaceholderId;
+  if (!placeholderId || !row.parentElement) return;
+
+  const placeholder = row.parentElement.querySelector(`[data-spend-swap-placeholder="${cssEscape(placeholderId)}"]`);
+  if (placeholder) {
+    placeholder.replaceWith(row);
+  }
+
+  delete row.dataset.moreDetailsSwapPlaceholderId;
+}
+
+function isRightColumnRow(row) {
+  const parent = row.parentElement;
+  if (!parent) return false;
+
+  const rows = [...parent.querySelectorAll(":scope > [data-spend-row]")];
+  const rowIndex = rows.indexOf(row);
+  return rowIndex >= 0 && rowIndex % 2 === 1;
+}
+
+function spendGridHasMultipleColumns(grid) {
+  if (!grid) return false;
+  const templateColumns = window.getComputedStyle(grid).gridTemplateColumns || "";
+  const tracks = templateColumns.split(" ").filter(Boolean);
+  return tracks.length > 1;
 }
 
 function cssEscape(value) {
