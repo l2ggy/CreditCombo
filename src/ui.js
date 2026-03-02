@@ -30,7 +30,10 @@ export function renderSpendTable(el, schema, categoryDescriptions = {}, subcateg
     `).join("");
 
     const subcategoryDetails = subcategories.length
-      ? `<details class="spendDesc subcategoryDetails" data-parent-cat="${cat}"><summary><span class="spendDescLabel">Subcategories</span><span class="spendDescCaret" aria-hidden="true">▾</span></summary><div class="subcategoryRows">${subRows}</div></details>`
+      ? `<details class="spendDesc subcategoryDetails" data-parent-cat="${cat}"><summary><span class="spendDescLabel">Subcategories</span><span class="spendDescCaret" aria-hidden="true">▾</span></summary></details>`
+      : "";
+    const subcategoryPanel = subcategories.length
+      ? `<div class="subcategoryPanel">${subRows}</div>`
       : "";
 
     return `
@@ -41,6 +44,7 @@ export function renderSpendTable(el, schema, categoryDescriptions = {}, subcateg
               ${subcategoryDetails}
             </span>
             <input id="spend-${cat}" class="spend-input" type="number" min="0" step="1" value="" placeholder="0" data-cat="${cat}" aria-label="Monthly spend for ${cat}" />
+            ${subcategoryPanel}
           </label>
         `;
   }).join("")}
