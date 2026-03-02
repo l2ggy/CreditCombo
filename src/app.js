@@ -11,7 +11,7 @@ const subcategoryConfigs = {
     {
       key: "chexy_bills",
       label: "Chexy bills",
-      helperText: "Portion of bills spend. Chexy fee set in Advanced.",
+      helperText: "Portion of bills spend.",
       feeAdjustment: "chexy"
     }
   ]
