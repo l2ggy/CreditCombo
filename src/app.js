@@ -7,6 +7,58 @@ import { escapeHtml } from "./shared/sanitize.js";
 
 
 const subcategoryConfigs = {
+  grocery: [
+    {
+      key: "grocery_costco",
+      label: "Costco",
+      helperText: "Warehouse groceries.",
+      logicAdjustment: "network_category_override",
+      acceptedNetworks: ["mastercard"],
+      networkCategoryMap: {
+        mastercard: "grocery"
+      }
+    },
+    {
+      key: "grocery_george_weston",
+      label: "Weston brands",
+      helperText: "Loblaws, No Frills, Real Canadian Superstore, T&T, Fortinos, and more.",
+      logicAdjustment: "network_category_override",
+      acceptedNetworks: ["mastercard", "visa"],
+      networkCategoryMap: {
+        mastercard: "grocery",
+        visa: "grocery"
+      }
+    },
+    {
+      key: "grocery_walmart",
+      label: "Walmart",
+      helperText: "Walmart groceries.",
+      logicAdjustment: "network_category_override",
+      acceptedNetworks: ["mastercard", "visa", "amex"],
+      networkCategoryMap: {
+        mastercard: "grocery",
+        visa: "other",
+        amex: "other"
+      }
+    }
+  ],
+  gas: [
+    {
+      key: "gas_costco",
+      label: "Costco gas",
+      helperText: "Costco fuel stations.",
+      logicAdjustment: "network_category_override",
+      acceptedNetworks: ["mastercard"],
+      networkCategoryMap: {
+        mastercard: "gas"
+      }
+    },
+    {
+      key: "gas_esso_mobil",
+      label: "Esso & Mobil",
+      helperText: "Esso and Mobil fuel stations."
+    }
+  ],
   bills: [
     {
       key: "chexy_bills",

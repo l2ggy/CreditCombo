@@ -45,6 +45,86 @@ export function chexyAdjustedAnnualSpend({ annualSpend, monthlySpend = {}, subca
   };
 }
 
+function normalizeCardNetwork(network) {
+  if (!network) return "";
+  const normalized = String(network).trim().toLowerCase();
+  if (normalized === "mastercard") return "mastercard";
+  if (normalized === "visa") return "visa";
+  if (normalized === "american express" || normalized === "amex") return "amex";
+  return normalized;
+}
+
+function subcategoryMappedCategory(config, cardNetwork, parentCategory) {
+  if (config?.logicAdjustment !== "network_category_override") return parentCategory;
+  const networkCategoryMap = config.networkCategoryMap || {};
+  return networkCategoryMap[cardNetwork] || parentCategory;
+}
+
+function subcategoryRateMultiplier(config, cardNetwork) {
+  const base = Number(config?.merchantMultiplier ?? 1);
+  const safeBase = Number.isFinite(base) && base >= 0 ? base : 1;
+  const networkMultiplier = Number(config?.networkMerchantMultiplier?.[cardNetwork] ?? 1);
+  const safeNetwork = Number.isFinite(networkMultiplier) && networkMultiplier >= 0 ? networkMultiplier : 1;
+  return safeBase * safeNetwork;
+}
+
+function applySubcategoryLogic({ cards, schema, annualSpend, subcategorySpend = {}, subcategoryConfigs = {} }) {
+  const transformedAnnualSpend = { ...annualSpend };
+  const transformedSchema = [...schema];
+  const transformedCards = cards.map((card) => ({
+    ...card,
+    earn_rates: { ...(card.earn_rates || {}) },
+    caps: (card.caps || []).map((cap) => ({ ...cap, categories: [...(cap.categories || [])] }))
+  }));
+
+  for (const [parentCategory, configs] of Object.entries(subcategoryConfigs || {})) {
+    if (!schema.includes(parentCategory)) continue;
+
+    let parentRemainingAnnual = Number(transformedAnnualSpend[parentCategory] ?? 0);
+    if (parentRemainingAnnual <= 0) continue;
+
+    for (const config of configs || []) {
+      if (!config?.key) continue;
+
+      const monthlyValue = Number(subcategorySpend?.[config.key] ?? 0);
+      if (!Number.isFinite(monthlyValue) || monthlyValue <= 0) continue;
+
+      const subAnnualSpend = Math.min(parentRemainingAnnual, monthlyValue * 12);
+      if (subAnnualSpend <= 0) continue;
+
+      parentRemainingAnnual -= subAnnualSpend;
+      transformedAnnualSpend[parentCategory] = Math.max(0, parentRemainingAnnual);
+
+      const virtualCategory = `subcategory_${config.key}`;
+      transformedAnnualSpend[virtualCategory] = (Number(transformedAnnualSpend[virtualCategory]) || 0) + subAnnualSpend;
+      if (!transformedSchema.includes(virtualCategory)) transformedSchema.push(virtualCategory);
+
+      const acceptedNetworks = new Set((config.acceptedNetworks || []).map(normalizeCardNetwork));
+
+      transformedCards.forEach((card) => {
+        const cardNetwork = normalizeCardNetwork(card.network);
+        if (acceptedNetworks.size && !acceptedNetworks.has(cardNetwork)) {
+          card.earn_rates[virtualCategory] = 0;
+          return;
+        }
+
+        const mappedCategory = subcategoryMappedCategory(config, cardNetwork, parentCategory);
+        const multiplier = subcategoryRateMultiplier(config, cardNetwork);
+        card.earn_rates[virtualCategory] = cardRate(card, mappedCategory) * multiplier;
+
+        for (const cap of card.caps || []) {
+          const capCats = cap.categories || [];
+          if (capCats.includes(mappedCategory) && !capCats.includes(virtualCategory)) {
+            capCats.push(virtualCategory);
+          }
+        }
+      });
+    }
+  }
+
+  return { cards: transformedCards, schema: transformedSchema, annualSpend: transformedAnnualSpend };
+}
+
 function cardRate(card, cat) {
   const er = card.earn_rates || {};
   if (er[cat] != null) return Number(er[cat]);
@@ -308,11 +388,22 @@ function computeCandidateLimit(cardCount, maxSize) {
   return Math.max(maxSize, limit);
 }
 
-export function findBestCombo({ cards, programsMap, schema, k, annualSpend, valuationMode = "estimated", excludedProgramIds = [], excludeCashbackPrograms = false, lockedCardIds = [], additionalCardIds = null }) {
+export function findBestCombo({ cards, programsMap, schema, k, annualSpend, subcategorySpend = {}, subcategoryConfigs = {}, valuationMode = "estimated", excludedProgramIds = [], excludeCashbackPrograms = false, lockedCardIds = [], additionalCardIds = null }) {
   let best = { combo: [], net: -1e18, gross: 0, fees: 0, assigned: null };
 
+  const subcategoryAdjusted = applySubcategoryLogic({
+    cards,
+    schema,
+    annualSpend,
+    subcategorySpend,
+    subcategoryConfigs
+  });
+  const effectiveCards = subcategoryAdjusted.cards;
+  const effectiveSchema = subcategoryAdjusted.schema;
+  const effectiveAnnualSpend = subcategoryAdjusted.annualSpend;
+
   const excludedPrograms = new Set(excludedProgramIds || []);
-  const filteredCards = cards.filter((card) => {
+  const filteredCards = effectiveCards.filter((card) => {
     if (excludedPrograms.has(card.rewards_program)) return false;
     if (!excludeCashbackPrograms) return true;
     const program = programsMap.get(card.rewards_program);
@@ -329,15 +420,15 @@ export function findBestCombo({ cards, programsMap, schema, k, annualSpend, valu
   if (!lockedCards.length && maxAdditionalCount < 1) return best;
 
   if (lockedCards.length) {
-    best = evaluateCombo(lockedCards, annualSpend, schema, programsMap, valuationMode);
+    best = evaluateCombo(lockedCards, effectiveAnnualSpend, effectiveSchema, programsMap, valuationMode);
   }
 
   for (let additionalCount = 1; additionalCount <= maxAdditionalCount; additionalCount++) {
     const candidateLimit = computeCandidateLimit(unlockedCards.length, additionalCount);
-    const candidateUnlockedCards = selectCandidateCards(unlockedCards, programsMap, schema, annualSpend, additionalCount, candidateLimit, valuationMode);
+    const candidateUnlockedCards = selectCandidateCards(unlockedCards, programsMap, effectiveSchema, effectiveAnnualSpend, additionalCount, candidateLimit, valuationMode);
 
     for (const combo of combinations(candidateUnlockedCards, additionalCount)) {
-      const result = evaluateCombo([...lockedCards, ...combo], annualSpend, schema, programsMap, valuationMode);
+      const result = evaluateCombo([...lockedCards, ...combo], effectiveAnnualSpend, effectiveSchema, programsMap, valuationMode);
       const sameNet = Math.abs(result.net - best.net) <= 1e-9;
       const fewerCards = result.combo.length < best.combo.length;
       if (result.net > best.net || (sameNet && fewerCards)) best = result;
