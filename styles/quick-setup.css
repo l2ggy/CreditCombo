@@ -1,0 +1,12 @@
+.quickSetup { max-width: 760px; padding-bottom: 48px; }
+.progressText { margin: 12px 0 8px; color: var(--text-muted); }
+.progressBar { height: 8px; background: var(--bg-subtle); border-radius: 999px; overflow: hidden; margin-bottom: 16px; }
+.progressBar span { display:block; height:100%; background: var(--accent); width: 0%; transition: width .2s ease; }
+.stepTitle { margin-top: 0; }
+.wizardActions { display:flex; justify-content: space-between; margin-top: 16px; }
+.choiceList { display:grid; gap:10px; }
+.choiceBtn { text-align:left; padding:12px; border:1px solid var(--border); border-radius:10px; background:transparent; }
+.choiceBtn.is-selected { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 10%, transparent); }
+.rowField { margin-bottom: 12px; }
+.cardPick { display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
+.chip { padding:4px 8px; border:1px solid var(--border); border-radius:999px; }

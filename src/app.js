@@ -3,6 +3,7 @@ import { renderIssues, renderSpendTable } from "./ui.js";
 import { createActions } from "./app/actions.js";
 import { createUiState } from "./app/state.js";
 import { createView } from "./app/view.js";
+import { parseOptimizerParams } from "./app/deeplink.js";
 import { escapeHtml } from "./shared/sanitize.js";
 
 async function main() {
@@ -35,6 +36,9 @@ async function main() {
     });
 
     actions.syncInitialUi();
+    const deepLinkState = parseOptimizerParams(window.location.search, { schema, eligibleCardIdSet });
+    applyDeepLinkAssumptions(deepLinkState, elements);
+    actions.hydrateFromDeepLink(deepLinkState);
     elements.appEl.classList.remove("hidden");
 
     elements.runBtn.addEventListener("click", actions.runOptimization);
@@ -47,6 +51,7 @@ async function main() {
     elements.maxAnnualFeeEl?.addEventListener("input", () => actions.setMaxAnnualFee(elements.maxAnnualFeeEl.value));
     elements.chexyFeePercentEl?.addEventListener("input", actions.runOptimization);
     elements.enableLockedCardsEl?.addEventListener("change", actions.toggleLockedCards);
+    elements.goalEl?.addEventListener("change", () => actions.setGoal(elements.goalEl.value));
 
     elements.lockedCardSearchEl?.addEventListener("input", actions.renderLockedSearchResults);
 
@@ -78,9 +83,40 @@ async function main() {
     });
 
     window.addEventListener("beforeunload", actions.terminateWorker);
+
+    if (deepLinkState.autorun) {
+      await actions.runOptimization();
+    }
   } catch (e) {
     elements.statusEl.innerHTML = `<span class="badge bad">Error</span> ${escapeHtml(e?.message || "Unknown error")}`;
   }
+}
+
+function applyDeepLinkAssumptions(deepLinkState, elements) {
+  Object.entries(deepLinkState.spend || {}).forEach(([category, value]) => {
+    const input = document.querySelector(`input[data-cat="${cssEscape(category)}"]`);
+    if (!input) return;
+    input.value = String(value);
+    input.dispatchEvent(new Event("input", { bubbles: true }));
+  });
+
+  if (elements.onboardingSourceEl && deepLinkState.source) {
+    elements.onboardingSourceEl.textContent = "Quick setup assumptions imported. You can edit them here anytime.";
+    elements.onboardingSourceEl.classList.remove("hidden");
+  }
+
+  if (elements.countryEl) elements.countryEl.value = deepLinkState.country || "CA";
+  if (elements.creditScoreEl) elements.creditScoreEl.value = deepLinkState.creditScore || "";
+  if (elements.annualIncomeEl) elements.annualIncomeEl.value = deepLinkState.annualIncome || "";
+
+  if (elements.goalEl) elements.goalEl.value = deepLinkState.goal;
+  if (elements.valuationModeEl) elements.valuationModeEl.value = deepLinkState.valuationMode === "minimum_guaranteed" ? "minimum_guaranteed" : "estimated";
+
+}
+
+function cssEscape(value) {
+  if (window.CSS?.escape) return window.CSS.escape(value);
+  return String(value).replace(/[^a-zA-Z0-9_-]/g, "\\$&");
 }
 
 main();

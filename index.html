@@ -27,6 +27,7 @@
       <span class="siteBrand">CreditCombo</span>
       <div class="topNavLinks">
         <a class="textLink" href="./index.html" aria-current="page">Optimizer</a>
+        <a class="textLink" href="./quick-setup.html">Quick setup</a>
         <a class="textLink" href="./cards.html">Browse all cards</a>
         <a class="textLink" href="./valuations.html">Rewards valuation guide</a>
       </div>
@@ -67,6 +68,16 @@
         <div class="divider"></div>
         <div class="row">
           <div class="full">
+            <label for="goalMode">Optimization goal</label>
+            <select id="goalMode">
+              <option value="ideal_combo" selected>Optimize ideal combo</option>
+              <option value="current_cards">Optimize currently held cards</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="full">
             <label class="checkboxLabel" for="enableLockedCards">
               <input id="enableLockedCards" type="checkbox" />
               I want to lock in cards I already have
@@ -84,6 +95,29 @@
         </div>
 
         <div id="lockedCardsDivider" class="divider hidden"></div>
+
+        <div class="divider"></div>
+
+        <details class="advancedPrefs" open>
+          <summary>Assumptions</summary>
+          <div class="advancedPrefsBody">
+            <p id="onboardingSource" class="subtle hidden" aria-live="polite"></p>
+            <label for="country">Country</label>
+            <select id="country">
+              <option value="CA" selected>Canada</option>
+            </select>
+            <label for="creditScore">Credit score range</label>
+            <select id="creditScore">
+              <option value="">Prefer not to say</option>
+              <option value="excellent">Excellent (760+)</option>
+              <option value="good">Good (700-759)</option>
+              <option value="fair">Fair (640-699)</option>
+              <option value="building">Building (&lt;640)</option>
+            </select>
+            <label for="annualIncome">Annual income (CAD)</label>
+            <input id="annualIncome" type="number" min="0" step="1000" placeholder="Optional" />
+          </div>
+        </details>
 
         <div class="row">
           <div>

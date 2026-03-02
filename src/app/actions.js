@@ -443,6 +443,16 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
     }
   }
 
+
+  function setGoal(goalMode) {
+    const currentCardsMode = goalMode === "current_cards";
+    state.enableLockedCards = currentCardsMode;
+    if (elements.enableLockedCardsEl) elements.enableLockedCardsEl.checked = currentCardsMode;
+    if (elements.goalEl) elements.goalEl.value = currentCardsMode ? "current_cards" : "ideal_combo";
+    shouldRenderLockedCardPicks = true;
+    return runOptimization();
+  }
+
   function toggleLockedCards() {
     syncStateFromControls();
     shouldRenderLockedCardPicks = true;
@@ -538,9 +548,36 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
 
   initWorker();
 
+  function hydrateFromDeepLink(deepLinkState) {
+    if (!deepLinkState) return;
+
+    const currentCardsMode = deepLinkState.goal === "current_cards";
+    state.enableLockedCards = currentCardsMode;
+    if (elements.enableLockedCardsEl) elements.enableLockedCardsEl.checked = currentCardsMode;
+    if (elements.goalEl) elements.goalEl.value = currentCardsMode ? "current_cards" : "ideal_combo";
+
+    if (Array.isArray(deepLinkState.lockedCardIds)) {
+      deepLinkState.lockedCardIds.forEach((id) => {
+        if (eligibleCardIdSet.has(id)) state.lockedCardIds.add(id);
+      });
+      shouldRenderLockedCardPicks = true;
+    }
+
+    if (deepLinkState.k != null && elements.kInput) {
+      elements.kInput.value = String(deepLinkState.k);
+      state.k = Number(deepLinkState.k);
+    }
+
+    syncStateFromControls();
+    updateLockedCardsUi();
+    syncKBoundsFromState();
+    view.updateKValue(elements.kInput.value);
+  }
+
   return {
     runOptimization,
     toggleLockedCards,
+    setGoal,
     clearSpend,
     setValuationMode,
     setK,
@@ -562,6 +599,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
       syncKBoundsFromState();
       view.updateKValue(elements.kInput.value);
     },
+    hydrateFromDeepLink,
     terminateWorker
   };
 }
