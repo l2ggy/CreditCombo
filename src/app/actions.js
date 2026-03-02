@@ -22,7 +22,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
     state.valuationMode = elements.valuationModeEl?.value === "minimum_guaranteed" ? "minimum_guaranteed" : "estimated";
     const maxAnnualFeeRaw = elements.maxAnnualFeeEl?.value?.trim?.() ?? "";
     state.maxAnnualFee = maxAnnualFeeRaw === "" ? null : Math.max(0, Number(maxAnnualFeeRaw) || 0);
-    state.excludeBusinessCards = Boolean(elements.excludeBusinessCardsEl?.checked);
+    state.includeBusinessCards = Boolean(elements.includeBusinessCardsEl?.checked);
     state.excludeCashbackPrograms = Boolean(elements.excludeCashbackProgramsEl?.checked);
     state.enableLockedCards = Boolean(elements.enableLockedCardsEl?.checked);
     state.k = Number(elements.kInput?.value || state.k || 0);
@@ -269,12 +269,12 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
 
   function getBestComboSyncCache(additionalCards, annualSpend, monthlySpend, lockedIds) {
     const maxAnnualFee = Number.isFinite(state.maxAnnualFee) ? state.maxAnnualFee : "none";
-    const excludeBusinessCards = state.excludeBusinessCards ? "excludeBusiness" : "includeBusiness";
+    const includeBusinessCards = state.includeBusinessCards ? "includeBusiness" : "excludeBusiness";
     const excludeCashbackPrograms = state.excludeCashbackPrograms ? "excludeCashback" : "includeCashback";
     const excludedProgramsKey = [...state.excludedProgramIds].sort().join(",");
     const lockKey = [...lockedIds].sort().join(",");
     const additionalIdsKey = additionalCards.map((card) => card.id).sort().join(",");
-    const key = `${spendKey(monthlySpend)}::${state.valuationMode}::${state.k}::${maxAnnualFee}::${excludeBusinessCards}::${excludeCashbackPrograms}::${excludedProgramsKey}::${lockKey}::${additionalIdsKey}`;
+    const key = `${spendKey(monthlySpend)}::${state.valuationMode}::${state.k}::${maxAnnualFee}::${includeBusinessCards}::${excludeCashbackPrograms}::${excludedProgramsKey}::${lockKey}::${additionalIdsKey}`;
     return {
       key,
       cached: comboCache.get(key) || null,
@@ -453,9 +453,9 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
     return runOptimization();
   }
 
-  function setExcludeBusinessCards(enabled) {
-    state.excludeBusinessCards = Boolean(enabled);
-    if (elements.excludeBusinessCardsEl) elements.excludeBusinessCardsEl.checked = state.excludeBusinessCards;
+  function setIncludeBusinessCards(enabled) {
+    state.includeBusinessCards = Boolean(enabled);
+    if (elements.includeBusinessCardsEl) elements.includeBusinessCardsEl.checked = state.includeBusinessCards;
     return runOptimization();
   }
 
@@ -484,12 +484,12 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
 
   function resetAdvancedPreferences() {
     state.maxAnnualFee = null;
-    state.excludeBusinessCards = false;
+    state.includeBusinessCards = false;
     state.excludeCashbackPrograms = false;
     state.excludedProgramIds.clear();
 
     if (elements.maxAnnualFeeEl) elements.maxAnnualFeeEl.value = "";
-    if (elements.excludeBusinessCardsEl) elements.excludeBusinessCardsEl.checked = false;
+    if (elements.includeBusinessCardsEl) elements.includeBusinessCardsEl.checked = false;
     if (elements.excludeCashbackProgramsEl) elements.excludeCashbackProgramsEl.checked = false;
     if (elements.excludedProgramSearchEl) elements.excludedProgramSearchEl.value = "";
     elements.excludedProgramOptionsEl?.classList.add("hidden");
@@ -509,7 +509,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
     addLockedCard,
     removeLockedCard,
     setMaxAnnualFee,
-    setExcludeBusinessCards,
+    setIncludeBusinessCards,
     setExcludeCashbackPrograms,
     addExcludedProgram,
     removeExcludedProgram,
