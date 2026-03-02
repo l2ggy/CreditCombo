@@ -1,0 +1,202 @@
+{
+  "meta": {
+    "dataset_id": "ca_default",
+    "country": "CA",
+    "currency": "CAD",
+    "notes": "Subcategory configuration for merchant/portal and spend-routing logic. Swap this file for other locales in future."
+  },
+  "subcategory_configs": {
+    "grocery": [
+      {
+        "key": "grocery_costco",
+        "label": "Costco",
+        "helperText": "Warehouse groceries.",
+        "logicAdjustment": "network_category_override",
+        "acceptedNetworks": [
+          "mastercard"
+        ],
+        "networkCategoryMap": {
+          "mastercard": "grocery"
+        }
+      },
+      {
+        "key": "grocery_george_weston",
+        "label": "Weston Brands",
+        "helperText": "Loblaws, No Frills, Real Canadian Superstore, T&T, Fortinos.",
+        "logicAdjustment": "network_category_override",
+        "acceptedNetworks": [
+          "mastercard",
+          "visa"
+        ],
+        "networkCategoryMap": {
+          "mastercard": "grocery",
+          "visa": "grocery"
+        },
+        "browserTag": "merchant"
+      },
+      {
+        "key": "grocery_sobeys_partner",
+        "label": "Sobeys Brands",
+        "helperText": "Sobeys, Safeway, FreshCo, Foodland, IGA.",
+        "browserTag": "merchant"
+      }
+    ],
+    "gas": [
+      {
+        "key": "gas_costco",
+        "label": "Costco gas",
+        "helperText": "Costco fuel stations.",
+        "logicAdjustment": "network_category_override",
+        "acceptedNetworks": [
+          "mastercard"
+        ],
+        "networkCategoryMap": {
+          "mastercard": "gas"
+        }
+      },
+      {
+        "key": "gas_esso_mobil",
+        "label": "Esso / Mobil",
+        "helperText": "Esso and Mobil stations (including Speedpass+).",
+        "browserTag": "merchant"
+      }
+    ],
+    "drugstore": [
+      {
+        "key": "drugstore_shoppers_drug_mart",
+        "label": "Shoppers Drug Mart",
+        "helperText": "Shoppers Drug Mart and Pharmaprix.",
+        "browserTag": "merchant"
+      }
+    ],
+    "travel": [
+      {
+        "key": "travel_air_canada_direct",
+        "label": "Air Canada",
+        "helperText": "Air Canada and Air Canada Vacations.",
+        "browserTag": "merchant"
+      },
+      {
+        "key": "travel_scene_plus_portal",
+        "label": "Scene+ Travel",
+        "helperText": "Hotels and car rentals via Scene+ Travel.",
+        "browserTag": "portal",
+        "eligibleIssuers": [
+          "Scotiabank"
+        ]
+      },
+      {
+        "key": "travel_expedia_for_td",
+        "label": "Expedia for TD",
+        "helperText": "Flights, hotels, and car rentals via ExpediaForTD.",
+        "browserTag": "portal",
+        "eligibleIssuers": [
+          "TD",
+          "TD Canada Trust"
+        ]
+      },
+      {
+        "key": "travel_cibc_rewards_centre",
+        "label": "CIBC Rewards",
+        "helperText": "Flights, hotels, and car rentals via CIBC Rewards Centre.",
+        "browserTag": "portal",
+        "eligibleIssuers": [
+          "CIBC"
+        ]
+      },
+      {
+        "key": "travel_bmo_rewards_portal",
+        "label": "BMO Rewards Travel",
+        "helperText": "Flights, hotels, and car rentals via BMO Rewards Travel.",
+        "browserTag": "portal",
+        "eligibleIssuers": [
+          "BMO"
+        ]
+      },
+      {
+        "key": "travel_porter",
+        "label": "Porter",
+        "helperText": "Porter flights and add-ons.",
+        "browserTag": "merchant"
+      },
+      {
+        "key": "travel_westjet_partner",
+        "label": "WestJet Group",
+        "helperText": "WestJet, WestJet Vacations, Sunwing Vacations.",
+        "browserTag": "merchant"
+      },
+      {
+        "key": "travel_british_airways",
+        "label": "British Airways",
+        "helperText": "British Airways and British Airways Holidays.",
+        "browserTag": "merchant"
+      },
+      {
+        "key": "travel_pc_travel",
+        "label": "PC Travel",
+        "helperText": "Flights, hotels, vacation packages via PC Travel.",
+        "browserTag": "portal",
+        "eligibleIssuers": [
+          "PC Financial"
+        ]
+      },
+      {
+        "key": "travel_cathay_pacific",
+        "label": "Cathay Pacific",
+        "helperText": "Cathay Pacific flights via cathaypacific.com/ca.",
+        "browserTag": "merchant"
+      },
+      {
+        "key": "travel_marriott_bonvoy_properties",
+        "label": "Marriott Bonvoy",
+        "helperText": "Marriott, Sheraton, Westin, Delta Hotels.",
+        "browserTag": "merchant"
+      }
+    ],
+    "other": [
+      {
+        "key": "other_canadian_tire_family",
+        "label": "Canadian Tire Brands",
+        "helperText": "Canadian Tire, Sport Chek, Mark's, PartSource.",
+        "browserTag": "merchant"
+      },
+      {
+        "key": "other_amazon_ca_whole_foods",
+        "label": "Amazon / Whole Foods",
+        "helperText": "Amazon.ca retail orders, Whole Foods Market stores.",
+        "browserTag": "merchant"
+      },
+      {
+        "key": "other_walmart",
+        "label": "Walmart",
+        "helperText": "Walmart Supercentre, Walmart.ca, Walmart app.",
+        "logicAdjustment": "network_category_override",
+        "acceptedNetworks": [
+          "mastercard",
+          "visa",
+          "amex"
+        ],
+        "networkCategoryMap": {
+          "mastercard": "grocery",
+          "visa": "other",
+          "amex": "other"
+        },
+        "browserTag": "merchant"
+      },
+      {
+        "key": "other_more_rewards_partners",
+        "label": "More Rewards Partners",
+        "helperText": "Save-On-Foods, Urban Fare, PriceSmart Foods, Buy-Low Foods.",
+        "browserTag": "merchant"
+      }
+    ],
+    "bills": [
+      {
+        "key": "chexy_bills",
+        "label": "Chexy",
+        "helperText": "Chexy-routed bill payments.",
+        "feeAdjustment": "chexy"
+      }
+    ]
+  }
+}

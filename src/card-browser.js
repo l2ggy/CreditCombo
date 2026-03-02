@@ -2,10 +2,12 @@ import { loadCoreData } from "./data-service.js";
 import { formatMoneyCAD, formatMultiplier } from "./shared/format.js";
 import { formatIssuerNetwork, renderCardThumb, renderOfficialCardLink } from "./shared/render.js";
 import { buildSearchText, scoreSearchMatch, tokenizeSearchQuery } from "./shared/search.js";
+import { merchantPortalConfigs, subcategoryRateForCard } from "./subcategory-config.js";
 
 const state = {
   cards: [],
   programs: new Map(),
+  subcategoryConfigs: {},
   filteredCards: []
 };
 
@@ -151,15 +153,32 @@ function isCashbackProgram(rewardsProgram) {
   return state.programs.get(rewardsProgram)?.program_type === "cashback";
 }
 
-function renderEarnRateList(earnRates, rewardsProgram) {
+
+function cardRate(card, cat) {
+  const er = card.earn_rates || {};
+  if (er[cat] != null) return Number(er[cat]);
+  if (er.other != null) return Number(er.other);
+  return 0;
+}
+
+function merchantPortalEntriesForCard(card) {
+  return merchantPortalConfigs(state.subcategoryConfigs)
+    .map((config) => ({
+      label: `${config.label} (${config.browserTag === "portal" ? "portal" : "merchant"})`,
+      rate: subcategoryRateForCard(config, card, config.parentCategory, cardRate),
+      explicitRate: Number(card?.subcategory_earn_rates?.[config.key])
+    }))
+    .filter((entry) => Number.isFinite(entry.rate) && entry.rate > 0 && entry.explicitRate === entry.rate);
+}
+
+function renderRateList(entries, rewardsProgram, emptyMessage) {
   const list = document.createElement("ul");
   list.className = "dataList listClean";
 
-  const entries = Object.entries(earnRates || {});
   if (!entries.length) {
     const item = document.createElement("li");
     item.className = "muted";
-    item.textContent = "No earn rates available";
+    item.textContent = emptyMessage;
     list.append(item);
     return list;
   }
@@ -167,13 +186,13 @@ function renderEarnRateList(earnRates, rewardsProgram) {
   const cashbackProgram = isCashbackProgram(rewardsProgram);
 
   entries
-    .sort((a, b) => b[1] - a[1])
-    .forEach(([category, rate]) => {
+    .sort((a, b) => b.rate - a.rate || a.label.localeCompare(b.label))
+    .forEach(({ label, rate }) => {
       const item = document.createElement("li");
 
-      const categoryEl = document.createElement("span");
-      categoryEl.className = "mono";
-      categoryEl.textContent = category;
+      const labelEl = document.createElement("span");
+      labelEl.className = "mono";
+      labelEl.textContent = label;
 
       const valueEl = document.createElement("strong");
       const earnPercent = formatEarnPercentRange(rate, rewardsProgram);
@@ -194,43 +213,42 @@ function renderEarnRateList(earnRates, rewardsProgram) {
         }
       }
 
-      item.append(categoryEl, valueEl);
+      item.append(labelEl, valueEl);
       list.append(item);
     });
 
   return list;
 }
 
-function renderCapContent(caps) {
-  if (!Array.isArray(caps) || !caps.length) {
-    const empty = document.createElement("p");
-    empty.className = "muted";
-    empty.textContent = "No spend caps listed.";
-    return empty;
-  }
+function renderEarnRateList(earnRates, rewardsProgram) {
+  const entries = Object.entries(earnRates || {}).map(([label, rate]) => ({ label, rate: Number(rate) }));
+  return renderRateList(entries, rewardsProgram, "No earn rates available");
+}
 
+function renderCapContent(caps) {
   const list = document.createElement("ul");
+  list.className = "dataList listClean";
 
   caps.forEach((cap) => {
     const item = document.createElement("li");
-    const categories = (cap.categories || []).join(", ") || "multiple categories";
+    const categories = (cap.categories || []).join(", ") || "multiple";
     const limit = formatMoneyCAD(Number(cap.cap_amount ?? 0), { minimumFractionDigits: 0, maximumFractionDigits: 0 });
-    const aboveCapRate = cap.earn_rate_above_cap == null ? "n/a" : formatMultiplier(cap.earn_rate_above_cap);
-    const capPeriod = String(cap.cap_period || "period").toLowerCase();
-    const periodLabel = capPeriod === "monthly"
-      ? "month"
-      : capPeriod === "annual"
-        ? "year"
-        : capPeriod;
+    const aboveCapRate = cap.earn_rate_above_cap == null ? "n/a" : `${formatMultiplier(cap.earn_rate_above_cap)}×`;
+    const period = String(cap.cap_period || "period").toLowerCase();
+    const shortPeriod = period === "monthly" ? "/mo" : period === "annual" ? "/yr" : `/${period}`;
 
     const categoriesEl = document.createElement("span");
     categoriesEl.className = "mono";
     categoriesEl.textContent = categories;
 
-    const limitEl = document.createElement("strong");
-    limitEl.textContent = limit;
+    const valueEl = document.createElement("strong");
+    valueEl.textContent = `${limit}${shortPeriod}`;
 
-    item.append(categoriesEl, " capped at ", limitEl, ` per ${periodLabel} (above cap: ${aboveCapRate}×)`);
+    const aboveEl = document.createElement("span");
+    aboveEl.className = "metricSubtle";
+    aboveEl.textContent = `↑ ${aboveCapRate}`;
+
+    item.append(categoriesEl, valueEl, aboveEl);
     list.append(item);
   });
 
@@ -295,15 +313,39 @@ function renderBrowserCardItem(card) {
   earnTitle.textContent = "Earn rates";
   earnSection.append(earnTitle, renderEarnRateList(card.earn_rates, card.rewards_program));
 
-  const sectionDivider = document.createElement("div");
-  sectionDivider.className = "divider cardDividerSection";
+  const merchantEntries = merchantPortalEntriesForCard(card);
+  const hasCaps = Array.isArray(card.caps) && card.caps.length > 0;
 
-  const capSection = document.createElement("section");
-  const capTitle = document.createElement("h4");
-  capTitle.textContent = "Caps";
-  capSection.append(capTitle, renderCapContent(card.caps));
+  if (hasCaps) {
+    if (merchantEntries.length) {
+      const merchantSection = document.createElement("section");
+      const merchantTitle = document.createElement("h4");
+      merchantTitle.textContent = "Merchant & portal rates";
+      merchantSection.append(merchantTitle, renderRateList(merchantEntries, card.rewards_program, ""));
+      earnSection.append(merchantSection);
+    }
 
-  body.append(earnSection, sectionDivider, capSection);
+    const sectionDivider = document.createElement("div");
+    sectionDivider.className = "divider cardDividerSection";
+
+    const capSection = document.createElement("section");
+    const capTitle = document.createElement("h4");
+    capTitle.textContent = "Caps";
+    capSection.append(capTitle, renderCapContent(card.caps));
+
+    body.append(earnSection, sectionDivider, capSection);
+  } else if (merchantEntries.length) {
+    body.classList.add("splitBodyNoCaps");
+
+    const merchantSection = document.createElement("section");
+    const merchantTitle = document.createElement("h4");
+    merchantTitle.textContent = "Merchant & portal rates";
+    merchantSection.append(merchantTitle, renderRateList(merchantEntries, card.rewards_program, ""));
+
+    body.append(earnSection, merchantSection);
+  } else {
+    body.append(earnSection);
+  }
 
   article.append(top, topDivider, body);
   return article;
@@ -367,7 +409,9 @@ function registerEvents() {
 
 async function init() {
   try {
-    const { cardsJson, programsMap } = await loadCoreData();
+    const { cardsJson, programsMap, subcategoryConfigs } = await loadCoreData();
+
+    state.subcategoryConfigs = subcategoryConfigs || {};
 
     state.programs = programsMap;
     // Card browser intentionally uses the full dataset rather than optimizer-eligible subset.
