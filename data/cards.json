@@ -2212,9 +2212,19 @@
         "other": 1
       },
       "caps": [],
-      "special_earn_rules": [],
+      "special_earn_rules": [
+        {
+          "type": "merchant_specific",
+          "description": "Earn 1.5% back on eligible Amazon.ca and Whole Foods Market purchases; eligible Prime members can earn 2.5% back."
+        },
+        {
+          "type": "merchant_specific",
+          "description": "Eligible foreign currency transactions earn 1% back; eligible Prime members can earn 2.5% back."
+        }
+      ],
       "sources": [
-        "https://www.mbna.ca/en/credit-cards"
+        "https://www.mbna.ca/en/credit-cards",
+        "https://www.amazon.ca/Rewards-Mastercard-Credit-Card/dp/B07MJM4F44"
       ]
     },
     {
@@ -3074,6 +3084,10 @@
       "special_earn_rules": [
         {
           "type": "merchant_specific",
+          "description": "Earn rates include 35 points/$ at Shoppers Drug Mart/Pharmaprix, 20 points/$ at participating Loblaw-banner grocery stores, and at least 30 points/litre at Esso/Mobil (fuel program unit differs from points/$ categories)."
+        },
+        {
+          "type": "merchant_specific",
           "description": "Higher earn applies at Loblaw-banner stores, Shoppers Drug Mart, Esso/Mobil, and PC Travel partner channels; these are merchant-specific and excluded from base earn_rates."
         },
         {
@@ -3082,6 +3096,7 @@
         }
       ],
       "sources": [
+        "https://www.pcfinancial.ca/en/credit-cards/world-mastercard/",
         "https://www.pcfinancial.ca/en/credit-cards/"
       ]
     },
@@ -3103,6 +3118,10 @@
       "special_earn_rules": [
         {
           "type": "merchant_specific",
+          "description": "Earn rates include 50 points/$ at Shoppers Drug Mart/Pharmaprix and 40 points/$ at participating Loblaw-banner grocery stores; Esso/Mobil fuel earn is disclosed in points-per-litre with additional tier bonuses."
+        },
+        {
+          "type": "merchant_specific",
           "description": "Higher earn applies at Loblaw-banner stores, Shoppers Drug Mart, Esso/Mobil, and PC Travel partner channels; these are merchant-specific and excluded from base earn_rates."
         },
         {
@@ -3115,6 +3134,7 @@
         }
       ],
       "sources": [
+        "https://www.pcfinancial.ca/en/credit-cards/insiders/",
         "https://www.pcfinancial.ca/en/credit-cards/"
       ]
     },
@@ -3136,6 +3156,10 @@
       "special_earn_rules": [
         {
           "type": "merchant_specific",
+          "description": "Earn rates include 25 points/$ at Shoppers Drug Mart/Pharmaprix and 10 points/$ at participating Loblaw-banner grocery stores; Esso/Mobil fuel earn is disclosed primarily in points-per-litre."
+        },
+        {
+          "type": "merchant_specific",
           "description": "Higher earn applies at Loblaw-banner stores, Shoppers Drug Mart, Esso/Mobil, and PC Travel partner channels; these are merchant-specific and excluded from base earn_rates."
         },
         {
@@ -3144,6 +3168,7 @@
         }
       ],
       "sources": [
+        "https://www.pcfinancial.ca/en/credit-cards/pc-mastercard/",
         "https://www.pcfinancial.ca/en/credit-cards/"
       ]
     },
@@ -3683,10 +3708,15 @@
       "special_earn_rules": [
         {
           "type": "merchant_specific",
+          "description": "Earn 3 Avios per $1 on eligible British Airways purchases, including British Airways Holidays purchases."
+        },
+        {
+          "type": "merchant_specific",
           "description": "Higher Avios earn on eligible British Airways and partner bookings is merchant-specific; not mapped to travel."
         }
       ],
       "sources": [
+        "https://www.rbcroyalbank.com/credit-cards/travel/rbc-british-airways-visa-infinite.html",
         "https://www.rbcroyalbank.com/credit-cards/"
       ]
     },
@@ -4122,10 +4152,20 @@
         "other": 1
       },
       "caps": [],
-      "special_earn_rules": [],
+      "special_earn_rules": [
+        {
+          "type": "merchant_specific",
+          "description": "Sobeys banner grocery partners (Sobeys, Safeway, FreshCo, Foodland, participating IGA/Co-ops, etc.) earn 3 Scene+ points per $1 (higher than the general 2-point grocery bucket)."
+        },
+        {
+          "type": "portal_specific",
+          "description": "Hotels and car rentals booked via Scene+ Travel (powered by Expedia) earn an extra 3 points; modeled at 4 points per $1 total for that portal spend."
+        }
+      ],
       "sources": [
         "https://www.scotiabank.com/ca/en/personal/credit-cards/visa/passport-infinite-card.html",
-        "https://www.scotiabank.com/ca/en/personal/credit-cards.html"
+        "https://www.scotiabank.com/ca/en/personal/credit-cards.html",
+        "https://www.scotiabank.com/ca/en/programs/scotiabank-sceneplus-rewards-program-terms-and-conditions.html"
       ]
     },
     {
@@ -4145,10 +4185,16 @@
         "other": 1
       },
       "caps": [],
-      "special_earn_rules": [],
+      "special_earn_rules": [
+        {
+          "type": "portal_specific",
+          "description": "Hotels and car rentals booked via Scene+ Travel (powered by Expedia) are a doubled-travel earn scenario; modeled at 6 points per $1 versus regular 3 points travel."
+        }
+      ],
       "sources": [
         "https://www.scotiabank.com/ca/en/personal/credit-cards/visa/passport-infinite-privilege-card.html",
-        "https://www.scotiabank.com/ca/en/personal/credit-cards.html"
+        "https://www.scotiabank.com/ca/en/personal/credit-cards.html",
+        "https://www.scotiabank.com/ca/en/programs/scotiabank-sceneplus-rewards-program-terms-and-conditions.html"
       ]
     },
     {
@@ -4168,10 +4214,20 @@
         "other": 1
       },
       "caps": [],
-      "special_earn_rules": [],
+      "special_earn_rules": [
+        {
+          "type": "merchant_specific",
+          "description": "2 Scene+ points per $1 at Sobeys banner grocery partners (Sobeys, Safeway, FreshCo, Foodland, participating IGA/Co-ops, etc.) versus regular 1 point elsewhere."
+        },
+        {
+          "type": "portal_specific",
+          "description": "Hotels and car rentals booked via Scene+ Travel (powered by Expedia) earn an extra 3 points on top of the regular travel earn, for a modeled 4 points per $1 total."
+        }
+      ],
       "sources": [
         "https://www.scotiabank.com/ca/en/personal/credit-cards/visa/scene-card.html",
-        "https://www.scotiabank.com/ca/en/personal/credit-cards.html"
+        "https://www.scotiabank.com/ca/en/personal/credit-cards.html",
+        "https://www.scotiabank.com/ca/en/programs/scotiabank-sceneplus-rewards-program-terms-and-conditions.html"
       ]
     },
     {
@@ -4540,8 +4596,8 @@
       ],
       "special_earn_rules": [
         {
-          "type": "merchant_specific",
-          "description": "Travel booked through Expedia for TD can have higher earn than baseline categories; captured as portal-specific."
+          "type": "portal_specific",
+          "description": "Expedia for TD travel bookings earn 6 TD Rewards points per $1 (modeled via travel_expedia_for_td portal override), above baseline earn buckets."
         }
       ],
       "sources": [
@@ -4568,11 +4624,12 @@
       "caps": [],
       "special_earn_rules": [
         {
-          "type": "merchant_specific",
-          "description": "Travel booked through Expedia for TD can have higher earn than baseline categories; captured as portal-specific."
+          "type": "portal_specific",
+          "description": "Expedia for TD travel bookings earn 4 TD Rewards points per $1 (modeled via travel_expedia_for_td portal override), above baseline earn buckets."
         }
       ],
       "sources": [
+        "https://www.td.com/ca/en/personal-banking/products/credit-cards/travel-rewards/rewards-visa-card",
         "https://www.td.com/ca/en/personal-banking/products/credit-cards"
       ]
     },
@@ -4960,11 +5017,7 @@
       "special_earn_rules": [
         {
           "type": "merchant_specific",
-          "description": "Walmart.ca/app purchases can earn higher than in-store earn; simplified with grocery and base other mapping."
-        },
-        {
-          "type": "merchant_specific",
-          "description": "Higher earn tiers may apply at Walmart channels versus non-Walmart merchants depending on current program terms."
+          "description": "Eligible Walmart retail locations in Canada and Walmart.ca purchases earn 3% reward dollars; modeled via merchant subcategory override."
         }
       ],
       "sources": [
@@ -4990,11 +5043,7 @@
       "special_earn_rules": [
         {
           "type": "merchant_specific",
-          "description": "Walmart.ca/app purchases can earn higher than in-store earn; simplified with grocery and base other mapping."
-        },
-        {
-          "type": "merchant_specific",
-          "description": "Higher earn tiers may apply at Walmart channels versus non-Walmart merchants depending on current program terms."
+          "description": "Eligible Walmart retail locations in Canada and Walmart.ca purchases earn 3% reward dollars; modeled via merchant subcategory override."
         },
         {
           "type": "product_feature",
@@ -5028,7 +5077,7 @@
         }
       ],
       "sources": [
-        "https://www.wealthsimple.com/en-ca/spend/card"
+        "https://www.wealthsimple.com/en-ca/credit-card"
       ]
     },
     {
@@ -5053,7 +5102,7 @@
         }
       ],
       "sources": [
-        "https://www.wealthsimple.com/en-ca/spend/card"
+        "https://www.wealthsimple.com/en-ca/credit-card"
       ]
     },
     {
