@@ -108,6 +108,18 @@ export function renderSpendTable(el, schema, categoryDescriptions = {}, subcateg
     valueInput.addEventListener("change", syncFromValue);
   });
 
+  el.querySelectorAll(".subcategoryDetails").forEach((detailsEl) => {
+    const spendRow = detailsEl.closest(".spendRow");
+    if (!spendRow) return;
+
+    const syncExpandedClass = () => {
+      spendRow.classList.toggle("spendRow--expanded", detailsEl.open);
+    };
+
+    detailsEl.addEventListener("toggle", syncExpandedClass);
+    syncExpandedClass();
+  });
+
   updateSpendTotal();
 }
 

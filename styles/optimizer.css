@@ -39,6 +39,7 @@
 
 .spendGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-3);align-items:start}
 .spendRow{display:grid;grid-template-columns:minmax(0,1fr) 92px;align-items:center;gap:var(--space-3);margin:0;padding:var(--space-3);border:1px solid var(--color-border);border-radius:var(--radius-md);background:color-mix(in srgb,var(--color-panel) 75%,transparent)}
+.spendRow.spendRow--expanded{grid-column:1/-1}
 .spendMeta{min-width:0;overflow:hidden}
 .spendCat{display:block;font-size:var(--font-size-sm);line-height:var(--line-height-compact)}
 .spendRow input[type="number"].spend-input{width:100%;min-width:0;max-width:none;padding:var(--space-2) var(--space-3)}
