@@ -305,13 +305,14 @@ function renderChexyWorthItCallout(chexySummary, effectiveEarnRate) {
 function spendRowMarkup(category, desc, subcategories) {
   const details = detailsControlMarkup(desc);
   const subcats = subcategoryControlMarkup(category, subcategories);
+  const controlsMarkup = `${details.control}${subcats.control}`;
 
   return `
     <div class="spendRow" data-spend-row data-cat-row="${escapeHtml(category)}">
       <div class="spendRowTop">
         <div class="spendMeta">
           <div class="mono spendCat">${escapeHtml(category)}</div>
-          <div class="spendMetaControls">${details.control}${subcats.control}</div>
+          ${controlsMarkup ? `<div class="spendMetaControls">${controlsMarkup}</div>` : ""}
         </div>
         <div class="spendInputWrap">
           <label class="srOnly" for="spend-${escapeHtml(category)}">Spend for ${escapeHtml(category)}</label>
