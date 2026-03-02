@@ -309,15 +309,13 @@ function spendRowMarkup(category, desc, subcategories) {
 
   return `
     <div class="spendRow" data-spend-row data-cat-row="${escapeHtml(category)}">
-      <div class="spendRowTop">
-        <div class="spendMeta">
-          <span class="mono spendCat">${escapeHtml(category)}</span>
-          ${controlsMarkup ? `<div class="spendMetaControls">${controlsMarkup}</div>` : ""}
-        </div>
-        <div class="spendInputWrap">
-          <label class="srOnly" for="spend-${escapeHtml(category)}">Spend for ${escapeHtml(category)}</label>
-          <input id="spend-${escapeHtml(category)}" class="spend-input" type="number" min="0" step="1" value="" placeholder="0" data-cat="${escapeHtml(category)}" aria-label="Spend for ${escapeHtml(category)}" />
-        </div>
+      <div class="spendMeta">
+        <span class="mono spendCat">${escapeHtml(category)}</span>
+        ${controlsMarkup ? `<div class="spendMetaControls">${controlsMarkup}</div>` : ""}
+      </div>
+      <div class="spendInputWrap">
+        <label class="srOnly" for="spend-${escapeHtml(category)}">Spend for ${escapeHtml(category)}</label>
+        <input id="spend-${escapeHtml(category)}" class="spend-input" type="number" min="0" step="1" value="" placeholder="0" data-cat="${escapeHtml(category)}" aria-label="Spend for ${escapeHtml(category)}" />
       </div>
       ${details.panel}
       ${subcats.panel}
