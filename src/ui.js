@@ -18,8 +18,8 @@ export function renderSpendTable(el, schema, categoryDescriptions = {}, subcateg
 
   const spendTotalEl = document.getElementById("spendTotal");
 
-  const updateSpendTotal = () => {
-    syncParentSpendFromSubcategories(el, subcategoryConfigs);
+  const updateSpendTotal = (changedInput = null) => {
+    syncParentSpendFromSubcategories(el, subcategoryConfigs, changedInput);
 
     const total = [...el.querySelectorAll("input[data-cat]")].reduce((sum, input) => {
       const value = Number(input.value);
@@ -33,13 +33,13 @@ export function renderSpendTable(el, schema, categoryDescriptions = {}, subcateg
   };
 
   el.querySelectorAll("input[data-cat], input[data-subcategory-key]").forEach((inp) => {
-    inp.addEventListener("input", updateSpendTotal);
+    inp.addEventListener("input", () => updateSpendTotal(inp));
 
     inp.addEventListener("focus", () => {
       if (inp.value === "0") inp.select();
     });
 
-    inp.addEventListener("blur", updateSpendTotal);
+    inp.addEventListener("blur", () => updateSpendTotal(inp));
   });
 
 
@@ -47,16 +47,18 @@ export function renderSpendTable(el, schema, categoryDescriptions = {}, subcateg
 }
 
 
-function syncParentSpendFromSubcategories(el, subcategoryConfigs = {}) {
+function syncParentSpendFromSubcategories(el, subcategoryConfigs = {}, changedInput = null) {
   for (const [parentCategory, configs] of Object.entries(subcategoryConfigs || {})) {
     if (!configs?.length) continue;
 
     const parentInput = el.querySelector(`input[data-cat="${cssEscape(parentCategory)}"]`);
     if (!parentInput) continue;
 
-    const subcategoryTotal = configs.reduce((sum, config) => {
-      const input = el.querySelector(`input[data-subcategory-key="${cssEscape(config.key)}"]`);
-      if (!input) return sum;
+    const subcategoryInputs = configs.map((config) =>
+      el.querySelector(`input[data-subcategory-key="${cssEscape(config.key)}"]`)
+    ).filter(Boolean);
+
+    const subcategoryTotal = subcategoryInputs.reduce((sum, input) => {
       const value = Number(input.value);
       if (!Number.isFinite(value) || value <= 0) return sum;
       return sum + value;
@@ -64,6 +66,23 @@ function syncParentSpendFromSubcategories(el, subcategoryConfigs = {}) {
 
     const parentValue = Number(parentInput.value);
     const safeParentValue = Number.isFinite(parentValue) && parentValue >= 0 ? parentValue : 0;
+
+    const parentWasEdited = changedInput?.dataset?.cat === parentCategory;
+    if (parentWasEdited && subcategoryTotal > safeParentValue) {
+      let overflow = subcategoryTotal - safeParentValue;
+      for (let idx = subcategoryInputs.length - 1; idx >= 0 && overflow > 1e-9; idx--) {
+        const input = subcategoryInputs[idx];
+        const value = Number(input.value);
+        const safeValue = Number.isFinite(value) && value > 0 ? value : 0;
+        if (safeValue <= 0) continue;
+        const reduction = Math.min(safeValue, overflow);
+        const nextValue = safeValue - reduction;
+        input.value = nextValue > 0 ? String(Math.round(nextValue)) : "";
+        overflow -= reduction;
+      }
+      continue;
+    }
+
     if (subcategoryTotal > safeParentValue) parentInput.value = String(Math.round(subcategoryTotal));
   }
 }
@@ -118,7 +137,7 @@ export function renderIssues(el, issues) {
   `;
 }
 
-export function renderResult(el, best, annualSpend, schema, valuationMode = "estimated", chexySummary = null) {
+export function renderResult(el, best, annualSpend, schema, valuationMode = "estimated", chexySummary = null, subcategoryConfigs = {}) {
   el.classList.remove("hidden");
   el.classList.remove("resultEmpty");
   el.innerHTML = "";
@@ -203,13 +222,29 @@ export function renderResult(el, best, annualSpend, schema, valuationMode = "est
 
   const instructions = [];
   let useCardDescIndex = 0;
+
+  const subcategoryKeysByParent = Object.fromEntries(
+    Object.entries(subcategoryConfigs || {}).map(([parentCategory, configs]) => [
+      parentCategory,
+      (configs || []).map((config) => `subcategory_${config.key}`)
+    ])
+  );
+
   for (const cat of schema) {
     const total = annualSpend[cat] || 0;
     if (total <= 0) continue;
 
-    const alloc = best.combo
-      .map((card) => ({ card, amt: (best.assigned?.[card.id]?.[cat] || 0) }))
-      .filter((x) => x.amt > 1e-6)
+    const allocByCard = new Map();
+
+    best.combo.forEach((card) => {
+      const baseAmount = Number(best.assigned?.[card.id]?.[cat] || 0);
+      const subcategoryAmount = (subcategoryKeysByParent[cat] || [])
+        .reduce((sum, subcategoryKey) => sum + Number(best.assigned?.[card.id]?.[subcategoryKey] || 0), 0);
+      const totalAmount = baseAmount + subcategoryAmount;
+      if (totalAmount > 1e-6) allocByCard.set(card.id, { card, amt: totalAmount });
+    });
+
+    const alloc = [...allocByCard.values()]
       .sort((a, b) => b.amt - a.amt)
       .slice(0, 3);
 
@@ -341,9 +376,11 @@ function subcategoryControlMarkup(parentCategory, configs) {
     const label = escapeHtml(config.label || config.key);
     const key = escapeHtml(config.key);
     const helper = escapeHtml(config.helperText || "Portion of the parent category spend.");
+    const hoverDetails = String(config.hoverDetails || "").trim();
+    const labelTitleAttr = hoverDetails ? ` title="${escapeHtml(hoverDetails)}"` : "";
     return `
       <div class="subcategoryItem">
-        <label class="mono spendCat" for="subcategory-${key}">${label}</label>
+        <label class="mono spendCat" for="subcategory-${key}"${labelTitleAttr}>${label}</label>
         <input id="subcategory-${key}" class="spend-input" type="number" min="0" step="1" value="" placeholder="0" data-subcategory-key="${key}" data-subcategory-parent="${escapeHtml(parentCategory)}" />
         <p class="subtle subcategoryHint">${helper}</p>
       </div>

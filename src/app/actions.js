@@ -307,6 +307,8 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
         schema,
         k: state.k,
         annualSpend,
+        subcategorySpend,
+        subcategoryConfigs,
         valuationMode: state.valuationMode,
         excludedProgramIds: [...state.excludedProgramIds],
         excludeCashbackPrograms: state.excludeCashbackPrograms,
@@ -417,7 +419,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
 
     if (cached) {
       view.setLoadingState(false);
-      renderResult(elements.resultEl, cached, adjustedAnnualSpend, schema, state.valuationMode, chexySummary);
+      renderResult(elements.resultEl, cached, adjustedAnnualSpend, schema, state.valuationMode, chexySummary, subcategoryConfigs);
       elements.runBtn.disabled = false;
       return;
     }
@@ -429,7 +431,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
       if (requestId !== runTokenCounter) return;
       comboCache.set(key, best);
       view.setLoadingState(false);
-      renderResult(elements.resultEl, best, adjustedAnnualSpend, schema, state.valuationMode, chexySummary);
+      renderResult(elements.resultEl, best, adjustedAnnualSpend, schema, state.valuationMode, chexySummary, subcategoryConfigs);
     } catch (error) {
       if (requestId !== runTokenCounter) return;
       view.setLoadingState(false);
