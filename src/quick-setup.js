@@ -157,7 +157,7 @@ function renderK() {
     <h2 class="stepTitle">How many cards do you want in your combo?</h2>
     <p class="stepHelp">Move the slider to choose your target combo size.</p>
     <label for="kInput"><span>Number of cards</span> <span id="kValue" class="value-pill">${state.k}</span></label>
-    <input id="kInput" class="quickKInput" type="range" min="1" max="5" value="${state.k}" step="1" />
+    <input id="kInput" type="range" min="1" max="5" value="${state.k}" step="1" />
   `;
 
   const kInput = document.getElementById("kInput");

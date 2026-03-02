@@ -52,31 +52,15 @@
 }
 
 .choiceBtn {
-  width: 100%;
   text-align: left;
-  padding: 16px;
-  border: 2px solid var(--border);
-  border-radius: 14px;
-  background: transparent;
-  font-size: 1.1rem;
-  line-height: 1.4;
-  cursor: pointer;
-  transition: border-color .15s ease, background-color .15s ease, transform .12s ease;
+  border-width: 2px;
 }
 
 .choiceBtn:hover,
-.choiceBtn:focus-visible {
-  border-color: var(--accent);
-  background: color-mix(in srgb, var(--accent) 9%, transparent);
-}
-
-.choiceBtn:active {
-  transform: translateY(1px);
-}
-
+.choiceBtn:focus-visible,
 .choiceBtn.is-selected {
   border-color: var(--accent);
-  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
 }
 
 .cardPick {
@@ -103,15 +87,6 @@
 .wizardActions button {
   min-height: 52px;
   font-size: 1.05rem;
-  padding: 0 18px;
-}
-
-.wizardActions #backBtn {
-  margin-right: auto;
-}
-
-.wizardActions #nextBtn {
-  margin-left: auto;
 }
 
 .quickSearchOption {
@@ -131,9 +106,4 @@
 .quickThumbWrap .thumb {
   width: 56px;
   height: 34px;
-}
-
-.quickKInput {
-  width: 100%;
-  margin-top: 8px;
 }
