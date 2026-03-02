@@ -2,10 +2,12 @@ import { loadCoreData } from "./data-service.js";
 import { formatMoneyCAD, formatMultiplier } from "./shared/format.js";
 import { formatIssuerNetwork, renderCardThumb, renderOfficialCardLink } from "./shared/render.js";
 import { buildSearchText, scoreSearchMatch, tokenizeSearchQuery } from "./shared/search.js";
+import { merchantPortalConfigs, subcategoryRateForCard } from "./subcategory-config.js";
 
 const state = {
   cards: [],
   programs: new Map(),
+  subcategoryConfigs: {},
   filteredCards: []
 };
 
@@ -149,6 +151,53 @@ function formatEarnPercentRange(multiplierRate, rewardsProgram) {
 
 function isCashbackProgram(rewardsProgram) {
   return state.programs.get(rewardsProgram)?.program_type === "cashback";
+}
+
+
+function cardRate(card, cat) {
+  const er = card.earn_rates || {};
+  if (er[cat] != null) return Number(er[cat]);
+  if (er.other != null) return Number(er.other);
+  return 0;
+}
+
+function merchantPortalEntriesForCard(card) {
+  return merchantPortalConfigs(state.subcategoryConfigs)
+    .map((config) => ({
+      ...config,
+      rate: subcategoryRateForCard(config, card, config.parentCategory, cardRate)
+    }))
+    .filter((config) => Number.isFinite(config.rate) && config.rate > 0 && Number(card?.subcategory_earn_rates?.[config.key]) === config.rate)
+    .sort((a, b) => b.rate - a.rate || a.label.localeCompare(b.label));
+}
+
+function renderMerchantPortalRateList(card) {
+  const entries = merchantPortalEntriesForCard(card);
+  if (!entries.length) {
+    const empty = document.createElement("p");
+    empty.className = "muted";
+    empty.textContent = "No merchant/portal-specific rates modeled.";
+    return empty;
+  }
+
+  const list = document.createElement("ul");
+  list.className = "dataList listClean";
+
+  entries.forEach((entry) => {
+    const item = document.createElement("li");
+    const categoryEl = document.createElement("span");
+    categoryEl.className = "mono";
+    const tag = entry.browserTag === "portal" ? "portal" : "merchant";
+    categoryEl.textContent = `${entry.label} (${tag})`;
+
+    const valueEl = document.createElement("strong");
+    valueEl.textContent = `${formatMultiplier(entry.rate)}×`;
+
+    item.append(categoryEl, valueEl);
+    list.append(item);
+  });
+
+  return list;
 }
 
 function renderEarnRateList(earnRates, rewardsProgram) {
@@ -295,6 +344,12 @@ function renderBrowserCardItem(card) {
   earnTitle.textContent = "Earn rates";
   earnSection.append(earnTitle, renderEarnRateList(card.earn_rates, card.rewards_program));
 
+  const merchantSection = document.createElement("section");
+  const merchantTitle = document.createElement("h5");
+  merchantTitle.textContent = "Merchant & portal rates";
+  merchantSection.append(merchantTitle, renderMerchantPortalRateList(card));
+  earnSection.append(merchantSection);
+
   const sectionDivider = document.createElement("div");
   sectionDivider.className = "divider cardDividerSection";
 
@@ -367,7 +422,9 @@ function registerEvents() {
 
 async function init() {
   try {
-    const { cardsJson, programsMap } = await loadCoreData();
+    const { cardsJson, programsMap, subcategoryConfigs } = await loadCoreData();
+
+    state.subcategoryConfigs = subcategoryConfigs || {};
 
     state.programs = programsMap;
     // Card browser intentionally uses the full dataset rather than optimizer-eligible subset.
