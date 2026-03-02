@@ -929,7 +929,7 @@
     },
     {
       "id": "students_bmo_cashback_mastercard",
-      "card_name": "Students – BMO CashBack Mastercard",
+      "card_name": "Students - BMO CashBack Mastercard",
       "issuer": "BMO",
       "network": "Mastercard",
       "rewards_program": "bmo_cashback",
@@ -3258,7 +3258,7 @@
     },
     {
       "id": "westjet_rbc_world_elite",
-      "card_name": "WestJet RBC World Elite Mastercardǂ",
+      "card_name": "WestJet RBC World Elite Mastercard",
       "issuer": "RBC",
       "network": "Mastercard",
       "rewards_program": "westjet_rewards",
@@ -3286,7 +3286,7 @@
     },
     {
       "id": "moi_rbc_visa",
-      "card_name": "moi RBC Visa‡",
+      "card_name": "moi RBC Visa",
       "issuer": "RBC",
       "network": "Visa",
       "rewards_program": "moi_rewards",
@@ -3609,7 +3609,7 @@
     },
     {
       "id": "rbc_avion_visa_platinum",
-      "card_name": "RBC Avion Visa Platinum†",
+      "card_name": "RBC Avion Visa Platinum",
       "issuer": "RBC",
       "network": "Visa",
       "rewards_program": "rbc_avion",
@@ -3635,7 +3635,7 @@
     },
     {
       "id": "rbc_british_airways_visa_infinite",
-      "card_name": "RBC British Airways Visa Infinite‡",
+      "card_name": "RBC British Airways Visa Infinite",
       "issuer": "RBC",
       "network": "Visa",
       "rewards_program": "rbc_avios",
