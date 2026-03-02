@@ -338,39 +338,33 @@ function renderChexyWorthItCallout(chexySummary, effectiveEarnRate) {
 }
 
 function spendRowMarkup(category, desc, subcategories) {
-  const details = detailsControlMarkup(desc);
-  const subcats = subcategoryControlMarkup(category, subcategories);
-  const controlsMarkup = `${details.control}${subcats.control}`;
+  const moreDetails = moreDetailsControlMarkup(category, desc, subcategories);
 
   return `
     <div class="spendRow" data-spend-row data-cat-row="${escapeHtml(category)}">
       <div class="spendRowTop">
         <div class="spendMeta">
           <span class="mono spendCat">${escapeHtml(category)}</span>
-          ${controlsMarkup ? `<div class="spendMetaControls">${controlsMarkup}</div>` : ""}
+          ${moreDetails.control ? `<div class="spendMetaControls">${moreDetails.control}</div>` : ""}
         </div>
         <div class="spendInputWrap">
           <label class="srOnly" for="spend-${escapeHtml(category)}">Spend for ${escapeHtml(category)}</label>
           <input id="spend-${escapeHtml(category)}" class="spend-input" type="number" min="0" step="1" value="" placeholder="0" data-cat="${escapeHtml(category)}" aria-label="Spend for ${escapeHtml(category)}" />
         </div>
       </div>
-      ${details.panel}
-      ${subcats.panel}
+      ${moreDetails.panel}
     </div>
   `;
 }
 
-function detailsControlMarkup(desc) {
+function detailsPanelMarkup(desc) {
   const clean = String(desc || "").trim().replace(/\s+/g, " ");
-  if (!clean) return { control: "", panel: "" };
-  return {
-    control: '<details class="spendControl" data-spend-control="details"><summary><span class="spendControlLabel">Details</span><span class="spendControlCaret" aria-hidden="true">▾</span></summary></details>',
-    panel: `<div class="spendControlPanel spendDetailsPanel muted">${escapeHtml(clean)}</div>`
-  };
+  if (!clean) return "";
+  return `<div class="spendDetailsPanel muted">${escapeHtml(clean)}</div>`;
 }
 
-function subcategoryControlMarkup(parentCategory, configs) {
-  if (!configs.length) return { control: "", panel: "" };
+function subcategoryPanelMarkup(parentCategory, configs) {
+  if (!configs.length) return "";
 
   const subcategoryItems = configs.map((config) => {
     const label = escapeHtml(config.label || config.key);
@@ -387,9 +381,17 @@ function subcategoryControlMarkup(parentCategory, configs) {
     `;
   }).join("");
 
+  return `<div class="subcategoryPanel">${subcategoryItems}</div>`;
+}
+
+function moreDetailsControlMarkup(parentCategory, desc, subcategories) {
+  const detailsPanel = detailsPanelMarkup(desc);
+  const subcategoryPanel = subcategoryPanelMarkup(parentCategory, subcategories);
+  if (!detailsPanel && !subcategoryPanel) return { control: "", panel: "" };
+
   return {
-    control: '<details class="spendControl" data-spend-control="subcategories"><summary><span class="spendControlLabel">Subcategories</span><span class="spendControlCaret" aria-hidden="true">▾</span></summary></details>',
-    panel: `<div class="spendControlPanel subcategoryPanel">${subcategoryItems}</div>`
+    control: '<details class="spendControl" data-spend-control="more-details"><summary><span class="spendControlLabel">More details</span><span class="spendControlCaret" aria-hidden="true">▾</span></summary></details>',
+    panel: `<div class="spendControlPanel spendMoreDetailsPanel">${detailsPanel}${subcategoryPanel}</div>`
   };
 }
 
