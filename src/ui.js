@@ -136,10 +136,13 @@ export function renderResult(el, best, annualSpend, schema, valuationMode = "est
   const tbody = document.createElement("tbody");
   const totalAnnualSpend = schema.reduce((sum, cat) => sum + (annualSpend[cat] || 0), 0);
   const effectiveEarnRate = totalAnnualSpend > 0 ? best.gross / totalAnnualSpend : null;
+  const chexyFeeCost = Number(chexySummary?.chexyAdjustedAnnualSpend || 0);
+  const netAfterChexy = best.net - chexyFeeCost;
   const rows = [
     ["Gross rewards value", formatMoneyCAD(best.gross)],
-    ["Annual fees", formatMoneyCAD(best.fees)],
-    ["Net value", formatMoneyCAD(best.net)]
+    ["Card annual fees", formatMoneyCAD(best.fees)],
+    ["Chexy fees", formatMoneyCAD(chexyFeeCost)],
+    ["Net value", formatMoneyCAD(netAfterChexy)]
   ];
 
   rows.forEach(([label, value], idx) => {
@@ -275,7 +278,8 @@ function renderChexyWorthItCallout(chexySummary, effectiveEarnRate) {
 
   const line = document.createElement("p");
   line.className = "muted chexyWorthIt";
-  line.textContent = `Chexy check (vs not putting that spend on a card): rewards ${formatMoneyCAD(rewardsValue)} − fee ${formatMoneyCAD(fee)} = ${formatMoneyCAD(netLift)} (${netLift >= 0 ? "worth it" : "not worth it"}).`;
+  const verdict = netLift >= 0 ? "Chexy is worth it" : "Chexy is not worth it";
+  line.textContent = `${verdict}: ${formatMoneyCAD(netLift)} after fees`;
   return line;
 }
 
@@ -305,7 +309,7 @@ function detailsControlMarkup(desc) {
   const clean = String(desc || "").trim().replace(/\s+/g, " ");
   if (!clean) return { control: "", panel: "" };
   return {
-    control: '<details class="spendControl" data-spend-control="details"><summary>Details</summary></details>',
+    control: '<details class="spendControl" data-spend-control="details"><summary><span class="spendControlLabel">Details</span><span class="spendControlCaret" aria-hidden="true">▾</span></summary></details>',
     panel: `<div class="spendControlPanel spendDetailsPanel muted">${escapeHtml(clean)}</div>`
   };
 }
@@ -327,7 +331,7 @@ function subcategoryControlMarkup(parentCategory, configs) {
   }).join("");
 
   return {
-    control: '<details class="spendControl" data-spend-control="subcategories"><summary>Subcategories</summary></details>',
+    control: '<details class="spendControl" data-spend-control="subcategories"><summary><span class="spendControlLabel">Subcategories</span><span class="spendControlCaret" aria-hidden="true">▾</span></summary></details>',
     panel: `<div class="spendControlPanel subcategoryPanel">${subcategoryItems}</div>`
   };
 }
