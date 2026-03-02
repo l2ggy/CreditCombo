@@ -11,7 +11,7 @@ async function main() {
       key: "chexy_bills",
       parentCategory: "bills",
       label: "↳ chexy (included in bills)",
-      description: "Charged with fee. Defaults to 1.75% fee, adjustable in Advanced."
+      description: "Charged with fee. Set fee in Advanced."
     }
   ];
 

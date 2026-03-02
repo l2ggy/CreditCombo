@@ -23,7 +23,7 @@ export function renderSpendTable(el, schema, categoryDescriptions = {}, subcateg
       <label id="subcat-row-${subcategory.key}" class="spendRow spendRow-sub hidden" for="subcat-value-${subcategory.key}" data-subcategory-key="${subcategory.key}" data-parent-cat="${subcategory.parentCategory}">
         <span class="spendMeta">
           <span class="mono spendCat">${escapeHtml(subcategory.label || subcategory.key)}</span>
-          <span class="muted chexyHint">${escapeHtml(subcategory.description || "")}</span>
+          <span class="muted chexyHint">Part of ${escapeHtml(subcategory.parentCategory)} spend${subcategory.description ? ` · ${escapeHtml(subcategory.description)}` : ""}</span>
         </span>
         <input id="subcat-value-${subcategory.key}" class="spend-input chexy-spend-input" type="number" min="0" step="1" value="0" data-subcategory-key="${subcategory.key}" data-subcategory-role="value" aria-label="Spend value for ${escapeHtml(subcategory.label || subcategory.key)}" />
       </label>
