@@ -10,7 +10,7 @@ function applyTheme(theme) {
   if (!themeToggle) return;
 
   const nextTheme = theme === "dark" ? "light" : "dark";
-  themeToggle.textContent = nextTheme === "light" ? "☀️" : "🌙";
+  themeToggle.textContent = nextTheme === "light" ? "☼" : "☾";
   themeToggle.setAttribute("aria-label", `Switch to ${nextTheme} mode`);
   themeToggle.title = `Switch to ${nextTheme} mode`;
 }
