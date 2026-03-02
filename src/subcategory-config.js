@@ -150,6 +150,15 @@ export const subcategoryConfigs = {
       browserTag: "portal"
     },
     {
+      key: "travel_bmo_rewards_portal",
+      label: "BMO Rewards Travel",
+      helperText: "Eligible travel bookings through the BMO Rewards travel portal.",
+      cardRateOverrides: {
+        bmo_ascend_world_elite_business_mastercard: 4
+      },
+      browserTag: "portal"
+    },
+    {
       key: "travel_porter",
       label: "Porter direct",
       helperText: "Eligible Porter purchases.",
