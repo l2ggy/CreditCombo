@@ -167,7 +167,7 @@ function merchantPortalEntriesForCard(card) {
       ...config,
       rate: subcategoryRateForCard(config, card, config.parentCategory, cardRate)
     }))
-    .filter((config) => Number.isFinite(config.rate) && config.rate > 0 && Number(config.cardRateOverrides?.[card.id]) === config.rate)
+    .filter((config) => Number.isFinite(config.rate) && config.rate > 0 && Number(card?.subcategory_earn_rates?.[config.key]) === config.rate)
     .sort((a, b) => b.rate - a.rate || a.label.localeCompare(b.label));
 }
 

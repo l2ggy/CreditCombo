@@ -18,7 +18,7 @@
       "travel",
       "other"
     ],
-    "note": "Hyper-specific merchant/portal multipliers are not mapped into travel; see special_earn_rules.",
+    "note": "Merchant/portal multipliers can be modeled via card.subcategory_earn_rates keyed by data/subcategories.json entries.",
     "taxonomy_definition": {
       "standard_categories": [
         "grocery",
@@ -51,7 +51,7 @@
         "other": "Base earn for all uncategorized eligible purchases."
       },
       "exclusion_rules": [
-        "Merchant-, chain-, portal-, or redemption-dependent bonuses are stored in special_earn_rules and not promoted into base earn_rates.",
+        "Unstructured or non-deterministic merchant-, chain-, portal-, or redemption-dependent bonuses remain in special_earn_rules.",
         "Program-value assumptions (e.g., Aeroplan cents-per-point) do not change earn multipliers in earn_rates."
       ],
       "tie_break_rules": [
@@ -64,7 +64,7 @@
     "card_naming_conventions": [
       "Prefer issuer/product display names without a trailing 'Card' or 'Credit Card' suffix.",
       "Keep 'Card' in the display name only when removing it would change product meaning or brand form (e.g., 'The Platinum Card', 'EQ Bank Card').",
-      "Remove non-accent special characters from display names (e.g., ™, ®, ©, †, ‡, *, and similar symbols), while keeping normal letters/accents."
+      "Remove non-accent special characters from display names (e.g., \u2122, \u00ae, \u00a9, \u2020, \u2021, *, and similar symbols), while keeping normal letters/accents."
     ],
     "cards_sort_order": "cards[] are sorted by issuer (asc), network (asc), card_name (asc), then id (asc); keep this order when adding/updating cards.",
     "card_item_required_fields": [
@@ -78,6 +78,9 @@
       "earn_rates",
       "caps",
       "special_earn_rules"
+    ],
+    "card_item_optional_fields": [
+      "subcategory_earn_rates"
     ]
   },
   "cards": [
@@ -98,17 +101,16 @@
       "caps": [],
       "special_earn_rules": [
         {
-          "type": "merchant_specific",
-          "description": "Earn 3 points per $1 on eligible purchases made directly with Air Canada and Air Canada Vacations."
-        },
-        {
           "type": "category_specific",
           "description": "Earn 2 points per $1 on eligible hotel and car rental purchases booked directly with the merchant or through American Express Travel Services."
         }
       ],
       "sources": [
         "https://www.americanexpress.com/en-ca/credit-cards/"
-      ]
+      ],
+      "subcategory_earn_rates": {
+        "travel_air_canada_direct": 3
+      }
     },
     {
       "id": "amex_aeroplan_card",
@@ -126,15 +128,13 @@
         "other": 1
       },
       "caps": [],
-      "special_earn_rules": [
-        {
-          "type": "merchant_specific",
-          "description": "Air Canada and Air Canada Vacations spend can have elevated Aeroplan earn compared with baseline categories."
-        }
-      ],
+      "special_earn_rules": [],
       "sources": [
         "https://www.americanexpress.com/en-ca/credit-cards/"
-      ]
+      ],
+      "subcategory_earn_rates": {
+        "travel_air_canada_direct": 2
+      }
     },
     {
       "id": "amex_aeroplan_reserve",
@@ -152,19 +152,13 @@
         "other": 1.25
       },
       "caps": [],
-      "special_earn_rules": [
-        {
-          "type": "merchant_specific",
-          "description": "Higher earn can apply on eligible Air Canada purchases."
-        },
-        {
-          "type": "merchant_specific",
-          "description": "Air Canada and Air Canada Vacations spend can have elevated Aeroplan earn compared with baseline categories."
-        }
-      ],
+      "special_earn_rules": [],
       "sources": [
         "https://www.americanexpress.com/en-ca/credit-cards/"
-      ]
+      ],
+      "subcategory_earn_rates": {
+        "travel_air_canada_direct": 3
+      }
     },
     {
       "id": "amex_cobalt",
@@ -349,15 +343,13 @@
         "other": 2
       },
       "caps": [],
-      "special_earn_rules": [
-        {
-          "type": "merchant_specific",
-          "description": "5x at participating Marriott Bonvoy properties (hotel-specific); not mapped to travel."
-        }
-      ],
+      "special_earn_rules": [],
       "sources": [
         "https://www.americanexpress.com/en-ca/credit-cards/"
-      ]
+      ],
+      "subcategory_earn_rates": {
+        "travel_marriott_bonvoy_properties": 5
+      }
     },
     {
       "id": "amex_bonvoy_business",
@@ -380,7 +372,10 @@
       "special_earn_rules": [],
       "sources": [
         "https://www.americanexpress.com/en-ca/credit-cards/"
-      ]
+      ],
+      "subcategory_earn_rates": {
+        "travel_marriott_bonvoy_properties": 5
+      }
     },
     {
       "id": "amex_simplycash",
@@ -869,15 +864,13 @@
         "other": 1
       },
       "caps": [],
-      "special_earn_rules": [
-        {
-          "type": "merchant_specific",
-          "description": "Earn 2x VIPorter points per $1 on eligible Porter purchases (merchant-specific); excluded from modeled categories."
-        }
-      ],
+      "special_earn_rules": [],
       "sources": [
         "https://www.bmo.com/main/personal/credit-cards/"
-      ]
+      ],
+      "subcategory_earn_rates": {
+        "travel_porter": 2
+      }
     },
     {
       "id": "bmo_viporter_world_elite_mastercard",
@@ -898,15 +891,13 @@
         "other": 1
       },
       "caps": [],
-      "special_earn_rules": [
-        {
-          "type": "merchant_specific",
-          "description": "Earn 3x VIPorter points per $1 on eligible Porter purchases (merchant-specific); excluded from modeled categories."
-        }
-      ],
+      "special_earn_rules": [],
       "sources": [
         "https://www.bmo.com/main/personal/credit-cards/"
-      ]
+      ],
+      "subcategory_earn_rates": {
+        "travel_porter": 3
+      }
     },
     {
       "id": "bmo_ascend_world_elite_business_mastercard",
@@ -931,11 +922,14 @@
       ],
       "sources": [
         "https://www.bmo.com/main/personal/credit-cards/"
-      ]
+      ],
+      "subcategory_earn_rates": {
+        "travel_bmo_rewards_portal": 4
+      }
     },
     {
       "id": "students_bmo_cashback_mastercard",
-      "card_name": "Students – BMO CashBack Mastercard",
+      "card_name": "Students \u2013 BMO CashBack Mastercard",
       "issuer": "BMO",
       "network": "Mastercard",
       "rewards_program": "bmo_cashback",
@@ -1242,22 +1236,17 @@
       "caps": [],
       "special_earn_rules": [
         {
-          "type": "merchant_specific",
-          "description": "4% back at Canadian Tire and affiliated stores (not a general category)."
-        },
-        {
           "type": "unit_nuance",
           "description": "Fuel earn is sometimes specified as cents-per-litre at Canadian Tire gas (not modeled)."
-        },
-        {
-          "type": "merchant_specific",
-          "description": "Triangle accelerated earn is partner-merchant specific (Canadian Tire family and selected partners) and not universal grocery earn."
         }
       ],
       "sources": [
         "https://triangle.canadiantire.ca/en/credit-cards/triangle-world-elite-mastercard.html",
         "https://triangle.canadiantire.ca/en/credit-cards.html"
-      ]
+      ],
+      "subcategory_earn_rates": {
+        "other_canadian_tire_family": 4
+      }
     },
     {
       "id": "capital_one_guaranteed_mastercard",
@@ -1353,16 +1342,14 @@
         "other": 1
       },
       "caps": [],
-      "special_earn_rules": [
-        {
-          "type": "merchant_specific",
-          "description": "Air Canada and Air Canada Vacations spend can have elevated Aeroplan earn compared with baseline categories."
-        }
-      ],
+      "special_earn_rules": [],
       "sources": [
         "https://www.cibc.com/en/personal-banking/credit-cards/all-credit-cards/aeroplan-visa-card.html",
         "https://www.cibc.com/en/personal-banking/credit-cards.html"
-      ]
+      ],
+      "subcategory_earn_rates": {
+        "travel_air_canada_direct": 1.5
+      }
     },
     {
       "id": "cibc_aeroplan_vi",
@@ -1394,20 +1381,14 @@
           "notes": "CIBC notes an $80k annual cap for 1.5x on gas/EV/grocery; Air Canada-specific earn is treated separately."
         }
       ],
-      "special_earn_rules": [
-        {
-          "type": "merchant_specific",
-          "description": "Air Canada purchase earn uplift exists on issuer terms; not mapped into travel."
-        },
-        {
-          "type": "merchant_specific",
-          "description": "Air Canada and Air Canada Vacations spend can have elevated Aeroplan earn compared with baseline categories."
-        }
-      ],
+      "special_earn_rules": [],
       "sources": [
         "https://www.cibc.com/en/personal-banking/credit-cards/all-credit-cards/aeroplan-visa-infinite-card.html",
         "https://www.cibc.com/en/personal-banking/credit-cards.html"
-      ]
+      ],
+      "subcategory_earn_rates": {
+        "travel_air_canada_direct": 2
+      }
     },
     {
       "id": "cibc_aeroplan_vip",
@@ -1427,15 +1408,13 @@
         "other": 1
       },
       "caps": [],
-      "special_earn_rules": [
-        {
-          "type": "merchant_specific",
-          "description": "Air Canada and Air Canada Vacations spend can have elevated Aeroplan earn compared with baseline categories."
-        }
-      ],
+      "special_earn_rules": [],
       "sources": [
         "https://www.cibc.com/en/personal-banking/credit-cards.html"
-      ]
+      ],
+      "subcategory_earn_rates": {
+        "travel_air_canada_direct": 2
+      }
     },
     {
       "id": "cibc_aventura_gold",
@@ -1549,20 +1528,14 @@
           "earn_rate_above_cap": 1
         }
       ],
-      "special_earn_rules": [
-        {
-          "type": "portal_specific",
-          "description": "2x travel via CIBC Rewards Centre is portal-specific; not mapped into travel."
-        },
-        {
-          "type": "merchant_specific",
-          "description": "CIBC Rewards Centre / issuer travel portal bookings can have elevated Aventura earn versus baseline."
-        }
-      ],
+      "special_earn_rules": [],
       "sources": [
         "https://www.cibc.com/en/personal-banking/credit-cards/all-credit-cards/aventura-visa-infinite-card.html",
         "https://www.cibc.com/en/personal-banking/credit-cards.html"
-      ]
+      ],
+      "subcategory_earn_rates": {
+        "travel_cibc_rewards_centre": 2
+      }
     },
     {
       "id": "cibc_aventura_vip",
@@ -2215,17 +2188,16 @@
       "special_earn_rules": [
         {
           "type": "merchant_specific",
-          "description": "Earn 1.5% back on eligible Amazon.ca and Whole Foods Market purchases; eligible Prime members can earn 2.5% back."
-        },
-        {
-          "type": "merchant_specific",
           "description": "Eligible foreign currency transactions earn 1% back; eligible Prime members can earn 2.5% back."
         }
       ],
       "sources": [
         "https://www.mbna.ca/en/credit-cards",
         "https://www.amazon.ca/Rewards-Mastercard-Credit-Card/dp/B07MJM4F44"
-      ]
+      ],
+      "subcategory_earn_rates": {
+        "other_amazon_ca_whole_foods": 1.5
+      }
     },
     {
       "id": "mbna_rewards_platinum_plus",
@@ -2786,10 +2758,6 @@
           "description": "Earns 2 Asia Miles per CAD on purchases made in foreign currencies."
         },
         {
-          "type": "merchant_specific",
-          "description": "Earns an additional 3 Asia Miles per CAD (4 total) on Cathay Pacific tickets purchased online at cathaypacific.com/ca."
-        },
-        {
           "type": "cap_disclosure",
           "description": "No fixed monthly or annual earn-rate spending cap is publicly disclosed; published terms state Asia Miles earn may be limited and can vary by perks, offers, and partner-specific conditions."
         },
@@ -2802,7 +2770,10 @@
         "https://cathay.neofinancial.com/",
         "https://pay.cathaypacific.com/en_CA/offers/cathay-neo-15-off.html",
         "https://www.neofinancial.com/credit"
-      ]
+      ],
+      "subcategory_earn_rates": {
+        "travel_cathay_pacific": 4
+      }
     },
     {
       "id": "neo_mastercard",
@@ -3047,24 +3018,17 @@
         "other": 10
       },
       "caps": [],
-      "special_earn_rules": [
-        {
-          "type": "merchant_specific",
-          "description": "45 PC Optimum pts/$ at Shoppers Drug Mart."
-        },
-        {
-          "type": "merchant_specific",
-          "description": "30 PC Optimum pts/$ at Loblaw’s grocery stores, Esso gas, and PC Travel."
-        },
-        {
-          "type": "merchant_specific",
-          "description": "Highest effective earn rates require shopping at Loblaw-banner stores and Shoppers Drug Mart; non-partner spend is lower and program-dependent."
-        }
-      ],
+      "special_earn_rules": [],
       "sources": [
         "https://www.pcfinancial.ca/en/credit-cards/world-elite/",
         "https://www.pcfinancial.ca/en/credit-cards/"
-      ]
+      ],
+      "subcategory_earn_rates": {
+        "grocery_george_weston": 30,
+        "gas_esso_mobil": 30,
+        "drugstore_shoppers_drug_mart": 45,
+        "travel_pc_travel": 30
+      }
     },
     {
       "id": "pc_financial_world_mastercard",
@@ -3084,21 +3048,19 @@
       "special_earn_rules": [
         {
           "type": "merchant_specific",
-          "description": "Earn rates include 35 points/$ at Shoppers Drug Mart/Pharmaprix, 20 points/$ at participating Loblaw-banner grocery stores, and at least 30 points/litre at Esso/Mobil (fuel program unit differs from points/$ categories)."
-        },
-        {
-          "type": "merchant_specific",
-          "description": "Higher earn applies at Loblaw-banner stores, Shoppers Drug Mart, Esso/Mobil, and PC Travel partner channels; these are merchant-specific and excluded from base earn_rates."
-        },
-        {
-          "type": "merchant_specific",
           "description": "Base non-partner spend is modeled at 10 PC Optimum points per $1."
         }
       ],
       "sources": [
         "https://www.pcfinancial.ca/en/credit-cards/world-mastercard/",
         "https://www.pcfinancial.ca/en/credit-cards/"
-      ]
+      ],
+      "subcategory_earn_rates": {
+        "grocery_george_weston": 20,
+        "gas_esso_mobil": 20,
+        "drugstore_shoppers_drug_mart": 35,
+        "travel_pc_travel": 20
+      }
     },
     {
       "id": "pc_insiders_world_elite_mastercard",
@@ -3118,14 +3080,6 @@
       "special_earn_rules": [
         {
           "type": "merchant_specific",
-          "description": "Earn rates include 50 points/$ at Shoppers Drug Mart/Pharmaprix and 40 points/$ at participating Loblaw-banner grocery stores; Esso/Mobil fuel earn is disclosed in points-per-litre with additional tier bonuses."
-        },
-        {
-          "type": "merchant_specific",
-          "description": "Higher earn applies at Loblaw-banner stores, Shoppers Drug Mart, Esso/Mobil, and PC Travel partner channels; these are merchant-specific and excluded from base earn_rates."
-        },
-        {
-          "type": "merchant_specific",
           "description": "Cardholder subscription/perk-linked accelerated earn structures are not modeled as universal category earn rates."
         },
         {
@@ -3136,7 +3090,13 @@
       "sources": [
         "https://www.pcfinancial.ca/en/credit-cards/insiders/",
         "https://www.pcfinancial.ca/en/credit-cards/"
-      ]
+      ],
+      "subcategory_earn_rates": {
+        "grocery_george_weston": 40,
+        "gas_esso_mobil": 40,
+        "drugstore_shoppers_drug_mart": 50,
+        "travel_pc_travel": 40
+      }
     },
     {
       "id": "pc_financial_mastercard",
@@ -3156,21 +3116,19 @@
       "special_earn_rules": [
         {
           "type": "merchant_specific",
-          "description": "Earn rates include 25 points/$ at Shoppers Drug Mart/Pharmaprix and 10 points/$ at participating Loblaw-banner grocery stores; Esso/Mobil fuel earn is disclosed primarily in points-per-litre."
-        },
-        {
-          "type": "merchant_specific",
-          "description": "Higher earn applies at Loblaw-banner stores, Shoppers Drug Mart, Esso/Mobil, and PC Travel partner channels; these are merchant-specific and excluded from base earn_rates."
-        },
-        {
-          "type": "merchant_specific",
           "description": "Base non-partner spend is modeled at 10 PC Optimum points per $1."
         }
       ],
       "sources": [
         "https://www.pcfinancial.ca/en/credit-cards/pc-mastercard/",
         "https://www.pcfinancial.ca/en/credit-cards/"
-      ]
+      ],
+      "subcategory_earn_rates": {
+        "grocery_george_weston": 10,
+        "gas_esso_mobil": 10,
+        "drugstore_shoppers_drug_mart": 25,
+        "travel_pc_travel": 10
+      }
     },
     {
       "id": "rbc_business_cashback_mastercard",
@@ -3286,26 +3244,21 @@
       "caps": [],
       "special_earn_rules": [
         {
-          "type": "merchant_specific",
-          "description": "1.5 WestJet points per $ on eligible WestJet flights / WestJet Vacations / Sunwing Vacations (not mapped to travel)."
-        },
-        {
           "type": "category_out_of_schema",
           "description": "1.5x also covers digital games + digital subscriptions (not fully separated in schema)."
-        },
-        {
-          "type": "merchant_specific",
-          "description": "WestJet flights and WestJet Vacations bookings can earn above base rates; treated as merchant-specific."
         }
       ],
       "sources": [
         "https://www.rbcroyalbank.com/credit-cards/travel/westjet-rbc-mastercard.html",
         "https://www.rbcroyalbank.com/credit-cards/"
-      ]
+      ],
+      "subcategory_earn_rates": {
+        "travel_westjet_partner": 1.5
+      }
     },
     {
       "id": "westjet_rbc_world_elite",
-      "card_name": "WestJet RBC World Elite Mastercardǂ",
+      "card_name": "WestJet RBC World Elite Mastercard\u01c2",
       "issuer": "RBC",
       "network": "Mastercard",
       "rewards_program": "westjet_rewards",
@@ -3322,24 +3275,18 @@
         "other": 1.5
       },
       "caps": [],
-      "special_earn_rules": [
-        {
-          "type": "merchant_specific",
-          "description": "2 WestJet points per $ on eligible WestJet flights / WestJet Vacations / Sunwing Vacations (not mapped to travel)."
-        },
-        {
-          "type": "merchant_specific",
-          "description": "WestJet flights and WestJet Vacations bookings can earn above base rates; treated as merchant-specific."
-        }
-      ],
+      "special_earn_rules": [],
       "sources": [
         "https://www.rbcroyalbank.com/credit-cards/travel/westjet-rbc-world-elite-mastercard.html",
         "https://www.rbcroyalbank.com/credit-cards/"
-      ]
+      ],
+      "subcategory_earn_rates": {
+        "travel_westjet_partner": 2
+      }
     },
     {
       "id": "moi_rbc_visa",
-      "card_name": "moi RBC Visa‡",
+      "card_name": "moi RBC Visa\u2021",
       "issuer": "RBC",
       "network": "Visa",
       "rewards_program": "moi_rewards",
@@ -3373,16 +3320,14 @@
         "other": 3
       },
       "caps": [],
-      "special_earn_rules": [
-        {
-          "type": "merchant_specific",
-          "description": "Higher earn up to 5x applies at participating More Rewards partners; base earn modeled at 3x."
-        }
-      ],
+      "special_earn_rules": [],
       "sources": [
         "https://www.rbcroyalbank.com/credit-cards/rewards/more-rewards-rbc-visa.html",
         "https://www.rbcroyalbank.com/credit-cards/"
-      ]
+      ],
+      "subcategory_earn_rates": {
+        "other_more_rewards_partners": 5
+      }
     },
     {
       "id": "more_rewards_rbc_visa_infinite",
@@ -3399,16 +3344,14 @@
         "other": 4
       },
       "caps": [],
-      "special_earn_rules": [
-        {
-          "type": "merchant_specific",
-          "description": "Higher earn up to 8x applies at participating More Rewards partners; base earn modeled at 4x."
-        }
-      ],
+      "special_earn_rules": [],
       "sources": [
         "https://www.rbcroyalbank.com/credit-cards/rewards/more-rewards-rbc-visa-infinite.html",
         "https://www.rbcroyalbank.com/credit-cards/"
-      ]
+      ],
+      "subcategory_earn_rates": {
+        "other_more_rewards_partners": 8
+      }
     },
     {
       "id": "rbc_avion_business",
@@ -3666,7 +3609,7 @@
     },
     {
       "id": "rbc_avion_visa_platinum",
-      "card_name": "RBC Avion Visa Platinum†",
+      "card_name": "RBC Avion Visa Platinum\u2020",
       "issuer": "RBC",
       "network": "Visa",
       "rewards_program": "rbc_avion",
@@ -3692,7 +3635,7 @@
     },
     {
       "id": "rbc_british_airways_visa_infinite",
-      "card_name": "RBC British Airways Visa Infinite‡",
+      "card_name": "RBC British Airways Visa Infinite\u2021",
       "issuer": "RBC",
       "network": "Visa",
       "rewards_program": "rbc_avios",
@@ -3705,20 +3648,14 @@
         "other": 1
       },
       "caps": [],
-      "special_earn_rules": [
-        {
-          "type": "merchant_specific",
-          "description": "Earn 3 Avios per $1 on eligible British Airways purchases, including British Airways Holidays purchases."
-        },
-        {
-          "type": "merchant_specific",
-          "description": "Higher Avios earn on eligible British Airways and partner bookings is merchant-specific; not mapped to travel."
-        }
-      ],
+      "special_earn_rules": [],
       "sources": [
         "https://www.rbcroyalbank.com/credit-cards/travel/rbc-british-airways-visa-infinite.html",
         "https://www.rbcroyalbank.com/credit-cards/"
-      ]
+      ],
+      "subcategory_earn_rates": {
+        "travel_british_airways": 3
+      }
     },
     {
       "id": "rbc_ion_visa",
@@ -4152,21 +4089,16 @@
         "other": 1
       },
       "caps": [],
-      "special_earn_rules": [
-        {
-          "type": "merchant_specific",
-          "description": "Sobeys banner grocery partners (Sobeys, Safeway, FreshCo, Foodland, participating IGA/Co-ops, etc.) earn 3 Scene+ points per $1 (higher than the general 2-point grocery bucket)."
-        },
-        {
-          "type": "portal_specific",
-          "description": "Hotels and car rentals booked via Scene+ Travel (powered by Expedia) earn an extra 3 points; modeled at 4 points per $1 total for that portal spend."
-        }
-      ],
+      "special_earn_rules": [],
       "sources": [
         "https://www.scotiabank.com/ca/en/personal/credit-cards/visa/passport-infinite-card.html",
         "https://www.scotiabank.com/ca/en/personal/credit-cards.html",
         "https://www.scotiabank.com/ca/en/programs/scotiabank-sceneplus-rewards-program-terms-and-conditions.html"
-      ]
+      ],
+      "subcategory_earn_rates": {
+        "grocery_sobeys_partner": 3,
+        "travel_scene_plus_portal": 4
+      }
     },
     {
       "id": "scotiabank_passport_visa_infinite_privilege_card",
@@ -4185,17 +4117,15 @@
         "other": 1
       },
       "caps": [],
-      "special_earn_rules": [
-        {
-          "type": "portal_specific",
-          "description": "Hotels and car rentals booked via Scene+ Travel (powered by Expedia) are a doubled-travel earn scenario; modeled at 6 points per $1 versus regular 3 points travel."
-        }
-      ],
+      "special_earn_rules": [],
       "sources": [
         "https://www.scotiabank.com/ca/en/personal/credit-cards/visa/passport-infinite-privilege-card.html",
         "https://www.scotiabank.com/ca/en/personal/credit-cards.html",
         "https://www.scotiabank.com/ca/en/programs/scotiabank-sceneplus-rewards-program-terms-and-conditions.html"
-      ]
+      ],
+      "subcategory_earn_rates": {
+        "travel_scene_plus_portal": 6
+      }
     },
     {
       "id": "scotia_scene_visa",
@@ -4214,21 +4144,16 @@
         "other": 1
       },
       "caps": [],
-      "special_earn_rules": [
-        {
-          "type": "merchant_specific",
-          "description": "2 Scene+ points per $1 at Sobeys banner grocery partners (Sobeys, Safeway, FreshCo, Foodland, participating IGA/Co-ops, etc.) versus regular 1 point elsewhere."
-        },
-        {
-          "type": "portal_specific",
-          "description": "Hotels and car rentals booked via Scene+ Travel (powered by Expedia) earn an extra 3 points on top of the regular travel earn, for a modeled 4 points per $1 total."
-        }
-      ],
+      "special_earn_rules": [],
       "sources": [
         "https://www.scotiabank.com/ca/en/personal/credit-cards/visa/scene-card.html",
         "https://www.scotiabank.com/ca/en/personal/credit-cards.html",
         "https://www.scotiabank.com/ca/en/programs/scotiabank-sceneplus-rewards-program-terms-and-conditions.html"
-      ]
+      ],
+      "subcategory_earn_rates": {
+        "grocery_sobeys_partner": 2,
+        "travel_scene_plus_portal": 4
+      }
     },
     {
       "id": "simplii_cash_back_visa",
@@ -4400,16 +4325,14 @@
         "other": 1.25
       },
       "caps": [],
-      "special_earn_rules": [
-        {
-          "type": "merchant_specific",
-          "description": "Air Canada and Air Canada Vacations spend can have elevated Aeroplan earn compared with baseline categories."
-        }
-      ],
+      "special_earn_rules": [],
       "sources": [
         "https://www.td.com/ca/en/personal-banking/products/credit-cards/aeroplan/aeroplan-visa-infinite-privilege-card",
         "https://www.td.com/ca/en/personal-banking/products/credit-cards/aeroplan"
-      ]
+      ],
+      "subcategory_earn_rates": {
+        "travel_air_canada_direct": 2
+      }
     },
     {
       "id": "td_aeroplan_visa_platinum",
@@ -4428,16 +4351,14 @@
         "other": 1
       },
       "caps": [],
-      "special_earn_rules": [
-        {
-          "type": "merchant_specific",
-          "description": "Air Canada and Air Canada Vacations spend can have elevated Aeroplan earn compared with baseline categories."
-        }
-      ],
+      "special_earn_rules": [],
       "sources": [
         "https://www.td.com/ca/en/personal-banking/products/credit-cards/aeroplan/aeroplan-visa-platinum-card",
         "https://www.td.com/ca/en/personal-banking/products/credit-cards/aeroplan"
-      ]
+      ],
+      "subcategory_earn_rates": {
+        "travel_air_canada_direct": 2
+      }
     },
     {
       "id": "td_business_cash_back_visa_card",
@@ -4520,16 +4441,14 @@
           "notes": "Issuer terms set an $80,000 maximum net annual spend cap for each accelerated 6-point category (Dining, PAP + Streaming/Digital, EV charging, Public Transit); mapped categories cap to base 2 points per $."
         }
       ],
-      "special_earn_rules": [
-        {
-          "type": "merchant_specific",
-          "description": "Up to 9x TD Rewards on Expedia For TD purchases is portal-specific and excluded from base categories. Electric vehicle charging has a separate accelerated bucket and cap, but EV-specific MCCs are not represented by a dedicated canonical category."
-        }
-      ],
+      "special_earn_rules": [],
       "sources": [
         "https://www.td.com/ca/en/business-banking/small-business/credit-cards/business-travel-visa-card",
         "https://www.td.com/ca/en/business-banking/small-business/credit-cards"
-      ]
+      ],
+      "subcategory_earn_rates": {
+        "travel_expedia_for_td": 9
+      }
     },
     {
       "id": "td_low_rate_visa_credit_card",
@@ -4594,16 +4513,14 @@
           "notes": "Issuer terms indicate a yearly $15,000 spend cap in each accelerated category (Groceries, Dining, Public Transit, and Recurring Bill Payments + Streaming/Digital Gaming/Media), then base earn applies."
         }
       ],
-      "special_earn_rules": [
-        {
-          "type": "portal_specific",
-          "description": "Expedia for TD travel bookings earn 6 TD Rewards points per $1 (modeled via travel_expedia_for_td portal override), above baseline earn buckets."
-        }
-      ],
+      "special_earn_rules": [],
       "sources": [
         "https://www.td.com/ca/en/personal-banking/products/credit-cards/travel-rewards/platinum-travel-visa-card",
         "https://www.td.com/ca/en/personal-banking/products/credit-cards/travel-rewards"
-      ]
+      ],
+      "subcategory_earn_rates": {
+        "travel_expedia_for_td": 6
+      }
     },
     {
       "id": "td_rewards_visa",
@@ -4622,16 +4539,14 @@
         "other": 1
       },
       "caps": [],
-      "special_earn_rules": [
-        {
-          "type": "portal_specific",
-          "description": "Expedia for TD travel bookings earn 4 TD Rewards points per $1 (modeled via travel_expedia_for_td portal override), above baseline earn buckets."
-        }
-      ],
+      "special_earn_rules": [],
       "sources": [
         "https://www.td.com/ca/en/personal-banking/products/credit-cards/travel-rewards/rewards-visa-card",
         "https://www.td.com/ca/en/personal-banking/products/credit-cards"
-      ]
+      ],
+      "subcategory_earn_rates": {
+        "travel_expedia_for_td": 4
+      }
     },
     {
       "id": "td_aeroplan_vi",
@@ -4664,20 +4579,14 @@
           "notes": "Bonus-rate cap simplified"
         }
       ],
-      "special_earn_rules": [
-        {
-          "type": "merchant_specific",
-          "description": "Higher earn often includes Air Canada direct purchases; not mapped into travel."
-        },
-        {
-          "type": "merchant_specific",
-          "description": "Air Canada and Air Canada Vacations spend can have elevated Aeroplan earn compared with baseline categories."
-        }
-      ],
+      "special_earn_rules": [],
       "sources": [
         "https://www.td.com/ca/en/personal-banking/products/credit-cards/travel-rewards/aeroplan-visa-infinite-card",
         "https://www.td.com/ca/en/personal-banking/products/credit-cards"
-      ]
+      ],
+      "subcategory_earn_rates": {
+        "travel_air_canada_direct": 2
+      }
     },
     {
       "id": "td_cash_back_vi",
@@ -4909,21 +4818,20 @@
       "special_earn_rules": [
         {
           "type": "portal_specific",
-          "description": "8 TD Rewards points per $ on travel booked through Expedia® for TD (not mapped to travel)."
+          "description": "8 TD Rewards points per $ on travel booked through Expedia\u00ae for TD (not mapped to travel)."
         },
         {
           "type": "category_out_of_schema",
           "description": "4x also covers digital gaming; consider adding a dedicated category later."
-        },
-        {
-          "type": "merchant_specific",
-          "description": "Travel booked through Expedia for TD can have higher earn than baseline categories; captured as portal-specific."
         }
       ],
       "sources": [
         "https://www.td.com/ca/en/personal-banking/products/credit-cards/travel-rewards/first-class-travel-visa-infinite-card",
         "https://www.td.com/ca/en/personal-banking/products/credit-cards"
-      ]
+      ],
+      "subcategory_earn_rates": {
+        "travel_expedia_for_td": 8
+      }
     },
     {
       "id": "td_aeroplan_visa_business_card",
@@ -4959,10 +4867,6 @@
       "special_earn_rules": [
         {
           "type": "merchant_specific",
-          "description": "Earn 2x points on eligible direct Air Canada and Air Canada Vacations purchases; represented outside base modeled categories."
-        },
-        {
-          "type": "merchant_specific",
           "description": "Eligible business spend categories (e.g., shipping/internet/cable/phone) can earn accelerated points when merchant coding qualifies."
         },
         {
@@ -4975,7 +4879,10 @@
         "https://www.td.com/ca/en/business-banking/small-business/credit-cards/aeroplan-visa-business",
         "https://www.finlywealth.com/credit-cards/td-aeroplan-visa-card-business",
         "https://www.td.com/ca/en/personal-banking/products/credit-cards"
-      ]
+      ],
+      "subcategory_earn_rates": {
+        "travel_air_canada_direct": 2
+      }
     },
     {
       "id": "tims_mastercard",
@@ -5014,15 +4921,13 @@
         "other": 1
       },
       "caps": [],
-      "special_earn_rules": [
-        {
-          "type": "merchant_specific",
-          "description": "Eligible Walmart retail locations in Canada and Walmart.ca purchases earn 3% reward dollars; modeled via merchant subcategory override."
-        }
-      ],
+      "special_earn_rules": [],
       "sources": [
         "https://www.walmartrewards.ca/"
-      ]
+      ],
+      "subcategory_earn_rates": {
+        "other_walmart_stores_online": 3
+      }
     },
     {
       "id": "walmart_rewards_world_mastercard",
@@ -5042,10 +4947,6 @@
       "caps": [],
       "special_earn_rules": [
         {
-          "type": "merchant_specific",
-          "description": "Eligible Walmart retail locations in Canada and Walmart.ca purchases earn 3% reward dollars; modeled via merchant subcategory override."
-        },
-        {
           "type": "product_feature",
           "description": "No explicit ongoing cashback earn-rate spend cap was found on reviewed Walmart Rewards product/terms pages; monitor for issuer program updates."
         }
@@ -5053,7 +4954,10 @@
       "sources": [
         "https://www.walmartrewards.ca/",
         "https://www.walmartrewards.ca/en/creditcards"
-      ]
+      ],
+      "subcategory_earn_rates": {
+        "other_walmart_stores_online": 3
+      }
     },
     {
       "id": "wealthsimple_visa_infinite_privilege",
