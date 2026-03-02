@@ -48,10 +48,10 @@ export function chexyAdjustedAnnualSpend({ annualSpend, monthlySpend = {}, subca
 function normalizeCardNetwork(network) {
   if (!network) return "";
   const normalized = String(network).trim().toLowerCase();
-  if (normalized === "mastercard") return "Mastercard";
-  if (normalized === "visa") return "Visa";
-  if (normalized === "american express" || normalized === "amex") return "American Express";
-  return String(network).trim();
+  if (normalized === "mastercard") return "mastercard";
+  if (normalized === "visa") return "visa";
+  if (normalized === "american express" || normalized === "amex") return "amex";
+  return normalized;
 }
 
 function applySubcategoryLogic({ cards, schema, annualSpend, subcategorySpend = {}, subcategoryConfigs = {} }) {
