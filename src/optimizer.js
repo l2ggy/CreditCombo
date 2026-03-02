@@ -54,6 +54,26 @@ function normalizeCardNetwork(network) {
   return normalized;
 }
 
+function toSubcategoryAdjustments(config) {
+  if (Array.isArray(config?.logicAdjustments)) return config.logicAdjustments;
+  if (config?.logicAdjustment) return [config.logicAdjustment];
+  return [];
+}
+
+function subcategoryMappedCategory(config, cardNetwork, parentCategory) {
+  if (!toSubcategoryAdjustments(config).includes("network_category_override")) return parentCategory;
+  const networkCategoryMap = config.networkCategoryMap || {};
+  return networkCategoryMap[cardNetwork] || parentCategory;
+}
+
+function subcategoryRateMultiplier(config, cardNetwork) {
+  const base = Number(config?.merchantMultiplier ?? 1);
+  const safeBase = Number.isFinite(base) && base >= 0 ? base : 1;
+  const networkMultiplier = Number(config?.networkMerchantMultiplier?.[cardNetwork] ?? 1);
+  const safeNetwork = Number.isFinite(networkMultiplier) && networkMultiplier >= 0 ? networkMultiplier : 1;
+  return safeBase * safeNetwork;
+}
+
 function applySubcategoryLogic({ cards, schema, annualSpend, subcategorySpend = {}, subcategoryConfigs = {} }) {
   const transformedAnnualSpend = { ...annualSpend };
   const transformedSchema = [...schema];
@@ -70,7 +90,7 @@ function applySubcategoryLogic({ cards, schema, annualSpend, subcategorySpend = 
     if (parentRemainingAnnual <= 0) continue;
 
     for (const config of configs || []) {
-      if (config?.logicAdjustment !== "network_category_override") continue;
+      if (!config?.optimizeWithSubcategory) continue;
 
       const monthlyValue = Number(subcategorySpend?.[config.key] ?? 0);
       if (!Number.isFinite(monthlyValue) || monthlyValue <= 0) continue;
@@ -86,7 +106,6 @@ function applySubcategoryLogic({ cards, schema, annualSpend, subcategorySpend = 
       if (!transformedSchema.includes(virtualCategory)) transformedSchema.push(virtualCategory);
 
       const acceptedNetworks = new Set((config.acceptedNetworks || []).map(normalizeCardNetwork));
-      const networkCategoryMap = config.networkCategoryMap || {};
 
       transformedCards.forEach((card) => {
         const cardNetwork = normalizeCardNetwork(card.network);
@@ -95,8 +114,9 @@ function applySubcategoryLogic({ cards, schema, annualSpend, subcategorySpend = 
           return;
         }
 
-        const mappedCategory = networkCategoryMap[cardNetwork] || parentCategory;
-        card.earn_rates[virtualCategory] = cardRate(card, mappedCategory);
+        const mappedCategory = subcategoryMappedCategory(config, cardNetwork, parentCategory);
+        const multiplier = subcategoryRateMultiplier(config, cardNetwork);
+        card.earn_rates[virtualCategory] = cardRate(card, mappedCategory) * multiplier;
 
         for (const cap of card.caps || []) {
           const capCats = cap.categories || [];
