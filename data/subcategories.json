@@ -21,8 +21,8 @@
       },
       {
         "key": "grocery_george_weston",
-        "label": "Weston brands",
-        "helperText": "Loblaws, No Frills, Real Canadian Superstore, T&T, Fortinos, and more.",
+        "label": "Weston Brands",
+        "helperText": "Loblaws, No Frills, Real Canadian Superstore, T&T, Fortinos.",
         "logicAdjustment": "network_category_override",
         "acceptedNetworks": [
           "mastercard",
@@ -36,25 +36,9 @@
       },
       {
         "key": "grocery_sobeys_partner",
-        "label": "Sobeys Partner Grocers",
-        "helperText": "Sobeys, Safeway, FreshCo, Foodland, participating IGA/Co-ops, and related banners.",
+        "label": "Sobeys Brands",
+        "helperText": "Sobeys, Safeway, FreshCo, Foodland, participating IGA/Co-ops.",
         "browserTag": "merchant"
-      },
-      {
-        "key": "grocery_walmart",
-        "label": "Walmart",
-        "helperText": "Walmart groceries.",
-        "logicAdjustment": "network_category_override",
-        "acceptedNetworks": [
-          "mastercard",
-          "visa",
-          "amex"
-        ],
-        "networkCategoryMap": {
-          "mastercard": "grocery",
-          "visa": "other",
-          "amex": "other"
-        }
       }
     ],
     "gas": [
@@ -72,7 +56,7 @@
       },
       {
         "key": "gas_esso_mobil",
-        "label": "Esso & Mobil",
+        "label": "Esso / Mobil",
         "helperText": "Esso and Mobil fuel stations.",
         "browserTag": "merchant"
       }
@@ -81,75 +65,75 @@
       {
         "key": "drugstore_shoppers_drug_mart",
         "label": "Shoppers Drug Mart",
-        "helperText": "Shoppers Drug Mart merchant-specific rates.",
+        "helperText": "Shoppers Drug Mart and Pharmaprix.",
         "browserTag": "merchant"
       }
     ],
     "travel": [
       {
         "key": "travel_air_canada_direct",
-        "label": "Air Canada direct",
-        "helperText": "Direct Air Canada and Air Canada Vacations purchases.",
+        "label": "Air Canada",
+        "helperText": "Air Canada and Air Canada Vacations.",
         "browserTag": "merchant"
       },
       {
         "key": "travel_scene_plus_portal",
-        "label": "Scene+ Travel portal",
-        "helperText": "Hotels and car rentals booked through Scene+ Travel (powered by Expedia).",
+        "label": "Scene+ Travel",
+        "helperText": "Scene+ Travel (Powered by Expedia).",
         "browserTag": "portal"
       },
       {
         "key": "travel_expedia_for_td",
         "label": "Expedia for TD",
-        "helperText": "Travel bookings through Expedia for TD.",
+        "helperText": "ExpediaForTD bookings.",
         "browserTag": "portal"
       },
       {
         "key": "travel_cibc_rewards_centre",
-        "label": "CIBC Rewards Centre",
-        "helperText": "CIBC Rewards Centre portal bookings.",
+        "label": "CIBC Rewards",
+        "helperText": "CIBC Rewards Centre bookings.",
         "browserTag": "portal"
       },
       {
         "key": "travel_bmo_rewards_portal",
         "label": "BMO Rewards Travel",
-        "helperText": "Eligible travel bookings through the BMO Rewards travel portal.",
+        "helperText": "BMO Rewards Travel portal bookings.",
         "browserTag": "portal"
       },
       {
         "key": "travel_porter",
-        "label": "Porter direct",
-        "helperText": "Eligible Porter purchases.",
+        "label": "Porter",
+        "helperText": "Porter flights and add-ons.",
         "browserTag": "merchant"
       },
       {
         "key": "travel_westjet_partner",
-        "label": "WestJet / Vacations / Sunwing",
-        "helperText": "Eligible WestJet flights, WestJet Vacations, and Sunwing Vacations purchases.",
+        "label": "WestJet Group",
+        "helperText": "WestJet, WestJet Vacations, Sunwing Vacations.",
         "browserTag": "merchant"
       },
       {
         "key": "travel_british_airways",
-        "label": "British Airways direct",
-        "helperText": "Eligible British Airways purchases, including British Airways Holidays.",
+        "label": "British Airways",
+        "helperText": "British Airways and British Airways Holidays.",
         "browserTag": "merchant"
       },
       {
         "key": "travel_pc_travel",
         "label": "PC Travel",
-        "helperText": "PC Travel merchant-partner bookings.",
+        "helperText": "PC Travel bookings.",
         "browserTag": "portal"
       },
       {
         "key": "travel_cathay_pacific",
-        "label": "Cathay Pacific online",
-        "helperText": "Cathay Pacific ticket purchases at cathaypacific.com/ca.",
+        "label": "Cathay Pacific",
+        "helperText": "Cathay Pacific flights via cathaypacific.com/ca.",
         "browserTag": "merchant"
       },
       {
         "key": "travel_marriott_bonvoy_properties",
-        "label": "Marriott Bonvoy properties",
-        "helperText": "Participating Marriott Bonvoy hotel property spend.",
+        "label": "Marriott Bonvoy",
+        "helperText": "Participating Marriott Bonvoy properties.",
         "browserTag": "merchant"
       }
     ],
@@ -157,33 +141,44 @@
       {
         "key": "other_canadian_tire_family",
         "label": "Canadian Tire Brands",
-        "helperText": "Canadian Tire brands (e.g., Canadian Tire, Sport Chek, Mark's, PartSource).",
+        "helperText": "Canadian Tire, Sport Chek, Mark's, PartSource.",
         "browserTag": "merchant"
       },
       {
         "key": "other_amazon_ca_whole_foods",
-        "label": "Amazon.ca & Whole Foods",
-        "helperText": "Eligible Amazon.ca and Whole Foods purchases (Prime may earn higher rates).",
+        "label": "Amazon / Whole Foods",
+        "helperText": "Amazon.ca and Whole Foods.",
         "browserTag": "merchant"
       },
       {
-        "key": "other_walmart_stores_online",
-        "label": "Walmart stores & online",
-        "helperText": "Eligible Walmart retail locations in Canada and Walmart.ca purchases.",
+        "key": "other_walmart",
+        "label": "Walmart",
+        "helperText": "Walmart stores and Walmart.ca.",
+        "logicAdjustment": "network_category_override",
+        "acceptedNetworks": [
+          "mastercard",
+          "visa",
+          "amex"
+        ],
+        "networkCategoryMap": {
+          "mastercard": "grocery",
+          "visa": "other",
+          "amex": "other"
+        },
         "browserTag": "merchant"
       },
       {
         "key": "other_more_rewards_partners",
         "label": "More Rewards Partners",
-        "helperText": "Participating More Rewards partner merchants.",
+        "helperText": "Participating More Rewards merchants.",
         "browserTag": "merchant"
       }
     ],
     "bills": [
       {
         "key": "chexy_bills",
-        "label": "Chexy bills",
-        "helperText": "Portion of bills spend.",
+        "label": "Chexy",
+        "helperText": "Chexy-routed bill payments.",
         "feeAdjustment": "chexy"
       }
     ]
