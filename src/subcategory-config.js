@@ -192,7 +192,8 @@ export const subcategoryConfigs = {
       label: "Marriott Bonvoy properties",
       helperText: "Participating Marriott Bonvoy hotel property spend.",
       cardRateOverrides: {
-        amex_marriott_bonvoy: 5
+        amex_marriott_bonvoy: 5,
+        amex_bonvoy_business: 5
       },
       browserTag: "merchant"
     }
