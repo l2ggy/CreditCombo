@@ -2,13 +2,10 @@ import { loadOptimizerData } from "./data-service.js";
 import { buildOptimizerUrl } from "./app/deeplink.js";
 
 const state = {
-  country: "CA",
   goal: "ideal_combo",
   spend: {},
   lockedCardIds: [],
   k: 3,
-  creditScore: "",
-  annualIncome: "",
   valuationMode: "estimated"
 };
 
@@ -16,24 +13,24 @@ const el = {
   stepPanel: document.getElementById("stepPanel"),
   backBtn: document.getElementById("backBtn"),
   nextBtn: document.getElementById("nextBtn"),
-  progressText: document.getElementById("progressText"),
-  progressFill: document.getElementById("progressFill")
+  progressFill: document.getElementById("progressFill"),
+  progressPercent: document.getElementById("progressPercent")
 };
 
 const data = await loadOptimizerData();
 const cardsById = new Map(data.eligibleCards.map((card) => [card.id, card]));
 let stepIndex = 0;
 
-const steps = [
-  { key: "country", required: true, render: renderCountry },
-  { key: "goal", required: true, render: renderGoal },
-  ...data.schema.map((category) => ({ key: `spend:${category}`, required: true, render: () => renderSpendCategory(category) })),
-  { key: "cards", required: true, render: renderCards },
-  { key: "k", required: true, render: renderK },
-  { key: "credit", required: true, render: renderCredit },
-  { key: "income", required: true, render: renderIncome },
-  { key: "valuation", required: false, render: renderValuation }
-];
+function getSteps() {
+  const spendSteps = data.schema.map((category) => ({ key: `spend:${category}`, render: () => renderSpendCategory(category) }));
+  return [
+    { key: "goal", render: renderGoal },
+    ...spendSteps,
+    { key: "cards", render: renderCards },
+    ...(state.goal === "ideal_combo" ? [{ key: "k", render: renderK }] : []),
+    { key: "valuation", render: renderValuation }
+  ];
+}
 
 renderStep();
 
@@ -44,7 +41,8 @@ el.backBtn.addEventListener("click", () => {
 
 el.nextBtn.addEventListener("click", () => {
   if (!validateStep()) return;
-  if (stepIndex === steps.length - 1) {
+  const steps = getSteps();
+  if (stepIndex >= steps.length - 1) {
     window.location.href = buildOptimizerUrl(state);
     return;
   }
@@ -53,67 +51,105 @@ el.nextBtn.addEventListener("click", () => {
 });
 
 function renderStep() {
+  const steps = getSteps();
+  if (stepIndex > steps.length - 1) stepIndex = steps.length - 1;
   const step = steps[stepIndex];
   el.stepPanel.innerHTML = "";
   step.render();
-  el.progressText.textContent = `Question ${stepIndex + 1} of ${steps.length}`;
-  el.progressFill.style.width = `${((stepIndex + 1) / steps.length) * 100}%`;
+
+  const progress = ((stepIndex + 1) / steps.length) * 100;
+  el.progressFill.style.width = `${progress}%`;
+  el.progressPercent.textContent = `${Math.round(progress)}% complete`;
+
   el.backBtn.disabled = stepIndex === 0;
   el.nextBtn.textContent = stepIndex === steps.length - 1 ? "See recommendations" : "Next";
 }
 
-function renderCountry() {
-  el.stepPanel.innerHTML = `<h2 class="stepTitle">Where are you applying from?</h2>
-    <div class="choiceList"><button class="choiceBtn is-selected" data-country="CA">Canada</button></div>`;
+function advanceStep() {
+  const steps = getSteps();
+  if (stepIndex >= steps.length - 1) return;
+  stepIndex += 1;
+  renderStep();
 }
 
 function renderGoal() {
-  el.stepPanel.innerHTML = `<h2 class="stepTitle">What is your goal?</h2>
+  el.stepPanel.innerHTML = `
+    <h2 class="stepTitle">What are you trying to do today?</h2>
+    <p class="stepHelp">Pick one to start.</p>
     <div class="choiceList">
-      <button class="choiceBtn ${state.goal === "ideal_combo" ? "is-selected" : ""}" data-goal="ideal_combo">Optimize ideal combo</button>
-      <button class="choiceBtn ${state.goal === "current_cards" ? "is-selected" : ""}" data-goal="current_cards">Optimize currently held cards</button>
-    </div>`;
-  bindButtons("goal", (value) => { state.goal = value; renderStep(); });
+      <button class="choiceBtn ${state.goal === "ideal_combo" ? "is-selected" : ""}" data-goal="ideal_combo" type="button">
+        Find me the best possible CreditCombo
+      </button>
+      <button class="choiceBtn ${state.goal === "current_cards" ? "is-selected" : ""}" data-goal="current_cards" type="button">
+        Help me use my current cards better
+      </button>
+    </div>
+  `;
+
+  bindButtons("goal", (goal) => {
+    state.goal = goal;
+    if (goal === "current_cards") state.k = 0;
+    else if (state.k < 1) state.k = 1;
+    advanceStep();
+  });
 }
 
 function renderSpendCategory(category) {
   const value = state.spend[category] ?? "";
-  el.stepPanel.innerHTML = `<h2 class="stepTitle">Monthly spend: ${category}</h2>
-    <div class="rowField"><input id="spendInput" type="number" min="0" step="1" value="${value}" placeholder="0" /></div>`;
+  el.stepPanel.innerHTML = `
+    <h2 class="stepTitle">What is your monthly spend on ${category.toLowerCase()}?</h2>
+    <p class="stepHelp">Enter an average monthly amount in CAD.</p>
+    <input id="spendInput" class="bigInput" type="number" min="0" step="1" value="${value}" placeholder="0" />
+  `;
 }
 
 function renderCards() {
-  const cardChips = state.lockedCardIds.map((id) => `<span class="chip">${cardsById.get(id)?.card_name || id}</span>`).join(" ") || "No cards selected.";
-  el.stepPanel.innerHTML = `<h2 class="stepTitle">Which cards do you currently hold?</h2>
-    <input id="cardSearch" type="search" placeholder="Search card name" />
+  const cardChips = state.lockedCardIds.map((id) => `<span class="chip">${cardsById.get(id)?.card_name || id}</span>`).join(" ") || "No cards selected yet.";
+  const helper = state.goal === "current_cards"
+    ? "Add the cards you currently have. We will optimize usage with these cards only."
+    : "Add any cards you already have if you want them locked into recommendations.";
+
+  el.stepPanel.innerHTML = `
+    <h2 class="stepTitle">Which cards do you have right now?</h2>
+    <p class="stepHelp">${helper}</p>
+    <input id="cardSearch" class="bigInput" type="search" placeholder="Type a card name" />
     <div id="cardMatches" class="choiceList"></div>
-    <div class="cardPick">${cardChips}</div>`;
+    <div class="cardPick">${cardChips}</div>
+  `;
 
   const searchEl = document.getElementById("cardSearch");
   const matchesEl = document.getElementById("cardMatches");
+
   searchEl.addEventListener("input", () => {
     const q = searchEl.value.trim().toLowerCase();
     matchesEl.innerHTML = "";
     if (!q) return;
-    data.eligibleCards.filter((card) => card.card_name.toLowerCase().includes(q)).slice(0, 8).forEach((card) => {
-      const btn = document.createElement("button");
-      btn.className = "choiceBtn";
-      btn.type = "button";
-      btn.textContent = `${card.card_name} (${card.issuer})`;
-      btn.addEventListener("click", () => {
-        if (!state.lockedCardIds.includes(card.id)) state.lockedCardIds.push(card.id);
-        renderStep();
+
+    data.eligibleCards
+      .filter((card) => card.card_name.toLowerCase().includes(q))
+      .slice(0, 8)
+      .forEach((card) => {
+        const btn = document.createElement("button");
+        btn.className = "choiceBtn";
+        btn.type = "button";
+        btn.textContent = `${card.card_name} (${card.issuer})`;
+        btn.addEventListener("click", () => {
+          if (!state.lockedCardIds.includes(card.id)) state.lockedCardIds.push(card.id);
+          renderStep();
+        });
+        matchesEl.append(btn);
       });
-      matchesEl.append(btn);
-    });
   });
 }
 
 function renderK() {
-  const label = state.goal === "current_cards" ? "How many additional cards do you want?" : "How many cards do you want in total?";
-  el.stepPanel.innerHTML = `<h2 class="stepTitle">${label}</h2>
-    <input id="kInput" type="range" min="1" max="5" value="${state.k}" />
-    <p>${state.k} card(s)</p>`;
+  el.stepPanel.innerHTML = `
+    <h2 class="stepTitle">How many cards do you want in your combo?</h2>
+    <p class="stepHelp">Move the slider to choose your target combo size.</p>
+    <input id="kInput" class="bigInput" type="range" min="1" max="5" value="${state.k}" />
+    <p class="kValue">${state.k} card(s)</p>
+  `;
+
   const kInput = document.getElementById("kInput");
   kInput.addEventListener("input", () => {
     state.k = Number(kInput.value);
@@ -121,42 +157,32 @@ function renderK() {
   });
 }
 
-function renderCredit() {
-  el.stepPanel.innerHTML = `<h2 class="stepTitle">Credit score range</h2>
-    <select id="creditInput">
-      <option value="">Prefer not to say</option>
-      <option value="excellent">Excellent (760+)</option>
-      <option value="good">Good (700-759)</option>
-      <option value="fair">Fair (640-699)</option>
-      <option value="building">Building (&lt;640)</option>
-    </select>`;
-  document.getElementById("creditInput").value = state.creditScore;
-}
-
-function renderIncome() {
-  el.stepPanel.innerHTML = `<h2 class="stepTitle">Approximate annual income (optional)</h2>
-    <input id="incomeInput" type="number" min="0" step="1000" value="${state.annualIncome}" placeholder="e.g. 85000" />`;
-}
-
 function renderValuation() {
-  el.stepPanel.innerHTML = `<h2 class="stepTitle">Optional: valuation mode</h2>
-    <select id="valuationInput">
+  el.stepPanel.innerHTML = `
+    <h2 class="stepTitle">How should we value your rewards?</h2>
+    <p class="stepHelp">You can change this later on the main optimizer page.</p>
+    <select id="valuationInput" class="bigInput">
       <option value="estimated">Estimated value</option>
       <option value="minimum_guaranteed">Minimum guaranteed value</option>
-    </select>`;
+    </select>
+  `;
   document.getElementById("valuationInput").value = state.valuationMode;
 }
 
 function validateStep() {
-  const step = steps[stepIndex];
+  const step = getSteps()[stepIndex];
   if (step.key.startsWith("spend:")) {
     const category = step.key.split(":")[1];
     const value = Number(document.getElementById("spendInput")?.value || 0);
     state.spend[category] = Number.isFinite(value) && value >= 0 ? value : 0;
   }
-  if (step.key === "credit") state.creditScore = document.getElementById("creditInput").value;
-  if (step.key === "income") state.annualIncome = document.getElementById("incomeInput").value;
-  if (step.key === "valuation") state.valuationMode = document.getElementById("valuationInput").value;
+  if (step.key === "valuation") {
+    state.valuationMode = document.getElementById("valuationInput")?.value || "estimated";
+  }
+  if (step.key === "k") {
+    state.k = Math.max(1, Number(document.getElementById("kInput")?.value || state.k || 1));
+  }
+  if (state.goal === "current_cards") state.k = 0;
   return true;
 }
 

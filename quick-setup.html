@@ -14,21 +14,30 @@
     <nav class="topNav" aria-label="Primary">
       <span class="siteBrand">CreditCombo</span>
       <div class="topNavLinks">
-        <a class="textLink" href="./index.html">Optimizer</a>
-        <a class="textLink" href="./quick-setup.html" aria-current="page">Quick setup</a>
+        <a class="textLink" href="./index.html">← Back to main page</a>
       </div>
       <button type="button" class="themeToggle" data-theme-toggle>☀︎</button>
     </nav>
   </header>
+
   <main class="container quickSetup" id="quickSetupApp">
-    <p class="progressText" id="progressText">Question 1 of 9</p>
-    <div class="progressBar" aria-hidden="true"><span id="progressFill"></span></div>
-    <section class="panel" id="stepPanel"></section>
+    <div class="progressWrap" aria-label="Progress">
+      <div class="progressBar" aria-hidden="true"><span id="progressFill"></span></div>
+      <p id="progressPercent" class="progressPercent">0% complete</p>
+    </div>
+
+    <section class="panel stepPanel" id="stepPanel"></section>
+
     <div class="wizardActions">
       <button type="button" id="backBtn">Back</button>
       <button type="button" id="nextBtn" class="primary">Next</button>
     </div>
+
+    <aside class="comingSoonNote" aria-live="polite">
+      <strong>Coming soon:</strong> country, credit score, and income constraints will be added once those filters are supported in optimization.
+    </aside>
   </main>
+
   <script type="module" src="./src/quick-setup.js"></script>
 </body>
 </html>

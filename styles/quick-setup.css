@@ -1,12 +1,113 @@
-.quickSetup { max-width: 760px; padding-bottom: 48px; }
-.progressText { margin: 12px 0 8px; color: var(--text-muted); }
-.progressBar { height: 8px; background: var(--bg-subtle); border-radius: 999px; overflow: hidden; margin-bottom: 16px; }
-.progressBar span { display:block; height:100%; background: var(--accent); width: 0%; transition: width .2s ease; }
-.stepTitle { margin-top: 0; }
-.wizardActions { display:flex; justify-content: space-between; margin-top: 16px; }
-.choiceList { display:grid; gap:10px; }
-.choiceBtn { text-align:left; padding:12px; border:1px solid var(--border); border-radius:10px; background:transparent; }
-.choiceBtn.is-selected { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 10%, transparent); }
-.rowField { margin-bottom: 12px; }
-.cardPick { display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
-.chip { padding:4px 8px; border:1px solid var(--border); border-radius:999px; }
+.quickSetup {
+  max-width: 920px;
+  padding-bottom: 64px;
+}
+
+.progressWrap {
+  margin: 18px 0 20px;
+}
+
+.progressBar {
+  height: 16px;
+  background: var(--bg-subtle);
+  border-radius: 999px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.progressBar span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), #4f46e5);
+  width: 0%;
+  transition: width .25s ease;
+}
+
+.progressPercent {
+  margin: 10px 0 0;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+.stepPanel {
+  padding: 28px;
+}
+
+.stepTitle {
+  margin: 0 0 10px;
+  font-size: clamp(1.55rem, 3.2vw, 2rem);
+  line-height: 1.2;
+}
+
+.stepHelp {
+  margin: 0 0 18px;
+  color: var(--text-muted);
+  font-size: 1.06rem;
+}
+
+.bigInput {
+  width: 100%;
+  min-height: 56px;
+  font-size: 1.2rem;
+  padding: 12px 14px;
+}
+
+.choiceList {
+  display: grid;
+  gap: 14px;
+}
+
+.choiceBtn {
+  text-align: left;
+  padding: 16px;
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  background: transparent;
+  font-size: 1.1rem;
+  line-height: 1.4;
+}
+
+.choiceBtn.is-selected {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+}
+
+.cardPick {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.chip {
+  padding: 7px 12px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-size: 0.95rem;
+}
+
+.wizardActions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px;
+}
+
+.wizardActions button {
+  min-height: 52px;
+  font-size: 1.05rem;
+  padding: 0 18px;
+}
+
+.kValue {
+  margin-top: 10px;
+  font-size: 1.1rem;
+}
+
+.comingSoonNote {
+  margin-top: 18px;
+  padding: 12px 14px;
+  border: 1px dashed var(--border);
+  border-radius: 12px;
+  color: var(--text-muted);
+  font-size: 0.96rem;
+}
