@@ -49,7 +49,7 @@ async function downloadCardImage(cardEl) {
   const dataUrl = await toPng(cardEl, {
     cacheBust: true,
     pixelRatio: Math.max(2, window.devicePixelRatio || 1),
-    backgroundColor: "transparent"
+    backgroundColor: "#0f172a"
   });
 
   const linkEl = document.createElement("a");
