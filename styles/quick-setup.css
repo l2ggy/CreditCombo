@@ -1,7 +1,11 @@
+:root{
+  --quick-quiz-panel-padding:var(--space-8);
+}
+
 .quickSetupPanel{
   max-width:900px;
   margin:0 auto;
-  padding:var(--space-8);
+  padding:var(--quick-quiz-panel-padding);
   border-radius:var(--radius-xl);
   background:color-mix(in srgb,var(--color-panel) 88%,transparent);
   box-shadow:0 12px 34px color-mix(in srgb,var(--color-bg) 70%,transparent);
@@ -9,7 +13,7 @@
 .quickProgress{width:100%;height:18px;border:1px solid var(--color-border);border-radius:999px;background:color-mix(in srgb,var(--color-panel) 75%,transparent);overflow:hidden;margin-bottom:var(--space-8)}
 .quickProgressBar{height:100%;width:0;background:var(--color-accent);transition:width .2s ease}
 .quickContent{
-  padding:var(--space-8);
+  padding:var(--quick-quiz-panel-padding);
   border:1px solid color-mix(in srgb,var(--color-border) 82%,transparent);
   border-radius:var(--radius-lg);
   background:color-mix(in srgb,var(--color-panel) 82%,transparent);
