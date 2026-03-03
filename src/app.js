@@ -44,7 +44,8 @@ async function main() {
     });
 
     const hasDeepLinkValues = Boolean(
-      deepLinkState.lockedCardIds.length
+      deepLinkState.mode === "current_cards"
+      || deepLinkState.lockedCardIds.length
       || Object.keys(deepLinkState.spend).length
       || Object.keys(deepLinkState.subcategorySpend).length
       || deepLinkState.k !== 1

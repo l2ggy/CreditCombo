@@ -36,6 +36,9 @@ export function buildOptimizerDeepLink(state = {}) {
     if (serialized) params.set(`q_${key}`, serialized);
   }
 
+  // Always persist the resolved quiz goal so downstream pages can reliably infer mode.
+  params.set("q_goal", mode);
+
   const qs = params.toString();
   return qs ? `./index.html?${qs}` : "./index.html";
 }
