@@ -3,16 +3,17 @@ export function buildShareCopy({ netValue = 0, valuationMode = "estimated", card
   const modeLabel = valuationMode === "minimum_guaranteed" ? "minimum guaranteed" : "estimated";
 
   return {
-    kicker: "CREDITCOMBO RESULT",
-    headline: cardCount > 1 ? "My optimized credit card lineup" : "My optimized credit card pick",
-    heroValueLabel: `Annual ${modeLabel} value`,
+    kicker: "CREDITCOMBO · OPTIMIZED",
+    headline: cardCount > 1 ? "I unlocked a stronger card lineup" : "I unlocked a stronger card strategy",
+    heroValueLabel: `Projected annual upside (${modeLabel})`,
     heroValue: new Intl.NumberFormat("en-CA", {
       style: "currency",
       currency: "CAD",
       maximumFractionDigits: 0
     }).format(roundedNet),
-    support: "Built from my real spending profile.",
+    support: "Personalized from my real spending mix across categories.",
     cta: "Check your CreditCombo",
+    nativeShareText: `I just optimized my wallet with CreditCombo and unlocked ${roundedNet.toLocaleString("en-CA")} CAD in annual value.`,
     urlLabel: "creditcombo.ca"
   };
 }
