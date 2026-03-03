@@ -368,6 +368,7 @@ function renderWizard() {
 
   const backBtn = appEl.querySelector("#quickBack");
   const nextBtn = appEl.querySelector("#quickNext");
+  const actionsEl = appEl.querySelector(".quickActions");
 
   if (currentStepIndex === 0) backBtn.classList.add("hidden");
   backBtn.addEventListener("click", goBack);
@@ -378,6 +379,9 @@ function renderWizard() {
   });
 
   if (autoAdvance) nextBtn.classList.add("hidden");
+
+  const hasVisibleAction = !backBtn.classList.contains("hidden") || !nextBtn.classList.contains("hidden");
+  actionsEl.classList.toggle("hidden", !hasVisibleAction);
 }
 
 async function main() {
