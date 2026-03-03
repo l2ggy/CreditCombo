@@ -1,3 +1,4 @@
+import { renderCardThumb } from "../shared/render.js";
 import { buildShareCopy } from "./share-copy.js";
 import { buildSharePayload } from "./share-payload.js";
 
@@ -23,17 +24,6 @@ function trapFocus(root, event) {
     event.preventDefault();
     first.focus();
   }
-}
-
-function renderShareCardThumb(card) {
-  const img = document.createElement("img");
-  img.className = "thumb thumb-lg thumb-contain";
-  img.alt = card?.card_name || "Credit card";
-  img.loading = "eager";
-  img.decoding = "sync";
-  img.fetchPriority = "high";
-  img.src = new URL(`../../assets/cards/${card?.id || ""}.webp`, import.meta.url).toString();
-  return img;
 }
 
 async function downloadCardImage(cardEl) {
@@ -139,7 +129,12 @@ export function createShareOverlay() {
         const thumb = document.createElement("span");
         thumb.className = "shareThumbItem";
         thumb.style.setProperty("--share-index", String(index));
-        const cardImg = renderShareCardThumb(card);
+        const cardImg = renderCardThumb(card, { className: "thumb thumb-lg thumb-contain", withFrame: false });
+        if (cardImg instanceof HTMLImageElement) {
+          cardImg.loading = "eager";
+          cardImg.decoding = "sync";
+          cardImg.fetchPriority = "high";
+        }
         thumb.append(cardImg);
         if (index < 3) topRow.append(thumb);
         else bottomRow.append(thumb);
