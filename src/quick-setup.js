@@ -33,6 +33,27 @@ function titleForCategory(cat) {
   return String(cat).replace(/_/g, " ");
 }
 
+function spendSliderConfig(cat) {
+  const limits = {
+    grocery: 2000,
+    dining: 1500,
+    gas: 1000,
+    transit: 800,
+    rideshare: 800,
+    streaming: 300,
+    digital: 500,
+    utilities: 1200,
+    bills: 3000,
+    drugstore: 600,
+    entertainment: 1200,
+    travel: 4000,
+    other: 5000
+  };
+
+  const max = Number(limits[cat]) || 2000;
+  return { min: 0, max, step: 10 };
+}
+
 function renderSingleSelectStep(contentEl, {
   prompt,
   lead,
@@ -123,23 +144,48 @@ function stepSpend(cat) {
   return {
     key: `spend_${cat}`,
     render(contentEl) {
+      const slider = spendSliderConfig(cat);
       const value = state.monthlySpend[cat] ?? "";
+      const sliderValue = Math.min(slider.max, Math.max(slider.min, Number(value) || 0));
       contentEl.innerHTML = `
         <h2 class="quickPrompt">What is your average monthly spend on ${titleForCategory(cat)}?</h2>
         <div class="quickAnswerArea">
+          <label class="quickLabel" for="quickSpendInput">Monthly amount</label>
+          <input id="quickSpendSlider" type="range" min="${slider.min}" max="${slider.max}" step="${slider.step}" value="${sliderValue}" />
+          <div class="quickSliderBounds" aria-hidden="true">
+            <span>$${slider.min}</span>
+            <span>$${slider.max}</span>
+          </div>
           <input id="quickSpendInput" class="quickBigInput" type="number" min="0" step="1" value="${value}" placeholder="0" />
         </div>
       `;
 
+      const sliderInput = contentEl.querySelector("#quickSpendSlider");
       const input = contentEl.querySelector("#quickSpendInput");
       setTimeout(() => {
         input.focus();
         input.select();
       }, 0);
 
+      const syncValue = (nextValue) => {
+        const clamped = Math.min(slider.max, Math.max(slider.min, Number(nextValue) || 0));
+        sliderInput.value = String(clamped);
+      };
+
+      sliderInput.addEventListener("input", () => {
+        input.value = sliderInput.value;
+        syncValue(sliderInput.value);
+      });
+
+      input.addEventListener("input", () => {
+        syncValue(input.value);
+      });
+
       const save = () => {
-        const amount = Number(input.value);
-        state.monthlySpend[cat] = Number.isFinite(amount) && amount >= 0 ? amount : 0;
+        const amount = Math.max(slider.min, Number(input.value) || 0);
+        state.monthlySpend[cat] = amount;
+        input.value = String(amount);
+        syncValue(amount);
       };
 
       input.addEventListener("keydown", (event) => {
