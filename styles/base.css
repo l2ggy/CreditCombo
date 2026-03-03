@@ -24,7 +24,7 @@ main.container{padding-top:var(--space-5)}
 .topNavLinks{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-6);margin-left:auto}
 .themeToggle{width:auto;padding:0;border:0;border-radius:0;background:transparent;color:var(--color-text);font-size:22px;font-weight:700;font-family:"Segoe UI Symbol","Noto Sans Symbols 2","Noto Sans Symbols","Apple Symbols",sans-serif;line-height:1;box-shadow:none}.themeToggle:hover,.themeToggle:active{background:transparent;border-color:transparent;box-shadow:none;transform:none}
 .siteBrand{color:var(--color-brand-highlight);font-size:calc(var(--font-size-2xl) + 2px);line-height:var(--line-height-tight);font-weight:700}
-.header{display:flex;justify-content:space-between;align-items:flex-end;gap:var(--space-5)}
+.header{display:flex;justify-content:space-between;align-items:flex-start;gap:var(--space-5)}
 .headerActions{display:flex;align-items:center;gap:var(--space-5)}
 
 .panel{border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-6);background:var(--color-panel)}
