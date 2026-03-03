@@ -137,7 +137,7 @@
       "subcategory_earn_rates": {
         "travel_air_canada_direct": 2
       },
-      "official_link": "https://www.americanexpress.com/ca/en/credit-cards/aeroplan-card/"
+      "official_link": "https://www.americanexpress.com/en-ca/charge-cards/aeroplan-card/"
     },
     {
       "id": "amex_aeroplan_reserve",
@@ -162,7 +162,7 @@
       "subcategory_earn_rates": {
         "travel_air_canada_direct": 3
       },
-      "official_link": "https://www.americanexpress.com/ca/en/credit-cards/aeroplan-reserve-card/"
+      "official_link": "https://www.americanexpress.com/en-ca/credit-cards/aeroplan-reserve/"
     },
     {
       "id": "amex_cobalt",
@@ -308,7 +308,7 @@
       "sources": [
         "https://www.americanexpress.com/en-ca/credit-cards/"
       ],
-      "official_link": "https://www.americanexpress.com/ca/en/credit-cards/business-gold-rewards-card/"
+      "official_link": "https://www.americanexpress.com/us/credit-cards/business/business-credit-cards/american-express-business-gold-card-amex/"
     },
     {
       "id": "amex_business_platinum",
@@ -335,7 +335,7 @@
       "sources": [
         "https://www.americanexpress.com/en-ca/credit-cards/"
       ],
-      "official_link": "https://www.americanexpress.com/ca/en/credit-cards/business-platinum-card/"
+      "official_link": "https://www.americanexpress.com/en-ca/benefits/business-platinum-card/"
     },
     {
       "id": "amex_marriott_bonvoy",
@@ -509,7 +509,7 @@
         "https://www.americanexpress.com/en-ca/credit-cards/the-platinum-card/",
         "https://www.americanexpress.com/en-ca/credit-cards/"
       ],
-      "official_link": "https://www.americanexpress.com/ca/en/credit-cards/the-platinum-card/"
+      "official_link": "https://www.americanexpress.com/en-ca/charge-cards/the-platinum-card/"
     },
     {
       "id": "atb_gold_cash_rewards_mastercard",
@@ -530,7 +530,7 @@
       "sources": [
         "https://www.atb.com/personal/everyday-banking/credit-cards/"
       ],
-      "official_link": "https://www.atb.com/personal/everyday-banking/credit-cards/"
+      "official_link": "https://www.atb.com/personal/everyday-banking/credit-cards/gold-cash-rewards-mastercard/"
     },
     {
       "id": "atb_gold_my_rewards_mastercard",
@@ -551,7 +551,7 @@
       "sources": [
         "https://www.atb.com/personal/everyday-banking/credit-cards/"
       ],
-      "official_link": "https://www.atb.com/personal/everyday-banking/credit-cards/"
+      "official_link": "https://www.atb.com/personal/everyday-banking/credit-cards/gold-my-rewards-mastercard/"
     },
     {
       "id": "atb_world_elite_mastercard",
@@ -572,7 +572,7 @@
       "sources": [
         "https://www.atb.com/personal/everyday-banking/credit-cards/"
       ],
-      "official_link": "https://www.atb.com/personal/everyday-banking/credit-cards/"
+      "official_link": "https://www.atb.com/personal/everyday-banking/credit-cards/world-elite-mastercard/"
     },
     {
       "id": "bmo_ascend_we",
@@ -629,7 +629,7 @@
       "sources": [
         "https://www.bmo.com/main/personal/credit-cards/"
       ],
-      "official_link": "https://www.bmo.com/main/personal/credit-cards/"
+      "official_link": "https://www.bmo.com/en-ca/main/personal/credit-cards/bmo-ascend-world-elite-mastercard/"
     },
     {
       "id": "bmo_cashback_business_mastercard",
@@ -651,7 +651,7 @@
       "sources": [
         "https://www.bmo.com/main/personal/credit-cards/"
       ],
-      "official_link": "https://www.bmo.com/main/personal/credit-cards/"
+      "official_link": "https://www.bmo.com/main/business/credit-cards/bmo-cashback-no-fee-business-mastercard/"
     },
     {
       "id": "bmo_cashback_no_fee_mc",
@@ -845,7 +845,7 @@
       "sources": [
         "https://www.bmo.com/main/personal/credit-cards/"
       ],
-      "official_link": "https://www.bmo.com/main/personal/credit-cards/"
+      "official_link": "https://www.bmo.com/en-ca/main/personal/credit-cards/preferred/single"
     },
     {
       "id": "bmo_u_s_dollar_mastercard",
@@ -871,7 +871,7 @@
       "sources": [
         "https://www.bmo.com/main/personal/credit-cards/"
       ],
-      "official_link": "https://www.bmo.com/main/personal/credit-cards/"
+      "official_link": "https://www.bmo.com/en-ca/main/personal/credit-cards/us-dollar-mastercard/"
     },
     {
       "id": "bmo_viporter_mastercard",
@@ -895,7 +895,7 @@
       "subcategory_earn_rates": {
         "travel_porter": 2
       },
-      "official_link": "https://www.bmo.com/main/personal/credit-cards/"
+      "official_link": "https://www.bmo.com/en-ca/main/personal/credit-cards/bmo-viporter-mastercard"
     },
     {
       "id": "bmo_viporter_world_elite_mastercard",
@@ -923,7 +923,7 @@
       "subcategory_earn_rates": {
         "travel_porter": 3
       },
-      "official_link": "https://www.bmo.com/main/personal/credit-cards/"
+      "official_link": "https://www.bmo.com/en-ca/main/personal/credit-cards/bmo-viporter-world-elite-mastercard/"
     },
     {
       "id": "bmo_ascend_world_elite_business_mastercard",
@@ -952,7 +952,7 @@
       "subcategory_earn_rates": {
         "travel_bmo_rewards_portal": 4
       },
-      "official_link": "https://www.bmo.com/main/personal/credit-cards/"
+      "official_link": "https://www.bmo.com/main/business/credit-cards/bmo-rewards-world-elite-business-mastercard/"
     },
     {
       "id": "students_bmo_cashback_mastercard",
@@ -1032,7 +1032,7 @@
         "https://www.bmo.com/main/personal/credit-cards/bmo-eclipse-rise-visa/",
         "https://www.bmo.com/main/personal/credit-cards/"
       ],
-      "official_link": "https://www.bmo.com/main/personal/credit-cards/"
+      "official_link": "https://go.bmo.com/dual-visa-cards/"
     },
     {
       "id": "bmo_eclipse_vip",
@@ -1220,7 +1220,7 @@
       "sources": [
         "https://triangle.canadiantire.ca/en/credit-cards.html"
       ],
-      "official_link": "https://triangle.canadiantire.ca/en/credit-cards.html"
+      "official_link": "https://www.ctfs.com/content/ctfs/en/cards/cash_advantage.html"
     },
     {
       "id": "triangle_mastercard",
@@ -1251,7 +1251,7 @@
       "sources": [
         "https://triangle.canadiantire.ca/en/credit-cards.html"
       ],
-      "official_link": "https://triangle.canadiantire.ca/en/credit-cards.html"
+      "official_link": "https://www.ctfs.com/content/ctfs3/en/credit-cards.html"
     },
     {
       "id": "canadian_tire_triangle_we",
@@ -1282,7 +1282,7 @@
       "subcategory_earn_rates": {
         "other_canadian_tire_family": 4
       },
-      "official_link": "https://triangle.canadiantire.ca/en/credit-cards/triangle-world-elite-mastercard.html"
+      "official_link": "https://www.ctfs.com/content/ctfs3/en/credit-cards.html"
     },
     {
       "id": "capital_one_guaranteed_mastercard",
@@ -1329,7 +1329,7 @@
       "sources": [
         "https://www.capitalone.ca/credit-cards/"
       ],
-      "official_link": "https://www.capitalone.ca/"
+      "official_link": "https://www.capitalone.ca/credit-cards/smart-rewards-mastercard/"
     },
     {
       "id": "cibc_costco_mastercard",
@@ -1456,7 +1456,7 @@
       "subcategory_earn_rates": {
         "travel_air_canada_direct": 2
       },
-      "official_link": "https://www.cibc.com/en/personal-banking/credit-cards.html"
+      "official_link": "https://www.cibc.com/en/personal-banking/credit-cards/all-credit-cards/aeroplan-visa-infinite-privilege-card.html"
     },
     {
       "id": "cibc_aventura_gold",
@@ -1485,7 +1485,7 @@
       "sources": [
         "https://www.cibc.com/en/personal-banking/credit-cards.html"
       ],
-      "official_link": "https://www.cibc.com/en/personal-banking/credit-cards.html"
+      "official_link": "https://www.cibc.com/en/personal-banking/credit-cards/all-credit-cards/aventura-gold-visa-card.html"
     },
     {
       "id": "cibc_aventura_visa",
@@ -1513,7 +1513,7 @@
       "sources": [
         "https://www.cibc.com/en/personal-banking/credit-cards.html"
       ],
-      "official_link": "https://www.cibc.com/en/personal-banking/credit-cards.html"
+      "official_link": "https://www.cibc.com/en/personal-banking/credit-cards/all-credit-cards/aventura-visa-card.html"
     },
     {
       "id": "cibc_aventura_business",
@@ -1541,7 +1541,7 @@
       "sources": [
         "https://www.cibc.com/en/personal-banking/credit-cards.html"
       ],
-      "official_link": "https://www.cibc.com/en/personal-banking/credit-cards.html"
+      "official_link": "https://www.cibc.com/en/business/credit-cards/aventura-visa.html"
     },
     {
       "id": "cibc_aventura_vi",
@@ -1609,7 +1609,7 @@
       "sources": [
         "https://www.cibc.com/en/personal-banking/credit-cards.html"
       ],
-      "official_link": "https://www.cibc.com/en/personal-banking/credit-cards.html"
+      "official_link": "https://www.cibc.com/en/personal-banking/credit-cards/all-credit-cards/aventura-visa-infinite-privilege-card.html"
     },
     {
       "id": "cibc_bizline_visa_card",
@@ -1635,7 +1635,7 @@
       "sources": [
         "https://www.cibc.com/en/personal-banking/credit-cards.html"
       ],
-      "official_link": "https://www.cibc.com/en/personal-banking/credit-cards.html"
+      "official_link": "https://www.cibc.com/en/business/credit-cards/bizline-visa.html"
     },
     {
       "id": "cibc_dividend_platinum",
@@ -1659,7 +1659,7 @@
       "sources": [
         "https://www.cibc.com/en/personal-banking/credit-cards.html"
       ],
-      "official_link": "https://www.cibc.com/en/personal-banking/credit-cards.html"
+      "official_link": "https://www.cibc.com/en/personal-banking/credit-cards/all-credit-cards/dividend-visa-platinum-card.html"
     },
     {
       "id": "cibc_dividend_no_fee",
@@ -1690,7 +1690,7 @@
       "sources": [
         "https://www.cibc.com/en/personal-banking/credit-cards.html"
       ],
-      "official_link": "https://www.cibc.com/en/personal-banking/credit-cards.html"
+      "official_link": "https://www.cibc.com/en/personal-banking/credit-cards/all-credit-cards/dividend-visa-card.html"
     },
     {
       "id": "cibc_dividend_vi",
@@ -1748,7 +1748,7 @@
       "sources": [
         "https://www.cibc.com/en/personal-banking/credit-cards.html"
       ],
-      "official_link": "https://www.cibc.com/en/personal-banking/credit-cards.html"
+      "official_link": "https://www.cibc.com/en/personal-banking/credit-cards/all-credit-cards/select-visa-card.html"
     },
     {
       "id": "desjardins_cashback_mastercard",
@@ -1868,7 +1868,7 @@
       "sources": [
         "https://www.desjardins.com/ca/personal/loans-credit/credit-cards/index.jsp"
       ],
-      "official_link": "https://www.desjardins.com/ca/personal/loans-credit/credit-cards/index.jsp"
+      "official_link": "https://www.desjardins.com/qc/en/credit-cards/odyssey-visa-infinite-privilege.html"
     },
     {
       "id": "desjardins_odyssey_we",
@@ -1915,7 +1915,7 @@
       "sources": [
         "https://www.desjardins.com/ca/personal/loans-credit/credit-cards/index.jsp"
       ],
-      "official_link": "https://www.desjardins.com/ca/personal/loans-credit/credit-cards/index.jsp"
+      "official_link": "https://www.desjardins.com/qc/en/credit-cards/bonus-visa.html"
     },
     {
       "id": "desjardins_cash_back_visa",
@@ -1936,7 +1936,7 @@
       "sources": [
         "https://www.desjardins.com/ca/personal/loans-credit/credit-cards/index.jsp"
       ],
-      "official_link": "https://www.desjardins.com/ca/personal/loans-credit/credit-cards/index.jsp"
+      "official_link": "https://www.desjardins.com/qc/en/credit-cards/cash-back-visa.html"
     },
     {
       "id": "desjardins_flexi_visa",
@@ -1962,7 +1962,7 @@
       "sources": [
         "https://www.desjardins.com/ca/personal/loans-credit/credit-cards/index.jsp"
       ],
-      "official_link": "https://www.desjardins.com/ca/personal/loans-credit/credit-cards/index.jsp"
+      "official_link": "https://www.desjardins.com/qc/en/credit-cards/flexi-visa.html"
     },
     {
       "id": "desjardins_odyssey_gold",
@@ -1984,7 +1984,7 @@
       "sources": [
         "https://www.desjardins.com/ca/personal/loans-credit/credit-cards/index.jsp"
       ],
-      "official_link": "https://www.desjardins.com/ca/personal/loans-credit/credit-cards/index.jsp"
+      "official_link": "https://www.desjardins.com/qc/en/credit-cards/odyssey-gold-visa.html"
     },
     {
       "id": "eq_bank_card",
@@ -2031,7 +2031,7 @@
       "sources": [
         "https://fidemfinance.com/"
       ],
-      "official_link": "https://fidemfinance.com/"
+      "official_link": "https://fidemfinance.ca/fidem-mastercard/"
     },
     {
       "id": "home_trust_preferred_visa",
@@ -2052,7 +2052,7 @@
       "sources": [
         "https://www.hometrust.ca/credit-cards/"
       ],
-      "official_link": "https://www.hometrust.ca/credit-cards/"
+      "official_link": "https://www.hometrust.ca/credit-cards/preferred-visa-card/"
     },
     {
       "id": "ht_secured_visa",
@@ -2078,7 +2078,7 @@
       "sources": [
         "https://www.hometrust.ca/credit-cards/"
       ],
-      "official_link": "https://www.hometrust.ca/credit-cards/"
+      "official_link": "https://www.hometrust.ca/credit-cards/secured-visa-card/"
     },
     {
       "id": "koho_essential_mastercard",
@@ -2115,7 +2115,7 @@
       "sources": [
         "https://www.koho.ca/"
       ],
-      "official_link": "https://www.koho.ca/"
+      "official_link": "https://www.koho.ca/essential/"
     },
     {
       "id": "koho_everything_mastercard",
@@ -2152,7 +2152,7 @@
       "sources": [
         "https://www.koho.ca/"
       ],
-      "official_link": "https://www.koho.ca/"
+      "official_link": "https://www.koho.ca/everything/"
     },
     {
       "id": "koho_extra_mastercard",
@@ -2189,7 +2189,7 @@
       "sources": [
         "https://www.koho.ca/"
       ],
-      "official_link": "https://www.koho.ca/"
+      "official_link": "https://www.koho.ca/extra/"
     },
     {
       "id": "manulife_moneyplus_visa_infinite",
@@ -2233,7 +2233,7 @@
       "sources": [
         "https://www.manulifebank.ca/personal-banking/credit-cards.html"
       ],
-      "official_link": "https://www.manulifebank.ca/personal-banking/credit-cards.html"
+      "official_link": "https://www.manulifebank.ca/personal-banking/credit-cards/cash-back-credit-card.html"
     },
     {
       "id": "amazon_ca_rewards_mastercard",
@@ -2262,7 +2262,7 @@
       "subcategory_earn_rates": {
         "other_amazon_ca_whole_foods": 1.5
       },
-      "official_link": "https://www.mbna.ca/en/credit-cards"
+      "official_link": "https://www.mbna.ca/en/credit-cards/retail-store/amazon-rewards-mastercard"
     },
     {
       "id": "mbna_rewards_platinum_plus",
@@ -2330,7 +2330,7 @@
       "sources": [
         "https://www.mbna.ca/en/credit-cards"
       ],
-      "official_link": "https://www.mbna.ca/en/credit-cards"
+      "official_link": "https://www.mbna.ca/en/credit-cards/cash-back/smart-cash-mastercard"
     },
     {
       "id": "mbna_smart_cash_world_mastercard",
@@ -2353,7 +2353,7 @@
       "sources": [
         "https://www.mbna.ca/en/credit-cards"
       ],
-      "official_link": "https://www.mbna.ca/en/credit-cards"
+      "official_link": "https://www.mbna.ca/en/credit-cards/cash-back/smart-cash-world-mastercard"
     },
     {
       "id": "mbna_true_line_gold_mastercard",
@@ -2379,7 +2379,7 @@
       "sources": [
         "https://www.mbna.ca/en/credit-cards"
       ],
-      "official_link": "https://www.mbna.ca/en/credit-cards"
+      "official_link": "https://www.mbna.ca/en/credit-cards/low-interest/true-line-gold-mastercard"
     },
     {
       "id": "mbna_true_line_mastercard",
@@ -2405,7 +2405,7 @@
       "sources": [
         "https://www.mbna.ca/en/credit-cards"
       ],
-      "official_link": "https://www.mbna.ca/en/credit-cards"
+      "official_link": "https://www.mbna.ca/en/credit-cards/low-interest/true-line-mastercard"
     },
     {
       "id": "mbna_rewards_we",
@@ -2522,7 +2522,7 @@
         "https://www.meridiancu.ca/personal/credit-cards/visa-infinite-travel-rewards-card",
         "https://www.meridiancu.ca/personal/credit-cards"
       ],
-      "official_link": "https://www.meridiancu.ca/personal/credit-cards/visa-infinite-travel-rewards-card"
+      "official_link": "https://www.meridiancu.ca/personal/credit-cards/meridian-visa-infinite-travel-rewards-card"
     },
     {
       "id": "meridian_visa_infinite_cash_back",
@@ -2616,7 +2616,7 @@
       "sources": [
         "https://www.nbc.ca/personal/mastercard-credit-cards.html"
       ],
-      "official_link": "https://www.nbc.ca/personal/mastercard-credit-cards.html"
+      "official_link": "https://www.nbc.ca/personal/mastercard-credit-cards/allure.html"
     },
     {
       "id": "national_bank_business_mastercard",
@@ -2642,7 +2642,7 @@
       "sources": [
         "https://www.nbc.ca/personal/mastercard-credit-cards.html"
       ],
-      "official_link": "https://www.nbc.ca/personal/mastercard-credit-cards.html"
+      "official_link": "https://www.nbc.ca/business/credit-cards/mastercard-business.html"
     },
     {
       "id": "national_bank_echo_cashback_mastercard",
@@ -2683,7 +2683,7 @@
         "https://www.nbc.ca/personal/mastercard-credit-cards/cashback.html",
         "https://www.nbc.ca/content/dam/bnc/particuliers/pdf/tarification-carte/echo-cashback-rewards.pdf"
       ],
-      "official_link": "https://www.nbc.ca/personal/mastercard-credit-cards/cashback.html"
+      "official_link": "https://www.nbc.ca/personal/mastercard-credit-cards/echo.html"
     },
     {
       "id": "national_bank_mycredit_mastercard",
@@ -2711,7 +2711,7 @@
       "sources": [
         "https://www.nbc.ca/personal/mastercard-credit-cards.html"
       ],
-      "official_link": "https://www.nbc.ca/personal/mastercard-credit-cards.html"
+      "official_link": "https://www.nbc.ca/personal/mastercard-credit-cards/my-credit.html"
     },
     {
       "id": "national_bank_platinum_business_mastercard",
@@ -2755,7 +2755,7 @@
       "sources": [
         "https://www.nbc.ca/personal/mastercard-credit-cards.html"
       ],
-      "official_link": "https://www.nbc.ca/personal/mastercard-credit-cards.html"
+      "official_link": "https://www.nbc.ca/personal/mastercard-credit-cards/platinum.html"
     },
     {
       "id": "nb_syncro_mastercard",
@@ -2781,7 +2781,7 @@
       "sources": [
         "https://www.nbc.ca/personal/mastercard-credit-cards.html"
       ],
-      "official_link": "https://www.nbc.ca/personal/mastercard-credit-cards.html"
+      "official_link": "https://www.nbc.ca/personal/mastercard-credit-cards/syncro.html"
     },
     {
       "id": "nb_world_mastercard",
@@ -2803,7 +2803,7 @@
       "sources": [
         "https://www.nbc.ca/personal/mastercard-credit-cards.html"
       ],
-      "official_link": "https://www.nbc.ca/personal/mastercard-credit-cards.html"
+      "official_link": "https://www.nbc.ca/personal/mastercard-credit-cards/world.html"
     },
     {
       "id": "national_bank_world_elite",
@@ -3270,7 +3270,7 @@
       "sources": [
         "https://www.rbcroyalbank.com/credit-cards/"
       ],
-      "official_link": "https://www.rbcroyalbank.com/credit-cards/"
+      "official_link": "https://www.rbcroyalbank.com/business/credit-cards/small-business-credit-cards/business-cash-back-mastercard.html"
     },
     {
       "id": "rbc_cash_back_mastercard",
@@ -3508,7 +3508,7 @@
         "https://www.rbcroyalbank.com/business/credit-cards/avion-visa-business.html",
         "https://www.rbcroyalbank.com/credit-cards/"
       ],
-      "official_link": "https://www.rbcroyalbank.com/business/credit-cards/index.html"
+      "official_link": "https://www.rbcroyalbank.com/business/credit-cards/small-business-credit-cards/rbc-avion-visa-business.html"
     },
     {
       "id": "rbc_avion_vi",
@@ -3606,7 +3606,7 @@
       "sources": [
         "https://www.rbcroyalbank.com/credit-cards/"
       ],
-      "official_link": "https://www.rbcroyalbank.com/credit-cards/"
+      "official_link": "https://www.rbcroyalbank.com/credit-cards/travel/rbc-avion-visa-infinite-privilege.html"
     },
     {
       "id": "rbc_ion_plus",
@@ -3665,7 +3665,7 @@
       "sources": [
         "https://www.rbcroyalbank.com/credit-cards/"
       ],
-      "official_link": "https://www.rbcroyalbank.com/credit-cards/"
+      "official_link": "https://www.rbcroyalbank.com/credit-cards/low-interest/rbc-rateadvantage-visa.html"
     },
     {
       "id": "rbc_u_s_dollar_visa_gold",
@@ -3691,7 +3691,7 @@
       "sources": [
         "https://www.rbcroyalbank.com/credit-cards/"
       ],
-      "official_link": "https://www.rbcroyalbank.com/credit-cards/"
+      "official_link": "https://www.rbcroyalbank.com/credit-cards/travel/rbc-us-dollar-visa-gold.html"
     },
     {
       "id": "rbc_visa_classic_low_rate",
@@ -3717,7 +3717,7 @@
       "sources": [
         "https://www.rbcroyalbank.com/credit-cards/"
       ],
-      "official_link": "https://www.rbcroyalbank.com/credit-cards/"
+      "official_link": "https://www.rbcroyalbank.com/credit-cards/low-interest/rbc-visa-classic-low-rate.html"
     },
     {
       "id": "rbc_visa_platinum",
@@ -3743,7 +3743,7 @@
       "sources": [
         "https://www.rbcroyalbank.com/credit-cards/"
       ],
-      "official_link": "https://www.rbcroyalbank.com/credit-cards/"
+      "official_link": "https://www.rbcroyalbank.com/credit-cards/no-fee/rbc-visa-platinum.html"
     },
     {
       "id": "rbc_avion_visa_platinum",
@@ -3889,7 +3889,7 @@
         "https://rogersbank.com/en/rogers_red_worldelite_details",
         "https://rogersbank.com/en/rogers_mastercard_details"
       ],
-      "official_link": "https://rogersbank.com/en/rogers_red_worldelite_details"
+      "official_link": "https://www.rogersbank.com/en/rogers_red_worldelite_mastercard_details"
     },
     {
       "id": "scotia_american_express",
@@ -4196,7 +4196,7 @@
       "sources": [
         "https://www.scotiabank.com/ca/en/personal/credit-cards.html"
       ],
-      "official_link": "https://www.scotiabank.com/ca/en/personal/credit-cards.html"
+      "official_link": "https://www.scotiabank.com/ca/en/personal/credit-cards/visa/value-card.html"
     },
     {
       "id": "scotia_passport_business_vi",
@@ -4752,7 +4752,7 @@
       "subcategory_earn_rates": {
         "travel_air_canada_direct": 2
       },
-      "official_link": "https://www.td.com/ca/en/personal-banking/products/credit-cards"
+      "official_link": "https://www.td.com/ca/en/personal-banking/products/credit-cards/aeroplan/aeroplan-visa-infinite-card"
     },
     {
       "id": "td_cash_back_vi",
@@ -4850,7 +4850,7 @@
         "https://www.td.com/ca/en/personal-banking/products/credit-cards/cash-back-rewards/cash-back-visa-infinite-card",
         "https://www.td.com/ca/en/personal-banking/products/credit-cards"
       ],
-      "official_link": "https://www.td.com/ca/en/personal-banking/products/credit-cards"
+      "official_link": "https://www.td.com/ca/en/personal-banking/products/credit-cards/cash-back/cash-back-visa-infinite-card"
     },
     {
       "id": "td_cash_back_visa",
@@ -4944,7 +4944,7 @@
         "https://www.td.com/ca/en/personal-banking/products/credit-cards/cash-back-rewards/cash-back-visa-card",
         "https://www.td.com/ca/en/personal-banking/products/credit-cards"
       ],
-      "official_link": "https://www.td.com/ca/en/personal-banking/products/credit-cards"
+      "official_link": "https://www.td.com/ca/en/personal-banking/products/credit-cards/cash-back/cash-back-visa-card"
     },
     {
       "id": "td_first_class_travel_vi",
@@ -5073,7 +5073,7 @@
       "sources": [
         "https://www.timhortons.ca/tims-financial"
       ],
-      "official_link": "https://www.timhortons.ca/tims-financial"
+      "official_link": "https://timsfinancial.ca/en/tims-mastercard.html"
     },
     {
       "id": "walmart_rewards_mastercard",
