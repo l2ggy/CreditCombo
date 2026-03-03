@@ -1,6 +1,13 @@
-:root{--divider-ink:color-mix(in srgb,var(--color-border) 78%,transparent);--divider-gradient-horizontal:linear-gradient(90deg,transparent 0%,var(--divider-ink) 16%,var(--divider-ink) 84%,transparent 100%);--divider-gradient-vertical:linear-gradient(180deg,transparent 0%,var(--divider-ink) 16%,var(--divider-ink) 84%,transparent 100%)}
+:root{--divider-ink:color-mix(in srgb,var(--color-border) 78%,transparent);--divider-gradient-horizontal:linear-gradient(90deg,transparent 0%,var(--divider-ink) 16%,var(--divider-ink) 84%,transparent 100%);--divider-gradient-vertical:linear-gradient(180deg,transparent 0%,var(--divider-ink) 16%,var(--divider-ink) 84%,transparent 100%);--site-shell-bg-color:color-mix(in srgb,var(--color-bg) 76%,#000 24%);--site-shell-glow-a:color-mix(in srgb,var(--color-accent) 18%,transparent);--site-shell-glow-b:color-mix(in srgb,var(--color-brand-highlight) 16%,transparent);--site-shell-glow-c:color-mix(in srgb,var(--color-accent) 12%,transparent)}
 *{box-sizing:border-box}
-body{margin:0;background:var(--color-bg);color:var(--color-text);font:var(--font-size-lg)/var(--line-height-base)system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+html,body{min-height:100%;background-color:var(--site-shell-bg-color)}
+body{position:relative;min-height:100vh;margin:0;background:transparent;color:var(--color-text);font:var(--font-size-lg)/var(--line-height-base)system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;overflow-x:hidden;isolation:isolate}
+body::before,body::after{content:"";position:fixed;inset:-20vmax;pointer-events:none;z-index:-1;filter:blur(10px)}
+body::before{background:radial-gradient(56vmax 48vmax at 14% 16%,var(--site-shell-glow-a) 0%,transparent 72%),radial-gradient(44vmax 40vmax at 86% 14%,var(--site-shell-glow-b) 0%,transparent 74%),radial-gradient(36vmax 34vmax at 66% 78%,var(--site-shell-glow-c) 0%,transparent 76%);opacity:.58;animation:bgFloatA 53s cubic-bezier(.37,.03,.2,.99) infinite alternate}
+body::after{background:radial-gradient(48vmax 40vmax at 78% 24%,var(--site-shell-glow-b) 0%,transparent 72%),radial-gradient(40vmax 36vmax at 24% 72%,var(--site-shell-glow-c) 0%,transparent 74%),radial-gradient(28vmax 28vmax at 52% 52%,color-mix(in srgb,var(--color-brand-highlight) 10%,transparent) 0%,transparent 75%);opacity:.46;animation:bgFloatB 67s cubic-bezier(.37,.03,.2,.99) infinite alternate-reverse}
+
+@keyframes bgFloatA{0%{transform:translate3d(-2.2%,-1.2%,0) scale(1.02)}19%{transform:translate3d(1.1%,-2.4%,0) scale(1.06)}37%{transform:translate3d(2.6%,.7%,0) scale(1.04)}58%{transform:translate3d(-1.5%,2.2%,0) scale(1.07)}79%{transform:translate3d(.6%,-1.7%,0) scale(1.03)}100%{transform:translate3d(-1.1%,1.4%,0) scale(1.05)}}
+@keyframes bgFloatB{0%{transform:translate3d(2.1%,1.2%,0) scale(1.04)}23%{transform:translate3d(-1.2%,2.7%,0) scale(1.08)}44%{transform:translate3d(-2.5%,-1.7%,0) scale(1.02)}69%{transform:translate3d(1.8%,-2.3%,0) scale(1.09)}87%{transform:translate3d(-.8%,1.6%,0) scale(1.05)}100%{transform:translate3d(1.2%,-1.1%,0) scale(1.03)}}
 
 h1{margin:0 0 var(--space-2);font-size:var(--font-size-3xl)}
 .pageTitle{font-size:var(--font-size-2xl);line-height:var(--line-height-tight)}
@@ -114,7 +121,7 @@ tbody tr:last-child td{border-bottom:none}
 
 @keyframes contactBtnGlowPulse{from{box-shadow:0 0 0 1px color-mix(in srgb,var(--color-accent) 40%,transparent),0 0 12px color-mix(in srgb,var(--color-accent) 24%,transparent),0 0 20px color-mix(in srgb,var(--color-accent) 14%,transparent)}to{box-shadow:0 0 0 1px color-mix(in srgb,var(--color-accent) 48%,transparent),0 0 18px color-mix(in srgb,var(--color-accent) 34%,transparent),0 0 30px color-mix(in srgb,var(--color-accent) 24%,transparent)}}
 
-@media (prefers-reduced-motion:reduce){.contactBtn{transition:none}.contactBtn:hover,.contactBtn:focus-visible{animation:none}}
+@media (prefers-reduced-motion:reduce){body::before,body::after{animation:none}.contactBtn{transition:none}.contactBtn:hover,.contactBtn:focus-visible{animation:none}}
 @media (min-width:901px){.status .muted{white-space:nowrap}}
 @media (max-width:900px){.topNav{justify-content:flex-start}.header{flex-direction:column;align-items:flex-start}.headerActions{width:100%;justify-content:space-between}.footerContent{align-items:flex-start}.splitBody{grid-template-columns:1fr}}
 @media (max-width:700px){.topNav{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"brand toggle" "links links";align-items:center;column-gap:var(--space-3);row-gap:var(--space-2);width:100%}.siteBrand{grid-area:brand}.themeToggle{grid-area:toggle;justify-self:end}.topNavLinks{grid-area:links;display:flex;flex-wrap:wrap;gap:var(--space-3);margin-left:0}}
