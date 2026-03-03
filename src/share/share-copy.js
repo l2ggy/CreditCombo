@@ -30,6 +30,7 @@ export function buildShareCopy({ mode = "ideal_combo", privacyMode = "full", met
       kicker,
       headline,
       subheadline,
+      punchLine: isCurrent ? "My current cards, optimized." : "My ideal CreditCombo, dialed in.",
       heroLabel: "Effective earn rate",
       heroValue: formatPercent(metrics.effectiveEarnRate),
       supportLine: `Gross earn rate: ${formatPercent(metrics.grossEarnRate)}`,
@@ -48,6 +49,9 @@ export function buildShareCopy({ mode = "ideal_combo", privacyMode = "full", met
     kicker,
     headline,
     subheadline,
+    punchLine: isCurrent
+      ? "Smarter rewards from the cards I already own."
+      : "My ideal CreditCombo: maximum value from the same spend.",
     heroLabel,
     heroValue,
     supportLine,
