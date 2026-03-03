@@ -105,5 +105,5 @@
 
 @media (prefers-reduced-motion:reduce){.spendControlCaret,.issues summary::after,.issuesBody{transition:none}.issuesBody{transform:none}.resultPanel #result .resultContent--enter{animation:none;transform:none}}
 
-@media (max-width:900px){.layout{grid-template-columns:1fr}.spendRowTop,.subcategoryItem{grid-template-columns:1fr;align-items:start;gap:var(--space-2)}.subcategoryPanel{grid-template-columns:1fr}.spendMeta{overflow:visible}.spendCat{white-space:normal;overflow:visible;text-overflow:clip}.tileGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:900px){.layout{grid-template-columns:1fr}.spendRow{grid-template-columns:1fr;align-items:start}.spendInputWrap{grid-column:1/-1}.spendRowTop,.subcategoryItem{grid-template-columns:1fr;align-items:start;gap:var(--space-2)}.subcategoryPanel{grid-template-columns:1fr}.spendMeta{overflow:visible}.spendMetaControls{white-space:normal}.spendCat{white-space:normal;overflow:visible;text-overflow:clip}.tileGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:380px){.tileGrid{grid-template-columns:1fr}}
