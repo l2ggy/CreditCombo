@@ -5,8 +5,11 @@ function asNumber(value, fallback = 0) {
 
 export function buildOptimizerDeepLink(state = {}) {
   const params = new URLSearchParams();
-  params.set("mode", state.mode === "current_cards" ? "current_cards" : "ideal_combo");
-  params.set("k", String(Math.max(0, Number(state.k) || 0)));
+  const mode = state.mode === "current_cards" ? "current_cards" : "ideal_combo";
+  const k = mode === "current_cards" ? 0 : Math.max(0, Number(state.k) || 0);
+
+  params.set("mode", mode);
+  params.set("k", String(k));
   params.set("autorun", "1");
 
   if (state.valuationMode === "minimum_guaranteed") {
