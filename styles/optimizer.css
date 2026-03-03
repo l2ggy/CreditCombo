@@ -123,10 +123,11 @@ body.shareOpen{overflow:hidden}
 .shareHeroLabel{margin:0;color:#bfdbfe;font-weight:600;font-size:var(--font-size-sm)}
 .shareHeroValue{margin:0;font-size:clamp(38px,5.4vw,64px);line-height:1.02;font-weight:800;color:#fff;letter-spacing:-.02em}
 .shareSupport{margin:0;color:#dbeafe;font-size:clamp(14px,1.4vw,18px)}
-.shareThumbStack{position:relative;display:flex;align-items:flex-end;height:70px;padding-right:calc(var(--space-2) * 2)}
-.shareThumbItem{position:relative;margin-right:calc(var(--space-4) * -1);filter:drop-shadow(0 6px 10px rgba(2,6,23,.35))}
-.shareThumbItem:last-child{margin-right:0}
-.shareThumbItem .thumb{display:block;width:94px;height:auto;max-width:none}
+.shareThumbRows{display:grid;gap:var(--space-4);align-content:center;min-height:360px}
+.shareThumbRow{display:flex;justify-content:center;align-items:flex-end}
+.shareThumbRow .shareThumbItem + .shareThumbItem{margin-left:calc(var(--space-5) * -1)}
+.shareThumbItem{position:relative;filter:drop-shadow(0 8px 16px rgba(2,6,23,.35))}
+.shareThumbItem .thumb{display:block;width:min(30vw,170px);height:auto;max-width:none}
 .shareCardFooter{display:flex;justify-content:space-between;align-items:flex-end;gap:var(--space-4)}
 .shareCta{margin:0;color:#f8fafc;font-weight:700;font-size:clamp(15px,1.8vw,20px)}
 .shareCardFooter a{word-break:break-all;color:#bfdbfe;font-size:var(--font-size-sm);line-height:1.45}
@@ -134,4 +135,4 @@ body.shareOpen{overflow:hidden}
 .shareActionsRow{display:flex;gap:var(--space-3);margin-top:var(--space-6);flex-wrap:wrap}
 .shareActionsRow button{width:auto}
 
-@media (max-width:640px){.shareDialog{padding:var(--space-4)}.shareCard{padding:var(--space-5)}.shareThumbStack{height:58px}.shareThumbItem .thumb{width:78px}.shareCardFooter{flex-direction:column;align-items:flex-start}.shareQr{width:78px;height:78px}}
+@media (max-width:640px){.shareDialog{padding:var(--space-4)}.shareCard{padding:var(--space-5)}.shareThumbRows{min-height:250px;gap:var(--space-3)}.shareThumbItem .thumb{width:min(29vw,124px)}.shareCardFooter{flex-direction:column;align-items:flex-start}.shareQr{width:78px;height:78px}}

@@ -12,6 +12,6 @@ export function buildSharePayload({ mode = "ideal_combo", deepLinkState = {}, co
     text: `${copy.headline || "My CreditCombo"} · ${copy.heroValue || ""}`.trim(),
     restorableUrl,
     publicCtaUrl,
-    qrImageUrl: `https://api.qrserver.com/v1/create-qr-code/?size=180x180&margin=0&data=${encodeURIComponent(publicCtaUrl)}`
+    qrImageUrl: `https://quickchart.io/qr?size=180&margin=0&text=${encodeURIComponent(publicCtaUrl)}&dark=000000&light=FFFFFF`
   };
 }
