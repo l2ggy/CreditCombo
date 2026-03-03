@@ -13,6 +13,7 @@ export function buildShareCopy({ mode = "ideal_combo", privacyMode = "full", met
   const isCurrent = mode === "current_cards";
   const hideSpend = privacyMode === "earn_rate_only";
   const uplift = Number(metrics.uplift || 0);
+  const kicker = isCurrent ? "My CreditCombo" : "My ideal CreditCombo";
 
   const headline = isCurrent
     ? "I optimized my current wallet with CreditCombo"
@@ -26,11 +27,13 @@ export function buildShareCopy({ mode = "ideal_combo", privacyMode = "full", met
 
   if (hideSpend) {
     return {
+      kicker,
       headline,
       subheadline,
       heroLabel: "Effective earn rate",
       heroValue: formatPercent(metrics.effectiveEarnRate),
       supportLine: `Gross earn rate: ${formatPercent(metrics.grossEarnRate)}`,
+      detailLine: "Optimized rewards strategy, shared without personal spend totals.",
       ctaText: "Check your CreditCombo"
     };
   }
@@ -42,11 +45,15 @@ export function buildShareCopy({ mode = "ideal_combo", privacyMode = "full", met
     : `Effective earn rate: ${formatPercent(metrics.effectiveEarnRate)}`;
 
   return {
+    kicker,
     headline,
     subheadline,
     heroLabel,
     heroValue,
     supportLine,
+    detailLine: isCurrent
+      ? "Built from my existing cards with clear upside potential."
+      : "A higher-upside setup tuned to my real spending mix.",
     ctaText: "Check your CreditCombo"
   };
 }
