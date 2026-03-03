@@ -2,7 +2,7 @@
 *{box-sizing:border-box}
 html,body{min-height:100%;background-color:var(--site-shell-bg-color)}
 body{position:relative;min-height:100vh;margin:0;background:transparent;color:var(--color-text);font:var(--font-size-lg)/var(--line-height-base)system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;overflow-x:hidden;isolation:isolate}
-body::before,body::after{content:"";position:fixed;inset:-16vmax;pointer-events:none;z-index:-1;filter:blur(6px)}
+body::before,body::after{content:"";position:absolute;inset:-16vmax;pointer-events:none;z-index:-1;filter:blur(6px)}
 body::before{background:radial-gradient(52vmax 42vmax at 14% 16%,var(--site-shell-glow-a) 0%,transparent 70%),radial-gradient(42vmax 36vmax at 86% 14%,var(--site-shell-glow-b) 0%,transparent 72%),radial-gradient(34vmax 30vmax at 66% 78%,var(--site-shell-glow-c) 0%,transparent 74%),radial-gradient(40vmax 32vmax at 50% 48%,color-mix(in srgb,var(--color-accent) 14%,transparent) 0%,transparent 76%);opacity:.64;animation:bgFloatA 46s linear infinite,bgPulseA 15s ease-in-out infinite}
 body::after{background:radial-gradient(46vmax 38vmax at 78% 24%,var(--site-shell-glow-b) 0%,transparent 70%),radial-gradient(38vmax 32vmax at 24% 72%,var(--site-shell-glow-c) 0%,transparent 72%),radial-gradient(28vmax 28vmax at 52% 52%,color-mix(in srgb,var(--color-brand-highlight) 14%,transparent) 0%,transparent 74%),radial-gradient(34vmax 28vmax at 18% 38%,color-mix(in srgb,var(--color-accent) 12%,transparent) 0%,transparent 76%);opacity:.5;animation:bgFloatB 58s linear infinite,bgPulseB 19s ease-in-out infinite}
 
