@@ -472,7 +472,7 @@ function renderPostQuizScreen() {
     const upliftValue = Number(uplift || 0);
     calloutEl.classList.remove("hidden");
     calloutEl.textContent = upliftValue > 0
-      ? `With your ideal CreditCombo, you could earn +${formatMoneyCAD(upliftValue)}/year more.`
+      ? `On this spend, your ideal CreditCombo would earn you +${formatMoneyCAD(upliftValue)}/year more.`
       : "Your current setup is already close to your upside for this spend profile.";
   } else {
     calloutEl.classList.add("hidden");
