@@ -16,20 +16,8 @@ export function renderSpendTable(el, schema, categoryDescriptions = {}, subcateg
 
   bindSpendRowDetailsControls(el);
 
-  const spendTotalEl = document.getElementById("spendTotal");
-
   const updateSpendTotal = (changedInput = null) => {
-    syncParentSpendFromSubcategories(el, subcategoryConfigs, changedInput);
-
-    const total = [...el.querySelectorAll("input[data-cat]")].reduce((sum, input) => {
-      const value = Number(input.value);
-      if (!Number.isFinite(value) || value < 0) return sum;
-      return sum + value;
-    }, 0);
-
-    if (spendTotalEl) {
-      spendTotalEl.textContent = `Total monthly spend: ${formatMoneyCAD(total, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
-    }
+    refreshSpendSummary(el, subcategoryConfigs, changedInput);
   };
 
   const orderedInputs = [...el.querySelectorAll("input[data-cat], input[data-subcategory-key]")];
@@ -53,6 +41,21 @@ export function renderSpendTable(el, schema, categoryDescriptions = {}, subcateg
 
 
   updateSpendTotal();
+}
+
+export function refreshSpendSummary(el, subcategoryConfigs = {}, changedInput = null) {
+  syncParentSpendFromSubcategories(el, subcategoryConfigs, changedInput);
+
+  const spendTotalEl = document.getElementById("spendTotal");
+  const total = [...el.querySelectorAll("input[data-cat]")].reduce((sum, input) => {
+    const value = Number(input.value);
+    if (!Number.isFinite(value) || value < 0) return sum;
+    return sum + value;
+  }, 0);
+
+  if (spendTotalEl) {
+    spendTotalEl.textContent = `Total monthly spend: ${formatMoneyCAD(total, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
+  }
 }
 
 
