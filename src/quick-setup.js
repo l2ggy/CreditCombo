@@ -152,6 +152,10 @@ function stepSpend(cat) {
         <div class="quickAnswerArea">
           <label class="quickLabel" for="quickSpendInput">Monthly amount</label>
           <input id="quickSpendSlider" type="range" min="${slider.min}" max="${slider.max}" step="${slider.step}" value="${sliderValue}" />
+          <div class="quickSliderBounds" aria-hidden="true">
+            <span>$${slider.min}</span>
+            <span>$${slider.max}</span>
+          </div>
           <input id="quickSpendInput" class="quickBigInput" type="number" min="0" step="1" value="${value}" placeholder="0" />
         </div>
       `;
@@ -178,7 +182,7 @@ function stepSpend(cat) {
       });
 
       const save = () => {
-        const amount = Math.min(slider.max, Math.max(slider.min, Number(input.value) || 0));
+        const amount = Math.max(slider.min, Number(input.value) || 0);
         state.monthlySpend[cat] = amount;
         input.value = String(amount);
         syncValue(amount);
