@@ -24,9 +24,9 @@ export function createShareOverlay() {
         <button type="button" class="btn-inline shareOverlay__close" aria-label="Close share panel" data-share-close>Close</button>
       </div>
       <div class="divider"></div>
-      <div class="shareOverlay__loading loadingState" role="status" aria-live="polite">
+      <div class="shareOverlay__status hidden" role="status" aria-live="polite">
         <span class="loadingSpinner" aria-hidden="true"></span>
-        <span>Preparing your share card…</span>
+        <span>Preparing…</span>
       </div>
       <div class="shareOverlay__body hidden">
         <div class="shareCard" id="shareCard">
@@ -57,7 +57,7 @@ export function createShareOverlay() {
   const cardEl = root.querySelector("#shareCard");
   const cardsEl = root.querySelector(".shareCard__cards");
   const qrEl = root.querySelector(".shareCard__qr");
-  const loadingEl = root.querySelector(".shareOverlay__loading");
+  const statusEl = root.querySelector(".shareOverlay__status");
   const bodyEl = root.querySelector(".shareOverlay__body");
   const actionsEl = root.querySelector(".shareOverlay__actions");
   const nativeBtn = root.querySelector("[data-share-native]");
@@ -76,31 +76,34 @@ export function createShareOverlay() {
     if (!state.best?.combo?.length) return;
     root.hidden = false;
     root.classList.add("is-open");
-    showLoading();
+    setBodyScrollLock(true);
+    showStatus();
 
     try {
       await prepare();
       showBody();
     } catch {
-      loadingEl.innerHTML = "<span>Couldn’t prepare the share card yet. Please try again.</span>";
+      showStatus("Couldn’t prepare your share card. Please try again.");
     }
   }
 
   function close() {
     root.classList.remove("is-open");
+    setBodyScrollLock(false);
     window.setTimeout(() => {
       if (!root.classList.contains("is-open")) root.hidden = true;
     }, 170);
   }
 
-  function showLoading() {
-    loadingEl.classList.remove("hidden");
+  function showStatus(message = "Preparing…") {
+    statusEl.classList.remove("hidden");
+    statusEl.lastElementChild.textContent = message;
     bodyEl.classList.add("hidden");
     actionsEl.classList.add("hidden");
   }
 
   function showBody() {
-    loadingEl.classList.add("hidden");
+    statusEl.classList.add("hidden");
     bodyEl.classList.remove("hidden");
     actionsEl.classList.remove("hidden");
   }
@@ -161,12 +164,18 @@ export function createShareOverlay() {
     qrEl.src = state.qrSrc;
     qrEl.referrerPolicy = "no-referrer";
     qrEl.crossOrigin = "anonymous";
-    await waitForImage(qrEl);
+
+    try {
+      await waitForImage(qrEl, 3500);
+    } catch {
+      qrEl.removeAttribute("src");
+      state.qrSrc = "";
+    }
   }
 
   async function nativeShare() {
     if (!(navigator.share && window.isSecureContext)) return;
-    showLoading();
+    showStatus("Preparing share…");
     await prepare();
 
     const copy = buildShareCopy({
@@ -190,14 +199,14 @@ export function createShareOverlay() {
 
       await navigator.share(shareData);
     } catch {
-      // user canceled or device does not support share target.
+      // user canceled or device does not support share target
     } finally {
       showBody();
     }
   }
 
   async function downloadPng() {
-    showLoading();
+    showStatus("Rendering PNG…");
     await prepare();
     const blob = await getPngBlob();
     const link = document.createElement("a");
@@ -258,14 +267,15 @@ export function createShareOverlay() {
     ctx.font = "500 34px system-ui, -apple-system, Segoe UI, sans-serif";
     ctx.fillText(copy.urlLabel, 90, 1070);
 
-    try {
-      const qr = await loadImage(state.qrSrc);
-      ctx.fillStyle = "#ffffff";
-      ctx.fillRect(920, 890, 206, 206);
-      ctx.drawImage(qr, 936, 906, 174, 174);
-    } catch {
-      ctx.fillStyle = "#ffffff";
-      ctx.fillRect(920, 890, 206, 206);
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(920, 890, 206, 206);
+    if (state.qrSrc) {
+      try {
+        const qr = await loadImage(state.qrSrc);
+        ctx.drawImage(qr, 936, 906, 174, 174);
+      } catch {
+        // keep blank QR container
+      }
     }
 
     return canvas;
@@ -315,14 +325,35 @@ function loadImage(src) {
   });
 }
 
-function waitForImage(img) {
+function waitForImage(img, timeoutMs = 3500) {
   return new Promise((resolve, reject) => {
     if (img.complete && img.naturalWidth > 0) {
       resolve();
       return;
     }
-    img.addEventListener("load", () => resolve(), { once: true });
-    img.addEventListener("error", () => reject(new Error("Failed to load image")), { once: true });
+
+    const timeout = window.setTimeout(() => {
+      cleanup();
+      reject(new Error("Image load timed out"));
+    }, timeoutMs);
+
+    const onLoad = () => {
+      cleanup();
+      resolve();
+    };
+    const onError = () => {
+      cleanup();
+      reject(new Error("Failed to load image"));
+    };
+
+    function cleanup() {
+      window.clearTimeout(timeout);
+      img.removeEventListener("load", onLoad);
+      img.removeEventListener("error", onError);
+    }
+
+    img.addEventListener("load", onLoad);
+    img.addEventListener("error", onError);
   });
 }
 
@@ -333,6 +364,10 @@ function canvasToBlob(canvas) {
       else reject(new Error("Failed to encode PNG"));
     }, "image/png");
   });
+}
+
+function setBodyScrollLock(locked) {
+  document.body.style.overflow = locked ? "hidden" : "";
 }
 
 function mixColors(hexA, hexB, ratio) {
