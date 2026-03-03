@@ -355,12 +355,18 @@ function goBack() {
   renderWizard();
 }
 
+function selectedMode() {
+  if (state.mode === "current_cards") return "current_cards";
+  if (state.quizResponses?.goal === "current_cards") return "current_cards";
+  return "ideal_combo";
+}
+
 function selectedValuationMode() {
   return state.valuationMode || "estimated";
 }
 
 function buildOptimizationPayload(overrides = {}) {
-  const mode = overrides.mode || state.mode;
+  const mode = overrides.mode || selectedMode();
   const lockedCardIds = overrides.lockedCardIds || (mode === "current_cards" ? state.lockedCardIds : []);
   const k = Number.isFinite(overrides.k) ? overrides.k : (mode === "current_cards" ? 0 : Math.max(1, Number(state.k) || 1));
 
@@ -391,13 +397,14 @@ function computeScenarioResult(overrides = {}) {
 }
 
 async function showPostQuizResults() {
-  if (state.mode === "current_cards") state.k = 0;
+  if (selectedMode() === "current_cards") state.k = 0;
   state.view = "results";
 
-  const current = computeScenarioResult({ mode: state.mode });
+  const currentMode = selectedMode();
+  const current = computeScenarioResult({ mode: currentMode });
   let uplift = null;
 
-  if (state.mode === "current_cards") {
+  if (currentMode === "current_cards") {
     const ideal = computeScenarioResult({ mode: "ideal_combo", lockedCardIds: [], k: 5 });
     uplift = Number(ideal.best.net || 0) - Number(current.best.net || 0);
   }
@@ -411,7 +418,8 @@ async function showPostQuizResults() {
 }
 
 function renderPostQuizScreen() {
-  const resultState = state.results || computeScenarioResult({ mode: state.mode });
+  const currentMode = selectedMode();
+  const resultState = state.results || computeScenarioResult({ mode: currentMode });
   const { best, payload, chexySummary, uplift } = resultState;
 
   appEl.innerHTML = `
@@ -436,7 +444,7 @@ function renderPostQuizScreen() {
   `;
 
   const calloutEl = appEl.querySelector("#quickResultsCallout");
-  if (state.mode === "current_cards") {
+  if (currentMode === "current_cards") {
     const upliftValue = Number(uplift || 0);
     calloutEl.classList.remove("hidden");
     calloutEl.textContent = upliftValue > 0
@@ -455,7 +463,8 @@ function renderPostQuizScreen() {
     // TODO: add income-based filtering once card income requirements are integrated.
     const deepLinkState = {
       ...state,
-      k: state.mode === "current_cards" ? 0 : Math.max(1, Number(state.k) || 1),
+      mode: currentMode,
+      k: currentMode === "current_cards" ? 0 : Math.max(1, Number(state.k) || 1),
       valuationMode: selectedValuationMode()
     };
     window.location.assign(buildOptimizerDeepLink(deepLinkState));
