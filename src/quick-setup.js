@@ -59,7 +59,7 @@ function stepSpend(cat) {
     render(contentEl) {
       const value = state.monthlySpend[cat] ?? "";
       contentEl.innerHTML = `
-        <h2 class="quickPrompt">What is your estimated / average monthly spend on ${titleForCategory(cat)}?</h2>
+        <h2 class="quickPrompt">What is your average monthly spend on ${titleForCategory(cat)}?</h2>
         <div class="quickAnswerArea">
           <input id="quickSpendInput" class="quickBigInput" type="number" min="0" step="1" value="${value}" placeholder="0" />
         </div>
