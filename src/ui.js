@@ -22,7 +22,7 @@ export function renderSpendTable(el, schema, categoryDescriptions = {}, subcateg
 
   const orderedInputs = [...el.querySelectorAll("input[data-cat], input[data-subcategory-key]")];
 
-  orderedInputs.forEach((inp, index) => {
+  orderedInputs.forEach((inp) => {
     inp.addEventListener("input", () => updateSpendTotal(inp));
 
     inp.addEventListener("focus", () => {
@@ -32,7 +32,10 @@ export function renderSpendTable(el, schema, categoryDescriptions = {}, subcateg
     inp.addEventListener("keydown", (event) => {
       if (event.key !== "Enter") return;
       event.preventDefault();
-      const nextInput = orderedInputs[index + 1];
+
+      const visibleInputs = orderedInputs.filter((input) => isFocusableSpendInput(input));
+      const currentIndex = visibleInputs.indexOf(inp);
+      const nextInput = currentIndex >= 0 ? visibleInputs[currentIndex + 1] : null;
       if (nextInput) nextInput.focus();
     });
 
@@ -58,6 +61,15 @@ export function refreshSpendSummary(el, subcategoryConfigs = {}, changedInput = 
   }
 }
 
+
+function isFocusableSpendInput(input) {
+  if (!(input instanceof HTMLInputElement)) return false;
+  if (input.disabled) return false;
+
+  const style = window.getComputedStyle(input);
+  if (style.visibility === "hidden" || style.display === "none") return false;
+  return input.getClientRects().length > 0;
+}
 
 function syncParentSpendFromSubcategories(el, subcategoryConfigs = {}, changedInput = null) {
   for (const [parentCategory, configs] of Object.entries(subcategoryConfigs || {})) {
