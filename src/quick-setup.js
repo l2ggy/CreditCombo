@@ -29,9 +29,11 @@ function stepGoal() {
       contentEl.innerHTML = `
         <h2 class="quickPrompt">What are you trying to do today?</h2>
         <p class="quickLead">Pick one option to continue.</p>
-        <div class="quickGoalGrid">
-          <button type="button" class="quickGoalBtn" data-mode="ideal_combo">Find me the best possible CreditCombo</button>
-          <button type="button" class="quickGoalBtn" data-mode="current_cards">Help me use my current cards better</button>
+        <div class="quickAnswerArea">
+          <div class="quickGoalGrid">
+            <button type="button" class="quickGoalBtn" data-mode="ideal_combo">Find me the best possible CreditCombo</button>
+            <button type="button" class="quickGoalBtn" data-mode="current_cards">Help me use my current cards better</button>
+          </div>
         </div>
       `;
 
@@ -58,7 +60,9 @@ function stepSpend(cat) {
       const value = state.monthlySpend[cat] ?? "";
       contentEl.innerHTML = `
         <h2 class="quickPrompt">What is your estimated / average monthly spend on ${titleForCategory(cat)}?</h2>
-        <input id="quickSpendInput" class="quickBigInput" type="number" min="0" step="1" value="${value}" placeholder="0" />
+        <div class="quickAnswerArea">
+          <input id="quickSpendInput" class="quickBigInput" type="number" min="0" step="1" value="${value}" placeholder="0" />
+        </div>
       `;
 
       const input = contentEl.querySelector("#quickSpendInput");
@@ -93,10 +97,12 @@ function stepCurrentCards() {
 
       contentEl.innerHTML = `
         <h2 class="quickPrompt">Which cards do you already have?</h2>
-        <div class="quickSearch">
+        <div class="quickAnswerArea">
+          <div class="quickSearch">
           <input id="quickCardSearch" class="quickBigInput" type="search" placeholder="Type card or issuer name" autocomplete="off" />
           <div id="quickCardOptions" class="listBox hidden" role="listbox" aria-label="Matching cards"></div>
           <div id="quickCardPicks" class="chipList muted"></div>
+          </div>
         </div>
       `;
 
@@ -182,8 +188,10 @@ function stepK() {
       const value = Number.isFinite(state.k) ? Math.max(0, state.k) : 1;
       contentEl.innerHTML = `
         <h2 class="quickPrompt">What’s the maximum number of cards you’d want to carry with you?</h2>
-        <label class="quickLabel" for="quickK">Max cards to carry <span id="quickKValue" class="value-pill">${value}</span></label>
-        <input id="quickK" type="range" min="0" max="5" step="1" value="${value}" />
+        <div class="quickAnswerArea">
+          <label class="quickLabel" for="quickK">Max cards to carry <span id="quickKValue" class="value-pill">${value}</span></label>
+          <input id="quickK" type="range" min="0" max="5" step="1" value="${value}" />
+        </div>
       `;
 
       const input = contentEl.querySelector("#quickK");
@@ -209,13 +217,15 @@ function stepValuation() {
         <h2 class="quickPrompt">How do you usually redeem rewards?</h2>
         <p class="quickLead">Pick the option that sounds most like you.</p>
         <p class="quickHint">Choose one option to continue.</p>
-        <div class="quickGoalGrid">
-          <button type="button" class="quickGoalBtn ${state.valuationMode === "estimated" ? "is-selected" : ""}" data-valuation="estimated" aria-pressed="false">
+        <div class="quickAnswerArea">
+          <div class="quickGoalGrid">
+            <button type="button" class="quickGoalBtn ${state.valuationMode === "estimated" ? "is-selected" : ""}" data-valuation="estimated" aria-pressed="false">
             I look for great travel redemptions (higher upside)
           </button>
-          <button type="button" class="quickGoalBtn ${state.valuationMode === "minimum_guaranteed" ? "is-selected" : ""}" data-valuation="minimum_guaranteed" aria-pressed="false">
+            <button type="button" class="quickGoalBtn ${state.valuationMode === "minimum_guaranteed" ? "is-selected" : ""}" data-valuation="minimum_guaranteed" aria-pressed="false">
             I prefer statement credit / guaranteed value
           </button>
+          </div>
         </div>
       `;
 
