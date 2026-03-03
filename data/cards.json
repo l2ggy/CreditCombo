@@ -635,55 +635,6 @@
       ]
     },
     {
-      "id": "bmo_cashback_no_fee_mc",
-      "card_name": "BMO CashBack Mastercard (No Fee)",
-      "issuer": "BMO",
-      "network": "Mastercard",
-      "rewards_program": "bmo_cashback",
-      "is_business_card": false,
-      "annual_fee": {
-        "amount": 0,
-        "type": "annual"
-      },
-      "earn_rates": {
-        "grocery": 3,
-        "bills": 1,
-        "other": 0.5
-      },
-      "caps": [
-        {
-          "scope": "per_category",
-          "categories": [
-            "grocery"
-          ],
-          "cap_amount": 500,
-          "cap_period": "monthly",
-          "earn_rate_above_cap": 0.5,
-          "notes": "3% grocery applies to first $500 per statement period; then base rate."
-        },
-        {
-          "scope": "per_category",
-          "categories": [
-            "bills"
-          ],
-          "cap_amount": 500,
-          "cap_period": "monthly",
-          "earn_rate_above_cap": 0.5,
-          "notes": "1% recurring bill payments applies to first $500 per statement period; then base rate."
-        }
-      ],
-      "special_earn_rules": [
-        {
-          "type": "merchant_specific",
-          "description": "1% recurring bill payment earn is merchant/MCC dependent per issuer terms."
-        }
-      ],
-      "sources": [
-        "https://www.bmo.com/main/personal/credit-cards/bmo-cashback-mastercard/",
-        "https://www.bmo.com/main/personal/credit-cards/"
-      ]
-    },
-    {
       "id": "bmo_cashback_we",
       "card_name": "BMO CashBack World Elite Mastercard",
       "issuer": "BMO",
