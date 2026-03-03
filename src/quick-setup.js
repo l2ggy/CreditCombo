@@ -368,16 +368,21 @@ function renderWizard() {
 
   const backBtn = appEl.querySelector("#quickBack");
   const nextBtn = appEl.querySelector("#quickNext");
+  const actionsEl = appEl.querySelector(".quickActions");
 
-  if (currentStepIndex === 0) backBtn.classList.add("hidden");
+  const showBack = currentStepIndex > 0;
+  const showNext = !autoAdvance;
+
+  backBtn.classList.toggle("hidden", !showBack);
   backBtn.addEventListener("click", goBack);
 
+  nextBtn.classList.toggle("hidden", !showNext);
   nextBtn.addEventListener("click", () => {
     if (typeof beforeNext === "function") beforeNext();
     goNext();
   });
 
-  if (autoAdvance) nextBtn.classList.add("hidden");
+  actionsEl.classList.toggle("hidden", !(showBack || showNext));
 }
 
 async function main() {
