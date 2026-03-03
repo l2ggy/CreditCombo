@@ -26,58 +26,93 @@ function trapFocus(root, event) {
   }
 }
 
-async function downloadCardImage({ copy, payload, cards = [] }) {
-  const width = 1080;
-  const height = 1920;
-  const canvas = document.createElement("canvas");
-  canvas.width = width;
-  canvas.height = height;
-  const ctx = canvas.getContext("2d");
-
-  const gradient = ctx.createLinearGradient(0, 0, width, height);
-  gradient.addColorStop(0, "#14254d");
-  gradient.addColorStop(1, "#3b82f6");
-  ctx.fillStyle = gradient;
-  ctx.fillRect(0, 0, width, height);
-
-  ctx.fillStyle = "#f8fafc";
-  ctx.font = "bold 72px Inter, system-ui";
-  ctx.fillText("CreditCombo", 90, 170);
-  ctx.font = "bold 84px Inter, system-ui";
-  ctx.fillText(copy.heroValue || "", 90, 380);
-  ctx.font = "600 44px Inter, system-ui";
-  ctx.fillText(copy.heroLabel || "", 90, 450);
-  ctx.font = "500 40px Inter, system-ui";
-  ctx.fillText(copy.supportLine || "", 90, 530);
-
-  const thumbs = cards.slice(0, 3);
-  for (let index = 0; index < thumbs.length; index += 1) {
-    const card = thumbs[index];
-    const img = await new Promise((resolve) => {
-      const node = new Image();
-      node.crossOrigin = "anonymous";
-      node.onload = () => resolve(node);
-      node.onerror = () => resolve(null);
-      node.src = new URL(`./assets/cards/${card.id}.webp`, window.location.href).toString();
-    });
-    if (!img) continue;
-    const x = 90 + (index * 230);
-    const y = 700 + (index * 60);
-    ctx.drawImage(img, x, y, 320, 200);
-  }
-
-  ctx.fillStyle = "#dbeafe";
-  ctx.font = "600 42px Inter, system-ui";
-  ctx.fillText(copy.ctaText || "Check your CreditCombo", 90, 1300);
-  ctx.fillStyle = "#bfdbfe";
-  ctx.font = "500 30px Inter, system-ui";
-  ctx.fillText(payload.publicCtaUrl.replace(/^https?:\/\//, ""), 90, 1360);
-
-  const link = document.createElement("a");
-  link.href = canvas.toDataURL("image/png");
-  link.download = "creditcombo-share-card.png";
-  link.click();
+function blobToDataUrl(blob) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = () => reject(reader.error);
+    reader.readAsDataURL(blob);
+  });
 }
+
+async function inlineImages(root) {
+  const images = [...root.querySelectorAll("img")];
+  for (const img of images) {
+    const src = img.getAttribute("src");
+    if (!src || src.startsWith("data:")) continue;
+    try {
+      const response = await fetch(src, { mode: "cors" });
+      if (!response.ok) continue;
+      const blob = await response.blob();
+      const dataUrl = await blobToDataUrl(blob);
+      img.setAttribute("src", dataUrl);
+    } catch {
+      // Ignore image inline failures and keep original source.
+    }
+  }
+}
+
+function copyComputedStyles(source, target) {
+  const sourceStyle = window.getComputedStyle(source);
+  const style = [...sourceStyle]
+    .map((prop) => `${prop}:${sourceStyle.getPropertyValue(prop)};`)
+    .join("");
+  target.setAttribute("style", style);
+
+  const sourceChildren = [...source.children];
+  const targetChildren = [...target.children];
+  for (let index = 0; index < sourceChildren.length; index += 1) {
+    if (targetChildren[index]) copyComputedStyles(sourceChildren[index], targetChildren[index]);
+  }
+}
+
+async function downloadCardImage(cardEl) {
+  if (!(cardEl instanceof HTMLElement)) return;
+
+  const clone = cardEl.cloneNode(true);
+  copyComputedStyles(cardEl, clone);
+  await inlineImages(clone);
+
+  const width = Math.ceil(cardEl.getBoundingClientRect().width);
+  const height = Math.ceil(cardEl.getBoundingClientRect().height);
+  clone.setAttribute("xmlns", "http://www.w3.org/1999/xhtml");
+
+  const serialized = new XMLSerializer().serializeToString(clone);
+  const svg = `
+    <svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
+      <foreignObject width="100%" height="100%">${serialized}</foreignObject>
+    </svg>
+  `;
+
+  const image = new Image();
+  const svgBlob = new Blob([svg], { type: "image/svg+xml;charset=utf-8" });
+  const objectUrl = URL.createObjectURL(svgBlob);
+
+  const ready = new Promise((resolve, reject) => {
+    image.onload = resolve;
+    image.onerror = reject;
+  });
+  image.src = objectUrl;
+
+  try {
+    await ready;
+    const scale = Math.max(2, Math.min(4, window.devicePixelRatio || 2));
+    const canvas = document.createElement("canvas");
+    canvas.width = width * scale;
+    canvas.height = height * scale;
+    const context = canvas.getContext("2d");
+    context.scale(scale, scale);
+    context.drawImage(image, 0, 0, width, height);
+
+    const link = document.createElement("a");
+    link.href = canvas.toDataURL("image/png");
+    link.download = "creditcombo-share-card.png";
+    link.click();
+  } finally {
+    URL.revokeObjectURL(objectUrl);
+  }
+}
+
 
 export function createShareOverlay() {
   let active = null;
@@ -179,7 +214,7 @@ export function createShareOverlay() {
       });
 
       body.querySelector("[data-share-download]")?.addEventListener("click", async () => {
-        await downloadCardImage({ copy, payload, cards });
+        await downloadCardImage(body.querySelector(".shareCard"));
         emitShareEvent("share_image_downloaded", { page: config.page, mode: config.mode, privacy_mode: privacyMode });
       });
     };
