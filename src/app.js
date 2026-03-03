@@ -55,7 +55,7 @@ async function main() {
     if (hasDeepLinkValues || deepLinkState.autorun) await actions.hydrateFromDeepLink(deepLinkState);
     elements.appEl.classList.remove("hidden");
 
-    elements.runBtn.addEventListener("click", actions.runOptimization);
+    elements.runBtn.addEventListener("click", actions.runOptimizationManually);
     elements.clearSpendBtn?.addEventListener("click", actions.clearSpend);
     elements.kInput.addEventListener("input", () => actions.setK(elements.kInput.value));
     elements.valuationModeEl?.addEventListener("change", () => actions.setValuationMode(elements.valuationModeEl.value));
