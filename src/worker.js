@@ -1,4 +1,7 @@
-const ROOT_ICON_REWRITES = {
+const ROOT_PATH_REWRITES = {
+  "/quick-setup": "/quick-setup.html",
+
+
   "/favicon.ico": "/icons/favicon.ico",
   "/favicon-32x32.png": "/icons/favicon-32x32.png",
   "/apple-touch-icon.png": "/icons/apple-touch-icon.png",
@@ -12,7 +15,7 @@ const ROOT_ICON_REWRITES = {
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
-    const rewrittenPath = ROOT_ICON_REWRITES[url.pathname];
+    const rewrittenPath = ROOT_PATH_REWRITES[url.pathname];
 
     if (rewrittenPath) {
       url.pathname = rewrittenPath;
