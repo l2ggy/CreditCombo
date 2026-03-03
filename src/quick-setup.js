@@ -398,7 +398,7 @@ async function showPostQuizResults() {
   let uplift = null;
 
   if (state.mode === "current_cards") {
-    const ideal = computeScenarioResult({ mode: "ideal_combo", lockedCardIds: [], k: Math.max(1, Number(state.k) || 1) });
+    const ideal = computeScenarioResult({ mode: "ideal_combo", lockedCardIds: [], k: 5 });
     uplift = Number(ideal.best.net || 0) - Number(current.best.net || 0);
   }
 
@@ -420,8 +420,14 @@ function renderPostQuizScreen() {
         <p class="quickHint">Quick setup complete</p>
         <h2 class="quickPrompt">Here’s your CreditCombo result</h2>
       </header>
-      <div id="quickResultsCallout" class="quickResultsCallout"></div>
-      <div id="quickSetupResultPanel" class="quickSetupResultPanel"></div>
+      <p id="quickResultsCallout" class="earnRateCallout quickUpliftCallout"></p>
+      <section class="panel resultPanel quickSetupResultShell">
+        <div class="panelHeader panelHeader-result">
+          <h2>Results</h2>
+        </div>
+        <div class="divider"></div>
+        <div id="result" class="quickSetupResultPanel"></div>
+      </section>
       <div class="quickActions quickResultsActions">
         <button type="button" id="quickOpenOptimizer" class="primary">Open in Optimizer</button>
         <button type="button" id="quickEditAnswers">Edit answers</button>
@@ -432,23 +438,27 @@ function renderPostQuizScreen() {
   const calloutEl = appEl.querySelector("#quickResultsCallout");
   if (state.mode === "current_cards") {
     const upliftValue = Number(uplift || 0);
-    const positive = upliftValue > 0;
-    calloutEl.classList.toggle("is-positive", positive);
-    calloutEl.textContent = positive
+    calloutEl.classList.remove("hidden");
+    calloutEl.textContent = upliftValue > 0
       ? `With your ideal CreditCombo, you could earn +${formatMoneyCAD(upliftValue)}/year more.`
       : "Your current setup is already near-optimal for your selected spend profile.";
   } else {
     calloutEl.classList.add("hidden");
   }
 
-  const resultPanelEl = appEl.querySelector("#quickSetupResultPanel");
+  const resultPanelEl = appEl.querySelector("#result");
   renderResult(resultPanelEl, best, payload.annualSpend, payload.schema, payload.valuationMode, chexySummary, ctx.subcategoryConfigs);
 
   appEl.querySelector("#quickOpenOptimizer").addEventListener("click", () => {
     // TODO: add country capture once country-based card eligibility is implemented.
     // TODO: add credit score gating once credit-tier constraints are supported.
     // TODO: add income-based filtering once card income requirements are integrated.
-    window.location.assign(buildOptimizerDeepLink({ ...state, valuationMode: selectedValuationMode() }));
+    const deepLinkState = {
+      ...state,
+      k: state.mode === "current_cards" ? 0 : Math.max(1, Number(state.k) || 1),
+      valuationMode: selectedValuationMode()
+    };
+    window.location.assign(buildOptimizerDeepLink(deepLinkState));
   });
 
   appEl.querySelector("#quickEditAnswers").addEventListener("click", () => {

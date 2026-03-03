@@ -44,11 +44,10 @@
 
 .quickAnswerArea{margin:0}
 
-.quickResultsScreen{display:grid;gap:var(--space-6);align-content:start;min-height:min(100vh,980px)}
+.quickResultsScreen{display:grid;gap:var(--space-8);align-content:start}
 .quickResultsHero{text-align:center;display:grid;gap:var(--space-3)}
 .quickResultsHero > *{margin:0}
-.quickSetupResultPanel{padding:var(--space-6);border:1px solid color-mix(in srgb,var(--color-border) 82%,transparent);border-radius:var(--radius-xl);background:color-mix(in srgb,var(--color-panel) 90%,transparent)}
+.quickSetupResultShell{padding:var(--space-6)}
+.quickSetupResultPanel{min-height:180px}
+.quickUpliftCallout{margin:0;text-align:center}
 .quickResultsActions{justify-content:center;flex-wrap:wrap}
-
-.quickResultsCallout{padding:var(--space-4);border:1px solid color-mix(in srgb,var(--color-border) 76%,transparent);border-radius:var(--radius-lg);background:color-mix(in srgb,var(--color-panel) 76%,transparent);font-weight:600;text-align:center}
-.quickResultsCallout.is-positive{border-color:color-mix(in srgb,var(--color-ok) 50%,var(--color-border));color:var(--color-ok)}
