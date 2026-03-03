@@ -131,6 +131,7 @@ export function createShareOverlay() {
         thumb.style.setProperty("--share-index", String(index));
         const cardImg = renderCardThumb(card, { className: "thumb thumb-lg thumb-contain", withFrame: false });
         if (cardImg instanceof HTMLImageElement) {
+          cardImg.src = new URL(`/assets/cards/${card.id}.webp`, window.location.origin).toString();
           cardImg.loading = "eager";
           cardImg.decoding = "sync";
           cardImg.fetchPriority = "high";
