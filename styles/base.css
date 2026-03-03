@@ -38,7 +38,8 @@ main.container{padding-top:var(--space-5)}
 .header{display:flex;justify-content:space-between;align-items:flex-start;gap:var(--space-5)}
 .headerActions{display:flex;align-items:center;gap:var(--space-5)}
 
-.panel{border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-6);background:var(--color-panel)}
+@keyframes panelEnter{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.panel{border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-6);background:var(--color-panel);animation:panelEnter .22s ease-out both}
 .panelHeader,.split{display:flex;justify-content:space-between;align-items:flex-end;gap:var(--space-4)}
 .inline{display:flex;align-items:flex-start;gap:var(--space-5);min-width:0}
 .stack-end{display:flex;flex-direction:column;align-items:flex-end;gap:var(--space-1)}
@@ -125,7 +126,7 @@ tbody tr:last-child td{border-bottom:none}
 
 @keyframes contactBtnGlowPulse{from{box-shadow:0 0 0 1px color-mix(in srgb,var(--color-accent) 40%,transparent),0 0 12px color-mix(in srgb,var(--color-accent) 24%,transparent),0 0 20px color-mix(in srgb,var(--color-accent) 14%,transparent)}to{box-shadow:0 0 0 1px color-mix(in srgb,var(--color-accent) 48%,transparent),0 0 18px color-mix(in srgb,var(--color-accent) 34%,transparent),0 0 30px color-mix(in srgb,var(--color-accent) 24%,transparent)}}
 
-@media (prefers-reduced-motion:reduce){body::before,body::after{animation:none}.contactBtn{transition:none}.contactBtn:hover,.contactBtn:focus-visible{animation:none}}
+@media (prefers-reduced-motion:reduce){body::before,body::after{animation:none}.panel{animation:none;transform:none}.contactBtn{transition:none}.contactBtn:hover,.contactBtn:focus-visible{animation:none}}
 @media (min-width:901px){.status .muted{white-space:nowrap}}
 @media (max-width:900px){.topNav{justify-content:flex-start}.header{flex-direction:column;align-items:flex-start}.headerActions{width:100%;justify-content:space-between}.footerContent{align-items:flex-start}.splitBody{grid-template-columns:1fr}}
 @media (max-width:700px){.topNav{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"brand toggle" "links links";align-items:center;column-gap:var(--space-3);row-gap:var(--space-2);width:100%}.siteBrand{grid-area:brand}.themeToggle{grid-area:toggle;justify-self:end}.topNavLinks{grid-area:links;display:flex;flex-wrap:wrap;gap:var(--space-3);margin-left:0}}
