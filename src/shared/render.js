@@ -67,12 +67,12 @@ export function renderLockedChip(card) {
 }
 
 export function getOfficialCardUrl(card) {
-  const candidate = card?.sources?.find((source) => {
-    if (typeof source !== "string") return false;
-    return /^https?:\/\//i.test(source);
-  });
+  const directOfficialLink = card?.official_link;
+  if (typeof directOfficialLink === "string" && /^https?:\/\//i.test(directOfficialLink)) {
+    return directOfficialLink;
+  }
 
-  return candidate || null;
+  return null;
 }
 
 export function renderOfficialCardLink(card, label = "Official") {
