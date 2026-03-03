@@ -66,6 +66,13 @@ async function main() {
     elements.chexyFeePercentEl?.addEventListener("input", actions.runOptimization);
     elements.enableLockedCardsEl?.addEventListener("change", actions.toggleLockedCards);
 
+    elements.spendTableEl.addEventListener("input", (event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLInputElement)) return;
+      if (!target.matches("input[data-cat], input[data-subcategory-key]")) return;
+      actions.runOptimization();
+    });
+
     elements.lockedCardSearchEl?.addEventListener("input", actions.renderLockedSearchResults);
 
     elements.lockedCardOptionsEl?.addEventListener("click", (event) => {

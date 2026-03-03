@@ -420,6 +420,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
   function toggleLockedCards() {
     syncStateFromControls();
     shouldRenderLockedCardPicks = true;
+    return runOptimization();
   }
 
   function clearSpend() {
