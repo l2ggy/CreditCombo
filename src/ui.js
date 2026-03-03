@@ -146,7 +146,7 @@ export function renderIssues(el, issues) {
   `;
 }
 
-export function renderResult(el, best, annualSpend, schema, valuationMode = "estimated", chexySummary = null, subcategoryConfigs = {}) {
+export function renderResult(el, best, annualSpend, schema, valuationMode = "estimated", chexySummary = null, subcategoryConfigs = {}, options = {}) {
   el.classList.remove("hidden");
   el.classList.remove("resultEmpty");
   el.innerHTML = "";
@@ -160,7 +160,7 @@ export function renderResult(el, best, annualSpend, schema, valuationMode = "est
     badge.className = "badge bad";
     badge.textContent = "No result";
     resultContent.append(badge, " No eligible cards found.");
-    return;
+    return { hasCombo: false, metrics: null };
   }
 
   const comboHeading = document.createElement("h2");
@@ -185,6 +185,12 @@ export function renderResult(el, best, annualSpend, schema, valuationMode = "est
   const totalSpendWithFees = totalAnnualSpend + cardAnnualFees + chexyFeeCost;
   const effectiveEarnRate = totalSpendWithFees > 0 ? netAfterChexy / totalSpendWithFees : null;
   const grossEarnRate = totalAnnualSpend > 0 ? best.gross / totalAnnualSpend : null;
+  const metrics = {
+    netAfterChexy,
+    effectiveEarnRate,
+    grossEarnRate,
+    uplift: Number(options.uplift || 0)
+  };
 
   const rows = [["Gross rewards value", formatMoneyCAD(best.gross)]];
   if (cardAnnualFees > 0) rows.push(["Card annual fees", formatMoneyCAD(cardAnnualFees)]);
@@ -312,9 +318,23 @@ export function renderResult(el, best, annualSpend, schema, valuationMode = "est
   }
 
   resultContent.append(useGrid);
+
+  if (typeof options.onShare === "function") {
+    const actions = document.createElement("div");
+    actions.className = "resultActions";
+    const shareButton = document.createElement("button");
+    shareButton.type = "button";
+    shareButton.className = "primary";
+    shareButton.textContent = options.mode === "current_cards" ? "Share my CreditCombo" : "Share my ideal setup";
+    shareButton.addEventListener("click", () => options.onShare({ best, metrics }));
+    actions.append(shareButton);
+    resultContent.append(actions);
+  }
+
+  return { hasCombo: true, metrics };
 }
 
-function formatPercent(value) {
+export function formatPercent(value) {
   if (!Number.isFinite(value)) return "—";
   return new Intl.NumberFormat("en-CA", {
     style: "percent",

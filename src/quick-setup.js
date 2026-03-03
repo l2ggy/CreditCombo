@@ -5,6 +5,7 @@ import { renderResult } from "./ui.js";
 import { renderLockedChip } from "./shared/render.js";
 import { bindCardSearchKeyboard, createCardSearchIndex, rankCardMatches, renderCardSearchOptions } from "./shared/card-search.js";
 import { formatMoneyCAD } from "./shared/format.js";
+import { createShareOverlay } from "./share/share-overlay.js";
 
 const appEl = document.getElementById("quickSetupApp");
 const QUICK_SETUP_DEFAULTS = Object.freeze({
@@ -27,6 +28,7 @@ const state = {
 let ctx = null;
 let visibleSteps = [];
 let currentStepIndex = 0;
+const shareOverlay = createShareOverlay();
 
 
 function resolveQuizMode(value) {
@@ -525,6 +527,7 @@ function renderPostQuizScreen() {
         <div id="result" class="quickSetupResultPanel ${isLoading ? "is-loading" : ""}"></div>
       </section>
       <div class="quickActions quickResultsActions">
+        <button type="button" id="quickOpenShare" class="primary hidden">Share my ideal setup</button>
         <button type="button" id="quickOpenOptimizer" class="primary">Open in Optimizer</button>
         <button type="button" id="quickEditAnswers">Edit answers</button>
       </div>
@@ -551,7 +554,27 @@ function renderPostQuizScreen() {
       </div>
     `;
   } else {
-    renderResult(resultPanelEl, best, payload.annualSpend, payload.schema, payload.valuationMode, chexySummary, ctx.subcategoryConfigs);
+    const rendered = renderResult(resultPanelEl, best, payload.annualSpend, payload.schema, payload.valuationMode, chexySummary, ctx.subcategoryConfigs);
+    const quickShareBtn = appEl.querySelector("#quickOpenShare");
+    if (quickShareBtn) {
+      quickShareBtn.classList.toggle("hidden", !(rendered?.hasCombo));
+      quickShareBtn.textContent = currentMode === "current_cards" ? "Share my CreditCombo" : "Share my ideal setup";
+      quickShareBtn.addEventListener("click", () => shareOverlay.open({
+        page: "quick_setup",
+        mode: currentMode,
+        best,
+        metrics: { ...(rendered?.metrics || {}), uplift: Number(uplift || 0) },
+        deepLinkState: {
+          mode: currentMode,
+          k: currentMode === "current_cards" ? 0 : Math.max(1, Number(state.k) || 1),
+          valuationMode: selectedValuationMode(),
+          lockedCardIds: currentMode === "current_cards" ? state.lockedCardIds : [],
+          monthlySpend: state.monthlySpend,
+          subcategorySpend: state.subcategorySpend,
+          quizResponses: state.quizResponses
+        }
+      }));
+    }
   }
 
   appEl.querySelector("#quickOpenOptimizer").addEventListener("click", () => {

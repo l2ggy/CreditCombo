@@ -5,6 +5,7 @@ import { renderLockedChip } from "../shared/render.js";
 import { bindCardSearchKeyboard, createCardSearchIndex, rankCardMatches, renderCardSearchOptions } from "../shared/card-search.js";
 import { buildSearchText, scoreSearchMatch, tokenizeSearchQuery } from "../shared/search.js";
 import { escapeHtml } from "../shared/sanitize.js";
+import { createShareOverlay } from "../share/share-overlay.js";
 
 export function createActions({ state, view, schema, programsMap, eligibleCards, eligibleCardIdSet, eligibleCardsById, subcategoryConfigs = {} }) {
   const { elements } = view;
@@ -20,6 +21,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
   const pendingRequests = new Map();
   let shouldRenderLockedCardPicks = true;
   let hasManualOptimizationRun = false;
+  const shareOverlay = createShareOverlay();
 
   function syncStateFromControls() {
     state.valuationMode = elements.valuationModeEl?.value === "minimum_guaranteed" ? "minimum_guaranteed" : "estimated";
@@ -389,7 +391,24 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
 
     if (cached) {
       view.setLoadingState(false);
-      renderResult(elements.resultEl, cached, adjustedAnnualSpend, schema, state.valuationMode, chexySummary, subcategoryConfigs);
+      renderResult(elements.resultEl, cached, adjustedAnnualSpend, schema, state.valuationMode, chexySummary, subcategoryConfigs, {
+        page: "optimizer",
+        mode: state.mode,
+        onShare: ({ best, metrics }) => shareOverlay.open({
+          page: "optimizer",
+          mode: state.mode,
+          best,
+          metrics,
+          deepLinkState: {
+            mode: state.mode,
+            k: state.k,
+            valuationMode: state.valuationMode,
+            lockedCardIds: [...state.lockedCardIds],
+            monthlySpend,
+            subcategorySpend
+          }
+        })
+      });
       elements.runBtn.disabled = false;
       return;
     }
@@ -401,7 +420,24 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
       if (requestId !== runTokenCounter) return;
       comboCache.set(key, best);
       view.setLoadingState(false);
-      renderResult(elements.resultEl, best, adjustedAnnualSpend, schema, state.valuationMode, chexySummary, subcategoryConfigs);
+      renderResult(elements.resultEl, best, adjustedAnnualSpend, schema, state.valuationMode, chexySummary, subcategoryConfigs, {
+        page: "optimizer",
+        mode: state.mode,
+        onShare: ({ metrics }) => shareOverlay.open({
+          page: "optimizer",
+          mode: state.mode,
+          best,
+          metrics,
+          deepLinkState: {
+            mode: state.mode,
+            k: state.k,
+            valuationMode: state.valuationMode,
+            lockedCardIds: [...state.lockedCardIds],
+            monthlySpend,
+            subcategorySpend
+          }
+        })
+      });
     } catch (error) {
       if (requestId !== runTokenCounter) return;
       view.setLoadingState(false);
@@ -514,6 +550,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
   function hydrateFromDeepLink(payload = {}) {
     const lockedIds = Array.isArray(payload.lockedCardIds) ? payload.lockedCardIds : [];
     const isCurrentCardsMode = payload.mode === "current_cards" || payload.quizResponses?.goal === "current_cards";
+    state.mode = isCurrentCardsMode ? "current_cards" : "ideal_combo";
 
     state.lockedCardIds = new Set(lockedIds);
     state.enableLockedCards = isCurrentCardsMode || lockedIds.length > 0;

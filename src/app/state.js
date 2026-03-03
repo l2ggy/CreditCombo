@@ -1,5 +1,6 @@
 export function createUiState() {
   return {
+    mode: "ideal_combo",
     lockedCardIds: new Set(),
     valuationMode: "estimated",
     maxAnnualFee: null,
