@@ -505,15 +505,20 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
 
   function hydrateFromDeepLink(payload = {}) {
     const lockedIds = Array.isArray(payload.lockedCardIds) ? payload.lockedCardIds : [];
+    const isCurrentCardsMode = payload.mode === "current_cards" || payload.quizResponses?.goal === "current_cards";
+
     state.lockedCardIds = new Set(lockedIds);
-    state.enableLockedCards = lockedIds.length > 0;
+    state.enableLockedCards = isCurrentCardsMode || lockedIds.length > 0;
     elements.enableLockedCardsEl.checked = state.enableLockedCards;
 
     const valuationMode = payload.valuationMode === "minimum_guaranteed" ? "minimum_guaranteed" : "estimated";
     state.valuationMode = valuationMode;
     if (elements.valuationModeEl) elements.valuationModeEl.value = valuationMode;
 
-    if (Number.isFinite(payload.k)) {
+    if (isCurrentCardsMode) {
+      elements.kInput.value = "0";
+      state.k = 0;
+    } else if (Number.isFinite(payload.k)) {
       elements.kInput.value = String(Math.max(0, Number(payload.k) || 0));
       state.k = Number(elements.kInput.value);
     }
