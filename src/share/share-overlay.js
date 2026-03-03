@@ -29,6 +29,22 @@ function trapFocus(root, event) {
 async function downloadCardImage(cardEl) {
   if (!(cardEl instanceof HTMLElement)) throw new Error("Missing share card element");
 
+  const imageEls = [...cardEl.querySelectorAll("img")];
+  imageEls.forEach((img) => {
+    img.loading = "eager";
+    img.decoding = "sync";
+  });
+
+  await Promise.all(imageEls.map((img) => {
+    if (img.complete && img.naturalWidth > 0) return Promise.resolve();
+    return new Promise((resolve) => {
+      const done = () => resolve();
+      img.addEventListener("load", done, { once: true });
+      img.addEventListener("error", done, { once: true });
+      setTimeout(done, 1500);
+    });
+  }));
+
   const { toPng } = await import("https://esm.sh/html-to-image@1.11.11");
   const dataUrl = await toPng(cardEl, {
     cacheBust: true,
