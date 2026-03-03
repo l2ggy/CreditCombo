@@ -400,11 +400,17 @@ function moreDetailsControlMarkup(parentCategory, desc, subcategories) {
 function bindSpendRowDetailsControls(root) {
   const controls = root.querySelectorAll(".spendControl[data-spend-control]");
   controls.forEach((details) => {
-    details.open = false;
     const kind = details.dataset.spendControl;
     const row = details.closest("[data-spend-row]");
     if (!row || !kind) return;
-    row.classList.remove(`is-${kind}-open`);
+
+    const syncRowState = () => {
+      row.classList.toggle(`is-${kind}-open`, details.open);
+    };
+
+    details.addEventListener("toggle", syncRowState);
+    details.open = false;
+    syncRowState();
   });
 }
 
