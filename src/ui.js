@@ -404,13 +404,12 @@ function bindSpendRowDetailsControls(root) {
     const row = details.closest("[data-spend-row]");
     if (!row || !kind) return;
 
-    const syncRowState = () => {
+    details.addEventListener("toggle", () => {
       row.classList.toggle(`is-${kind}-open`, details.open);
-    };
+    });
 
-    details.addEventListener("toggle", syncRowState);
     details.open = false;
-    syncRowState();
+    row.classList.remove(`is-${kind}-open`);
   });
 }
 
