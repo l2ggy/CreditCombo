@@ -101,6 +101,7 @@ async function downloadCardImage(cardEl) {
     canvas.width = width * scale;
     canvas.height = height * scale;
     const context = canvas.getContext("2d");
+    if (!context) throw new Error("Failed to create export canvas context");
     context.scale(scale, scale);
     context.drawImage(image, 0, 0, width, height);
 
@@ -111,38 +112,6 @@ async function downloadCardImage(cardEl) {
   } finally {
     URL.revokeObjectURL(objectUrl);
   }
-}
-
-function downloadCardImageFallback(cardEl) {
-  if (!(cardEl instanceof HTMLElement)) return;
-  const text = [
-    cardEl.querySelector(".shareHeroLabel")?.textContent,
-    cardEl.querySelector(".shareHeroValue")?.textContent,
-    cardEl.querySelector(".shareSupport")?.textContent,
-    cardEl.querySelector(".shareCta")?.textContent,
-    cardEl.querySelector(".shareCardFooter a")?.textContent
-  ].filter(Boolean).join("\n");
-
-  const canvas = document.createElement("canvas");
-  canvas.width = 1200;
-  canvas.height = 1600;
-  const context = canvas.getContext("2d");
-  if (!context) return;
-
-  const gradient = context.createLinearGradient(0, 0, 1200, 1600);
-  gradient.addColorStop(0, "#17336a");
-  gradient.addColorStop(1, "#0f172a");
-  context.fillStyle = gradient;
-  context.fillRect(0, 0, 1200, 1600);
-  context.fillStyle = "#e2e8f0";
-  context.font = "600 48px system-ui";
-  const lines = text.split("\n");
-  lines.forEach((line, idx) => context.fillText(line, 80, 180 + (idx * 92), 1040));
-
-  const link = document.createElement("a");
-  link.href = canvas.toDataURL("image/png");
-  link.download = "creditcombo-share-card.png";
-  link.click();
 }
 
 
@@ -189,7 +158,7 @@ export function createShareOverlay() {
           <p class="shareHeroLabel">${copy.heroLabel}</p>
           <p class="shareHeroValue">${copy.heroValue}</p>
           <p class="shareSupport">${copy.supportLine}</p>
-          <div class="shareThumbGrid"></div>
+          <div class="shareThumbStack"></div>
           <footer class="shareCardFooter">
             <div>
               <p class="shareCta">${copy.ctaText}</p>
@@ -205,12 +174,12 @@ export function createShareOverlay() {
         </div>
       `;
 
-      const stack = body.querySelector(".shareThumbGrid");
+      const stack = body.querySelector(".shareThumbStack");
       cards.forEach((card, index) => {
         const thumb = document.createElement("span");
         thumb.className = "shareThumbItem";
         thumb.style.setProperty("--share-index", String(index));
-        thumb.append(renderCardThumb(card, { className: "thumb thumb-lg thumb-contain", withFrame: false }));
+        thumb.append(renderCardThumb(card, { className: "thumb thumb-md thumb-contain", withFrame: false }));
         stack.append(thumb);
       });
 
@@ -247,11 +216,7 @@ export function createShareOverlay() {
 
       body.querySelector("[data-share-download]")?.addEventListener("click", async () => {
         const cardEl = body.querySelector(".shareCard");
-        try {
-          await downloadCardImage(cardEl);
-        } catch {
-          downloadCardImageFallback(cardEl);
-        }
+        await downloadCardImage(cardEl);
         emitShareEvent("share_image_downloaded", { page: config.page, mode: config.mode, privacy_mode: privacyMode });
       });
     };
