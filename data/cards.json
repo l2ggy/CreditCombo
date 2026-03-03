@@ -2767,8 +2767,8 @@
         "type": "annual"
       },
       "earn_rates": {
-        "grocery": 2,
-        "dining": 2,
+        "grocery": 5,
+        "dining": 5,
         "other": 1
       },
       "caps": [
