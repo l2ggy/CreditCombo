@@ -1,7 +1,10 @@
 import { loadOptimizerData } from "./data-service.js";
 import { buildOptimizerDeepLink } from "./app/deeplink.js";
+import { annualizeMonthlySpend, chexyAdjustedAnnualSpend, findBestCombo } from "./optimizer.js";
+import { renderResult } from "./ui.js";
 import { renderLockedChip } from "./shared/render.js";
 import { bindCardSearchKeyboard, createCardSearchIndex, rankCardMatches, renderCardSearchOptions } from "./shared/card-search.js";
+import { formatMoneyCAD } from "./shared/format.js";
 
 const appEl = document.getElementById("quickSetupApp");
 
@@ -12,12 +15,19 @@ const state = {
   lockedCardIds: [],
   k: 1,
   valuationMode: null,
-  quizResponses: {}
+  quizResponses: {},
+  view: "quiz",
+  results: null
 };
 
 let ctx = null;
 let visibleSteps = [];
 let currentStepIndex = 0;
+
+
+function resolveQuizMode(value) {
+  return value === "current_cards" ? "current_cards" : "ideal_combo";
+}
 
 function titleForCategory(cat) {
   return String(cat).replace(/_/g, " ");
@@ -100,7 +110,7 @@ function stepGoal() {
     ],
     getValue: () => state.mode,
     setValue: (value) => {
-      state.mode = value === "current_cards" ? "current_cards" : "ideal_combo";
+      state.mode = resolveQuizMode(value);
       state.k = state.mode === "current_cards" ? 0 : Math.max(1, Number(state.k) || 1);
       state.quizResponses.goal = state.mode;
       refreshStepPlan();
@@ -329,11 +339,7 @@ function goNext() {
   if (!step?.validate()) return;
 
   if (currentStepIndex >= visibleSteps.length - 1) {
-    if (state.mode === "current_cards") state.k = 0;
-    // TODO: add country capture once country-based card eligibility is implemented.
-    // TODO: add credit score gating once credit-tier constraints are supported.
-    // TODO: add income-based filtering once card income requirements are integrated.
-    window.location.assign(buildOptimizerDeepLink({ ...state, valuationMode: state.valuationMode || "estimated" }));
+    showPostQuizResults();
     return;
   }
 
@@ -342,12 +348,164 @@ function goNext() {
 }
 
 function goBack() {
+  if (state.view === "results") {
+    state.view = "quiz";
+    state.results = null;
+    renderWizard();
+    return;
+  }
+
   if (currentStepIndex <= 0) return;
   currentStepIndex -= 1;
   renderWizard();
 }
 
+function selectedMode() {
+  if (resolveQuizMode(state.mode) === "current_cards") return "current_cards";
+  if (state.quizResponses?.goal === "current_cards") return "current_cards";
+  return "ideal_combo";
+}
+
+function selectedValuationMode() {
+  return state.valuationMode || "estimated";
+}
+
+
+function postQuizHeroContent(mode) {
+  if (mode === "current_cards") {
+    return {
+      eyebrow: "Your current setup",
+      title: "Here’s your current combo",
+      lead: "A practical baseline from the cards you already hold."
+    };
+  }
+
+  return {
+    eyebrow: "Your optimized outcome",
+    title: "Welcome to your CreditCombo",
+    lead: "Your highest-upside combo for stronger annual rewards."
+  };
+}
+
+function buildOptimizationPayload(overrides = {}) {
+  const mode = overrides.mode || selectedMode();
+  const lockedCardIds = overrides.lockedCardIds || (mode === "current_cards" ? state.lockedCardIds : []);
+  const k = Number.isFinite(overrides.k) ? overrides.k : (mode === "current_cards" ? 0 : Math.max(1, Number(state.k) || 1));
+
+  return {
+    cards: ctx.eligibleCards,
+    programsMap: ctx.programsMap,
+    schema: ctx.schema,
+    annualSpend: annualizeMonthlySpend(state.monthlySpend, ctx.schema),
+    subcategorySpend: state.subcategorySpend,
+    subcategoryConfigs: ctx.subcategoryConfigs,
+    valuationMode: selectedValuationMode(),
+    lockedCardIds,
+    k
+  };
+}
+
+function computeScenarioResult(overrides = {}) {
+  const payload = buildOptimizationPayload(overrides);
+  const best = findBestCombo(payload);
+  const chexySummary = chexyAdjustedAnnualSpend({
+    annualSpend: payload.annualSpend,
+    monthlySpend: state.monthlySpend,
+    subcategorySpend: state.subcategorySpend,
+    subcategoryConfigs: ctx.subcategoryConfigs,
+    chexyFeePercent: Number(window.CHEXY_FEE_PERCENT ?? 0)
+  });
+  return { best, payload, chexySummary };
+}
+
+async function showPostQuizResults() {
+  if (selectedMode() === "current_cards") state.k = 0;
+  state.view = "results";
+
+  const currentMode = selectedMode();
+  const current = computeScenarioResult({ mode: currentMode });
+  let uplift = null;
+
+  if (currentMode === "current_cards") {
+    const ideal = computeScenarioResult({ mode: "ideal_combo", lockedCardIds: [], k: 5 });
+    uplift = Number(ideal.best.net || 0) - Number(current.best.net || 0);
+  }
+
+  state.results = {
+    ...current,
+    uplift
+  };
+
+  renderWizard();
+}
+
+function renderPostQuizScreen() {
+  const currentMode = selectedMode();
+  const hero = postQuizHeroContent(currentMode);
+  const resultState = state.results || computeScenarioResult({ mode: currentMode });
+  const { best, payload, chexySummary, uplift } = resultState;
+
+  appEl.innerHTML = `
+    <section class="quickResultsScreen">
+      <header class="quickResultsHero ${currentMode === "current_cards" ? "is-current" : "is-ideal"}">
+        <p class="quickHint">${hero.eyebrow}</p>
+        <h2 class="quickPrompt">${hero.title}</h2>
+        <p class="quickLead">${hero.lead}</p>
+      </header>
+      <p id="quickResultsCallout" class="earnRateCallout quickUpliftCallout"></p>
+      <section class="panel resultPanel quickSetupResultShell">
+        <div class="panelHeader panelHeader-result">
+          <h2>Results</h2>
+        </div>
+        <div class="divider"></div>
+        <div id="result" class="quickSetupResultPanel"></div>
+      </section>
+      <div class="quickActions quickResultsActions">
+        <button type="button" id="quickOpenOptimizer" class="primary">Open in Optimizer</button>
+        <button type="button" id="quickEditAnswers">Edit answers</button>
+      </div>
+    </section>
+  `;
+
+  const calloutEl = appEl.querySelector("#quickResultsCallout");
+  if (currentMode === "current_cards") {
+    const upliftValue = Number(uplift || 0);
+    calloutEl.classList.remove("hidden");
+    calloutEl.textContent = upliftValue > 0
+      ? `On this spend, your ideal CreditCombo would earn you +${formatMoneyCAD(upliftValue)}/year more.`
+      : "Your current setup is already close to your upside for this spend profile.";
+  } else {
+    calloutEl.classList.add("hidden");
+  }
+
+  const resultPanelEl = appEl.querySelector("#result");
+  renderResult(resultPanelEl, best, payload.annualSpend, payload.schema, payload.valuationMode, chexySummary, ctx.subcategoryConfigs);
+
+  appEl.querySelector("#quickOpenOptimizer").addEventListener("click", () => {
+    // TODO: add country capture once country-based card eligibility is implemented.
+    // TODO: add credit score gating once credit-tier constraints are supported.
+    // TODO: add income-based filtering once card income requirements are integrated.
+    const deepLinkState = {
+      ...state,
+      mode: currentMode,
+      k: currentMode === "current_cards" ? 0 : Math.max(1, Number(state.k) || 1),
+      valuationMode: selectedValuationMode()
+    };
+    window.location.assign(buildOptimizerDeepLink(deepLinkState));
+  });
+
+  appEl.querySelector("#quickEditAnswers").addEventListener("click", () => {
+    state.view = "quiz";
+    renderWizard();
+  });
+}
+
 function renderWizard() {
+  if (state.view === "results") {
+    renderPostQuizScreen();
+    return;
+  }
+
   const step = visibleSteps[currentStepIndex];
 
   appEl.innerHTML = `
