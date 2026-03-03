@@ -6,7 +6,7 @@ import { bindCardSearchKeyboard, createCardSearchIndex, rankCardMatches, renderC
 import { buildSearchText, scoreSearchMatch, tokenizeSearchQuery } from "../shared/search.js";
 import { escapeHtml } from "../shared/sanitize.js";
 
-export function createActions({ state, view, schema, programsMap, eligibleCards, eligibleCardIdSet, eligibleCardsById, subcategoryConfigs = {} }) {
+export function createActions({ state, view, schema, programsMap, eligibleCards, eligibleCardIdSet, eligibleCardsById, subcategoryConfigs = {}, shareOverlay = null, openShareBtn = null }) {
   const { elements } = view;
   const comboCache = new Map();
   const cardSearchIndex = createCardSearchIndex(eligibleCards);
@@ -20,6 +20,10 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
   const pendingRequests = new Map();
   let shouldRenderLockedCardPicks = true;
   let hasManualOptimizationRun = false;
+
+  if (openShareBtn) {
+    openShareBtn.addEventListener("click", () => shareOverlay?.open());
+  }
 
   function syncStateFromControls() {
     state.valuationMode = elements.valuationModeEl?.value === "minimum_guaranteed" ? "minimum_guaranteed" : "estimated";
@@ -345,6 +349,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
     view.updateKValue(elements.kInput.value);
 
     if (!eligibleCards.length) {
+      openShareBtn?.classList.add("hidden");
       view.setLoadingState(false);
       elements.resultEl.classList.remove("hidden");
       elements.resultEl.classList.remove("resultEmpty");
@@ -354,6 +359,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
     }
 
     if (state.k > 0 && !additionalCards.length) {
+      openShareBtn?.classList.add("hidden");
       view.setLoadingState(false);
       elements.resultEl.classList.remove("hidden");
       elements.resultEl.classList.remove("resultEmpty");
@@ -366,6 +372,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
     const subcategorySpend = readSubcategoryMonthlySpend(subcategoryConfigs);
     const hasSpend = schema.some((cat) => (monthlySpend[cat] || 0) > 0);
     if (!hasSpend) {
+      openShareBtn?.classList.add("hidden");
       view.setLoadingState(false);
       elements.resultEl.classList.remove("hidden");
       elements.resultEl.classList.add("resultEmpty");
@@ -390,6 +397,13 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
     if (cached) {
       view.setLoadingState(false);
       renderResult(elements.resultEl, cached, adjustedAnnualSpend, schema, state.valuationMode, chexySummary, subcategoryConfigs);
+      openShareBtn?.classList.remove("hidden");
+      shareOverlay?.updateContext({
+        best: cached,
+        valuationMode: state.valuationMode,
+        netAfterChexy: cached.net - Number(chexySummary?.chexyAdjustedAnnualSpend || 0),
+        shareUrl: window.location.href
+      });
       elements.runBtn.disabled = false;
       return;
     }
@@ -402,8 +416,16 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
       comboCache.set(key, best);
       view.setLoadingState(false);
       renderResult(elements.resultEl, best, adjustedAnnualSpend, schema, state.valuationMode, chexySummary, subcategoryConfigs);
+      openShareBtn?.classList.remove("hidden");
+      shareOverlay?.updateContext({
+        best,
+        valuationMode: state.valuationMode,
+        netAfterChexy: best.net - Number(chexySummary?.chexyAdjustedAnnualSpend || 0),
+        shareUrl: window.location.href
+      });
     } catch (error) {
       if (requestId !== runTokenCounter) return;
+      openShareBtn?.classList.add("hidden");
       view.setLoadingState(false);
       elements.resultEl.classList.remove("hidden");
       elements.resultEl.classList.remove("resultEmpty");
