@@ -516,8 +516,12 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
     if (elements.valuationModeEl) elements.valuationModeEl.value = valuationMode;
 
     if (isCurrentCardsMode) {
+      state.enableLockedCards = true;
+      elements.enableLockedCardsEl.checked = true;
+      elements.kInput.min = "0";
       elements.kInput.value = "0";
       state.k = 0;
+      view.updateKValue(0);
     } else if (Number.isFinite(payload.k)) {
       elements.kInput.value = String(Math.max(0, Number(payload.k) || 0));
       state.k = Number(elements.kInput.value);
