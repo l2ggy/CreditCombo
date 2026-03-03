@@ -16,25 +16,23 @@ export function buildShareCopy({ mode = "ideal_combo", privacyMode = "full", met
   const kicker = isCurrent ? "My CreditCombo" : "My ideal CreditCombo";
 
   const headline = isCurrent
-    ? "I optimized my current wallet with CreditCombo"
-    : "I found my ideal CreditCombo";
+    ? "Optimized from the cards I already have"
+    : "Optimized for higher annual rewards";
 
   const subheadline = hideSpend
-    ? "Optimized earn rate across my spending mix."
+    ? "Shared in privacy mode: earn-rate view only."
     : (isCurrent
-      ? "A smarter setup from cards I already hold."
-      : "Built for higher annual rewards with the same spend habits.");
+      ? "My current-wallet setup, tuned for better outcomes."
+      : "My best setup from this spending profile.");
 
   if (hideSpend) {
     return {
       kicker,
       headline,
       subheadline,
-      punchLine: isCurrent ? "My current cards, optimized." : "My ideal CreditCombo, dialed in.",
       heroLabel: "Effective earn rate",
       heroValue: formatPercent(metrics.effectiveEarnRate),
       supportLine: `Gross earn rate: ${formatPercent(metrics.grossEarnRate)}`,
-      detailLine: "Optimized rewards strategy, shared without personal spend totals.",
       ctaText: "Check your CreditCombo"
     };
   }
@@ -49,15 +47,9 @@ export function buildShareCopy({ mode = "ideal_combo", privacyMode = "full", met
     kicker,
     headline,
     subheadline,
-    punchLine: isCurrent
-      ? "Smarter rewards from the cards I already own."
-      : "My ideal CreditCombo: maximum value from the same spend.",
     heroLabel,
     heroValue,
     supportLine,
-    detailLine: isCurrent
-      ? "Built from my existing cards with clear upside potential."
-      : "A higher-upside setup tuned to my real spending mix.",
     ctaText: "Check your CreditCombo"
   };
 }

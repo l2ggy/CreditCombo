@@ -97,14 +97,12 @@ export function createShareOverlay() {
           <p class="shareKicker">${copy.kicker || "My CreditCombo"}</p>
           <h2>${copy.headline}</h2>
           <p>${copy.subheadline}</p>
-          <p class="sharePunch">${copy.punchLine || "My ideal CreditCombo."}</p>
           <label class="shareToggle"><input type="checkbox" ${privacyMode === "earn_rate_only" ? "checked" : ""}/> Hide personal spend details</label>
         </header>
         <article class="shareCard">
           <p class="shareHeroLabel">${copy.heroLabel}</p>
           <p class="shareHeroValue">${copy.heroValue}</p>
           <p class="shareSupport">${copy.supportLine}</p>
-          <p class="shareDetail">${copy.detailLine || ""}</p>
           <div class="shareThumbRows">
             <div class="shareThumbRow shareThumbRow--top"></div>
             <div class="shareThumbRow shareThumbRow--bottom"></div>
