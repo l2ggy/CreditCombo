@@ -129,7 +129,13 @@ export function createShareOverlay() {
         const thumb = document.createElement("span");
         thumb.className = "shareThumbItem";
         thumb.style.setProperty("--share-index", String(index));
-        thumb.append(renderCardThumb(card, { className: "thumb thumb-lg thumb-contain", withFrame: false }));
+        const cardImg = renderCardThumb(card, { className: "thumb thumb-lg thumb-contain", withFrame: false });
+        if (cardImg instanceof HTMLImageElement) {
+          cardImg.loading = "eager";
+          cardImg.decoding = "sync";
+          cardImg.fetchPriority = "high";
+        }
+        thumb.append(cardImg);
         if (index < 3) topRow.append(thumb);
         else bottomRow.append(thumb);
       });
