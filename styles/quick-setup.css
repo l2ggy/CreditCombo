@@ -19,10 +19,7 @@
   display:grid;
   gap:var(--space-8);
   align-content:start;
-  padding-top:var(--quick-quiz-panel-padding);
-  padding-right:var(--quick-quiz-panel-padding);
-  padding-bottom:var(--quick-quiz-panel-padding);
-  padding-left:var(--quick-quiz-panel-padding);
+  padding:var(--quick-quiz-panel-padding);
   border:1px solid color-mix(in srgb,var(--color-border) 82%,transparent);
   border-radius:var(--radius-lg);
   background:color-mix(in srgb,var(--color-panel) 82%,transparent);
