@@ -9,7 +9,6 @@ export function createShareOverlay() {
     shareUrl: window.location.href,
     qrSrc: "",
     prepared: false,
-    preparing: null,
     pngBlob: null
   };
 
@@ -24,11 +23,7 @@ export function createShareOverlay() {
         <button type="button" class="btn-inline shareOverlay__close" aria-label="Close share panel" data-share-close>Close</button>
       </div>
       <div class="divider"></div>
-      <div class="shareOverlay__status hidden" role="status" aria-live="polite">
-        <span class="loadingSpinner" aria-hidden="true"></span>
-        <span>Preparing…</span>
-      </div>
-      <div class="shareOverlay__body hidden">
+      <div class="shareOverlay__body">
         <div class="shareCard" id="shareCard">
           <p class="shareCard__kicker"></p>
           <h4 class="shareCard__headline"></h4>
@@ -45,7 +40,7 @@ export function createShareOverlay() {
           </div>
         </div>
       </div>
-      <div class="shareOverlay__actions hidden">
+      <div class="shareOverlay__actions">
         <button type="button" class="btn-inline" data-share-native>Share…</button>
         <button type="button" class="primary btn-inline" data-share-download>Download PNG</button>
       </div>
@@ -57,10 +52,9 @@ export function createShareOverlay() {
   const cardEl = root.querySelector("#shareCard");
   const cardsEl = root.querySelector(".shareCard__cards");
   const qrEl = root.querySelector(".shareCard__qr");
-  const statusEl = root.querySelector(".shareOverlay__status");
-  const bodyEl = root.querySelector(".shareOverlay__body");
   const actionsEl = root.querySelector(".shareOverlay__actions");
   const nativeBtn = root.querySelector("[data-share-native]");
+  const downloadBtn = root.querySelector("[data-share-download]");
 
   root.addEventListener("click", (event) => {
     const target = event.target;
@@ -68,23 +62,16 @@ export function createShareOverlay() {
     if (target.hasAttribute("data-share-close")) close();
   });
 
-  root.querySelector("[data-share-download]")?.addEventListener("click", downloadPng);
+  downloadBtn?.addEventListener("click", downloadPng);
   nativeBtn?.addEventListener("click", nativeShare);
   if (!(navigator.share && window.isSecureContext)) nativeBtn?.classList.add("hidden");
 
-  async function open() {
+  function open() {
     if (!state.best?.combo?.length) return;
     root.hidden = false;
     root.classList.add("is-open");
     setBodyScrollLock(true);
-    showStatus();
-
-    try {
-      await prepare();
-      showBody();
-    } catch {
-      showStatus("Couldn’t prepare your share card. Please try again.");
-    }
+    prepare();
   }
 
   function close() {
@@ -95,17 +82,15 @@ export function createShareOverlay() {
     }, 170);
   }
 
-  function showStatus(message = "Preparing…") {
-    statusEl.classList.remove("hidden");
-    statusEl.lastElementChild.textContent = message;
-    bodyEl.classList.add("hidden");
-    actionsEl.classList.add("hidden");
-  }
-
-  function showBody() {
-    statusEl.classList.add("hidden");
-    bodyEl.classList.remove("hidden");
-    actionsEl.classList.remove("hidden");
+  function setBusy(busy, action = "Preparing") {
+    if (downloadBtn) {
+      downloadBtn.disabled = busy;
+      downloadBtn.textContent = busy ? `${action}…` : "Download PNG";
+    }
+    if (nativeBtn && !nativeBtn.classList.contains("hidden")) {
+      nativeBtn.disabled = busy;
+      nativeBtn.textContent = busy ? "Working…" : "Share…";
+    }
   }
 
   function updateContext(context = {}) {
@@ -114,39 +99,29 @@ export function createShareOverlay() {
     state.netAfterChexy = Number(context.netAfterChexy || 0);
     state.shareUrl = context.shareUrl || window.location.href;
     state.prepared = false;
-    state.preparing = null;
     state.pngBlob = null;
   }
 
-  async function prepare() {
+  function prepare() {
     if (state.prepared) return;
-    if (state.preparing) return state.preparing;
 
-    state.preparing = (async () => {
-      const copy = buildShareCopy({
-        netValue: state.netAfterChexy,
-        valuationMode: state.valuationMode,
-        cardCount: state.best?.combo?.length || 0
-      });
+    const copy = buildShareCopy({
+      netValue: state.netAfterChexy,
+      valuationMode: state.valuationMode,
+      cardCount: state.best?.combo?.length || 0
+    });
 
-      cardEl.querySelector(".shareCard__kicker").textContent = copy.kicker;
-      cardEl.querySelector(".shareCard__headline").textContent = copy.headline;
-      cardEl.querySelector(".shareCard__heroValue").textContent = copy.heroValue;
-      cardEl.querySelector(".shareCard__heroLabel").textContent = copy.heroValueLabel;
-      cardEl.querySelector(".shareCard__support").textContent = copy.support;
-      cardEl.querySelector(".shareCard__cta").textContent = copy.cta;
-      cardEl.querySelector(".shareCard__url").textContent = copy.urlLabel;
+    cardEl.querySelector(".shareCard__kicker").textContent = copy.kicker;
+    cardEl.querySelector(".shareCard__headline").textContent = copy.headline;
+    cardEl.querySelector(".shareCard__heroValue").textContent = copy.heroValue;
+    cardEl.querySelector(".shareCard__heroLabel").textContent = copy.heroValueLabel;
+    cardEl.querySelector(".shareCard__support").textContent = copy.support;
+    cardEl.querySelector(".shareCard__cta").textContent = copy.cta;
+    cardEl.querySelector(".shareCard__url").textContent = copy.urlLabel;
 
-      renderCards(state.best?.combo || []);
-      await setQrImage();
-      state.prepared = true;
-    })();
-
-    try {
-      await state.preparing;
-    } finally {
-      state.preparing = null;
-    }
+    renderCards(state.best?.combo || []);
+    setQrImage();
+    state.prepared = true;
   }
 
   function renderCards(cards) {
@@ -159,24 +134,16 @@ export function createShareOverlay() {
     });
   }
 
-  async function setQrImage() {
+  function setQrImage() {
     state.qrSrc = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=6&data=${encodeURIComponent(state.shareUrl)}`;
     qrEl.src = state.qrSrc;
     qrEl.referrerPolicy = "no-referrer";
     qrEl.crossOrigin = "anonymous";
-
-    try {
-      await waitForImage(qrEl, 3500);
-    } catch {
-      qrEl.removeAttribute("src");
-      state.qrSrc = "";
-    }
   }
 
   async function nativeShare() {
     if (!(navigator.share && window.isSecureContext)) return;
-    showStatus("Preparing share…");
-    await prepare();
+    prepare();
 
     const copy = buildShareCopy({
       netValue: state.netAfterChexy,
@@ -184,6 +151,7 @@ export function createShareOverlay() {
       cardCount: state.best?.combo?.length || 0
     });
 
+    setBusy(true, "Preparing share");
     try {
       const blob = await getPngBlob();
       const file = new File([blob], "creditcombo-share.png", { type: "image/png" });
@@ -201,20 +169,23 @@ export function createShareOverlay() {
     } catch {
       // user canceled or device does not support share target
     } finally {
-      showBody();
+      setBusy(false);
     }
   }
 
   async function downloadPng() {
-    showStatus("Rendering PNG…");
-    await prepare();
-    const blob = await getPngBlob();
-    const link = document.createElement("a");
-    link.download = "creditcombo-share.png";
-    link.href = URL.createObjectURL(blob);
-    link.click();
-    URL.revokeObjectURL(link.href);
-    showBody();
+    prepare();
+    setBusy(true, "Rendering");
+    try {
+      const blob = await getPngBlob();
+      const link = document.createElement("a");
+      link.download = "creditcombo-share.png";
+      link.href = URL.createObjectURL(blob);
+      link.click();
+      URL.revokeObjectURL(link.href);
+    } finally {
+      setBusy(false);
+    }
   }
 
   async function getPngBlob() {
@@ -322,38 +293,6 @@ function loadImage(src) {
     img.onload = () => resolve(img);
     img.onerror = reject;
     img.src = src;
-  });
-}
-
-function waitForImage(img, timeoutMs = 3500) {
-  return new Promise((resolve, reject) => {
-    if (img.complete && img.naturalWidth > 0) {
-      resolve();
-      return;
-    }
-
-    const timeout = window.setTimeout(() => {
-      cleanup();
-      reject(new Error("Image load timed out"));
-    }, timeoutMs);
-
-    const onLoad = () => {
-      cleanup();
-      resolve();
-    };
-    const onError = () => {
-      cleanup();
-      reject(new Error("Failed to load image"));
-    };
-
-    function cleanup() {
-      window.clearTimeout(timeout);
-      img.removeEventListener("load", onLoad);
-      img.removeEventListener("error", onError);
-    }
-
-    img.addEventListener("load", onLoad);
-    img.addEventListener("error", onError);
   });
 }
 
