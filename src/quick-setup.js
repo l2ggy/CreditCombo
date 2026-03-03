@@ -370,6 +370,23 @@ function selectedValuationMode() {
   return state.valuationMode || "estimated";
 }
 
+
+function postQuizHeroContent(mode) {
+  if (mode === "current_cards") {
+    return {
+      eyebrow: "Your current setup",
+      title: "Here’s your current combo",
+      lead: "A practical baseline from the cards you already hold."
+    };
+  }
+
+  return {
+    eyebrow: "Your optimized outcome",
+    title: "Welcome to your CreditCombo",
+    lead: "Your highest-upside combo for stronger annual rewards."
+  };
+}
+
 function buildOptimizationPayload(overrides = {}) {
   const mode = overrides.mode || selectedMode();
   const lockedCardIds = overrides.lockedCardIds || (mode === "current_cards" ? state.lockedCardIds : []);
@@ -424,14 +441,16 @@ async function showPostQuizResults() {
 
 function renderPostQuizScreen() {
   const currentMode = selectedMode();
+  const hero = postQuizHeroContent(currentMode);
   const resultState = state.results || computeScenarioResult({ mode: currentMode });
   const { best, payload, chexySummary, uplift } = resultState;
 
   appEl.innerHTML = `
     <section class="quickResultsScreen">
-      <header class="quickResultsHero">
-        <p class="quickHint">Quick setup complete</p>
-        <h2 class="quickPrompt">Here’s your CreditCombo result</h2>
+      <header class="quickResultsHero ${currentMode === "current_cards" ? "is-current" : "is-ideal"}">
+        <p class="quickHint">${hero.eyebrow}</p>
+        <h2 class="quickPrompt">${hero.title}</h2>
+        <p class="quickLead">${hero.lead}</p>
       </header>
       <p id="quickResultsCallout" class="earnRateCallout quickUpliftCallout"></p>
       <section class="panel resultPanel quickSetupResultShell">
@@ -454,7 +473,7 @@ function renderPostQuizScreen() {
     calloutEl.classList.remove("hidden");
     calloutEl.textContent = upliftValue > 0
       ? `With your ideal CreditCombo, you could earn +${formatMoneyCAD(upliftValue)}/year more.`
-      : "Your current setup is already near-optimal for your selected spend profile.";
+      : "Your current setup is already close to your upside for this spend profile.";
   } else {
     calloutEl.classList.add("hidden");
   }
