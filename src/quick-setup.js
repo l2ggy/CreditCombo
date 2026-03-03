@@ -456,13 +456,17 @@ function renderPostQuizScreen() {
   const resultState = isLoading ? null : (state.results || computeScenarioResult({ mode: currentMode }));
   const { best, payload, chexySummary, uplift } = resultState || {};
 
-  appEl.innerHTML = `
-    <section class="quickResultsScreen">
+  const heroMarkup = isLoading ? "" : `
       <header class="quickResultsHero ${currentMode === "current_cards" ? "is-current" : "is-ideal"}">
         <p class="quickHint">${hero.eyebrow}</p>
         <h2 class="quickPrompt">${hero.title}</h2>
         <p class="quickLead">${hero.lead}</p>
       </header>
+  `;
+
+  appEl.innerHTML = `
+    <section class="quickResultsScreen">
+      ${heroMarkup}
       <p id="quickResultsCallout" class="earnRateCallout quickUpliftCallout"></p>
       <section class="panel resultPanel quickSetupResultShell">
         <div class="panelHeader panelHeader-result">
