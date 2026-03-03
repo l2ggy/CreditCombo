@@ -26,148 +26,22 @@ function trapFocus(root, event) {
   }
 }
 
-function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
-  const words = String(text || "").split(/\s+/).filter(Boolean);
-  if (!words.length) return y;
-  let line = "";
-  let cursorY = y;
-  for (const word of words) {
-    const testLine = line ? `${line} ${word}` : word;
-    if (ctx.measureText(testLine).width > maxWidth && line) {
-      ctx.fillText(line, x, cursorY);
-      line = word;
-      cursorY += lineHeight;
-    } else {
-      line = testLine;
-    }
-  }
-  if (line) ctx.fillText(line, x, cursorY);
-  return cursorY;
-}
-
-function drawRoundedRect(ctx, x, y, width, height, radius) {
-  ctx.beginPath();
-  ctx.moveTo(x + radius, y);
-  ctx.lineTo(x + width - radius, y);
-  ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
-  ctx.lineTo(x + width, y + height - radius);
-  ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
-  ctx.lineTo(x + radius, y + height);
-  ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
-  ctx.lineTo(x, y + radius);
-  ctx.quadraticCurveTo(x, y, x + radius, y);
-  ctx.closePath();
-}
-
-async function loadImage(src) {
-  if (!src) return null;
-  return new Promise((resolve) => {
-    const image = new Image();
-    image.crossOrigin = "anonymous";
-    image.onload = () => resolve(image);
-    image.onerror = () => resolve(null);
-    image.src = src;
-  });
-}
-
 async function downloadCardImage(cardEl) {
   if (!(cardEl instanceof HTMLElement)) throw new Error("Missing share card element");
 
-  const width = 1200;
-  const height = 1200;
-  const canvas = document.createElement("canvas");
-  canvas.width = width;
-  canvas.height = height;
-  const ctx = canvas.getContext("2d");
-  if (!ctx) throw new Error("Failed to create export canvas context");
+  const { toPng } = await import("https://esm.sh/html-to-image@1.11.11");
+  const dataUrl = await toPng(cardEl, {
+    cacheBust: true,
+    pixelRatio: Math.max(2, window.devicePixelRatio || 1),
+    backgroundColor: "transparent"
+  });
 
-  const gradient = ctx.createLinearGradient(0, 0, width, height);
-  gradient.addColorStop(0, "#1d4f9f");
-  gradient.addColorStop(1, "#0f172a");
-  ctx.fillStyle = gradient;
-  ctx.fillRect(0, 0, width, height);
-
-  const pad = 56;
-  drawRoundedRect(ctx, pad, pad, width - (pad * 2), height - (pad * 2), 28);
-  ctx.fillStyle = "rgba(15,23,42,0.35)";
-  ctx.fill();
-
-  const heroLabel = cardEl.querySelector(".shareHeroLabel")?.textContent || "";
-  const heroValue = cardEl.querySelector(".shareHeroValue")?.textContent || "";
-  const support = cardEl.querySelector(".shareSupport")?.textContent || "";
-  const cta = cardEl.querySelector(".shareCta")?.textContent || "";
-  const link = cardEl.querySelector(".shareCardFooter a")?.textContent || "";
-
-  let cursorY = 140;
-  const startX = 96;
-  const textWidth = 820;
-
-  ctx.fillStyle = "#bfdbfe";
-  ctx.font = "600 36px Inter, system-ui, sans-serif";
-  cursorY = wrapText(ctx, heroLabel, startX, cursorY, textWidth, 44) + 28;
-
-  ctx.fillStyle = "#ffffff";
-  ctx.font = "800 96px Inter, system-ui, sans-serif";
-  cursorY = wrapText(ctx, heroValue, startX, cursorY, textWidth, 106) + 24;
-
-  ctx.fillStyle = "#dbeafe";
-  ctx.font = "500 34px Inter, system-ui, sans-serif";
-  cursorY = wrapText(ctx, support, startX, cursorY, textWidth, 46) + 50;
-
-  const cardNodes = [...cardEl.querySelectorAll(".shareThumbItem img")];
-  const cardImages = await Promise.all(cardNodes.map((img) => loadImage(img.getAttribute("src"))));
-  const top = cardImages.slice(0, 3).filter(Boolean);
-  const bottom = cardImages.slice(3, 5).filter(Boolean);
-
-  const drawRow = (images, y, cardWidth = 230, overlap = 42) => {
-    if (!images.length) return;
-    const totalWidth = (images.length * cardWidth) - ((images.length - 1) * overlap);
-    let x = (width - totalWidth) / 2;
-    images.forEach((image) => {
-      const ratio = image.naturalHeight / image.naturalWidth;
-      const h = cardWidth * ratio;
-      ctx.save();
-      ctx.shadowColor = "rgba(2,6,23,0.35)";
-      ctx.shadowBlur = 24;
-      ctx.shadowOffsetY = 12;
-      ctx.drawImage(image, x, y, cardWidth, h);
-      ctx.restore();
-      x += cardWidth - overlap;
-    });
-  };
-
-  drawRow(top, cursorY, 230, 42);
-  if (bottom.length) drawRow(bottom, cursorY + 300, 250, 52);
-
-  ctx.fillStyle = "#f8fafc";
-  ctx.font = "700 42px Inter, system-ui, sans-serif";
-  ctx.fillText(cta, startX, 1020);
-
-  ctx.fillStyle = "#bfdbfe";
-  ctx.font = "500 28px Inter, system-ui, sans-serif";
-  wrapText(ctx, link, startX, 1072, 720, 34);
-
-  const qrSrc = cardEl.querySelector(".shareQr")?.getAttribute("src");
-  const qr = await loadImage(qrSrc);
-  if (qr) {
-    ctx.fillStyle = "#ffffff";
-    drawRoundedRect(ctx, 966, 948, 170, 170, 12);
-    ctx.fill();
-    ctx.drawImage(qr, 976, 958, 150, 150);
-  }
-
-  const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/png"));
-  if (!blob) throw new Error("Failed to create PNG blob");
-  const objectUrl = URL.createObjectURL(blob);
-  try {
-    const linkEl = document.createElement("a");
-    linkEl.href = objectUrl;
-    linkEl.download = "creditcombo-share-card.png";
-    linkEl.click();
-  } finally {
-    URL.revokeObjectURL(objectUrl);
-  }
+  const linkEl = document.createElement("a");
+  linkEl.href = dataUrl;
+  linkEl.download = "creditcombo-share-card.png";
+  linkEl.click();
 }
+
 
 export function createShareOverlay() {
   let active = null;
