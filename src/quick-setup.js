@@ -7,6 +7,9 @@ import { bindCardSearchKeyboard, createCardSearchIndex, rankCardMatches, renderC
 import { formatMoneyCAD } from "./shared/format.js";
 
 const appEl = document.getElementById("quickSetupApp");
+const QUICK_SETUP_DEFAULTS = Object.freeze({
+  includeBusinessCards: false
+});
 
 const state = {
   mode: null,
@@ -160,7 +163,7 @@ function stepCurrentCards() {
   return {
     key: "current_cards",
     render(contentEl) {
-      const searchIndex = createCardSearchIndex(ctx.eligibleCards);
+      const searchIndex = createCardSearchIndex(ctx.optimizationEligibleCards);
 
       contentEl.innerHTML = `
         <h2 class="quickPrompt">Which cards do you already have?</h2>
@@ -394,7 +397,7 @@ function buildOptimizationPayload(overrides = {}) {
   const k = Number.isFinite(overrides.k) ? overrides.k : (mode === "current_cards" ? 0 : Math.max(1, Number(state.k) || 1));
 
   return {
-    cards: ctx.eligibleCards,
+    cards: ctx.optimizationEligibleCards,
     programsMap: ctx.programsMap,
     schema: ctx.schema,
     annualSpend: annualizeMonthlySpend(state.monthlySpend, ctx.schema),
@@ -569,9 +572,14 @@ function renderWizard() {
 
 async function main() {
   const data = await loadOptimizerData();
+  const optimizationEligibleCards = QUICK_SETUP_DEFAULTS.includeBusinessCards
+    ? data.eligibleCards
+    : data.eligibleCards.filter((card) => !card.is_business_card);
+
   ctx = {
     ...data,
-    eligibleCardsById: new Map(data.eligibleCards.map((card) => [card.id, card]))
+    optimizationEligibleCards,
+    eligibleCardsById: new Map(optimizationEligibleCards.map((card) => [card.id, card]))
   };
 
   refreshStepPlan();
