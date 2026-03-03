@@ -11,7 +11,7 @@ const state = {
   subcategorySpend: {},
   lockedCardIds: [],
   k: 1,
-  valuationMode: "estimated"
+  valuationMode: null
 };
 
 let ctx = null;
@@ -208,26 +208,37 @@ function stepValuation() {
       contentEl.innerHTML = `
         <h2 class="quickPrompt">How do you usually redeem rewards?</h2>
         <p class="quickLead">Pick the option that sounds most like you.</p>
+        <p class="quickHint">Choose one option to continue.</p>
         <div class="quickGoalGrid">
-          <button type="button" class="quickGoalBtn ${state.valuationMode === "estimated" ? "is-selected" : ""}" data-valuation="estimated">
+          <button type="button" class="quickGoalBtn ${state.valuationMode === "estimated" ? "is-selected" : ""}" data-valuation="estimated" aria-pressed="false">
             I look for great travel redemptions (higher upside)
           </button>
-          <button type="button" class="quickGoalBtn ${state.valuationMode === "minimum_guaranteed" ? "is-selected" : ""}" data-valuation="minimum_guaranteed">
+          <button type="button" class="quickGoalBtn ${state.valuationMode === "minimum_guaranteed" ? "is-selected" : ""}" data-valuation="minimum_guaranteed" aria-pressed="false">
             I prefer statement credit / guaranteed value
           </button>
         </div>
       `;
 
-      contentEl.querySelectorAll("[data-valuation]").forEach((button) => {
+      const valuationButtons = [...contentEl.querySelectorAll("[data-valuation]")];
+      const syncPressedState = () => {
+        valuationButtons.forEach((node) => {
+          const selected = node.dataset.valuation === state.valuationMode;
+          node.classList.toggle("is-selected", selected);
+          node.setAttribute("aria-pressed", String(selected));
+        });
+      };
+
+      valuationButtons.forEach((button) => {
         button.addEventListener("click", () => {
           state.valuationMode = button.dataset.valuation === "minimum_guaranteed" ? "minimum_guaranteed" : "estimated";
-          contentEl.querySelectorAll("[data-valuation]").forEach((node) => node.classList.toggle("is-selected", node === button));
+          syncPressedState();
         });
       });
 
+      syncPressedState();
       return {};
     },
-    validate: () => true
+    validate: () => Boolean(state.valuationMode)
   };
 }
 
@@ -271,7 +282,7 @@ function goNext() {
     // TODO: add country capture once country-based card eligibility is implemented.
     // TODO: add credit score gating once credit-tier constraints are supported.
     // TODO: add income-based filtering once card income requirements are integrated.
-    window.location.assign(buildOptimizerDeepLink(state));
+    window.location.assign(buildOptimizerDeepLink({ ...state, valuationMode: state.valuationMode || "estimated" }));
     return;
   }
 

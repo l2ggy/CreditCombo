@@ -1,18 +1,31 @@
-.quickSetupPanel{max-width:840px;margin:0 auto;padding:var(--space-8)}
+.quickSetupPanel{
+  max-width:900px;
+  margin:0 auto;
+  padding:clamp(var(--space-8),3vw,var(--space-10));
+  border-radius:var(--radius-xl);
+  background:color-mix(in srgb,var(--color-panel) 88%,transparent);
+  box-shadow:0 12px 34px color-mix(in srgb,var(--color-bg) 70%,transparent);
+}
 .quickProgress{width:100%;height:18px;border:1px solid var(--color-border);border-radius:999px;background:color-mix(in srgb,var(--color-panel) 75%,transparent);overflow:hidden;margin-bottom:var(--space-8)}
 .quickProgressBar{height:100%;width:0;background:var(--color-accent);transition:width .2s ease}
-.quickContent{padding:var(--space-3) 0}
-.quickPrompt{margin:0 0 var(--space-4);font-size:clamp(28px,3.2vw,38px);line-height:1.15}
-.quickLead{margin:0 0 var(--space-5);font-size:clamp(18px,2vw,24px);color:var(--color-muted)}
+.quickContent{
+  padding:var(--space-6);
+  border:1px solid color-mix(in srgb,var(--color-border) 82%,transparent);
+  border-radius:var(--radius-lg);
+  background:color-mix(in srgb,var(--color-panel) 82%,transparent);
+}
+.quickPrompt{margin:0 0 var(--space-4);font-size:clamp(30px,3.2vw,40px);line-height:1.15}
+.quickLead{margin:0 0 var(--space-4);font-size:clamp(18px,2vw,24px);color:var(--color-muted)}
+.quickHint{margin:0 0 var(--space-6);font-size:var(--font-size-lg);color:var(--color-muted)}
 .quickLabel{font-size:var(--font-size-xl)}
-.quickBigInput{font-size:clamp(24px,3vw,34px);padding:var(--space-5) var(--space-5)!important}
+.quickBigInput{font-size:clamp(24px,3vw,34px);padding:var(--space-5) var(--space-5)!important;border-radius:var(--radius-xl)!important}
 .quickGoalGrid{display:grid;gap:var(--space-4)}
-.quickGoalBtn{padding:var(--space-6);text-align:left;font-size:clamp(20px,2.2vw,28px);line-height:1.25;min-height:96px}
+.quickGoalBtn{padding:var(--space-6);text-align:left;font-size:clamp(20px,2.2vw,28px);line-height:1.25;min-height:104px;border-radius:var(--radius-xl)}
 .quickGoalBtn.is-selected{border-color:var(--color-accent);background:color-mix(in srgb,var(--color-accent) 20%,transparent)}
-.quickActions{display:flex;justify-content:space-between;gap:var(--space-4);margin-top:var(--space-8)}
-.quickActions button{width:auto;min-width:150px;padding:var(--space-4) var(--space-6)}
-.quickSearch .listBox{max-height:280px}
+.quickActions{display:flex;justify-content:space-between;gap:var(--space-4);margin-top:var(--space-8);padding-inline:var(--space-2)}
+.quickActions button{width:auto;min-width:150px;padding:var(--space-4) var(--space-7)}
+.quickSearch .listBox{max-height:300px;margin-top:var(--space-4)}
 .quickSearch .listOption{padding:var(--space-4);font-size:var(--font-size-lg)}
 .cardSearchThumb{display:inline-flex;align-items:center;justify-content:center;line-height:0;flex:0 0 auto}
 .quickSearch .cardSearchThumb .thumb{height:52px;width:auto}
-.quickSearch .chip{font-size:var(--font-size-base)}
+.quickSearch .chip{font-size:var(--font-size-base);padding:var(--space-3) var(--space-4)}
