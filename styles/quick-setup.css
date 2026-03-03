@@ -57,3 +57,23 @@
 .quickResultsHero.is-ideal .quickHint{font-size:var(--font-size-base);text-transform:uppercase;letter-spacing:.08em}
 .quickResultsHero.is-current .quickPrompt{font-size:clamp(22px,2.6vw,30px)}
 .quickResultsHero .quickLead{max-width:58ch;margin:0 auto;color:var(--color-muted)}
+
+
+.quickResultsHero.is-ideal{
+  padding:var(--space-6);
+  border:1px solid color-mix(in srgb,var(--color-brand-highlight) 45%,var(--color-border));
+  border-radius:var(--radius-xl);
+  background:
+    radial-gradient(120% 100% at 50% -10%, color-mix(in srgb,var(--color-brand-highlight) 22%, transparent), transparent 65%),
+    color-mix(in srgb,var(--color-panel) 90%,transparent);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb,var(--color-brand-highlight) 22%, transparent) inset,
+    0 16px 40px color-mix(in srgb,var(--color-brand-highlight) 22%, transparent);
+}
+
+.quickResultsHero.is-current{
+  padding:var(--space-4);
+  border:1px solid color-mix(in srgb,var(--color-border) 84%,transparent);
+  border-radius:var(--radius-lg);
+  background:color-mix(in srgb,var(--color-panel) 84%,transparent);
+}
