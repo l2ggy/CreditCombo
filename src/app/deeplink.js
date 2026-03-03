@@ -5,7 +5,8 @@ function asNumber(value, fallback = 0) {
 
 export function buildOptimizerDeepLink(state = {}) {
   const params = new URLSearchParams();
-  const mode = state.mode === "current_cards" ? "current_cards" : "ideal_combo";
+  const inferredGoalMode = state.quizResponses?.goal === "current_cards" ? "current_cards" : "ideal_combo";
+  const mode = state.mode === "current_cards" ? "current_cards" : inferredGoalMode;
   const k = mode === "current_cards" ? 0 : Math.max(0, Number(state.k) || 0);
 
   params.set("mode", mode);
@@ -41,7 +42,6 @@ export function buildOptimizerDeepLink(state = {}) {
 
 export function readOptimizerDeepLink(search, { schema = [], subcategoryConfigs = {}, eligibleCardIdSet = new Set() } = {}) {
   const params = new URLSearchParams(search || "");
-  const mode = params.get("mode") === "current_cards" ? "current_cards" : "ideal_combo";
 
   const spend = {};
   schema.forEach((cat) => {
@@ -60,9 +60,6 @@ export function readOptimizerDeepLink(search, { schema = [], subcategoryConfigs 
     .map((id) => id.trim())
     .filter((id) => id && eligibleCardIdSet.has(id));
 
-  const kRaw = asNumber(params.get("k"), mode === "current_cards" ? 0 : 1);
-  const k = mode === "current_cards" ? 0 : kRaw;
-
   const quizResponses = {};
   for (const [key, value] of params.entries()) {
     if (!key.startsWith("q_")) continue;
@@ -70,6 +67,14 @@ export function readOptimizerDeepLink(search, { schema = [], subcategoryConfigs 
     if (!responseKey) continue;
     quizResponses[responseKey] = value;
   }
+
+  const modeParam = params.get("mode") === "current_cards" ? "current_cards" : "ideal_combo";
+  const mode = modeParam === "current_cards" || quizResponses.goal === "current_cards"
+    ? "current_cards"
+    : "ideal_combo";
+
+  const kRaw = asNumber(params.get("k"), mode === "current_cards" ? 0 : 1);
+  const k = mode === "current_cards" ? 0 : kRaw;
 
   return {
     mode,
