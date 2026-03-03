@@ -232,11 +232,12 @@ function stepValuation() {
         button.addEventListener("click", () => {
           state.valuationMode = button.dataset.valuation === "minimum_guaranteed" ? "minimum_guaranteed" : "estimated";
           syncPressedState();
+          goNext();
         });
       });
 
       syncPressedState();
-      return {};
+      return { autoAdvance: true };
     },
     validate: () => Boolean(state.valuationMode)
   };
