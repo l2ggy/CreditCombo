@@ -509,7 +509,7 @@
         "https://www.americanexpress.com/en-ca/credit-cards/the-platinum-card/",
         "https://www.americanexpress.com/en-ca/credit-cards/"
       ],
-      "official_link": "https://www.americanexpress.com/en-ca/credit-cards/the-platinum-card/"
+      "official_link": "https://www.americanexpress.com/ca/en/credit-cards/the-platinum-card/"
     },
     {
       "id": "atb_gold_cash_rewards_mastercard",
@@ -1032,7 +1032,7 @@
         "https://www.bmo.com/main/personal/credit-cards/bmo-eclipse-rise-visa/",
         "https://www.bmo.com/main/personal/credit-cards/"
       ],
-      "official_link": "https://www.bmo.com/main/personal/credit-cards/bmo-eclipse-rise-visa/"
+      "official_link": "https://www.bmo.com/main/personal/credit-cards/"
     },
     {
       "id": "bmo_eclipse_vip",
@@ -1308,7 +1308,7 @@
       "sources": [
         "https://www.capitalone.ca/credit-cards/"
       ],
-      "official_link": "https://www.capitalone.ca/credit-cards/"
+      "official_link": "https://www.capitalone.ca/credit-cards/guaranteed-mastercard/"
     },
     {
       "id": "capital_one_smart_rewards_mastercard",
@@ -1329,7 +1329,7 @@
       "sources": [
         "https://www.capitalone.ca/credit-cards/"
       ],
-      "official_link": "https://www.capitalone.ca/credit-cards/"
+      "official_link": "https://www.capitalone.ca/"
     },
     {
       "id": "cibc_costco_mastercard",
@@ -2568,7 +2568,7 @@
         "https://www.meridiancu.ca/personal/credit-cards/legal-documents-for-credit-cards",
         "https://www.meridiancu.ca/personal/credit-cards"
       ],
-      "official_link": "https://www.meridiancu.ca/personal/credit-cards/legal-documents-for-credit-cards"
+      "official_link": "https://www.meridiancu.ca/personal/credit-cards/visa-infinite-cash-back-card"
     },
     {
       "id": "meridian_visa_us_dollar_card",
@@ -2890,7 +2890,7 @@
       "subcategory_earn_rates": {
         "travel_cathay_pacific": 4
       },
-      "official_link": "https://www.neofinancial.com/credit"
+      "official_link": "https://cathay.neofinancial.com/"
     },
     {
       "id": "neo_mastercard",
@@ -3346,7 +3346,7 @@
         "https://www.rbcroyalbank.com/credit-cards/cash-back/cash-back-preferred-world-elite-mastercard.html",
         "https://www.rbcroyalbank.com/credit-cards/"
       ],
-      "official_link": "https://www.rbcroyalbank.com/credit-cards/cash-back/rbc-cashback-preferred-world-elite-mastercard.html"
+      "official_link": "https://www.rbcroyalbank.com/credit-cards/cash-back/rbc-preferred-world-elite-mastercard.html"
     },
     {
       "id": "westjet_rbc_mastercard",
@@ -3508,7 +3508,7 @@
         "https://www.rbcroyalbank.com/business/credit-cards/avion-visa-business.html",
         "https://www.rbcroyalbank.com/credit-cards/"
       ],
-      "official_link": "https://www.rbcroyalbank.com/business/credit-cards/avion-visa-business.html"
+      "official_link": "https://www.rbcroyalbank.com/business/credit-cards/index.html"
     },
     {
       "id": "rbc_avion_vi",
@@ -4752,7 +4752,7 @@
       "subcategory_earn_rates": {
         "travel_air_canada_direct": 2
       },
-      "official_link": "https://www.td.com/ca/en/personal-banking/products/credit-cards/travel-rewards/aeroplan-visa-infinite-card"
+      "official_link": "https://www.td.com/ca/en/personal-banking/products/credit-cards"
     },
     {
       "id": "td_cash_back_vi",
@@ -4850,7 +4850,7 @@
         "https://www.td.com/ca/en/personal-banking/products/credit-cards/cash-back-rewards/cash-back-visa-infinite-card",
         "https://www.td.com/ca/en/personal-banking/products/credit-cards"
       ],
-      "official_link": "https://www.td.com/ca/en/personal-banking/products/credit-cards/cash-back-rewards/cash-back-visa-infinite-card"
+      "official_link": "https://www.td.com/ca/en/personal-banking/products/credit-cards"
     },
     {
       "id": "td_cash_back_visa",
@@ -4944,7 +4944,7 @@
         "https://www.td.com/ca/en/personal-banking/products/credit-cards/cash-back-rewards/cash-back-visa-card",
         "https://www.td.com/ca/en/personal-banking/products/credit-cards"
       ],
-      "official_link": "https://www.td.com/ca/en/personal-banking/products/credit-cards/cash-back-rewards/cash-back-visa-card"
+      "official_link": "https://www.td.com/ca/en/personal-banking/products/credit-cards"
     },
     {
       "id": "td_first_class_travel_vi",
