@@ -189,21 +189,14 @@ export function renderResult(el, best, annualSpend, schema, valuationMode = "est
   const rows = [["Gross rewards value", formatMoneyCAD(best.gross)]];
   if (cardAnnualFees > 0) rows.push(["Card annual fees", formatMoneyCAD(cardAnnualFees)]);
   if (chexyFeeCost > 0) rows.push(["Chexy fees", formatMoneyCAD(chexyFeeCost)]);
-  rows.push(["Net value", formatMoneyCAD(netAfterChexy)]);
 
-  rows.forEach(([label, value], idx) => {
+  rows.forEach(([label, value]) => {
     const tr = document.createElement("tr");
     const th = document.createElement("th");
     th.textContent = label;
     const td = document.createElement("td");
 
-    if (idx === rows.length - 1) {
-      const b = document.createElement("b");
-      b.textContent = value;
-      td.append(b);
-    } else {
-      td.textContent = value;
-    }
+    td.textContent = value;
 
     tr.append(th, td);
     tbody.append(tr);
@@ -214,7 +207,7 @@ export function renderResult(el, best, annualSpend, schema, valuationMode = "est
 
   const effectiveRateCallout = document.createElement("p");
   effectiveRateCallout.className = "earnRateCallout";
-  effectiveRateCallout.textContent = `Earn rate: ${formatPercent(effectiveEarnRate)}`;
+  effectiveRateCallout.innerHTML = `Net value: <strong>${escapeHtml(formatMoneyCAD(netAfterChexy))}</strong> <span class="subtle">(${escapeHtml(formatPercent(effectiveEarnRate))} earn rate)</span>`;
   resultContent.append(effectiveRateCallout);
 
   const chexyCallout = renderChexyWorthItCallout(chexySummary, grossEarnRate);
