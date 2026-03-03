@@ -5,18 +5,15 @@
 .quickSetupPanel{
   max-width:900px;
   margin:0 auto;
-  display:grid;
-  gap:var(--space-8);
-  padding-top:var(--quick-quiz-panel-padding);
-  padding-right:var(--quick-quiz-panel-padding);
-  padding-bottom:var(--quick-quiz-panel-padding);
-  padding-left:var(--quick-quiz-panel-padding);
+  padding:var(--quick-quiz-panel-padding);
   border:1px solid var(--color-border);
   border-radius:var(--radius-xl);
   background:color-mix(in srgb,var(--color-panel) 88%,transparent);
   box-shadow:0 12px 34px color-mix(in srgb,var(--color-bg) 70%,transparent);
 }
-.quickProgress{width:100%;height:18px;border:1px solid var(--color-border);border-radius:999px;background:color-mix(in srgb,var(--color-panel) 75%,transparent);overflow:hidden;margin:0}
+.quickSetupPanel > *{margin:0}
+.quickSetupPanel > * + *{margin-top:var(--space-8)}
+.quickProgress{width:100%;height:18px;border:1px solid var(--color-border);border-radius:999px;background:color-mix(in srgb,var(--color-panel) 75%,transparent);overflow:hidden}
 .quickProgressBar{height:100%;width:0;background:var(--color-accent);transition:width .2s ease}
 .quickContent{
   padding-top:var(--quick-quiz-panel-padding);
@@ -35,7 +32,7 @@
 .quickGoalGrid{display:grid;gap:var(--space-4);align-items:start}
 .quickGoalBtn{padding:var(--space-5);text-align:center;font-size:clamp(16px,1.5vw,19px);line-height:1.3;min-height:0;border-radius:var(--radius-xl)}
 .quickGoalBtn.is-selected{border-color:var(--color-accent);background:color-mix(in srgb,var(--color-accent) 20%,transparent)}
-.quickActions{display:flex;justify-content:space-between;gap:var(--space-4);margin:0}
+.quickActions{display:flex;justify-content:space-between;gap:var(--space-4)}
 .quickActions button{width:auto;min-width:150px;padding:var(--space-4) var(--space-7)}
 .quickSearch .listBox{max-height:300px;margin-top:var(--space-4)}
 .quickSearch .listOption{padding:var(--space-4);font-size:var(--font-size-lg)}
