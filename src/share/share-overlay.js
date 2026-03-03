@@ -9,7 +9,8 @@ export function createShareOverlay() {
     shareUrl: window.location.href,
     qrSrc: "",
     prepared: false,
-    preparing: null
+    preparing: null,
+    pngBlob: null
   };
 
   const root = document.createElement("div");
@@ -31,8 +32,8 @@ export function createShareOverlay() {
         <div class="shareCard" id="shareCard">
           <p class="shareCard__kicker"></p>
           <h4 class="shareCard__headline"></h4>
-          <p class="shareCard__heroLabel"></p>
           <p class="shareCard__heroValue"></p>
+          <p class="shareCard__heroLabel"></p>
           <p class="shareCard__support"></p>
           <div class="shareCard__cards" aria-label="Cards in this combo"></div>
           <div class="shareCard__footer">
@@ -79,9 +80,7 @@ export function createShareOverlay() {
 
     try {
       await prepare();
-      loadingEl.classList.add("hidden");
-      bodyEl.classList.remove("hidden");
-      actionsEl.classList.remove("hidden");
+      showBody();
     } catch {
       loadingEl.innerHTML = "<span>Couldn’t prepare the share card yet. Please try again.</span>";
     }
@@ -100,6 +99,12 @@ export function createShareOverlay() {
     actionsEl.classList.add("hidden");
   }
 
+  function showBody() {
+    loadingEl.classList.add("hidden");
+    bodyEl.classList.remove("hidden");
+    actionsEl.classList.remove("hidden");
+  }
+
   function updateContext(context = {}) {
     state.best = context.best || null;
     state.valuationMode = context.valuationMode || "estimated";
@@ -107,6 +112,7 @@ export function createShareOverlay() {
     state.shareUrl = context.shareUrl || window.location.href;
     state.prepared = false;
     state.preparing = null;
+    state.pngBlob = null;
   }
 
   async function prepare() {
@@ -122,8 +128,8 @@ export function createShareOverlay() {
 
       cardEl.querySelector(".shareCard__kicker").textContent = copy.kicker;
       cardEl.querySelector(".shareCard__headline").textContent = copy.headline;
-      cardEl.querySelector(".shareCard__heroLabel").textContent = copy.heroValueLabel;
       cardEl.querySelector(".shareCard__heroValue").textContent = copy.heroValue;
+      cardEl.querySelector(".shareCard__heroLabel").textContent = copy.heroValueLabel;
       cardEl.querySelector(".shareCard__support").textContent = copy.support;
       cardEl.querySelector(".shareCard__cta").textContent = copy.cta;
       cardEl.querySelector(".shareCard__url").textContent = copy.urlLabel;
@@ -160,6 +166,9 @@ export function createShareOverlay() {
 
   async function nativeShare() {
     if (!(navigator.share && window.isSecureContext)) return;
+    showLoading();
+    await prepare();
+
     const copy = buildShareCopy({
       netValue: state.netAfterChexy,
       valuationMode: state.valuationMode,
@@ -167,27 +176,43 @@ export function createShareOverlay() {
     });
 
     try {
-      await navigator.share({
+      const blob = await getPngBlob();
+      const file = new File([blob], "creditcombo-share.png", { type: "image/png" });
+      const shareData = {
         title: "CreditCombo result",
         text: copy.nativeShareText,
         url: state.shareUrl
-      });
+      };
+
+      if (navigator.canShare?.({ files: [file] })) {
+        shareData.files = [file];
+      }
+
+      await navigator.share(shareData);
     } catch {
-      // User dismissed the OS share sheet or sharing failed.
+      // user canceled or device does not support share target.
+    } finally {
+      showBody();
     }
   }
 
   async function downloadPng() {
     showLoading();
     await prepare();
-    const canvas = await renderShareCanvas();
+    const blob = await getPngBlob();
     const link = document.createElement("a");
     link.download = "creditcombo-share.png";
-    link.href = canvas.toDataURL("image/png");
+    link.href = URL.createObjectURL(blob);
     link.click();
-    loadingEl.classList.add("hidden");
-    bodyEl.classList.remove("hidden");
-    actionsEl.classList.remove("hidden");
+    URL.revokeObjectURL(link.href);
+    showBody();
+  }
+
+  async function getPngBlob() {
+    if (state.pngBlob) return state.pngBlob;
+    const canvas = await renderShareCanvas();
+    state.pngBlob = await canvasToBlob(canvas);
+    return state.pngBlob;
   }
 
   async function renderShareCanvas() {
@@ -205,8 +230,8 @@ export function createShareOverlay() {
     const muted = theme.getPropertyValue("--color-muted").trim() || "#a9b4c2";
 
     const gradient = ctx.createLinearGradient(0, 0, size, size);
-    gradient.addColorStop(0, panel);
-    gradient.addColorStop(1, mixColors(panel, highlight, 0.35));
+    gradient.addColorStop(0, mixColors(panel, "#02050d", 0.52));
+    gradient.addColorStop(1, mixColors(panel, highlight, 0.24));
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, size, size);
 
@@ -217,12 +242,12 @@ export function createShareOverlay() {
     ctx.fillStyle = text;
     ctx.font = "800 64px system-ui, -apple-system, Segoe UI, sans-serif";
     ctx.fillText(copy.headline, 90, 210);
-    ctx.fillStyle = muted;
-    ctx.font = "600 30px system-ui, -apple-system, Segoe UI, sans-serif";
-    ctx.fillText(copy.heroValueLabel, 90, 278);
     ctx.fillStyle = highlight;
     ctx.font = "800 122px system-ui, -apple-system, Segoe UI, sans-serif";
-    ctx.fillText(copy.heroValue, 90, 390);
+    ctx.fillText(copy.heroValue, 90, 358);
+    ctx.fillStyle = muted;
+    ctx.font = "600 30px system-ui, -apple-system, Segoe UI, sans-serif";
+    ctx.fillText(copy.heroValueLabel, 90, 410);
 
     await drawCardsCanvas(ctx, state.best?.combo || []);
 
@@ -263,7 +288,7 @@ export function createShareOverlay() {
       const cardWidth = 220;
       const cardHeight = 140;
       ctx.save();
-      ctx.fillStyle = "rgba(4,8,20,0.35)";
+      ctx.fillStyle = "rgba(4,8,20,0.4)";
       ctx.fillRect(slot.x + 8, slot.y + 12, cardWidth, cardHeight);
 
       if (isPortrait) {
@@ -298,6 +323,15 @@ function waitForImage(img) {
     }
     img.addEventListener("load", () => resolve(), { once: true });
     img.addEventListener("error", () => reject(new Error("Failed to load image")), { once: true });
+  });
+}
+
+function canvasToBlob(canvas) {
+  return new Promise((resolve, reject) => {
+    canvas.toBlob((blob) => {
+      if (blob) resolve(blob);
+      else reject(new Error("Failed to encode PNG"));
+    }, "image/png");
   });
 }
 

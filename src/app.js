@@ -25,7 +25,11 @@ async function main() {
     renderIssues(elements.issuesEl, issues);
     view.syncIssuesVisibility(issues.length);
 
-    const shareOverlay = createShareOverlay();
+    let shareOverlay = null;
+    const ensureShareOverlay = () => {
+      if (!shareOverlay) shareOverlay = createShareOverlay();
+      return shareOverlay;
+    };
     const openShareBtn = document.getElementById("openShareBtn");
 
     const actions = createActions({
@@ -37,7 +41,7 @@ async function main() {
       eligibleCardIdSet,
       eligibleCardsById,
       subcategoryConfigs,
-      shareOverlay,
+      ensureShareOverlay,
       openShareBtn
     });
 
