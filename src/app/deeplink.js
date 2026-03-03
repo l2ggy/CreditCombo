@@ -29,6 +29,12 @@ export function buildOptimizerDeepLink(state = {}) {
     if (clean > 0) params.set(`sub_${key}`, String(clean));
   }
 
+  for (const [key, value] of Object.entries(state.quizResponses || {})) {
+    if (value == null) continue;
+    const serialized = String(value).trim();
+    if (serialized) params.set(`q_${key}`, serialized);
+  }
+
   const qs = params.toString();
   return qs ? `./index.html?${qs}` : "./index.html";
 }
@@ -57,6 +63,14 @@ export function readOptimizerDeepLink(search, { schema = [], subcategoryConfigs 
   const kRaw = asNumber(params.get("k"), mode === "current_cards" ? 0 : 1);
   const k = mode === "current_cards" ? 0 : kRaw;
 
+  const quizResponses = {};
+  for (const [key, value] of params.entries()) {
+    if (!key.startsWith("q_")) continue;
+    const responseKey = key.slice(2).trim();
+    if (!responseKey) continue;
+    quizResponses[responseKey] = value;
+  }
+
   return {
     mode,
     k,
@@ -64,6 +78,7 @@ export function readOptimizerDeepLink(search, { schema = [], subcategoryConfigs 
     valuationMode: params.get("vm") === "minimum_guaranteed" ? "minimum_guaranteed" : "estimated",
     lockedCardIds,
     spend,
-    subcategorySpend
+    subcategorySpend,
+    quizResponses
   };
 }
