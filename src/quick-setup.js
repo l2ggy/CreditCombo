@@ -17,7 +17,8 @@ const state = {
   valuationMode: null,
   quizResponses: {},
   view: "quiz",
-  results: null
+  results: null,
+  resultsLoading: false
 };
 
 let ctx = null;
@@ -421,6 +422,14 @@ function computeScenarioResult(overrides = {}) {
 async function showPostQuizResults() {
   if (selectedMode() === "current_cards") state.k = 0;
   state.view = "results";
+  state.resultsLoading = true;
+  state.results = null;
+  renderWizard();
+
+  await Promise.all([
+    new Promise((resolve) => requestAnimationFrame(resolve)),
+    new Promise((resolve) => setTimeout(resolve, 600))
+  ]);
 
   const currentMode = selectedMode();
   const current = computeScenarioResult({ mode: currentMode });
@@ -435,6 +444,7 @@ async function showPostQuizResults() {
     ...current,
     uplift
   };
+  state.resultsLoading = false;
 
   renderWizard();
 }
@@ -442,8 +452,9 @@ async function showPostQuizResults() {
 function renderPostQuizScreen() {
   const currentMode = selectedMode();
   const hero = postQuizHeroContent(currentMode);
-  const resultState = state.results || computeScenarioResult({ mode: currentMode });
-  const { best, payload, chexySummary, uplift } = resultState;
+  const isLoading = state.resultsLoading;
+  const resultState = isLoading ? null : (state.results || computeScenarioResult({ mode: currentMode }));
+  const { best, payload, chexySummary, uplift } = resultState || {};
 
   appEl.innerHTML = `
     <section class="quickResultsScreen">
@@ -458,7 +469,7 @@ function renderPostQuizScreen() {
           <h2>Results</h2>
         </div>
         <div class="divider"></div>
-        <div id="result" class="quickSetupResultPanel"></div>
+        <div id="result" class="quickSetupResultPanel ${isLoading ? "is-loading" : ""}"></div>
       </section>
       <div class="quickActions quickResultsActions">
         <button type="button" id="quickOpenOptimizer" class="primary">Open in Optimizer</button>
@@ -468,7 +479,7 @@ function renderPostQuizScreen() {
   `;
 
   const calloutEl = appEl.querySelector("#quickResultsCallout");
-  if (currentMode === "current_cards") {
+  if (!isLoading && currentMode === "current_cards") {
     const upliftValue = Number(uplift || 0);
     calloutEl.classList.remove("hidden");
     calloutEl.textContent = upliftValue > 0
@@ -479,7 +490,16 @@ function renderPostQuizScreen() {
   }
 
   const resultPanelEl = appEl.querySelector("#result");
-  renderResult(resultPanelEl, best, payload.annualSpend, payload.schema, payload.valuationMode, chexySummary, ctx.subcategoryConfigs);
+  if (isLoading) {
+    resultPanelEl.innerHTML = `
+      <div class="loadingState" role="status" aria-live="polite">
+        <span class="loadingSpinner" aria-hidden="true"></span>
+        <span>Building your CreditCombo…</span>
+      </div>
+    `;
+  } else {
+    renderResult(resultPanelEl, best, payload.annualSpend, payload.schema, payload.valuationMode, chexySummary, ctx.subcategoryConfigs);
+  }
 
   appEl.querySelector("#quickOpenOptimizer").addEventListener("click", () => {
     // TODO: add country capture once country-based card eligibility is implemented.
