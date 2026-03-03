@@ -516,6 +516,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
     if (elements.valuationModeEl) elements.valuationModeEl.value = valuationMode;
 
     if (isCurrentCardsMode) {
+      // Current-cards mode always means no additional cards on first optimizer load.
       state.enableLockedCards = true;
       elements.enableLockedCardsEl.checked = true;
       elements.kInput.min = "0";
@@ -525,6 +526,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
     } else if (Number.isFinite(payload.k)) {
       elements.kInput.value = String(Math.max(0, Number(payload.k) || 0));
       state.k = Number(elements.kInput.value);
+      view.updateKValue(state.k);
     }
 
     elements.spendTableEl.querySelectorAll("input[data-cat]").forEach((input) => {

@@ -24,6 +24,11 @@ let ctx = null;
 let visibleSteps = [];
 let currentStepIndex = 0;
 
+
+function resolveQuizMode(value) {
+  return value === "current_cards" ? "current_cards" : "ideal_combo";
+}
+
 function titleForCategory(cat) {
   return String(cat).replace(/_/g, " ");
 }
@@ -105,7 +110,7 @@ function stepGoal() {
     ],
     getValue: () => state.mode,
     setValue: (value) => {
-      state.mode = value === "current_cards" ? "current_cards" : "ideal_combo";
+      state.mode = resolveQuizMode(value);
       state.k = state.mode === "current_cards" ? 0 : Math.max(1, Number(state.k) || 1);
       state.quizResponses.goal = state.mode;
       refreshStepPlan();
@@ -356,7 +361,7 @@ function goBack() {
 }
 
 function selectedMode() {
-  if (state.mode === "current_cards") return "current_cards";
+  if (resolveQuizMode(state.mode) === "current_cards") return "current_cards";
   if (state.quizResponses?.goal === "current_cards") return "current_cards";
   return "ideal_combo";
 }

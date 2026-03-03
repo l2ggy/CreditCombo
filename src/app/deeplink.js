@@ -3,10 +3,15 @@ function asNumber(value, fallback = 0) {
   return Number.isFinite(n) && n >= 0 ? n : fallback;
 }
 
+function resolveMode({ mode, goal } = {}) {
+  return mode === "current_cards" || goal === "current_cards"
+    ? "current_cards"
+    : "ideal_combo";
+}
+
 export function buildOptimizerDeepLink(state = {}) {
   const params = new URLSearchParams();
-  const inferredGoalMode = state.quizResponses?.goal === "current_cards" ? "current_cards" : "ideal_combo";
-  const mode = state.mode === "current_cards" ? "current_cards" : inferredGoalMode;
+  const mode = resolveMode({ mode: state.mode, goal: state.quizResponses?.goal });
   const k = mode === "current_cards" ? 0 : Math.max(0, Number(state.k) || 0);
 
   params.set("mode", mode);
@@ -36,7 +41,7 @@ export function buildOptimizerDeepLink(state = {}) {
     if (serialized) params.set(`q_${key}`, serialized);
   }
 
-  // Always persist the resolved quiz goal so downstream pages can reliably infer mode.
+  // Persist the resolved mode for robust hydration when caller state is partial.
   params.set("q_goal", mode);
 
   const qs = params.toString();
@@ -71,10 +76,10 @@ export function readOptimizerDeepLink(search, { schema = [], subcategoryConfigs 
     quizResponses[responseKey] = value;
   }
 
-  const modeParam = params.get("mode") === "current_cards" ? "current_cards" : "ideal_combo";
-  const mode = modeParam === "current_cards" || quizResponses.goal === "current_cards"
-    ? "current_cards"
-    : "ideal_combo";
+  const mode = resolveMode({
+    mode: params.get("mode") === "current_cards" ? "current_cards" : "ideal_combo",
+    goal: quizResponses.goal
+  });
 
   const kRaw = asNumber(params.get("k"), mode === "current_cards" ? 0 : 1);
   const k = mode === "current_cards" ? 0 : kRaw;
