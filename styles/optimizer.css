@@ -128,9 +128,9 @@ body.shareOpen{overflow:hidden}
 .shareThumbRows{display:grid;gap:var(--space-4);align-content:center;min-height:360px}
 .shareThumbRow{display:flex;justify-content:center;align-items:flex-end}
 .shareThumbRow .shareThumbItem + .shareThumbItem{margin-left:calc(var(--space-5) * -1)}
-.shareThumbItem{position:relative;width:min(29vw,160px);height:calc(min(29vw,160px)/var(--card-aspect-ratio));filter:drop-shadow(0 8px 16px rgba(2,6,23,.35))}
-.shareThumbItem .thumb{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:block;width:100%;height:100%;max-width:none;object-fit:contain}
-.shareThumbItem .thumb.is-portrait{width:calc(min(29vw,160px)/var(--card-aspect-ratio));height:min(29vw,160px);transform:translate(-50%,-50%) rotate(90deg)}
+.shareThumbItem{position:relative;filter:drop-shadow(0 8px 16px rgba(2,6,23,.35))}
+.shareThumbItem .thumb{display:block;width:min(29vw,160px);height:auto;max-width:none}
+.shareThumbItem .thumb.is-portrait{aspect-ratio:var(--card-aspect-ratio);transform:rotate(90deg);transform-origin:center center}
 .shareCardFooter{display:flex;justify-content:space-between;align-items:flex-end;gap:var(--space-4)}
 .shareCta{margin:0;color:#f8fafc;font-weight:700;font-size:clamp(15px,1.8vw,20px)}
 .shareCardFooter a{word-break:break-all;color:#bfdbfe;font-size:var(--font-size-sm);line-height:1.45}
@@ -138,4 +138,4 @@ body.shareOpen{overflow:hidden}
 .shareActionsRow{display:flex;gap:var(--space-3);margin-top:var(--space-6);flex-wrap:wrap}
 .shareActionsRow button{width:auto}
 
-@media (max-width:640px){.shareDialog{padding:var(--space-4)}.shareCard{padding:var(--space-5)}.shareThumbRows{min-height:250px;gap:var(--space-3)}.shareThumbItem{width:min(28vw,120px);height:calc(min(28vw,120px)/var(--card-aspect-ratio))}.shareThumbItem .thumb.is-portrait{width:calc(min(28vw,120px)/var(--card-aspect-ratio));height:min(28vw,120px)}.shareCardFooter{flex-direction:column;align-items:flex-start}.shareQr{width:78px;height:78px}}
+@media (max-width:640px){.shareDialog{padding:var(--space-4)}.shareCard{padding:var(--space-5)}.shareThumbRows{min-height:250px;gap:var(--space-3)}.shareThumbItem .thumb{width:min(28vw,120px)}.shareCardFooter{flex-direction:column;align-items:flex-start}.shareQr{width:78px;height:78px}}
