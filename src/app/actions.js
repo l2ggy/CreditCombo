@@ -19,6 +19,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
   let runTokenCounter = 0;
   const pendingRequests = new Map();
   let shouldRenderLockedCardPicks = true;
+  let hasManualOptimizationRun = false;
 
   function syncStateFromControls() {
     state.valuationMode = elements.valuationModeEl?.value === "minimum_guaranteed" ? "minimum_guaranteed" : "estimated";
@@ -331,7 +332,10 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
     });
   }
 
-  async function runOptimization() {
+  async function runOptimization({ manual = false } = {}) {
+    if (manual) hasManualOptimizationRun = true;
+    if (!hasManualOptimizationRun) return;
+
     syncStateFromControls();
     elements.runBtn.disabled = true;
     view.setLoadingState(true);
@@ -407,6 +411,10 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
     } finally {
       if (requestId === runTokenCounter) elements.runBtn.disabled = false;
     }
+  }
+
+  function runOptimizationManually() {
+    return runOptimization({ manual: true });
   }
 
   function toggleLockedCards() {
@@ -549,6 +557,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
 
   return {
     runOptimization,
+    runOptimizationManually,
     toggleLockedCards,
     clearSpend,
     setValuationMode,
