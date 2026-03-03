@@ -42,7 +42,7 @@
 .quickSearch .cardSearchThumb .thumb{height:52px;width:auto}
 .quickSearch .chip{font-size:var(--font-size-base);padding:var(--space-3) var(--space-4)}
 
-.quickAnswerArea{margin:0}
+.quickAnswerArea{margin:0;display:grid;gap:var(--space-4)}
 
 .quickResultsScreen{display:grid;gap:var(--space-8);align-content:start}
 .quickResultsHero{text-align:center;display:grid;gap:var(--space-3)}
