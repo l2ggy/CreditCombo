@@ -7,6 +7,7 @@ export function buildOptimizerDeepLink(state = {}) {
   const params = new URLSearchParams();
   params.set("mode", state.mode === "current_cards" ? "current_cards" : "ideal_combo");
   params.set("k", String(Math.max(0, Number(state.k) || 0)));
+  params.set("autorun", "1");
 
   if (state.valuationMode === "minimum_guaranteed") {
     params.set("vm", "minimum_guaranteed");
@@ -17,12 +18,12 @@ export function buildOptimizerDeepLink(state = {}) {
 
   for (const [cat, value] of Object.entries(state.monthlySpend || {})) {
     const clean = asNumber(value, 0);
-    if (clean > 0) params.set(`spend_${encodeURIComponent(cat)}`, String(clean));
+    if (clean > 0) params.set(`spend_${cat}`, String(clean));
   }
 
   for (const [key, value] of Object.entries(state.subcategorySpend || {})) {
     const clean = asNumber(value, 0);
-    if (clean > 0) params.set(`sub_${encodeURIComponent(key)}`, String(clean));
+    if (clean > 0) params.set(`sub_${key}`, String(clean));
   }
 
   const qs = params.toString();
@@ -35,13 +36,13 @@ export function readOptimizerDeepLink(search, { schema = [], subcategoryConfigs 
 
   const spend = {};
   schema.forEach((cat) => {
-    const value = asNumber(params.get(`spend_${encodeURIComponent(cat)}`), 0);
+    const value = asNumber(params.get(`spend_${cat}`), 0);
     if (value > 0) spend[cat] = value;
   });
 
   const subcategorySpend = {};
   Object.values(subcategoryConfigs).flat().forEach((config) => {
-    const value = asNumber(params.get(`sub_${encodeURIComponent(config.key)}`), 0);
+    const value = asNumber(params.get(`sub_${config.key}`), 0);
     if (value > 0) subcategorySpend[config.key] = value;
   });
 
@@ -56,6 +57,7 @@ export function readOptimizerDeepLink(search, { schema = [], subcategoryConfigs 
   return {
     mode,
     k,
+    autorun: params.get("autorun") === "1",
     valuationMode: params.get("vm") === "minimum_guaranteed" ? "minimum_guaranteed" : "estimated",
     lockedCardIds,
     spend,

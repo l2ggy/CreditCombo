@@ -51,7 +51,7 @@ async function main() {
       || deepLinkState.valuationMode !== "estimated"
     );
 
-    if (hasDeepLinkValues) actions.hydrateFromDeepLink(deepLinkState);
+    if (hasDeepLinkValues || deepLinkState.autorun) await actions.hydrateFromDeepLink(deepLinkState);
     elements.appEl.classList.remove("hidden");
 
     elements.runBtn.addEventListener("click", actions.runOptimization);

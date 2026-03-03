@@ -3,6 +3,7 @@ import { clampInt, readMonthlySpend, readSubcategoryMonthlySpend, renderResult, 
 import { candidatePools, kBounds, selectedLockedCardIds } from "./state.js";
 import { renderLockedChip } from "../shared/render.js";
 import { bindCardSearchKeyboard, createCardSearchIndex, rankCardMatches, renderCardSearchOptions } from "../shared/card-search.js";
+import { buildSearchText, scoreSearchMatch, tokenizeSearchQuery } from "../shared/search.js";
 import { escapeHtml } from "../shared/sanitize.js";
 
 export function createActions({ state, view, schema, programsMap, eligibleCards, eligibleCardIdSet, eligibleCardsById, subcategoryConfigs = {} }) {
