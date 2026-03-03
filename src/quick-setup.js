@@ -181,8 +181,8 @@ function stepK() {
     render(contentEl) {
       const value = Number.isFinite(state.k) ? Math.max(0, state.k) : 1;
       contentEl.innerHTML = `
-        <h2 class="quickPrompt">How many cards do you want in your setup?</h2>
-        <label class="quickLabel" for="quickK">Number of cards <span id="quickKValue" class="value-pill">${value}</span></label>
+        <h2 class="quickPrompt">Up to how many cards should we consider?</h2>
+        <label class="quickLabel" for="quickK">Maximum cards to consider <span id="quickKValue" class="value-pill">${value}</span></label>
         <input id="quickK" type="range" min="0" max="5" step="1" value="${value}" />
       `;
 
