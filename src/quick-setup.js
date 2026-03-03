@@ -150,7 +150,7 @@ function stepSpend(cat) {
       contentEl.innerHTML = `
         <h2 class="quickPrompt">What is your average monthly spend on ${titleForCategory(cat)}?</h2>
         <div class="quickAnswerArea">
-          <label class="quickLabel" for="quickSpendSlider">Monthly amount <span id="quickSpendValue" class="value-pill">${sliderValue}</span></label>
+          <label class="quickLabel" for="quickSpendInput">Monthly amount</label>
           <input id="quickSpendSlider" type="range" min="${slider.min}" max="${slider.max}" step="${slider.step}" value="${sliderValue}" />
           <input id="quickSpendInput" class="quickBigInput" type="number" min="0" step="1" value="${value}" placeholder="0" />
         </div>
@@ -158,7 +158,6 @@ function stepSpend(cat) {
 
       const sliderInput = contentEl.querySelector("#quickSpendSlider");
       const input = contentEl.querySelector("#quickSpendInput");
-      const valueEl = contentEl.querySelector("#quickSpendValue");
       setTimeout(() => {
         input.focus();
         input.select();
@@ -167,7 +166,6 @@ function stepSpend(cat) {
       const syncValue = (nextValue) => {
         const clamped = Math.min(slider.max, Math.max(slider.min, Number(nextValue) || 0));
         sliderInput.value = String(clamped);
-        valueEl.textContent = String(clamped);
       };
 
       sliderInput.addEventListener("input", () => {
