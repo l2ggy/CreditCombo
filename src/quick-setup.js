@@ -11,7 +11,8 @@ const state = {
   subcategorySpend: {},
   lockedCardIds: [],
   k: 1,
-  valuationMode: null
+  valuationMode: null,
+  quizResponses: {}
 };
 
 let ctx = null;
@@ -22,35 +23,90 @@ function titleForCategory(cat) {
   return String(cat).replace(/_/g, " ");
 }
 
-function stepGoal() {
+function renderSingleSelectStep(contentEl, {
+  prompt,
+  lead,
+  hint,
+  options,
+  selectedValue,
+  onSelect,
+  cardClass = "quickGoalGrid"
+}) {
+  const helperText = [
+    lead ? `<p class="quickLead">${lead}</p>` : "",
+    hint ? `<p class="quickHint">${hint}</p>` : ""
+  ].join("");
+
+  const optionHtml = options.map(({ value, label }) => (
+    `<button type="button" class="quickGoalBtn ${selectedValue() === value ? "is-selected" : ""}" data-value="${value}" aria-pressed="false">${label}</button>`
+  )).join("");
+
+  contentEl.innerHTML = `
+    <h2 class="quickPrompt">${prompt}</h2>
+    ${helperText}
+    <div class="quickAnswerArea">
+      <div class="${cardClass}">
+        ${optionHtml}
+      </div>
+    </div>
+  `;
+
+  const buttons = [...contentEl.querySelectorAll("[data-value]")];
+  const syncPressedState = () => {
+    buttons.forEach((node) => {
+      const selected = node.dataset.value === selectedValue();
+      node.classList.toggle("is-selected", selected);
+      node.setAttribute("aria-pressed", String(selected));
+    });
+  };
+
+  buttons.forEach((button) => {
+    button.addEventListener("click", () => {
+      onSelect(button.dataset.value);
+      syncPressedState();
+      goNext();
+    });
+  });
+
+  syncPressedState();
+}
+
+function createSingleSelectStep({ key, prompt, lead, hint, options, getValue, setValue, validate }) {
   return {
-    key: "goal",
+    key,
     render(contentEl) {
-      contentEl.innerHTML = `
-        <h2 class="quickPrompt">What are you trying to do today?</h2>
-        <p class="quickLead">Pick one option to continue.</p>
-        <div class="quickAnswerArea">
-          <div class="quickGoalGrid">
-            <button type="button" class="quickGoalBtn" data-mode="ideal_combo">Find me the best possible CreditCombo</button>
-            <button type="button" class="quickGoalBtn" data-mode="current_cards">Help me use my current cards better</button>
-          </div>
-        </div>
-      `;
-
-      contentEl.querySelectorAll("[data-mode]").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          state.mode = btn.dataset.mode;
-          contentEl.querySelectorAll("[data-mode]").forEach((node) => node.classList.toggle("is-selected", node === btn));
-          state.k = state.mode === "current_cards" ? 0 : Math.max(1, Number(state.k) || 1);
-          refreshStepPlan();
-          goNext();
-        });
+      renderSingleSelectStep(contentEl, {
+        prompt,
+        lead,
+        hint,
+        options,
+        selectedValue: getValue,
+        onSelect: setValue
       });
-
       return { autoAdvance: true };
     },
-    validate: () => Boolean(state.mode)
+    validate
   };
+}
+
+function stepGoal() {
+  return createSingleSelectStep({
+    key: "goal",
+    prompt: "What are you trying to do today?",
+    lead: "Pick one option to continue.",
+    options: [
+      { value: "ideal_combo", label: "Find me the best possible CreditCombo" },
+      { value: "current_cards", label: "Help me use my current cards better" }
+    ],
+    getValue: () => state.mode,
+    setValue: (value) => {
+      state.mode = value === "current_cards" ? "current_cards" : "ideal_combo";
+      state.k = state.mode === "current_cards" ? 0 : Math.max(1, Number(state.k) || 1);
+      state.quizResponses.goal = state.mode;
+      refreshStepPlan();
+    },
+    validate: () => Boolean(state.mode)
+  });
 }
 
 function stepSpend(cat) {
@@ -210,55 +266,39 @@ function stepK() {
 }
 
 function stepValuation() {
-  return {
+  return createSingleSelectStep({
     key: "valuation",
-    render(contentEl) {
-      contentEl.innerHTML = `
-        <h2 class="quickPrompt">How do you usually redeem rewards?</h2>
-        <p class="quickLead">Pick the option that sounds most like you.</p>
-        <p class="quickHint">Choose one option to continue.</p>
-        <div class="quickAnswerArea">
-          <div class="quickGoalGrid">
-            <button type="button" class="quickGoalBtn ${state.valuationMode === "estimated" ? "is-selected" : ""}" data-valuation="estimated" aria-pressed="false">
-            I look for great travel redemptions (higher upside)
-          </button>
-            <button type="button" class="quickGoalBtn ${state.valuationMode === "minimum_guaranteed" ? "is-selected" : ""}" data-valuation="minimum_guaranteed" aria-pressed="false">
-            I prefer statement credit / guaranteed value
-          </button>
-          </div>
-        </div>
-      `;
-
-      const valuationButtons = [...contentEl.querySelectorAll("[data-valuation]")];
-      const syncPressedState = () => {
-        valuationButtons.forEach((node) => {
-          const selected = node.dataset.valuation === state.valuationMode;
-          node.classList.toggle("is-selected", selected);
-          node.setAttribute("aria-pressed", String(selected));
-        });
-      };
-
-      valuationButtons.forEach((button) => {
-        button.addEventListener("click", () => {
-          state.valuationMode = button.dataset.valuation === "minimum_guaranteed" ? "minimum_guaranteed" : "estimated";
-          syncPressedState();
-          goNext();
-        });
-      });
-
-      syncPressedState();
-      return { autoAdvance: true };
+    prompt: "How do you usually redeem rewards?",
+    lead: "Pick the option that sounds most like you.",
+    hint: "Choose one option to continue.",
+    options: [
+      { value: "estimated", label: "I look for great travel redemptions (higher upside)" },
+      { value: "minimum_guaranteed", label: "I prefer statement credit / guaranteed value" }
+    ],
+    getValue: () => state.valuationMode,
+    setValue: (value) => {
+      state.valuationMode = value === "minimum_guaranteed" ? "minimum_guaranteed" : "estimated";
+      state.quizResponses.valuation = state.valuationMode;
     },
     validate: () => Boolean(state.valuationMode)
+  });
+}
+
+function createFlowByMode() {
+  const spendSteps = ctx.schema.map((cat) => stepSpend(cat));
+  return {
+    current_cards: [stepCurrentCards(), stepValuation()],
+    ideal_combo: [stepK(), stepValuation()],
+    default: [stepK(), stepValuation()],
+    spendSteps
   };
 }
 
 function buildSteps() {
   if (!state.mode) return [stepGoal()];
-  const spendSteps = ctx.schema.map((cat) => stepSpend(cat));
-  const requiredSteps = [stepGoal(), ...spendSteps];
-  if (state.mode === "current_cards") return [...requiredSteps, stepCurrentCards(), stepValuation()];
-  return [...requiredSteps, stepK(), stepValuation()];
+  const flow = createFlowByMode();
+  const modeSteps = flow[state.mode] || flow.default;
+  return [stepGoal(), ...flow.spendSteps, ...modeSteps];
 }
 
 function getProgressBounds() {
