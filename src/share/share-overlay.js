@@ -107,7 +107,7 @@ export function createShareOverlay() {
       row.forEach((card) => {
         const thumbWrap = document.createElement("span");
         thumbWrap.className = "shareCard__thumb";
-        thumbWrap.append(renderCardThumb(card, { className: "thumb thumb-lg thumb-contain", withFrame: false }));
+        thumbWrap.append(renderCardThumb(card, { className: "thumb thumb-contain", withFrame: false }));
         rowEl.append(thumbWrap);
       });
       thumbsEl.append(rowEl);
