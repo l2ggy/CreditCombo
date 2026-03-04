@@ -243,29 +243,51 @@ async function elementToPngBlob(element) {
   const serialized = new XMLSerializer().serializeToString(clone);
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}"><foreignObject width="100%" height="100%">${serialized}</foreignObject></svg>`;
 
-  const svgBlob = new Blob([svg], { type: "image/svg+xml;charset=utf-8" });
-  const svgUrl = URL.createObjectURL(svgBlob);
-
   try {
-    const image = await loadImage(svgUrl);
-    const scale = 2;
-    const canvas = document.createElement("canvas");
-    canvas.width = width * scale;
-    canvas.height = height * scale;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) throw new Error("Failed to get canvas context");
-    ctx.scale(scale, scale);
-    ctx.drawImage(image, 0, 0);
-
-    return await new Promise((resolve, reject) => {
-      canvas.toBlob((result) => {
-        if (result) resolve(result);
-        else reject(new Error("Failed to create PNG blob"));
-      }, "image/png");
-    });
-  } finally {
-    URL.revokeObjectURL(svgUrl);
+    return await renderSvgToPngBlob(svg, width, height, { useObjectUrl: true });
+  } catch (objectUrlError) {
+    try {
+      return await renderSvgToPngBlob(svg, width, height, { useObjectUrl: false });
+    } catch {
+      throw objectUrlError;
+    }
   }
+}
+
+async function renderSvgToPngBlob(svgMarkup, width, height, { useObjectUrl }) {
+  const image = await loadImageSource(svgMarkup, useObjectUrl);
+  const scale = 2;
+  const canvas = document.createElement("canvas");
+  canvas.width = width * scale;
+  canvas.height = height * scale;
+
+  const ctx = canvas.getContext("2d");
+  if (!ctx) throw new Error("Failed to get canvas context");
+
+  ctx.scale(scale, scale);
+  ctx.drawImage(image, 0, 0);
+
+  return await new Promise((resolve, reject) => {
+    canvas.toBlob((result) => {
+      if (result) resolve(result);
+      else reject(new Error("Failed to create PNG blob"));
+    }, "image/png");
+  });
+}
+
+async function loadImageSource(svgMarkup, useObjectUrl) {
+  if (useObjectUrl) {
+    const svgBlob = new Blob([svgMarkup], { type: "image/svg+xml;charset=utf-8" });
+    const svgUrl = URL.createObjectURL(svgBlob);
+    try {
+      return await loadImage(svgUrl);
+    } finally {
+      URL.revokeObjectURL(svgUrl);
+    }
+  }
+
+  const svgDataUrl = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svgMarkup)}`;
+  return loadImage(svgDataUrl);
 }
 
 async function waitForAssets(element) {
