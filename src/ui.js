@@ -33,6 +33,12 @@ export function renderSpendTable(el, schema, categoryDescriptions = {}, subcateg
   };
 
   const orderedInputs = [...el.querySelectorAll("input[data-cat], input[data-subcategory-key]")];
+  const isFocusable = (input) => {
+    if (!(input instanceof HTMLElement)) return false;
+    if (input.disabled) return false;
+    if (input.matches("[type='hidden']")) return false;
+    return input.offsetParent !== null;
+  };
 
   orderedInputs.forEach((inp, index) => {
     inp.addEventListener("input", () => updateSpendTotal(inp));
@@ -44,7 +50,7 @@ export function renderSpendTable(el, schema, categoryDescriptions = {}, subcateg
     inp.addEventListener("keydown", (event) => {
       if (event.key !== "Enter") return;
       event.preventDefault();
-      const nextInput = orderedInputs[index + 1];
+      const nextInput = orderedInputs.slice(index + 1).find(isFocusable);
       if (nextInput) nextInput.focus();
     });
 
@@ -53,6 +59,12 @@ export function renderSpendTable(el, schema, categoryDescriptions = {}, subcateg
 
 
   updateSpendTotal();
+  el.refreshSpendTotal = updateSpendTotal;
+}
+
+export function refreshSpendTotal(el, changedInput = null) {
+  if (!el || typeof el.refreshSpendTotal !== "function") return;
+  el.refreshSpendTotal(changedInput);
 }
 
 
