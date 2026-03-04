@@ -358,37 +358,9 @@ function computeCandidateLimit(cardCount, maxSize) {
   return Math.max(maxSize, limit);
 }
 
-function removeRedundantCards(combo, lockedIds, annualSpend, schema, programsMap, valuationMode) {
-  const removableIds = new Set((combo || []).map((card) => card.id).filter((id) => !lockedIds.has(id)));
-  if (!removableIds.size) return evaluateCombo(combo, annualSpend, schema, programsMap, valuationMode);
-
-  const EPSILON = 1e-9;
-  let current = evaluateCombo(combo, annualSpend, schema, programsMap, valuationMode);
-
-  while (removableIds.size && current.combo.length > 1) {
-    let bestRemoval = null;
-
-    for (const card of current.combo) {
-      if (!removableIds.has(card.id)) continue;
-      const nextCombo = current.combo.filter((candidate) => candidate.id !== card.id);
-      const candidateResult = evaluateCombo(nextCombo, annualSpend, schema, programsMap, valuationMode);
-      if (candidateResult.net + EPSILON < current.net) continue;
-
-      if (!bestRemoval || candidateResult.net > bestRemoval.result.net + EPSILON) {
-        bestRemoval = { id: card.id, result: candidateResult };
-      }
-    }
-
-    if (!bestRemoval) break;
-    removableIds.delete(bestRemoval.id);
-    current = bestRemoval.result;
-  }
-
-  return current;
-}
-
 export function findBestCombo({ cards, programsMap, schema, k, annualSpend, subcategorySpend = {}, subcategoryConfigs = {}, valuationMode = "estimated", excludedProgramIds = [], excludeCashbackPrograms = false, lockedCardIds = [], additionalCardIds = null }) {
   let best = { combo: [], net: -1e18, gross: 0, fees: 0, assigned: null };
+  const NET_TIE_EPSILON = 0.005;
 
   const subcategoryAdjusted = applySubcategoryLogic({
     cards,
@@ -419,7 +391,7 @@ export function findBestCombo({ cards, programsMap, schema, k, annualSpend, subc
   if (!lockedCards.length && maxAdditionalCount < 1) return best;
 
   if (lockedCards.length) {
-    best = removeRedundantCards(lockedCards, lockedIds, effectiveAnnualSpend, effectiveSchema, programsMap, valuationMode);
+    best = evaluateCombo(lockedCards, effectiveAnnualSpend, effectiveSchema, programsMap, valuationMode);
   }
 
   for (let additionalCount = 1; additionalCount <= maxAdditionalCount; additionalCount++) {
@@ -428,10 +400,11 @@ export function findBestCombo({ cards, programsMap, schema, k, annualSpend, subc
 
     for (const combo of combinations(candidateUnlockedCards, additionalCount)) {
       const combinedCombo = [...lockedCards, ...combo];
-      const result = removeRedundantCards(combinedCombo, lockedIds, effectiveAnnualSpend, effectiveSchema, programsMap, valuationMode);
-      const sameNet = Math.abs(result.net - best.net) <= 1e-9;
+      const result = evaluateCombo(combinedCombo, effectiveAnnualSpend, effectiveSchema, programsMap, valuationMode);
+      const clearlyBetter = result.net > best.net + NET_TIE_EPSILON;
+      const sameNet = Math.abs(result.net - best.net) <= NET_TIE_EPSILON;
       const fewerCards = result.combo.length < best.combo.length;
-      if (result.net > best.net || (sameNet && fewerCards)) best = result;
+      if (clearlyBetter || (sameNet && fewerCards)) best = result;
     }
   }
 
