@@ -2,7 +2,9 @@ import { formatMoneyCAD } from "./format.js";
 
 function bindThumbImageBehavior(img) {
   img.addEventListener("load", () => {
-    img.classList.toggle("is-portrait", img.naturalHeight > img.naturalWidth);
+    const isPortrait = img.naturalHeight > img.naturalWidth;
+    img.classList.toggle("is-portrait", isPortrait);
+    img.closest(".tileThumb")?.classList.toggle("tileThumb-portrait", isPortrait);
   });
 
   img.addEventListener("error", () => {
