@@ -3,6 +3,7 @@ import { buildShareCopy } from "./share-copy.js";
 
 const MAX_SHARE_CARDS = 5;
 const PNG_SCALE = 2;
+const PNG_SIZE = 1200;
 
 export function createShareOverlay() {
   const state = {
@@ -141,9 +142,11 @@ export function createShareOverlay() {
     try {
       const copy = currentCopy();
       const blob = await getPngBlob();
-      const file = new File([blob], "creditcombo-share.png", { type: "image/png" });
       const shareData = { title: "CreditCombo result", text: copy.nativeShareText, url: state.shareUrl };
-      if (navigator.canShare?.({ files: [file] })) shareData.files = [file];
+      if (blob) {
+        const file = new File([blob], "creditcombo-share.png", { type: "image/png" });
+        if (navigator.canShare?.({ files: [file] })) shareData.files = [file];
+      }
       await navigator.share(shareData);
     } catch {
       // user cancelled / unsupported target
@@ -157,11 +160,14 @@ export function createShareOverlay() {
     setBusy(true, "Rendering");
     try {
       const blob = await getPngBlob();
+      if (!blob) return;
       const link = document.createElement("a");
       link.download = "creditcombo-share.png";
       link.href = URL.createObjectURL(blob);
       link.click();
       URL.revokeObjectURL(link.href);
+    } catch {
+      // failed to export in this environment
     } finally {
       setBusy(false);
     }
@@ -180,7 +186,13 @@ export function createShareOverlay() {
 
   async function getPngBlob() {
     if (state.pngBlob) return state.pngBlob;
-    state.pngBlob = await elementToPngBlob(shareCardEl, PNG_SCALE);
+
+    try {
+      state.pngBlob = await elementToPngBlob(shareCardEl, PNG_SCALE);
+    } catch {
+      state.pngBlob = await fallbackCanvasBlob(currentCopy(), (state.best?.combo || []).slice(0, MAX_SHARE_CARDS), state.shareUrl);
+    }
+
     return state.pngBlob;
   }
 
@@ -275,6 +287,94 @@ function loadImage(src) {
   });
 }
 
+
+async function fallbackCanvasBlob(copy, cards, shareUrl) {
+  const canvas = document.createElement("canvas");
+  canvas.width = PNG_SIZE;
+  canvas.height = PNG_SIZE;
+  const ctx = canvas.getContext("2d");
+
+  const theme = getComputedStyle(document.documentElement);
+  const panel = theme.getPropertyValue("--color-panel").trim() || "#101826";
+  const accent = theme.getPropertyValue("--color-accent").trim() || "#6aa9ff";
+  const highlight = theme.getPropertyValue("--color-brand-highlight").trim() || "#c792ff";
+  const text = theme.getPropertyValue("--color-text").trim() || "#e8eef7";
+  const muted = theme.getPropertyValue("--color-muted").trim() || "#a9b4c2";
+
+  const gradient = ctx.createLinearGradient(0, 0, PNG_SIZE, PNG_SIZE);
+  gradient.addColorStop(0, mixColors(panel, "#02050d", 0.52));
+  gradient.addColorStop(1, mixColors(panel, highlight, 0.24));
+  ctx.fillStyle = gradient;
+  ctx.fillRect(0, 0, PNG_SIZE, PNG_SIZE);
+
+  ctx.fillStyle = highlight;
+  ctx.font = "700 32px system-ui, -apple-system, Segoe UI, sans-serif";
+  ctx.fillText(copy.kicker, 90, 128);
+  ctx.fillStyle = text;
+  ctx.font = "800 64px system-ui, -apple-system, Segoe UI, sans-serif";
+  ctx.fillText(copy.headline, 90, 210);
+  ctx.fillStyle = highlight;
+  ctx.font = "800 122px system-ui, -apple-system, Segoe UI, sans-serif";
+  ctx.fillText(copy.heroValue, 90, 358);
+  ctx.fillStyle = muted;
+  ctx.font = "600 30px system-ui, -apple-system, Segoe UI, sans-serif";
+  ctx.fillText(copy.heroValueLabel, 90, 410);
+
+  await drawFallbackCards(ctx, cards);
+
+  ctx.fillStyle = accent;
+  ctx.font = "700 46px system-ui, -apple-system, Segoe UI, sans-serif";
+  ctx.fillText(copy.cta, 90, 1020);
+  ctx.fillStyle = muted;
+  ctx.font = "500 34px system-ui, -apple-system, Segoe UI, sans-serif";
+  ctx.fillText(copy.urlLabel, 90, 1070);
+
+  ctx.fillStyle = "#fff";
+  ctx.fillRect(920, 890, 206, 206);
+  try {
+    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=6&data=${encodeURIComponent(shareUrl)}`;
+    const qr = await loadImage(qrUrl);
+    ctx.drawImage(qr, 936, 906, 174, 174);
+  } catch {
+    // blank qr box
+  }
+
+  return canvasToBlob(canvas);
+}
+
+async function drawFallbackCards(ctx, cards) {
+  const layout = cards.length === 5
+    ? [{ x: 120, y: 470 }, { x: 365, y: 470 }, { x: 610, y: 470 }, { x: 242, y: 626 }, { x: 487, y: 626 }]
+    : cards.length === 4
+      ? [{ x: 72, y: 500 }, { x: 312, y: 500 }, { x: 552, y: 500 }, { x: 792, y: 500 }]
+      : cards.length === 3
+        ? [{ x: 192, y: 520 }, { x: 440, y: 520 }, { x: 688, y: 520 }]
+        : cards.length === 2
+          ? [{ x: 304, y: 540 }, { x: 560, y: 540 }]
+          : [{ x: 430, y: 550 }];
+
+  for (const [index, card] of cards.entries()) {
+    const slot = layout[index];
+    if (!slot) continue;
+    const image = await loadImage(`./assets/cards/${card.id}.webp`);
+    const isPortrait = image.naturalHeight > image.naturalWidth;
+    const cardWidth = 220;
+    const cardHeight = 140;
+
+    ctx.save();
+    ctx.fillStyle = "rgba(4,8,20,0.4)";
+    ctx.fillRect(slot.x + 8, slot.y + 12, cardWidth, cardHeight);
+    if (isPortrait) {
+      ctx.translate(slot.x + cardWidth / 2, slot.y + cardHeight / 2);
+      ctx.rotate(Math.PI / 2);
+      ctx.drawImage(image, -cardHeight / 2, -cardWidth / 2, cardHeight, cardWidth);
+    } else {
+      ctx.drawImage(image, slot.x, slot.y, cardWidth, cardHeight);
+    }
+    ctx.restore();
+  }
+}
+
 function canvasToBlob(canvas) {
   return new Promise((resolve, reject) => {
     canvas.toBlob((blob) => {
@@ -286,4 +386,18 @@ function canvasToBlob(canvas) {
 
 function setBodyScrollLock(locked) {
   document.body.style.overflow = locked ? "hidden" : "";
+}
+
+function mixColors(hexA, hexB, ratio) {
+  const a = parseHex(hexA);
+  const b = parseHex(hexB);
+  const blend = (x, y) => Math.round(x + (y - x) * ratio);
+  return `rgb(${blend(a.r, b.r)} ${blend(a.g, b.g)} ${blend(a.b, b.b)})`;
+}
+
+function parseHex(hex) {
+  const clean = String(hex).replace("#", "").trim();
+  const normalized = clean.length === 3 ? clean.split("").map((v) => v + v).join("") : clean;
+  const safe = /^[0-9a-fA-F]{6}$/.test(normalized) ? normalized : "101826";
+  return { r: Number.parseInt(safe.slice(0, 2), 16), g: Number.parseInt(safe.slice(2, 4), 16), b: Number.parseInt(safe.slice(4, 6), 16) };
 }
