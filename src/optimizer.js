@@ -360,6 +360,7 @@ function computeCandidateLimit(cardCount, maxSize) {
 
 export function findBestCombo({ cards, programsMap, schema, k, annualSpend, subcategorySpend = {}, subcategoryConfigs = {}, valuationMode = "estimated", excludedProgramIds = [], excludeCashbackPrograms = false, lockedCardIds = [], additionalCardIds = null }) {
   let best = { combo: [], net: -1e18, gross: 0, fees: 0, assigned: null };
+  const NET_TIE_EPSILON = 0.005;
 
   const subcategoryAdjusted = applySubcategoryLogic({
     cards,
@@ -398,10 +399,12 @@ export function findBestCombo({ cards, programsMap, schema, k, annualSpend, subc
     const candidateUnlockedCards = selectCandidateCards(unlockedCards, programsMap, effectiveSchema, effectiveAnnualSpend, additionalCount, candidateLimit, valuationMode);
 
     for (const combo of combinations(candidateUnlockedCards, additionalCount)) {
-      const result = evaluateCombo([...lockedCards, ...combo], effectiveAnnualSpend, effectiveSchema, programsMap, valuationMode);
-      const sameNet = Math.abs(result.net - best.net) <= 1e-9;
+      const combinedCombo = [...lockedCards, ...combo];
+      const result = evaluateCombo(combinedCombo, effectiveAnnualSpend, effectiveSchema, programsMap, valuationMode);
+      const clearlyBetter = result.net > best.net + NET_TIE_EPSILON;
+      const sameNet = Math.abs(result.net - best.net) <= NET_TIE_EPSILON;
       const fewerCards = result.combo.length < best.combo.length;
-      if (result.net > best.net || (sameNet && fewerCards)) best = result;
+      if (clearlyBetter || (sameNet && fewerCards)) best = result;
     }
   }
 
