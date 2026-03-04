@@ -32,7 +32,19 @@ export function renderSpendTable(el, schema, categoryDescriptions = {}, subcateg
     }
   };
 
+  el.dataset.spendTotalBinder = "ready";
+  el.__updateSpendTotal = updateSpendTotal;
+
   const orderedInputs = [...el.querySelectorAll("input[data-cat], input[data-subcategory-key]")];
+
+  const isVisibleForNavigation = (input) => {
+    if (!(input instanceof HTMLElement)) return false;
+    if (input.type === "hidden" || input.disabled) return false;
+    if (input.closest(".spendControlPanel")?.classList.contains("spendMoreDetailsPanel") && input.offsetParent === null) {
+      return false;
+    }
+    return input.offsetParent !== null;
+  };
 
   orderedInputs.forEach((inp, index) => {
     inp.addEventListener("input", () => updateSpendTotal(inp));
@@ -44,7 +56,7 @@ export function renderSpendTable(el, schema, categoryDescriptions = {}, subcateg
     inp.addEventListener("keydown", (event) => {
       if (event.key !== "Enter") return;
       event.preventDefault();
-      const nextInput = orderedInputs[index + 1];
+      const nextInput = orderedInputs.slice(index + 1).find((candidate) => isVisibleForNavigation(candidate));
       if (nextInput) nextInput.focus();
     });
 
@@ -53,6 +65,16 @@ export function renderSpendTable(el, schema, categoryDescriptions = {}, subcateg
 
 
   updateSpendTotal();
+}
+
+export function refreshSpendTotal(el, subcategoryConfigs = {}) {
+  const updateSpendTotal = el?.__updateSpendTotal;
+  if (typeof updateSpendTotal === "function") {
+    updateSpendTotal();
+    return;
+  }
+
+  syncParentSpendFromSubcategories(el, subcategoryConfigs, null);
 }
 
 
