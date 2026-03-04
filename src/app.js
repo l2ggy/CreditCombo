@@ -5,6 +5,7 @@ import { createUiState } from "./app/state.js";
 import { createView } from "./app/view.js";
 import { readOptimizerDeepLink } from "./app/deeplink.js";
 import { escapeHtml } from "./shared/sanitize.js";
+import { createShareOverlay } from "./share/share-overlay.js";
 
 async function main() {
   const view = createView();
@@ -24,6 +25,12 @@ async function main() {
     renderIssues(elements.issuesEl, issues);
     view.syncIssuesVisibility(issues.length);
 
+    let shareOverlay = null;
+    const ensureShareOverlay = () => {
+      if (!shareOverlay) shareOverlay = createShareOverlay();
+      return shareOverlay;
+    };
+
     const actions = createActions({
       state: createUiState(),
       view,
@@ -32,7 +39,9 @@ async function main() {
       eligibleCards,
       eligibleCardIdSet,
       eligibleCardsById,
-      subcategoryConfigs
+      subcategoryConfigs,
+      ensureShareOverlay,
+      openShareBtn: elements.openShareBtn
     });
 
     actions.syncInitialUi();
