@@ -5,13 +5,13 @@ export function buildShareCopy({ netValue, valuationMode, cardCount, siteHost })
   const valueModeLabel = valuationMode === "minimum_guaranteed" ? "minimum guaranteed" : "estimated";
 
   const kicker = "CreditCombo optimizer result";
-  const headline = `${safeCount} card${safeCount === 1 ? "" : "s"} tuned for your spend`;
   const heroValue = formatMoneyCAD(Number(netValue) || 0);
-  const heroValueLabel = `Annual net value (${valueModeLabel})`;
-  const support = "Built from your categories, annual fees, and Chexy-adjusted costs.";
+  const headline = `CreditCombo found a ${safeCount}-card combo for this spend profile.`;
+  const heroValueLabel = `${valueModeLabel === "estimated" ? "Estimated" : "Minimum guaranteed"} net value per year`;
+  const support = `That combo is worth about ${heroValue} each year after fees.`;
   const cta = "Try your own scenario";
   const urlLabel = siteHost || "creditcombo.ca";
-  const nativeShareText = `${headline} · ${heroValue} annual net value.`;
+  const nativeShareText = `${headline} About ${heroValue} per year in net value.`;
 
   return {
     kicker,

@@ -62,6 +62,7 @@ export function createShareOverlay() {
   let cachedBlob = null;
   let cachedKey = null;
   let previousOverflow = "";
+  const orientationCache = new Map();
 
   function contextKey(value) {
     if (!value?.best) return "";
@@ -69,7 +70,7 @@ export function createShareOverlay() {
     return [comboIds, value.valuationMode, Number(value.netAfterChexy || 0).toFixed(2), value.shareUrl || ""].join("|");
   }
 
-  function applyContext() {
+  async function applyContext() {
     if (!context?.best) return;
     const copy = buildShareCopy({
       netValue: context.netAfterChexy,
@@ -86,7 +87,7 @@ export function createShareOverlay() {
     ctaEl.textContent = copy.cta;
     urlLabelEl.textContent = copy.urlLabel;
 
-    renderThumbRows(context.best.combo || []);
+    await renderThumbRows(context.best.combo || []);
 
     const shareUrl = context.shareUrl || window.location.href;
     qrEl.crossOrigin = "anonymous";
@@ -94,13 +95,20 @@ export function createShareOverlay() {
     qrEl.src = `${QR_ENDPOINT}${encodeURIComponent(shareUrl)}`;
   }
 
-  function renderThumbRows(cards) {
+  async function renderThumbRows(cards) {
     thumbsEl.innerHTML = "";
     const capped = cards.slice(0, 5);
-    const layout = capped.length === 5 ? "rows-3-2" : `row-${Math.max(1, capped.length)}`;
+    const cardsWithOrientation = await Promise.all(capped.map(async (card) => ({
+      card,
+      isPortrait: await isPortraitCard(card, orientationCache)
+    })));
+    const sorted = cardsWithOrientation
+      .sort((a, b) => Number(a.isPortrait) - Number(b.isPortrait))
+      .map((entry) => entry.card);
+    const layout = sorted.length === 5 ? "rows-3-2" : `row-${Math.max(1, sorted.length)}`;
     thumbsEl.dataset.layout = layout;
 
-    const rows = capped.length === 5 ? [capped.slice(0, 3), capped.slice(3, 5)] : [capped];
+    const rows = sorted.length === 5 ? [sorted.slice(0, 3), sorted.slice(3, 5)] : [sorted];
     rows.forEach((row) => {
       const rowEl = document.createElement("div");
       rowEl.className = "shareCard__thumbRow";
@@ -135,7 +143,7 @@ export function createShareOverlay() {
       cachedBlob = null;
       cachedKey = nextKey;
     }
-    applyContext();
+    void applyContext();
   }
 
   async function withBusyState(button, label, action) {
@@ -218,6 +226,23 @@ export function createShareOverlay() {
   });
 
   return { open, close, updateContext };
+}
+
+
+async function isPortraitCard(card, cache) {
+  if (!card?.id) return false;
+  if (cache.has(card.id)) return cache.get(card.id);
+
+  const src = `./assets/cards/${card.id}.webp`;
+  const isPortrait = await new Promise((resolve) => {
+    const image = new Image();
+    image.onload = () => resolve(image.naturalHeight > image.naturalWidth);
+    image.onerror = () => resolve(false);
+    image.src = src;
+  });
+
+  cache.set(card.id, isPortrait);
+  return isPortrait;
 }
 
 function getHostLabel(url) {
