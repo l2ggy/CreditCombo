@@ -4,6 +4,8 @@ import { buildShareCopy } from "./share-copy.js";
 const MAX_SHARE_CARDS = 5;
 const PNG_SCALE = 2;
 
+const EMPTY_PIXEL_DATA_URL = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO7pO8wAAAAASUVORK5CYII=";
+
 export function createShareOverlay() {
   const state = {
     best: null,
@@ -253,11 +255,12 @@ async function inlineImages(root) {
     if (!src) return;
 
     try {
-      const response = await fetch(src, { mode: "cors" });
+      const response = await fetchWithTimeout(src, 3000, { mode: "cors" });
+      if (!response.ok) throw new Error(`Image fetch failed: ${response.status}`);
       const blob = await response.blob();
       img.setAttribute("src", await blobToDataUrl(blob));
     } catch {
-      // keep original src if fetch or conversion fails
+      img.setAttribute("src", EMPTY_PIXEL_DATA_URL);
     }
   }));
 }
@@ -297,6 +300,12 @@ async function waitForElementImages(root) {
 
 function delay(ms) {
   return new Promise((resolve) => window.setTimeout(resolve, ms));
+}
+
+function fetchWithTimeout(url, timeoutMs = 3000, options = {}) {
+  const controller = new AbortController();
+  const timer = window.setTimeout(() => controller.abort(), timeoutMs);
+  return fetch(url, { ...options, signal: controller.signal }).finally(() => window.clearTimeout(timer));
 }
 
 function blobToDataUrl(blob) {
