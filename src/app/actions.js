@@ -420,6 +420,9 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
   function toggleLockedCards() {
     syncStateFromControls();
     shouldRenderLockedCardPicks = true;
+    updateLockedCardsUi();
+    syncKBoundsFromState();
+    view.updateKValue(elements.kInput.value);
     return runOptimization();
   }
 
