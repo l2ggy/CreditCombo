@@ -1,5 +1,5 @@
 import { annualizeMonthlySpend, chexyAdjustedAnnualSpend } from "../optimizer.js";
-import { clampInt, readMonthlySpend, readSubcategoryMonthlySpend, renderResult, resetSubcategorySpend } from "../ui.js";
+import { clampInt, readMonthlySpend, readSubcategoryMonthlySpend, refreshSpendTotal, renderResult, resetSubcategorySpend } from "../ui.js";
 import { candidatePools, kBounds, selectedLockedCardIds } from "./state.js";
 import { renderLockedChip } from "../shared/render.js";
 import { bindCardSearchKeyboard, createCardSearchIndex, rankCardMatches, renderCardSearchOptions } from "../shared/card-search.js";
@@ -334,15 +334,16 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
 
   async function runOptimization({ manual = false } = {}) {
     if (manual) hasManualOptimizationRun = true;
-    if (!hasManualOptimizationRun) return;
-
     syncStateFromControls();
-    elements.runBtn.disabled = true;
-    view.setLoadingState(true);
 
     updateLockedCardsUi();
     const { additionalCards } = syncKBoundsFromState();
     view.updateKValue(elements.kInput.value);
+
+    if (!hasManualOptimizationRun) return;
+
+    elements.runBtn.disabled = true;
+    view.setLoadingState(true);
 
     if (!eligibleCards.length) {
       view.setLoadingState(false);
@@ -428,6 +429,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
       input.value = "";
     });
     Object.values(subcategoryConfigs).flat().forEach((config) => resetSubcategorySpend(config.key));
+    refreshSpendTotal(elements.spendTableEl, subcategoryConfigs);
     return runOptimization();
   }
 
@@ -549,6 +551,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
       input.value = value > 0 ? String(value) : "";
     });
 
+    refreshSpendTotal(elements.spendTableEl, subcategoryConfigs);
     shouldRenderLockedCardPicks = true;
     return runOptimization();
   }
