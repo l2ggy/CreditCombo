@@ -196,24 +196,20 @@ export function createShareOverlay() {
     if (!context) return;
 
     await withBusyState(downloadBtn, "Preparing PNG…", async () => {
-      const blob = await getPngBlob();
-      const downloadUrl = URL.createObjectURL(blob);
       try {
-        const link = document.createElement("a");
-        link.href = downloadUrl;
-        link.download = "creditcombo-share.png";
-        link.style.display = "none";
-        document.body.append(link);
-        link.click();
-        link.remove();
-      } finally {
-        URL.revokeObjectURL(downloadUrl);
+        const blob = await getPngBlob();
+        downloadBlob(blob, "creditcombo-share.png");
+      } catch (error) {
+        console.error("Share image download failed", error);
       }
     });
   });
 
-  root.querySelectorAll("[data-share-close]").forEach((el) => {
-    el.addEventListener("click", close);
+  root.addEventListener("click", (event) => {
+    const target = event.target;
+    if (!(target instanceof Element)) return;
+    if (!target.closest("[data-share-close]")) return;
+    close();
   });
 
   root.addEventListener("keydown", (event) => {
@@ -329,6 +325,28 @@ async function inlineImageSources(sourceRoot, targetRoot) {
       targetImage.removeAttribute("src");
     }
   }));
+}
+
+
+function downloadBlob(blob, filename) {
+  if (navigator.msSaveOrOpenBlob) {
+    navigator.msSaveOrOpenBlob(blob, filename);
+    return;
+  }
+
+  const downloadUrl = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = downloadUrl;
+  link.download = filename;
+  link.rel = "noopener";
+  link.style.display = "none";
+  document.body.append(link);
+  link.click();
+  link.remove();
+
+  window.setTimeout(() => {
+    URL.revokeObjectURL(downloadUrl);
+  }, 1000);
 }
 
 function blobToDataUrl(blob) {
