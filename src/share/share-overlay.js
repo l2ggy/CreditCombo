@@ -205,6 +205,7 @@ async function elementToPngBlob(element, scale = 2) {
 
   await waitForElementImages(element);
   if (document.fonts?.ready) await document.fonts.ready;
+  await nextFrame();
 
   const clone = element.cloneNode(true);
   inlineComputedStyles(element, clone);
@@ -238,8 +239,8 @@ function inlineComputedStyles(sourceNode, targetNode) {
   if (!(sourceNode instanceof Element) || !(targetNode instanceof Element)) return;
 
   const computed = getComputedStyle(sourceNode);
-  const style = [...computed].map((name) => `${name}:${computed.getPropertyValue(name)};`).join("");
-  targetNode.setAttribute("style", style);
+  const styleText = computed.cssText || collectComputedStyleText(computed);
+  targetNode.setAttribute("style", styleText);
 
   const sourceChildren = [...sourceNode.children];
   const targetChildren = [...targetNode.children];
@@ -255,13 +256,17 @@ async function inlineImages(root) {
     if (!src) return;
 
     try {
-      const response = await fetchWithTimeout(src, 3000, { mode: "cors" });
+      const response = await fetchWithTimeout(src, 3500, { mode: "cors" });
       if (!response.ok) throw new Error(`Image fetch failed: ${response.status}`);
       const blob = await response.blob();
       img.setAttribute("src", await blobToDataUrl(blob));
+      return;
     } catch {
-      img.setAttribute("src", EMPTY_PIXEL_DATA_URL);
+      // fall through to raster fallback
     }
+
+    const fallbackDataUrl = rasterizeImageDataUrl(img);
+    img.setAttribute("src", fallbackDataUrl || EMPTY_PIXEL_DATA_URL);
   }));
 }
 
@@ -300,6 +305,36 @@ async function waitForElementImages(root) {
 
 function delay(ms) {
   return new Promise((resolve) => window.setTimeout(resolve, ms));
+}
+
+function nextFrame() {
+  return new Promise((resolve) => window.requestAnimationFrame(() => resolve()));
+}
+
+function collectComputedStyleText(style) {
+  let text = "";
+  for (let i = 0; i < style.length; i += 1) {
+    const name = style.item(i);
+    if (!name) continue;
+    text += `${name}:${style.getPropertyValue(name)};`;
+  }
+  return text;
+}
+
+function rasterizeImageDataUrl(img) {
+  try {
+    const width = img.naturalWidth || img.width || 1;
+    const height = img.naturalHeight || img.height || 1;
+    const canvas = document.createElement("canvas");
+    canvas.width = Math.max(1, width);
+    canvas.height = Math.max(1, height);
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return null;
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+    return canvas.toDataURL("image/png");
+  } catch {
+    return null;
+  }
 }
 
 function fetchWithTimeout(url, timeoutMs = 3000, options = {}) {
