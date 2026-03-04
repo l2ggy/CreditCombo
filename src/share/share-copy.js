@@ -6,12 +6,13 @@ export function buildShareCopy({ netValue, valuationMode, cardCount, siteHost })
 
   const kicker = "Your optimized CreditCombo";
   const heroValue = formatMoneyCAD(Number(netValue) || 0);
-  const headline = `${safeCount} cards earning ${heroValue} a year`;
-  const heroValueLabel = `${valueModeLabel === "estimated" ? "Estimated" : "Minimum guaranteed"} net rewards`;
-  const support = "After annual fees.";
+  const cardLabel = `${safeCount} card${safeCount === 1 ? "" : "s"}`;
+  const headline = `${cardLabel} setup for this spend profile`;
+  const heroValueLabel = `${valueModeLabel === "estimated" ? "Estimated" : "Minimum guaranteed"} net rewards after annual fees`;
+  const support = "";
   const cta = "Try your own scenario";
   const urlLabel = siteHost || "creditcombo.ca";
-  const nativeShareText = `${headline} after fees.`;
+  const nativeShareText = `${headline} · earning ${heroValue} a year after annual fees.`;
 
   return {
     kicker,

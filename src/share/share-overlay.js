@@ -84,6 +84,7 @@ export function createShareOverlay() {
     heroValueEl.textContent = copy.heroValue;
     heroLabelEl.textContent = copy.heroValueLabel;
     supportEl.textContent = copy.support;
+    supportEl.classList.toggle("hidden", !copy.support);
     ctaEl.textContent = copy.cta;
     urlLabelEl.textContent = copy.urlLabel;
 
@@ -106,6 +107,10 @@ export function createShareOverlay() {
       .sort((a, b) => Number(a.isPortrait) - Number(b.isPortrait));
     const layout = sorted.length === 5 ? "rows-3-2" : `row-${Math.max(1, sorted.length)}`;
     thumbsEl.dataset.layout = layout;
+
+    const { landscapeSize, portraitSize } = thumbSizesForCount(sorted.length);
+    thumbsEl.style.setProperty("--share-thumb-landscape", `${landscapeSize}px`);
+    thumbsEl.style.setProperty("--share-thumb-portrait", `${portraitSize}px`);
 
     const rows = sorted.length === 5 ? [sorted.slice(0, 3), sorted.slice(3, 5)] : [sorted];
     rows.forEach((row) => {
@@ -227,6 +232,16 @@ export function createShareOverlay() {
   return { open, close, updateContext };
 }
 
+
+
+function thumbSizesForCount(count) {
+  const safeCount = Math.max(1, Number(count) || 1);
+  if (safeCount === 1) return { landscapeSize: 140, portraitSize: 92 };
+  if (safeCount === 2) return { landscapeSize: 116, portraitSize: 76 };
+  if (safeCount === 3) return { landscapeSize: 102, portraitSize: 68 };
+  if (safeCount === 4) return { landscapeSize: 92, portraitSize: 62 };
+  return { landscapeSize: 84, portraitSize: 56 };
+}
 
 async function isPortraitCard(card, cache) {
   if (!card?.id) return false;
