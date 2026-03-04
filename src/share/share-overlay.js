@@ -14,7 +14,8 @@ export function createShareOverlay() {
     shareUrl: window.location.href,
     siteHost: window.location.host,
     prepared: false,
-    pngBlob: null
+    pngBlob: null,
+    pngPromise: null
   };
 
   const root = document.createElement("div");
@@ -75,6 +76,7 @@ export function createShareOverlay() {
     root.classList.add("is-open");
     setBodyScrollLock(true);
     prepareCard();
+    warmupPng();
   }
 
   function close() {
@@ -93,6 +95,7 @@ export function createShareOverlay() {
     state.siteHost = parseHost(state.shareUrl);
     state.prepared = false;
     state.pngBlob = null;
+    state.pngPromise = null;
   }
 
   function currentCopy() {
@@ -144,14 +147,12 @@ export function createShareOverlay() {
       const copy = currentCopy();
       const shareData = { title: "CreditCombo result", text: copy.nativeShareText, url: state.shareUrl };
 
-      try {
-        const blob = await getPngBlob();
-        if (blob) {
-          const file = new File([blob], "creditcombo-share.png", { type: "image/png" });
-          if (navigator.canShare?.({ files: [file] })) shareData.files = [file];
-        }
-      } catch (exportError) {
-        console.warn("Share image export failed, sharing link/text only", exportError);
+      const readyBlob = state.pngBlob;
+      if (readyBlob) {
+        const file = new File([readyBlob], "creditcombo-share.png", { type: "image/png" });
+        if (navigator.canShare?.({ files: [file] })) shareData.files = [file];
+      } else {
+        warmupPng();
       }
 
       await navigator.share(shareData);
@@ -194,9 +195,23 @@ export function createShareOverlay() {
     }
   }
 
+  function warmupPng() {
+    if (state.pngBlob || state.pngPromise) return;
+    state.pngPromise = elementToPngBlob(shareCardEl, PNG_SCALE)
+      .then((blob) => {
+        state.pngBlob = blob;
+        return blob;
+      })
+      .catch((error) => {
+        state.pngPromise = null;
+        throw error;
+      });
+  }
+
   async function getPngBlob() {
     if (state.pngBlob) return state.pngBlob;
-    state.pngBlob = await elementToPngBlob(shareCardEl, PNG_SCALE);
+    if (!state.pngPromise) warmupPng();
+    state.pngBlob = await state.pngPromise;
     return state.pngBlob;
   }
 
@@ -376,9 +391,11 @@ function triggerDownload(blob, filename) {
   const link = document.createElement("a");
   link.download = filename;
   link.href = objectUrl;
+  link.rel = "noopener";
   document.body.append(link);
-  link.click();
+  link.dispatchEvent(new MouseEvent("click", { bubbles: true, cancelable: true, view: window }));
   link.remove();
+  if (window.open && filename.endsWith(".svg")) window.open(objectUrl, "_blank", "noopener");
   window.setTimeout(() => URL.revokeObjectURL(objectUrl), 1500);
 }
 
