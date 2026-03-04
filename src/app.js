@@ -37,6 +37,8 @@ async function main() {
 
     actions.syncInitialUi();
 
+    elements.appEl.classList.remove("hidden");
+
     const deepLinkState = readOptimizerDeepLink(window.location.search, {
       schema,
       subcategoryConfigs,
@@ -52,8 +54,16 @@ async function main() {
       || deepLinkState.valuationMode !== "estimated"
     );
 
-    if (hasDeepLinkValues || deepLinkState.autorun) await actions.hydrateFromDeepLink(deepLinkState);
-    elements.appEl.classList.remove("hidden");
+    if (hasDeepLinkValues || deepLinkState.autorun) {
+      try {
+        await actions.hydrateFromDeepLink(deepLinkState);
+      } catch (error) {
+        elements.statusEl.innerHTML = `
+          <span class="badge bad">Deep-link warning</span>
+          <span class="muted">${escapeHtml(error?.message || "Unable to apply deep link. Optimizer remains usable.")}</span>
+        `;
+      }
+    }
 
     elements.runBtn.addEventListener("click", actions.runOptimizationManually);
     elements.clearSpendBtn?.addEventListener("click", actions.clearSpend);
