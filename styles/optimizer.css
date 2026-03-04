@@ -113,7 +113,7 @@
 .shareOverlay{position:fixed;inset:0;z-index:90;display:grid;place-items:center;padding:var(--space-6);opacity:0;pointer-events:none;transition:opacity .18s ease;overflow:auto;overscroll-behavior:contain}
 .shareOverlay.is-open{opacity:1;pointer-events:auto}
 .shareOverlay__backdrop{position:absolute;inset:0;background:transparent;backdrop-filter:none}
-.shareOverlay__dialog{position:relative;z-index:1;width:min(92vw,600px);max-height:min(92vh,840px);overflow:auto;padding:var(--space-4);border-radius:calc(var(--radius-xl) + 2px);border:1px solid color-mix(in srgb,var(--color-border) 70%,var(--color-brand-highlight));box-shadow:0 10px 30px rgba(5,10,24,.22);transform:translateY(8px) scale(.985);transition:transform .18s ease}
+.shareOverlay__dialog{position:relative;z-index:1;width:min(92vw,600px);max-height:min(92vh,840px);overflow:auto;box-shadow:0 10px 30px rgba(5,10,24,.22);transform:translateY(8px) scale(.985);transition:transform .18s ease}
 .shareOverlay.is-open .shareOverlay__dialog{transform:translateY(0) scale(1)}
 .shareOverlay__header{display:flex;align-items:center;justify-content:space-between;gap:var(--space-4)}
 .shareOverlay__header h3{margin:0;font-size:var(--font-size-lg)}
@@ -147,5 +147,5 @@
 .shareCard__url{margin:var(--space-2) 0 0;font-weight:600;color:var(--color-muted)}
 .shareCard__qr{width:84px;height:84px;border-radius:10px;background:#fff;padding:6px;object-fit:contain;box-shadow:0 8px 18px rgba(7,12,22,.35)}
 
-@media (max-width:680px){.shareOverlay{padding:var(--space-3);place-items:start center}.shareOverlay__dialog{width:min(96vw,560px);max-height:94vh;padding:var(--space-3)}.shareCard{width:min(100%,430px);gap:var(--space-2)}.shareCard__footer{align-items:center}.shareCard__qr{width:76px;height:76px}.shareOverlay__actions{justify-content:stretch}.shareOverlay__actions .btn-inline{flex:1 1 auto}}
+@media (max-width:680px){.shareOverlay{padding:var(--space-3);place-items:start center}.shareOverlay__dialog{width:min(96vw,560px);max-height:94vh}.shareCard{width:min(100%,430px);gap:var(--space-2)}.shareCard__footer{align-items:center}.shareCard__qr{width:76px;height:76px}.shareOverlay__actions{justify-content:stretch}.shareOverlay__actions .btn-inline{flex:1 1 auto}}
 @media (prefers-reduced-motion:reduce){.shareOverlay,.shareOverlay__dialog{transition:none}}
