@@ -103,8 +103,7 @@ export function createShareOverlay() {
       isPortrait: await isPortraitCard(card, orientationCache)
     })));
     const sorted = cardsWithOrientation
-      .sort((a, b) => Number(a.isPortrait) - Number(b.isPortrait))
-      .map((entry) => entry.card);
+      .sort((a, b) => Number(a.isPortrait) - Number(b.isPortrait));
     const layout = sorted.length === 5 ? "rows-3-2" : `row-${Math.max(1, sorted.length)}`;
     thumbsEl.dataset.layout = layout;
 
@@ -112,9 +111,9 @@ export function createShareOverlay() {
     rows.forEach((row) => {
       const rowEl = document.createElement("div");
       rowEl.className = "shareCard__thumbRow";
-      row.forEach((card) => {
+      row.forEach(({ card, isPortrait }) => {
         const thumbWrap = document.createElement("span");
-        thumbWrap.className = "shareCard__thumb";
+        thumbWrap.className = `shareCard__thumb${isPortrait ? " shareCard__thumb--portrait" : ""}`;
         thumbWrap.append(renderCardThumb(card, { className: "thumb thumb-contain", withFrame: false }));
         rowEl.append(thumbWrap);
       });
