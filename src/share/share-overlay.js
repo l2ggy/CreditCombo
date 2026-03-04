@@ -7,6 +7,7 @@ export function createShareOverlay() {
     valuationMode: "estimated",
     netAfterChexy: 0,
     shareUrl: window.location.href,
+    siteHost: window.location.host,
     qrSrc: "",
     prepared: false,
     pngBlob: null
@@ -52,7 +53,6 @@ export function createShareOverlay() {
   const cardEl = root.querySelector("#shareCard");
   const cardsEl = root.querySelector(".shareCard__cards");
   const qrEl = root.querySelector(".shareCard__qr");
-  const actionsEl = root.querySelector(".shareOverlay__actions");
   const nativeBtn = root.querySelector("[data-share-native]");
   const downloadBtn = root.querySelector("[data-share-download]");
 
@@ -98,6 +98,13 @@ export function createShareOverlay() {
     state.valuationMode = context.valuationMode || "estimated";
     state.netAfterChexy = Number(context.netAfterChexy || 0);
     state.shareUrl = context.shareUrl || window.location.href;
+    state.siteHost = (() => {
+      try {
+        return new URL(state.shareUrl).host || window.location.host;
+      } catch {
+        return window.location.host;
+      }
+    })();
     state.prepared = false;
     state.pngBlob = null;
   }
@@ -108,7 +115,8 @@ export function createShareOverlay() {
     const copy = buildShareCopy({
       netValue: state.netAfterChexy,
       valuationMode: state.valuationMode,
-      cardCount: state.best?.combo?.length || 0
+      cardCount: state.best?.combo?.length || 0,
+      siteHost: state.siteHost
     });
 
     cardEl.querySelector(".shareCard__kicker").textContent = copy.kicker;
@@ -126,7 +134,12 @@ export function createShareOverlay() {
 
   function renderCards(cards) {
     cardsEl.innerHTML = "";
-    cards.slice(0, 5).forEach((card) => {
+    const limited = cards.slice(0, 5);
+    const layout = cardLayoutForCount(limited.length);
+    cardsEl.dataset.layout = layout;
+    cardsEl.dataset.count = String(limited.length);
+
+    limited.forEach((card) => {
       const item = document.createElement("div");
       item.className = "shareCard__cardThumb";
       item.append(renderCardThumb(card, { className: "thumb thumb-lg thumb-contain", withFrame: false }));
@@ -148,7 +161,8 @@ export function createShareOverlay() {
     const copy = buildShareCopy({
       netValue: state.netAfterChexy,
       valuationMode: state.valuationMode,
-      cardCount: state.best?.combo?.length || 0
+      cardCount: state.best?.combo?.length || 0,
+      siteHost: state.siteHost
     });
 
     setBusy(true, "Preparing share");
@@ -215,7 +229,7 @@ export function createShareOverlay() {
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, size, size);
 
-    const copy = buildShareCopy({ netValue: state.netAfterChexy, valuationMode: state.valuationMode, cardCount: state.best?.combo?.length || 0 });
+    const copy = buildShareCopy({ netValue: state.netAfterChexy, valuationMode: state.valuationMode, cardCount: state.best?.combo?.length || 0, siteHost: state.siteHost });
     ctx.fillStyle = highlight;
     ctx.font = "700 32px system-ui, -apple-system, Segoe UI, sans-serif";
     ctx.fillText(copy.kicker, 90, 128);
@@ -253,15 +267,10 @@ export function createShareOverlay() {
   }
 
   async function drawCardsCanvas(ctx, cards) {
-    const layout = [
-      { x: 120, y: 470 },
-      { x: 366, y: 470 },
-      { x: 612, y: 470 },
-      { x: 245, y: 645 },
-      { x: 490, y: 645 }
-    ];
+    const limited = cards.slice(0, 5);
+    const layout = canvasCardLayoutForCount(limited.length);
 
-    for (const [index, card] of cards.slice(0, 5).entries()) {
+    for (const [index, card] of limited.entries()) {
       const image = await loadImage(`./assets/cards/${card.id}.webp`);
       const slot = layout[index];
       if (!slot) continue;
@@ -284,6 +293,51 @@ export function createShareOverlay() {
   }
 
   return { open, close, updateContext };
+}
+
+
+function cardLayoutForCount(count) {
+  if (count === 5) return "3-2";
+  if (count >= 4) return "4-1";
+  return `${Math.max(1, count)}-0`;
+}
+
+function canvasCardLayoutForCount(count) {
+  if (count === 5) {
+    return [
+      { x: 120, y: 470 },
+      { x: 365, y: 470 },
+      { x: 610, y: 470 },
+      { x: 242, y: 626 },
+      { x: 487, y: 626 }
+    ];
+  }
+
+  if (count === 4) {
+    return [
+      { x: 72, y: 500 },
+      { x: 312, y: 500 },
+      { x: 552, y: 500 },
+      { x: 792, y: 500 }
+    ];
+  }
+
+  if (count === 3) {
+    return [
+      { x: 192, y: 520 },
+      { x: 440, y: 520 },
+      { x: 688, y: 520 }
+    ];
+  }
+
+  if (count === 2) {
+    return [
+      { x: 304, y: 540 },
+      { x: 560, y: 540 }
+    ];
+  }
+
+  return [{ x: 430, y: 550 }];
 }
 
 function loadImage(src) {

@@ -1,4 +1,4 @@
-export function buildShareCopy({ netValue = 0, valuationMode = "estimated", cardCount = 0 } = {}) {
+export function buildShareCopy({ netValue = 0, valuationMode = "estimated", cardCount = 0, siteHost = "" } = {}) {
   const roundedNet = Math.max(0, Math.round(Number(netValue) || 0));
   const modeLabel = valuationMode === "minimum_guaranteed" ? "Minimum guaranteed annual value" : "Annual value";
 
@@ -14,6 +14,6 @@ export function buildShareCopy({ netValue = 0, valuationMode = "estimated", card
     support: "Based on my spending profile across key categories.",
     cta: "Check your CreditCombo",
     nativeShareText: `I optimized my wallet with CreditCombo and estimated ${roundedNet.toLocaleString("en-CA")} CAD in annual value.`,
-    urlLabel: "creditcombo.ca"
+    urlLabel: siteHost || "creditcombo.ca"
   };
 }
