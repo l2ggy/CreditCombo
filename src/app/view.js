@@ -3,7 +3,6 @@ export function createView() {
 
   const elements = {
     statusEl: document.getElementById("status"),
-    appEl: document.getElementById("app"),
     spendTableEl: document.getElementById("spendTable"),
     clearSpendBtn: document.getElementById("clearSpendBtn"),
     issuesEl: document.getElementById("issues"),

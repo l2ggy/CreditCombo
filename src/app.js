@@ -37,7 +37,6 @@ async function main() {
 
     actions.syncInitialUi();
 
-    elements.appEl.classList.remove("hidden");
 
     const deepLinkState = readOptimizerDeepLink(window.location.search, {
       schema,
