@@ -112,14 +112,22 @@ export function createShareOverlay() {
     })));
     const sorted = cardsWithOrientation
       .sort((a, b) => Number(a.isPortrait) - Number(b.isPortrait));
-    const layout = sorted.length === 5 ? "rows-3-2" : `row-${Math.max(1, sorted.length)}`;
+    const layout = sorted.length === 5
+      ? "rows-3-2"
+      : sorted.length === 4
+        ? "rows-2-2"
+        : `row-${Math.max(1, sorted.length)}`;
     thumbsEl.dataset.layout = layout;
 
     const { landscapeSize, portraitSize } = thumbSizesForCount(sorted.length);
     thumbsEl.style.setProperty("--share-thumb-landscape", `${landscapeSize}px`);
     thumbsEl.style.setProperty("--share-thumb-portrait", `${portraitSize}px`);
 
-    const rows = sorted.length === 5 ? [sorted.slice(0, 3), sorted.slice(3, 5)] : [sorted];
+    const rows = sorted.length === 5
+      ? [sorted.slice(0, 3), sorted.slice(3, 5)]
+      : sorted.length === 4
+        ? [sorted.slice(0, 2), sorted.slice(2, 4)]
+        : [sorted];
     rows.forEach((row) => {
       const rowEl = document.createElement("div");
       rowEl.className = "shareCard__thumbRow";
