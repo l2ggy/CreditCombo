@@ -35,6 +35,16 @@ function ensureShareOverlay() {
   return shareOverlay;
 }
 
+function buildShareContext(best, valuationMode, chexySummary) {
+  if (!best?.combo?.length) return null;
+  return {
+    best,
+    valuationMode,
+    netAfterChexy: Number(best.net || 0) - Number(chexySummary?.chexyAdjustedAnnualSpend || 0),
+    shareUrl: window.location.href
+  };
+}
+
 function resolveQuizMode(value) {
   return value === "current_cards" ? "current_cards" : "ideal_combo";
 }
@@ -562,14 +572,10 @@ function renderPostQuizScreen() {
   }
 
   appEl.querySelector("#quickShareBtn")?.addEventListener("click", () => {
-    if (!best?.combo?.length) return;
+    const shareContext = buildShareContext(best, payload?.valuationMode, chexySummary);
+    if (!shareContext) return;
     const overlay = ensureShareOverlay();
-    overlay.updateContext({
-      best,
-      valuationMode: payload.valuationMode,
-      netAfterChexy: Number(best.net || 0) - Number(chexySummary?.chexyAdjustedAnnualSpend || 0),
-      shareUrl: window.location.href
-    });
+    overlay.updateContext(shareContext);
     overlay.open();
   });
 

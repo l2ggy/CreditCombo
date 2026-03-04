@@ -29,6 +29,17 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
     openShareBtn.classList.toggle("hidden", !latestShareContext);
   }
 
+
+  function buildShareContext(best, chexySummary) {
+    if (!best?.combo?.length) return null;
+    return {
+      best,
+      valuationMode: state.valuationMode,
+      netAfterChexy: Number(best.net || 0) - Number(chexySummary?.chexyAdjustedAnnualSpend || 0),
+      shareUrl: window.location.href
+    };
+  }
+
   function openShareOverlay() {
     if (!latestShareContext || typeof ensureShareOverlay !== "function") return;
     const overlay = ensureShareOverlay();
@@ -410,12 +421,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
     if (cached) {
       view.setLoadingState(false);
       renderResult(elements.resultEl, cached, adjustedAnnualSpend, schema, state.valuationMode, chexySummary, subcategoryConfigs);
-      setShareContext({
-        best: cached,
-        valuationMode: state.valuationMode,
-        netAfterChexy: Number(cached.net || 0) - Number(chexySummary?.chexyAdjustedAnnualSpend || 0),
-        shareUrl: window.location.href
-      });
+      setShareContext(buildShareContext(cached, chexySummary));
       elements.runBtn.disabled = false;
       return;
     }
@@ -428,16 +434,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
       comboCache.set(key, best);
       view.setLoadingState(false);
       renderResult(elements.resultEl, best, adjustedAnnualSpend, schema, state.valuationMode, chexySummary, subcategoryConfigs);
-      if (best?.combo?.length) {
-        setShareContext({
-          best,
-          valuationMode: state.valuationMode,
-          netAfterChexy: Number(best.net || 0) - Number(chexySummary?.chexyAdjustedAnnualSpend || 0),
-          shareUrl: window.location.href
-        });
-      } else {
-        setShareContext(null);
-      }
+      setShareContext(buildShareContext(best, chexySummary));
     } catch (error) {
       if (requestId !== runTokenCounter) return;
       view.setLoadingState(false);

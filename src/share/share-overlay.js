@@ -66,6 +66,16 @@ export function createShareOverlay() {
   let previousOverflow = "";
   const orientationCache = new Map();
 
+  function getShareCopy() {
+    if (!context) return null;
+    return buildShareCopy({
+      netValue: context.netAfterChexy,
+      valuationMode: context.valuationMode,
+      cardCount: context.best?.combo?.length || 0,
+      siteHost: getHostLabel(context.shareUrl)
+    });
+  }
+
   function contextKey(value) {
     if (!value?.best) return "";
     const comboIds = (value.best.combo || []).map((card) => card.id).join(",");
@@ -74,12 +84,7 @@ export function createShareOverlay() {
 
   async function applyContext() {
     if (!context?.best) return;
-    const copy = buildShareCopy({
-      netValue: context.netAfterChexy,
-      valuationMode: context.valuationMode,
-      cardCount: context.best.combo?.length || 0,
-      siteHost: getHostLabel(context.shareUrl)
-    });
+    const copy = getShareCopy();
 
     kickerEl.textContent = copy.kicker;
     headlineEl.textContent = copy.headline;
@@ -180,15 +185,10 @@ export function createShareOverlay() {
     if (!canUseNativeShare || !context) return;
 
     await withBusyState(nativeBtn, "Sharing…", async () => {
-      const copy = buildShareCopy({
-        netValue: context.netAfterChexy,
-        valuationMode: context.valuationMode,
-        cardCount: context.best.combo?.length || 0,
-        siteHost: getHostLabel(context.shareUrl)
-      });
+      const copy = getShareCopy();
       const payload = {
         title: "CreditCombo result",
-        text: copy.nativeShareText,
+        text: copy?.nativeShareText || "CreditCombo result",
         url: context.shareUrl
       };
 
