@@ -73,7 +73,7 @@
 .tileTitle{font-size:var(--font-size-sm);line-height:var(--line-height-compact)}
 .tileMedia{width:100%;display:flex;justify-content:center}
 .tileMedia-single .tileThumb{width:clamp(58px,11vw,88px);aspect-ratio:var(--card-aspect-ratio)}
-.tileMedia-single .tileThumb:has(.thumb.is-portrait){width:calc(clamp(58px,11vw,88px) / var(--card-aspect-ratio));aspect-ratio:var(--card-aspect-ratio-portrait)}
+.tileMedia-single .tileThumb .thumb.is-portrait{width:auto;height:100%;max-width:100%}
 .tileMedia-stack{position:relative;width:clamp(58px,11vw,88px);height:calc((clamp(58px,11vw,88px) / (var(--card-aspect-ratio))) + (var(--stack-count,1) - 1) * clamp(6px,1.1vw,10px))}
 .tileMedia-stack .tileThumb{position:absolute;inset-inline:0;top:calc(var(--stack-index,0) * clamp(6px,1.1vw,10px));width:100%;aspect-ratio:var(--card-aspect-ratio);z-index:calc(1 + var(--stack-index,0))}
 .tileThumb{position:relative;display:flex;align-items:center;justify-content:center;line-height:0}

@@ -300,12 +300,6 @@ export function renderResult(el, best, annualSpend, schema, valuationMode = "est
 
       thumb.append(desc);
       thumb.append(renderCardThumb(card, { className: "thumb thumb-lg thumb-contain", withFrame: false }));
-      stack.append(thumb);
-    });
-
-    tile.append(stack);
-    instructions.push(tile);
-  }
 
   const useCols = Math.min(4, Math.max(1, instructions.length));
   const useGrid = document.createElement("div");
