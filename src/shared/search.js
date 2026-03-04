@@ -52,6 +52,14 @@ export function scoreSearchMatch(searchText, queryTokens) {
   return score;
 }
 
-export function matchesSearchTokens(searchText, queryTokens) {
-  return scoreSearchMatch(searchText, queryTokens) >= 0;
+/**
+ * Shared ranking heuristic for autocomplete/filter lists.
+ * Returns -1 when a query token is not represented in the indexed text.
+ */
+export function weightedSearchScore({ fullText, preferredText = "", queryTokens, preferredTextWeight = 3 }) {
+  const fullScore = scoreSearchMatch(fullText, queryTokens);
+  if (fullScore < 0) return -1;
+
+  const preferredScore = preferredText ? scoreSearchMatch(preferredText, queryTokens) : -1;
+  return fullScore + (preferredScore > 0 ? preferredScore * preferredTextWeight : 0);
 }

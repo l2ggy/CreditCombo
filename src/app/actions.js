@@ -3,7 +3,7 @@ import { clampInt, readMonthlySpend, readSubcategoryMonthlySpend, renderResult, 
 import { candidatePools, kBounds, selectedLockedCardIds } from "./state.js";
 import { renderLockedChip } from "../shared/render.js";
 import { bindCardSearchKeyboard, createCardSearchIndex, rankCardMatches, renderCardSearchOptions } from "../shared/card-search.js";
-import { buildSearchText, scoreSearchMatch, tokenizeSearchQuery } from "../shared/search.js";
+import { buildSearchText, tokenizeSearchQuery, weightedSearchScore } from "../shared/search.js";
 import { escapeHtml } from "../shared/sanitize.js";
 
 export function createActions({ state, view, schema, programsMap, eligibleCards, eligibleCardIdSet, eligibleCardsById, subcategoryConfigs = {} }) {
@@ -124,11 +124,12 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
       .map((program) => {
         const programNameText = buildSearchText(program.program_name || program.program_id);
         const fullSearchText = buildSearchText([program.program_name, program.program_id]);
-        const fullScore = scoreSearchMatch(fullSearchText, queryTokens);
-        if (fullScore < 0) return null;
-
-        const nameScore = scoreSearchMatch(programNameText, queryTokens);
-        const totalScore = fullScore + (nameScore > 0 ? nameScore * 3 : 0);
+        const totalScore = weightedSearchScore({
+          fullText: fullSearchText,
+          preferredText: programNameText,
+          queryTokens
+        });
+        if (totalScore < 0) return null;
         return { program, totalScore };
       })
       .filter(Boolean)

@@ -1,8 +1,8 @@
 import { loadCoreData } from "./data-service.js";
 import { formatMoneyCAD, formatMultiplier } from "./shared/format.js";
 import { formatIssuerNetwork, renderCardThumb, renderOfficialCardLink } from "./shared/render.js";
-import { buildSearchText, scoreSearchMatch, tokenizeSearchQuery } from "./shared/search.js";
-import { merchantPortalConfigs, subcategoryRateForCard } from "./subcategory-config.js";
+import { buildSearchText, tokenizeSearchQuery, weightedSearchScore } from "./shared/search.js";
+import { merchantPortalConfigs, readCardEarnRate, subcategoryRateForCard } from "./subcategory-config.js";
 
 const state = {
   cards: [],
@@ -94,11 +94,11 @@ function cardSearchScore(card, queryTokens) {
     ...Object.keys(card.earn_rates || {})
   ]);
 
-  const fullScore = scoreSearchMatch(searchText, queryTokens);
-  if (fullScore < 0) return -1;
-
-  const cardNameScore = scoreSearchMatch(buildSearchText(card.card_name), queryTokens);
-  return fullScore + (cardNameScore > 0 ? cardNameScore * 3 : 0);
+  return weightedSearchScore({
+    fullText: searchText,
+    preferredText: buildSearchText(card.card_name),
+    queryTokens
+  });
 }
 
 function cardMatches(card, queryTokens) {
@@ -128,9 +128,6 @@ function cardSortComparator() {
   return sorters[els.sortBy.value] ?? sorters.name;
 }
 
-function sortCards(cards) {
-  return [...cards].sort(cardSortComparator());
-}
 
 function formatEarnPercentRange(multiplierRate, rewardsProgram) {
   const program = state.programs.get(rewardsProgram);
@@ -154,18 +151,11 @@ function isCashbackProgram(rewardsProgram) {
 }
 
 
-function cardRate(card, cat) {
-  const er = card.earn_rates || {};
-  if (er[cat] != null) return Number(er[cat]);
-  if (er.other != null) return Number(er.other);
-  return 0;
-}
-
 function merchantPortalEntriesForCard(card) {
   return merchantPortalConfigs(state.subcategoryConfigs)
     .map((config) => ({
       label: `${config.label} (${config.browserTag === "portal" ? "portal" : "merchant"})`,
-      rate: subcategoryRateForCard(config, card, config.parentCategory, cardRate),
+      rate: subcategoryRateForCard(config, card, config.parentCategory, readCardEarnRate),
       explicitRate: Number(card?.subcategory_earn_rates?.[config.key])
     }))
     .filter((entry) => Number.isFinite(entry.rate) && entry.rate > 0 && entry.explicitRate === entry.rate);

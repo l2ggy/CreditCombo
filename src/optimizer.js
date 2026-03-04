@@ -1,4 +1,11 @@
-import { normalizeCardNetwork, subcategoryMappedCategory, subcategoryRateForCard } from "./subcategory-config.js";
+import { normalizeCardNetwork, readCardEarnRate, subcategoryMappedCategory, subcategoryRateForCard } from "./subcategory-config.js";
+
+/**
+ * Optimizer data flow:
+ * 1) Convert spend to annual values (plus optional Chexy fee adjustments).
+ * 2) Expand configured subcategories into virtual categories with adjusted per-card rates/caps.
+ * 3) Evaluate card combinations with cap-aware assignment and rerouting.
+ */
 
 export function annualizeMonthlySpend(monthlySpend, schema) {
   const annual = {};
@@ -80,7 +87,7 @@ function applySubcategoryLogic({ cards, schema, annualSpend, subcategorySpend = 
 
       transformedCards.forEach((card) => {
         const mappedCategory = subcategoryMappedCategory(config, normalizeCardNetwork(card.network), parentCategory);
-        card.earn_rates[virtualCategory] = subcategoryRateForCard(config, card, parentCategory, cardRate);
+        card.earn_rates[virtualCategory] = subcategoryRateForCard(config, card, parentCategory, readCardEarnRate);
 
         for (const cap of card.caps || []) {
           const capCats = cap.categories || [];
@@ -95,12 +102,6 @@ function applySubcategoryLogic({ cards, schema, annualSpend, subcategorySpend = 
   return { cards: transformedCards, schema: transformedSchema, annualSpend: transformedAnnualSpend };
 }
 
-function cardRate(card, cat) {
-  const er = card.earn_rates || {};
-  if (er[cat] != null) return Number(er[cat]);
-  if (er.other != null) return Number(er.other);
-  return 0;
-}
 
 function pointsCpp(program, valuationMode) {
   const estimated = Number(program?.cents_per_point ?? 0);
@@ -119,7 +120,7 @@ function programInfo(card, programsMap, valuationMode) {
 }
 
 function valuePerDollar(card, cat, programsMap, valuationMode) {
-  const r = cardRate(card, cat);
+  const r = readCardEarnRate(card, cat);
   const { type, cpp } = programInfo(card, programsMap, valuationMode);
   if (type === "cashback") return r / 100.0;
   return r * (cpp / 100.0);

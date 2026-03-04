@@ -26,6 +26,13 @@ export function subcategoryRateMultiplier(config, cardNetwork) {
   return safeBase * safeNetwork;
 }
 
+export function readCardEarnRate(card, category) {
+  const earnRates = card?.earn_rates || {};
+  if (earnRates[category] != null) return Number(earnRates[category]);
+  if (earnRates.other != null) return Number(earnRates.other);
+  return 0;
+}
+
 export function subcategoryRateForCard(config, card, parentCategory, readCardRate) {
   const cardNetwork = normalizeCardNetwork(card?.network);
   const acceptedNetworks = new Set((config?.acceptedNetworks || []).map(normalizeCardNetwork));

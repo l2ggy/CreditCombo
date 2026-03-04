@@ -1,5 +1,5 @@
 import { renderCardThumb } from "./render.js";
-import { buildSearchText, scoreSearchMatch, tokenizeSearchQuery } from "./search.js";
+import { buildSearchText, tokenizeSearchQuery, weightedSearchScore } from "./search.js";
 
 export function createCardSearchIndex(cards = []) {
   return cards.map((card) => ({
@@ -16,10 +16,12 @@ export function rankCardMatches(index, query, { excludeCardIds = new Set(), limi
   return index
     .filter(({ card }) => !excludeCardIds.has(card.id))
     .map((entry) => {
-      const fullScore = scoreSearchMatch(entry.fullSearchText, queryTokens);
-      if (fullScore < 0) return null;
-      const nameScore = scoreSearchMatch(entry.nameSearchText, queryTokens);
-      const totalScore = fullScore + (nameScore > 0 ? nameScore * 3 : 0);
+      const totalScore = weightedSearchScore({
+        fullText: entry.fullSearchText,
+        preferredText: entry.nameSearchText,
+        queryTokens
+      });
+      if (totalScore < 0) return null;
       return { card: entry.card, totalScore };
     })
     .filter(Boolean)
