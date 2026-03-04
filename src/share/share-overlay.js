@@ -1,6 +1,9 @@
 import { renderCardThumb } from "../shared/render.js";
 import { buildShareCopy } from "./share-copy.js";
 
+const MAX_SHARE_CARDS = 5;
+const PNG_SIZE = 1200;
+
 export function createShareOverlay() {
   const state = {
     best: null,
@@ -58,8 +61,7 @@ export function createShareOverlay() {
 
   root.addEventListener("click", (event) => {
     const target = event.target;
-    if (!(target instanceof HTMLElement)) return;
-    if (target.hasAttribute("data-share-close")) close();
+    if (target instanceof HTMLElement && target.hasAttribute("data-share-close")) close();
   });
 
   downloadBtn?.addEventListener("click", downloadPng);
@@ -71,7 +73,7 @@ export function createShareOverlay() {
     root.hidden = false;
     root.classList.add("is-open");
     setBodyScrollLock(true);
-    prepare();
+    prepareCard();
   }
 
   function close() {
@@ -82,43 +84,29 @@ export function createShareOverlay() {
     }, 170);
   }
 
-  function setBusy(busy, action = "Preparing") {
-    if (downloadBtn) {
-      downloadBtn.disabled = busy;
-      downloadBtn.textContent = busy ? `${action}…` : "Download PNG";
-    }
-    if (nativeBtn && !nativeBtn.classList.contains("hidden")) {
-      nativeBtn.disabled = busy;
-      nativeBtn.textContent = busy ? "Working…" : "Share…";
-    }
-  }
-
   function updateContext(context = {}) {
     state.best = context.best || null;
     state.valuationMode = context.valuationMode || "estimated";
     state.netAfterChexy = Number(context.netAfterChexy || 0);
     state.shareUrl = context.shareUrl || window.location.href;
-    state.siteHost = (() => {
-      try {
-        return new URL(state.shareUrl).host || window.location.host;
-      } catch {
-        return window.location.host;
-      }
-    })();
+    state.siteHost = parseHost(state.shareUrl);
     state.prepared = false;
     state.pngBlob = null;
   }
 
-  function prepare() {
-    if (state.prepared) return;
-
-    const copy = buildShareCopy({
+  function currentCopy() {
+    return buildShareCopy({
       netValue: state.netAfterChexy,
       valuationMode: state.valuationMode,
       cardCount: state.best?.combo?.length || 0,
       siteHost: state.siteHost
     });
+  }
 
+  function prepareCard() {
+    if (state.prepared) return;
+
+    const copy = currentCopy();
     cardEl.querySelector(".shareCard__kicker").textContent = copy.kicker;
     cardEl.querySelector(".shareCard__headline").textContent = copy.headline;
     cardEl.querySelector(".shareCard__heroValue").textContent = copy.heroValue;
@@ -127,19 +115,17 @@ export function createShareOverlay() {
     cardEl.querySelector(".shareCard__cta").textContent = copy.cta;
     cardEl.querySelector(".shareCard__url").textContent = copy.urlLabel;
 
-    renderCards(state.best?.combo || []);
+    const cards = (state.best?.combo || []).slice(0, MAX_SHARE_CARDS);
+    renderCards(cards);
     setQrImage();
     state.prepared = true;
   }
 
   function renderCards(cards) {
     cardsEl.innerHTML = "";
-    const limited = cards.slice(0, 5);
-    const layout = cardLayoutForCount(limited.length);
-    cardsEl.dataset.layout = layout;
-    cardsEl.dataset.count = String(limited.length);
+    cardsEl.dataset.layout = cardLayoutKey(cards.length);
 
-    limited.forEach((card) => {
+    cards.forEach((card) => {
       const item = document.createElement("div");
       item.className = "shareCard__cardThumb";
       item.append(renderCardThumb(card, { className: "thumb thumb-lg thumb-contain", withFrame: false }));
@@ -156,39 +142,25 @@ export function createShareOverlay() {
 
   async function nativeShare() {
     if (!(navigator.share && window.isSecureContext)) return;
-    prepare();
-
-    const copy = buildShareCopy({
-      netValue: state.netAfterChexy,
-      valuationMode: state.valuationMode,
-      cardCount: state.best?.combo?.length || 0,
-      siteHost: state.siteHost
-    });
+    prepareCard();
 
     setBusy(true, "Preparing share");
     try {
+      const copy = currentCopy();
       const blob = await getPngBlob();
       const file = new File([blob], "creditcombo-share.png", { type: "image/png" });
-      const shareData = {
-        title: "CreditCombo result",
-        text: copy.nativeShareText,
-        url: state.shareUrl
-      };
-
-      if (navigator.canShare?.({ files: [file] })) {
-        shareData.files = [file];
-      }
-
+      const shareData = { title: "CreditCombo result", text: copy.nativeShareText, url: state.shareUrl };
+      if (navigator.canShare?.({ files: [file] })) shareData.files = [file];
       await navigator.share(shareData);
     } catch {
-      // user canceled or device does not support share target
+      // cancelled or unsupported
     } finally {
       setBusy(false);
     }
   }
 
   async function downloadPng() {
-    prepare();
+    prepareCard();
     setBusy(true, "Rendering");
     try {
       const blob = await getPngBlob();
@@ -202,6 +174,17 @@ export function createShareOverlay() {
     }
   }
 
+  function setBusy(isBusy, label = "Preparing") {
+    if (downloadBtn) {
+      downloadBtn.disabled = isBusy;
+      downloadBtn.textContent = isBusy ? `${label}…` : "Download PNG";
+    }
+    if (nativeBtn && !nativeBtn.classList.contains("hidden")) {
+      nativeBtn.disabled = isBusy;
+      nativeBtn.textContent = isBusy ? "Working…" : "Share…";
+    }
+  }
+
   async function getPngBlob() {
     if (state.pngBlob) return state.pngBlob;
     const canvas = await renderShareCanvas();
@@ -210,12 +193,11 @@ export function createShareOverlay() {
   }
 
   async function renderShareCanvas() {
-    const size = 1200;
     const canvas = document.createElement("canvas");
-    canvas.width = size;
-    canvas.height = size;
+    canvas.width = PNG_SIZE;
+    canvas.height = PNG_SIZE;
     const ctx = canvas.getContext("2d");
-
+    const copy = currentCopy();
     const theme = getComputedStyle(document.documentElement);
     const panel = theme.getPropertyValue("--color-panel").trim() || "#101826";
     const accent = theme.getPropertyValue("--color-accent").trim() || "#6aa9ff";
@@ -223,13 +205,12 @@ export function createShareOverlay() {
     const text = theme.getPropertyValue("--color-text").trim() || "#e8eef7";
     const muted = theme.getPropertyValue("--color-muted").trim() || "#a9b4c2";
 
-    const gradient = ctx.createLinearGradient(0, 0, size, size);
+    const gradient = ctx.createLinearGradient(0, 0, PNG_SIZE, PNG_SIZE);
     gradient.addColorStop(0, mixColors(panel, "#02050d", 0.52));
     gradient.addColorStop(1, mixColors(panel, highlight, 0.24));
     ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, size, size);
+    ctx.fillRect(0, 0, PNG_SIZE, PNG_SIZE);
 
-    const copy = buildShareCopy({ netValue: state.netAfterChexy, valuationMode: state.valuationMode, cardCount: state.best?.combo?.length || 0, siteHost: state.siteHost });
     ctx.fillStyle = highlight;
     ctx.font = "700 32px system-ui, -apple-system, Segoe UI, sans-serif";
     ctx.fillText(copy.kicker, 90, 128);
@@ -243,7 +224,7 @@ export function createShareOverlay() {
     ctx.font = "600 30px system-ui, -apple-system, Segoe UI, sans-serif";
     ctx.fillText(copy.heroValueLabel, 90, 410);
 
-    await drawCardsCanvas(ctx, state.best?.combo || []);
+    await drawCardsCanvas(ctx, (state.best?.combo || []).slice(0, MAX_SHARE_CARDS));
 
     ctx.fillStyle = accent;
     ctx.font = "700 46px system-ui, -apple-system, Segoe UI, sans-serif";
@@ -259,7 +240,7 @@ export function createShareOverlay() {
         const qr = await loadImage(state.qrSrc);
         ctx.drawImage(qr, 936, 906, 174, 174);
       } catch {
-        // keep blank QR container
+        // keep white container
       }
     }
 
@@ -267,20 +248,19 @@ export function createShareOverlay() {
   }
 
   async function drawCardsCanvas(ctx, cards) {
-    const limited = cards.slice(0, 5);
-    const layout = canvasCardLayoutForCount(limited.length);
+    const layout = canvasCardLayout(cards.length);
 
-    for (const [index, card] of limited.entries()) {
-      const image = await loadImage(`./assets/cards/${card.id}.webp`);
+    for (const [index, card] of cards.entries()) {
       const slot = layout[index];
       if (!slot) continue;
+      const image = await loadImage(`./assets/cards/${card.id}.webp`);
       const isPortrait = image.naturalHeight > image.naturalWidth;
       const cardWidth = 220;
       const cardHeight = 140;
+
       ctx.save();
       ctx.fillStyle = "rgba(4,8,20,0.4)";
       ctx.fillRect(slot.x + 8, slot.y + 12, cardWidth, cardHeight);
-
       if (isPortrait) {
         ctx.translate(slot.x + cardWidth / 2, slot.y + cardHeight / 2);
         ctx.rotate(Math.PI / 2);
@@ -295,48 +275,25 @@ export function createShareOverlay() {
   return { open, close, updateContext };
 }
 
+function parseHost(url) {
+  try {
+    return new URL(url).host || window.location.host;
+  } catch {
+    return window.location.host;
+  }
+}
 
-function cardLayoutForCount(count) {
+function cardLayoutKey(count) {
   if (count === 5) return "3-2";
   if (count >= 4) return "4-1";
   return `${Math.max(1, count)}-0`;
 }
 
-function canvasCardLayoutForCount(count) {
-  if (count === 5) {
-    return [
-      { x: 120, y: 470 },
-      { x: 365, y: 470 },
-      { x: 610, y: 470 },
-      { x: 242, y: 626 },
-      { x: 487, y: 626 }
-    ];
-  }
-
-  if (count === 4) {
-    return [
-      { x: 72, y: 500 },
-      { x: 312, y: 500 },
-      { x: 552, y: 500 },
-      { x: 792, y: 500 }
-    ];
-  }
-
-  if (count === 3) {
-    return [
-      { x: 192, y: 520 },
-      { x: 440, y: 520 },
-      { x: 688, y: 520 }
-    ];
-  }
-
-  if (count === 2) {
-    return [
-      { x: 304, y: 540 },
-      { x: 560, y: 540 }
-    ];
-  }
-
+function canvasCardLayout(count) {
+  if (count === 5) return [{ x: 120, y: 470 }, { x: 365, y: 470 }, { x: 610, y: 470 }, { x: 242, y: 626 }, { x: 487, y: 626 }];
+  if (count === 4) return [{ x: 72, y: 500 }, { x: 312, y: 500 }, { x: 552, y: 500 }, { x: 792, y: 500 }];
+  if (count === 3) return [{ x: 192, y: 520 }, { x: 440, y: 520 }, { x: 688, y: 520 }];
+  if (count === 2) return [{ x: 304, y: 540 }, { x: 560, y: 540 }];
   return [{ x: 430, y: 550 }];
 }
 
