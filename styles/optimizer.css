@@ -122,7 +122,7 @@
 .shareOverlay__actions{margin-top:var(--space-4);display:flex;justify-content:flex-end;gap:var(--space-3)}
 .shareOverlay__actions .btn-inline{width:auto}
 
-.shareCard{aspect-ratio:1/1;width:min(100%,520px);margin-inline:auto;padding:clamp(16px,2.4vw,26px);display:grid;grid-template-rows:auto auto auto auto auto 1fr auto;gap:var(--space-3);border-radius:20px;border:1px solid color-mix(in srgb,var(--color-border) 65%,var(--color-brand-highlight));background:radial-gradient(circle at 18% 12%,color-mix(in srgb,var(--color-accent) 20%,transparent),transparent 42%),radial-gradient(circle at 84% 90%,color-mix(in srgb,var(--color-brand-highlight) 20%,transparent),transparent 36%),linear-gradient(145deg,color-mix(in srgb,var(--color-panel) 84%,#050b16),color-mix(in srgb,var(--color-panel) 64%,#120a24));box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 16px 36px rgba(10,12,28,.32)}
+.shareCard{aspect-ratio:1/1;width:min(100%,520px);margin-inline:auto;padding:clamp(16px,2.4vw,26px);display:grid;grid-template-rows:auto auto auto auto auto 1fr auto;gap:var(--space-3);border-radius:20px;border:1px solid color-mix(in srgb,var(--color-border) 65%,var(--color-brand-highlight));background:var(--color-bg);box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 16px 36px rgba(10,12,28,.32)}
 .shareCard__kicker{margin:0;font-size:11px;letter-spacing:.14em;font-weight:700;text-transform:uppercase;color:var(--color-brand-highlight)}
 .shareCard__headline{margin:0;font-size:clamp(20px,3.1vw,30px);line-height:1.1;max-width:19ch}
 .shareCard__heroLabel{margin:var(--space-1) 0 0;font-size:var(--font-size-sm);font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--color-muted)}
