@@ -13,7 +13,7 @@ export function createShareOverlay() {
     <section class="shareOverlay__dialog" role="dialog" aria-modal="true" aria-label="Share optimization result" tabindex="-1">
       <header class="shareOverlay__header">
         <h2>Share result</h2>
-        <button type="button" class="shareOverlay__close" data-share-close aria-label="Close share dialog">×</button>
+        <button type="button" class="btn-inline shareOverlay__close" data-share-close aria-label="Close share dialog">Close</button>
       </header>
       <div class="shareOverlay__body">
         <article class="shareCard">
@@ -119,7 +119,7 @@ export function createShareOverlay() {
     root.setAttribute("aria-hidden", "false");
     previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    dialog.focus?.();
+    dialog.focus();
   }
 
   function close() {
@@ -194,21 +194,31 @@ export function createShareOverlay() {
 
   downloadBtn.addEventListener("click", async () => {
     if (!context) return;
+
     await withBusyState(downloadBtn, "Preparing PNG…", async () => {
       const blob = await getPngBlob();
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = "creditcombo-share.png";
-      document.body.append(link);
-      link.click();
-      link.remove();
-      URL.revokeObjectURL(url);
+      const downloadUrl = URL.createObjectURL(blob);
+      try {
+        const link = document.createElement("a");
+        link.href = downloadUrl;
+        link.download = "creditcombo-share.png";
+        link.style.display = "none";
+        document.body.append(link);
+        link.click();
+        link.remove();
+      } finally {
+        URL.revokeObjectURL(downloadUrl);
+      }
     });
   });
 
-  root.addEventListener("click", (event) => {
-    if (event.target.closest("[data-share-close]")) close();
+  root.querySelectorAll("[data-share-close]").forEach((el) => {
+    el.addEventListener("click", close);
+  });
+
+  root.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape") return;
+    close();
   });
 
   return { open, close, updateContext };
@@ -226,19 +236,16 @@ async function elementToPngBlob(element) {
   await waitForAssets(element);
 
   const rect = element.getBoundingClientRect();
-  const width = Math.ceil(rect.width);
-  const height = Math.ceil(rect.height);
+  const width = Math.max(1, Math.ceil(rect.width));
+  const height = Math.max(1, Math.ceil(rect.height));
 
   const clone = element.cloneNode(true);
+  clone.setAttribute("xmlns", "http://www.w3.org/1999/xhtml");
   inlineComputedStyles(element, clone);
   await inlineImageSources(element, clone);
 
   const serialized = new XMLSerializer().serializeToString(clone);
-  const svg = `
-    <svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
-      <foreignObject width="100%" height="100%">${serialized}</foreignObject>
-    </svg>
-  `;
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}"><foreignObject width="100%" height="100%">${serialized}</foreignObject></svg>`;
 
   const svgBlob = new Blob([svg], { type: "image/svg+xml;charset=utf-8" });
   const svgUrl = URL.createObjectURL(svgBlob);
@@ -250,17 +257,16 @@ async function elementToPngBlob(element) {
     canvas.width = width * scale;
     canvas.height = height * scale;
     const ctx = canvas.getContext("2d");
+    if (!ctx) throw new Error("Failed to get canvas context");
     ctx.scale(scale, scale);
     ctx.drawImage(image, 0, 0);
 
-    const blob = await new Promise((resolve, reject) => {
+    return await new Promise((resolve, reject) => {
       canvas.toBlob((result) => {
         if (result) resolve(result);
         else reject(new Error("Failed to create PNG blob"));
       }, "image/png");
     });
-
-    return blob;
   } finally {
     URL.revokeObjectURL(svgUrl);
   }
@@ -315,12 +321,12 @@ async function inlineImageSources(sourceRoot, targetRoot) {
     if (!src) return;
 
     try {
-      const response = await fetch(src, { mode: "cors" });
+      const response = await fetch(src);
       if (!response.ok) throw new Error("bad image response");
       const blob = await response.blob();
       targetImage.src = await blobToDataUrl(blob);
     } catch {
-      targetImage.src = src;
+      targetImage.removeAttribute("src");
     }
   }));
 }
