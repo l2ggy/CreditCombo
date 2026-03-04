@@ -266,15 +266,27 @@ async function waitForElementImages(root) {
   const images = [...root.querySelectorAll("img")];
   await Promise.all(images.map(async (img) => {
     if (!img.getAttribute("src")) return;
-    if (!img.complete) {
-      await new Promise((resolve) => {
-        img.addEventListener("load", resolve, { once: true });
-        img.addEventListener("error", resolve, { once: true });
-      });
+
+    img.loading = "eager";
+    img.decoding = "sync";
+
+    if (!img.currentSrc) {
+      img.src = img.src;
     }
+
+    if (!img.complete) {
+      await Promise.race([
+        new Promise((resolve) => {
+          img.addEventListener("load", resolve, { once: true });
+          img.addEventListener("error", resolve, { once: true });
+        }),
+        delay(1800)
+      ]);
+    }
+
     if (img.decode) {
       try {
-        await img.decode();
+        await Promise.race([img.decode(), delay(1200)]);
       } catch {
         // ignore decode failures and let exporter use current raster state
       }
@@ -282,6 +294,10 @@ async function waitForElementImages(root) {
   }));
 }
 
+
+function delay(ms) {
+  return new Promise((resolve) => window.setTimeout(resolve, ms));
+}
 
 function blobToDataUrl(blob) {
   return new Promise((resolve, reject) => {
