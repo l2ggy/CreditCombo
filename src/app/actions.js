@@ -357,6 +357,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
 
     if (!hasManualOptimizationRun) return;
 
+    setShareContext(null);
     elements.runBtn.disabled = true;
     view.setLoadingState(true);
 

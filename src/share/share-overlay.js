@@ -236,11 +236,11 @@ export function createShareOverlay() {
 
 function thumbSizesForCount(count) {
   const safeCount = Math.max(1, Number(count) || 1);
-  if (safeCount === 1) return { landscapeSize: 140, portraitSize: 140 };
-  if (safeCount === 2) return { landscapeSize: 116, portraitSize: 116 };
-  if (safeCount === 3) return { landscapeSize: 102, portraitSize: 102 };
-  if (safeCount === 4) return { landscapeSize: 92, portraitSize: 92 };
-  return { landscapeSize: 84, portraitSize: 84 };
+  if (safeCount === 1) return { landscapeSize: 136, portraitSize: 136 };
+  if (safeCount === 2) return { landscapeSize: 112, portraitSize: 112 };
+  if (safeCount === 3) return { landscapeSize: 88, portraitSize: 88 };
+  if (safeCount === 4) return { landscapeSize: 72, portraitSize: 72 };
+  return { landscapeSize: 76, portraitSize: 76 };
 }
 
 async function isPortraitCard(card, cache) {
