@@ -172,13 +172,12 @@ export function createShareOverlay() {
       if (!blob) throw new Error("PNG blob unavailable");
       triggerDownload(blob, "creditcombo-share.png");
     } catch (error) {
-      console.error("PNG download failed, retrying PNG from serialized SVG", error);
+      console.error("PNG download failed, falling back to SVG", error);
       try {
         const svgBlob = await elementToSvgBlob(shareCardEl);
-        const fallbackBlob = await rasterizeSvgBlobToPng(svgBlob, shareCardEl, PNG_SCALE);
-        triggerDownload(fallbackBlob, "creditcombo-share.png");
-      } catch (pngRetryError) {
-        console.error("Download action failed", pngRetryError);
+        triggerDownload(svgBlob, "creditcombo-share.svg");
+      } catch (svgError) {
+        console.error("Download action failed", svgError);
       }
     } finally {
       setBusy(false);
@@ -387,21 +386,6 @@ async function loadImageFromSvgBlob(svgBlob) {
   }
 }
 
-async function rasterizeSvgBlobToPng(svgBlob, sourceElement, scale = 2) {
-  const { width, height } = sourceElement.getBoundingClientRect();
-  if (!width || !height) throw new Error("Share card has no rendered size");
-
-  const image = await loadImageFromSvgBlob(svgBlob);
-  const canvas = document.createElement("canvas");
-  canvas.width = Math.max(1, Math.round(width * scale));
-  canvas.height = Math.max(1, Math.round(height * scale));
-  const ctx = canvas.getContext("2d");
-  if (!ctx) throw new Error("Canvas context unavailable");
-  ctx.scale(scale, scale);
-  ctx.drawImage(image, 0, 0, width, height);
-  return canvasToBlob(canvas);
-}
-
 function triggerDownload(blob, filename) {
   const objectUrl = URL.createObjectURL(blob);
   const link = document.createElement("a");
@@ -411,6 +395,7 @@ function triggerDownload(blob, filename) {
   document.body.append(link);
   link.dispatchEvent(new MouseEvent("click", { bubbles: true, cancelable: true, view: window }));
   link.remove();
+  if (window.open && filename.endsWith(".svg")) window.open(objectUrl, "_blank", "noopener");
   window.setTimeout(() => URL.revokeObjectURL(objectUrl), 1500);
 }
 
