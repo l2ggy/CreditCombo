@@ -3,6 +3,7 @@ import { buildShareCopy } from "./share-copy.js";
 
 const MAX_SHARE_CARDS = 5;
 const PNG_SIZE = 1200;
+const PNG_SCALE = 2;
 
 export function createShareOverlay() {
   const state = {
@@ -190,11 +191,83 @@ export function createShareOverlay() {
 
   async function getPngBlob() {
     if (state.pngBlob) return state.pngBlob;
-    state.pngBlob = await renderShareCanvasBlob(currentCopy(), (state.best?.combo || []).slice(0, MAX_SHARE_CARDS), state.shareUrl);
+
+    try {
+      state.pngBlob = await elementToPngBlob(shareCardEl, PNG_SCALE);
+    } catch (error) {
+      console.warn("DOM-faithful PNG export failed, using fallback canvas", error);
+      state.pngBlob = await renderShareCanvasBlob(currentCopy(), (state.best?.combo || []).slice(0, MAX_SHARE_CARDS), state.shareUrl);
+    }
+
     return state.pngBlob;
   }
 
   return { open, close, updateContext };
+}
+
+async function elementToPngBlob(element, scale = 2) {
+  const { width, height } = element.getBoundingClientRect();
+  const clone = element.cloneNode(true);
+  inlineComputedStyles(element, clone);
+  await inlineImages(clone);
+
+  const foreignObjectBody = `<div xmlns="http://www.w3.org/1999/xhtml">${new XMLSerializer().serializeToString(clone)}</div>`;
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}"><foreignObject width="100%" height="100%">${foreignObjectBody}</foreignObject></svg>`;
+
+  const svgBlob = new Blob([svg], { type: "image/svg+xml;charset=utf-8" });
+  const url = URL.createObjectURL(svgBlob);
+
+  try {
+    const image = await loadImage(url);
+    const canvas = document.createElement("canvas");
+    canvas.width = Math.max(1, Math.round(width * scale));
+    canvas.height = Math.max(1, Math.round(height * scale));
+    const ctx = canvas.getContext("2d");
+    ctx.scale(scale, scale);
+    ctx.drawImage(image, 0, 0, width, height);
+    return canvasToBlob(canvas);
+  } finally {
+    URL.revokeObjectURL(url);
+  }
+}
+
+function inlineComputedStyles(sourceNode, targetNode) {
+  if (!(sourceNode instanceof Element) || !(targetNode instanceof Element)) return;
+
+  const computed = getComputedStyle(sourceNode);
+  const style = [...computed].map((name) => `${name}:${computed.getPropertyValue(name)};`).join("");
+  targetNode.setAttribute("style", style);
+
+  const sourceChildren = [...sourceNode.children];
+  const targetChildren = [...targetNode.children];
+  sourceChildren.forEach((sourceChild, index) => {
+    inlineComputedStyles(sourceChild, targetChildren[index]);
+  });
+}
+
+async function inlineImages(root) {
+  const images = [...root.querySelectorAll("img")];
+  await Promise.all(images.map(async (img) => {
+    const src = img.getAttribute("src");
+    if (!src) return;
+
+    try {
+      const response = await fetch(src, { mode: "cors" });
+      const blob = await response.blob();
+      img.setAttribute("src", await blobToDataUrl(blob));
+    } catch {
+      // keep original src if fetch or conversion fails
+    }
+  }));
+}
+
+function blobToDataUrl(blob) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result || ""));
+    reader.onerror = reject;
+    reader.readAsDataURL(blob);
+  });
 }
 
 async function renderShareCanvasBlob(copy, cards, shareUrl) {
