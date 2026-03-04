@@ -142,12 +142,18 @@ export function createShareOverlay() {
 
     try {
       const copy = currentCopy();
-      const blob = await getPngBlob();
       const shareData = { title: "CreditCombo result", text: copy.nativeShareText, url: state.shareUrl };
-      if (blob) {
-        const file = new File([blob], "creditcombo-share.png", { type: "image/png" });
-        if (navigator.canShare?.({ files: [file] })) shareData.files = [file];
+
+      try {
+        const blob = await getPngBlob();
+        if (blob) {
+          const file = new File([blob], "creditcombo-share.png", { type: "image/png" });
+          if (navigator.canShare?.({ files: [file] })) shareData.files = [file];
+        }
+      } catch (exportError) {
+        console.warn("Share image export failed, sharing link/text only", exportError);
       }
+
       await navigator.share(shareData);
     } catch (error) {
       console.error("Share action failed", error);
@@ -163,17 +169,15 @@ export function createShareOverlay() {
     try {
       const blob = await getPngBlob();
       if (!blob) throw new Error("PNG blob unavailable");
-
-      const objectUrl = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.download = "creditcombo-share.png";
-      link.href = objectUrl;
-      document.body.append(link);
-      link.click();
-      link.remove();
-      window.setTimeout(() => URL.revokeObjectURL(objectUrl), 1500);
+      triggerDownload(blob, "creditcombo-share.png");
     } catch (error) {
-      console.error("Download action failed", error);
+      console.error("PNG download failed, falling back to SVG", error);
+      try {
+        const svgBlob = await elementToSvgBlob(shareCardEl);
+        triggerDownload(svgBlob, "creditcombo-share.svg");
+      } catch (svgError) {
+        console.error("Download action failed", svgError);
+      }
     } finally {
       setBusy(false);
     }
@@ -203,6 +207,23 @@ async function elementToPngBlob(element, scale = 2) {
   const { width, height } = element.getBoundingClientRect();
   if (!width || !height) throw new Error("Share card has no rendered size");
 
+  const svgBlob = await elementToSvgBlob(element);
+  const image = await loadImageFromSvgBlob(svgBlob);
+
+  const canvas = document.createElement("canvas");
+  canvas.width = Math.max(1, Math.round(width * scale));
+  canvas.height = Math.max(1, Math.round(height * scale));
+  const ctx = canvas.getContext("2d");
+  if (!ctx) throw new Error("Canvas context unavailable");
+  ctx.scale(scale, scale);
+  ctx.drawImage(image, 0, 0, width, height);
+  return canvasToBlob(canvas);
+}
+
+async function elementToSvgBlob(element) {
+  const { width, height } = element.getBoundingClientRect();
+  if (!width || !height) throw new Error("Share card has no rendered size");
+
   await waitForElementImages(element);
   if (document.fonts?.ready) await document.fonts.ready;
   await nextFrame();
@@ -217,22 +238,7 @@ async function elementToPngBlob(element, scale = 2) {
 
   const foreignObjectBody = `<div xmlns="http://www.w3.org/1999/xhtml" style="width:${width}px;height:${height}px;">${new XMLSerializer().serializeToString(clone)}</div>`;
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}"><foreignObject width="100%" height="100%">${foreignObjectBody}</foreignObject></svg>`;
-
-  const svgBlob = new Blob([svg], { type: "image/svg+xml;charset=utf-8" });
-  const url = URL.createObjectURL(svgBlob);
-
-  try {
-    const image = await loadImage(url);
-    const canvas = document.createElement("canvas");
-    canvas.width = Math.max(1, Math.round(width * scale));
-    canvas.height = Math.max(1, Math.round(height * scale));
-    const ctx = canvas.getContext("2d");
-    ctx.scale(scale, scale);
-    ctx.drawImage(image, 0, 0, width, height);
-    return canvasToBlob(canvas);
-  } finally {
-    URL.revokeObjectURL(url);
-  }
+  return new Blob([svg], { type: "image/svg+xml;charset=utf-8" });
 }
 
 function inlineComputedStyles(sourceNode, targetNode) {
@@ -350,6 +356,30 @@ function blobToDataUrl(blob) {
     reader.onerror = reject;
     reader.readAsDataURL(blob);
   });
+}
+
+async function loadImageFromSvgBlob(svgBlob) {
+  const blobUrl = URL.createObjectURL(svgBlob);
+  try {
+    return await loadImage(blobUrl);
+  } catch {
+    const svgText = await svgBlob.text();
+    const dataUrl = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svgText)}`;
+    return loadImage(dataUrl);
+  } finally {
+    URL.revokeObjectURL(blobUrl);
+  }
+}
+
+function triggerDownload(blob, filename) {
+  const objectUrl = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.download = filename;
+  link.href = objectUrl;
+  document.body.append(link);
+  link.click();
+  link.remove();
+  window.setTimeout(() => URL.revokeObjectURL(objectUrl), 1500);
 }
 
 function parseHost(url) {
