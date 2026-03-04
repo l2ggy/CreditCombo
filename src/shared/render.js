@@ -1,13 +1,17 @@
 import { formatMoneyCAD } from "./format.js";
 
 function bindThumbImageBehavior(img) {
-  img.addEventListener("load", () => {
+  const syncOrientation = () => {
     img.classList.toggle("is-portrait", img.naturalHeight > img.naturalWidth);
-  });
+  };
+
+  img.addEventListener("load", syncOrientation);
 
   img.addEventListener("error", () => {
     img.remove();
   });
+
+  if (img.complete) syncOrientation();
 }
 
 export function renderCardThumb(card, options = {}) {
@@ -19,11 +23,11 @@ export function renderCardThumb(card, options = {}) {
 
   const img = document.createElement("img");
   img.className = className;
-  img.src = `./assets/cards/${card.id}.webp`;
   img.alt = card.card_name;
   img.loading = "lazy";
   img.decoding = "async";
   bindThumbImageBehavior(img);
+  img.src = `./assets/cards/${card.id}.webp`;
 
   if (!withFrame) return img;
 
