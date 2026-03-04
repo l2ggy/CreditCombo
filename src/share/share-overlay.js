@@ -148,8 +148,8 @@ export function createShareOverlay() {
         if (navigator.canShare?.({ files: [file] })) shareData.files = [file];
       }
       await navigator.share(shareData);
-    } catch {
-      // user cancelled / unsupported target
+    } catch (error) {
+      console.error("Share action failed", error);
     } finally {
       setBusy(false);
     }
@@ -160,14 +160,26 @@ export function createShareOverlay() {
     setBusy(true, "Rendering");
     try {
       const blob = await getPngBlob();
-      if (!blob) return;
+      if (!blob) throw new Error("PNG blob unavailable");
+      const objectUrl = URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.download = "creditcombo-share.png";
-      link.href = URL.createObjectURL(blob);
+      link.href = objectUrl;
+      document.body.append(link);
       link.click();
-      URL.revokeObjectURL(link.href);
-    } catch {
-      // failed to export in this environment
+      link.remove();
+      window.setTimeout(() => URL.revokeObjectURL(objectUrl), 1500);
+    } catch (error) {
+      console.error("Download action failed", error);
+      // last-resort fallback opens image in a new tab
+      try {
+        const blob = await fallbackCanvasBlob(currentCopy(), (state.best?.combo || []).slice(0, MAX_SHARE_CARDS), state.shareUrl);
+        const objectUrl = URL.createObjectURL(blob);
+        window.open(objectUrl, "_blank", "noopener,noreferrer");
+        window.setTimeout(() => URL.revokeObjectURL(objectUrl), 5000);
+      } catch (fallbackError) {
+        console.error("Fallback download failed", fallbackError);
+      }
     } finally {
       setBusy(false);
     }
