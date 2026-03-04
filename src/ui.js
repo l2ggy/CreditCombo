@@ -32,19 +32,16 @@ export function renderSpendTable(el, schema, categoryDescriptions = {}, subcateg
     }
   };
 
-  el.dataset.spendTotalBinder = "ready";
   el.__updateSpendTotal = updateSpendTotal;
 
   const orderedInputs = [...el.querySelectorAll("input[data-cat], input[data-subcategory-key]")];
 
-  const isVisibleForNavigation = (input) => {
-    if (!(input instanceof HTMLElement)) return false;
-    if (input.type === "hidden" || input.disabled) return false;
-    if (input.closest(".spendControlPanel")?.classList.contains("spendMoreDetailsPanel") && input.offsetParent === null) {
-      return false;
-    }
-    return input.offsetParent !== null;
-  };
+  const isVisibleForNavigation = (input) => (
+    input instanceof HTMLElement
+    && !input.disabled
+    && input.type !== "hidden"
+    && input.offsetParent !== null
+  );
 
   orderedInputs.forEach((inp, index) => {
     inp.addEventListener("input", () => updateSpendTotal(inp));
