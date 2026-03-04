@@ -17,11 +17,13 @@ export function createShareOverlay() {
       </header>
       <div class="shareOverlay__body">
         <article class="shareCard">
-          <p class="shareCard__kicker"></p>
-          <h3 class="shareCard__headline"></h3>
-          <p class="shareCard__heroValue"></p>
-          <p class="shareCard__heroLabel"></p>
-          <p class="shareCard__support"></p>
+          <div class="shareCard__intro">
+            <p class="shareCard__kicker"></p>
+            <h3 class="shareCard__headline"></h3>
+            <p class="shareCard__heroValue"></p>
+            <p class="shareCard__heroLabel"></p>
+            <p class="shareCard__support"></p>
+          </div>
           <div class="shareCard__thumbs" data-layout="row-1"></div>
           <footer class="shareCard__footer">
             <div class="shareCard__footerText">
