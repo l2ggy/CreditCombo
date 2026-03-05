@@ -109,7 +109,7 @@ export function createShareOverlay() {
     const sorted = cardsWithOrientation
       .sort((a, b) => Number(a.isPortrait) - Number(b.isPortrait));
 
-    const { landscapeSize, portraitSize } = thumbSizesForCount(sorted.length, window.innerWidth, window.innerHeight);
+    const { landscapeSize, portraitSize } = thumbSizesForCount(sorted.length, shareCard);
     thumbsEl.style.setProperty("--share-thumb-landscape", `${landscapeSize}px`);
     thumbsEl.style.setProperty("--share-thumb-portrait", `${portraitSize}px`);
 
@@ -259,38 +259,22 @@ function buildThumbRows(sortedCards) {
   return [sortedCards];
 }
 
-function thumbSizesForCount(count, viewportWidth = window.innerWidth, viewportHeight = window.innerHeight) {
+function thumbSizesForCount(count, shareCardElement) {
   const safeCount = Math.max(1, Number(count) || 1);
-  const base = safeCount === 1
-    ? { landscapeSize: 188, portraitSize: 188 }
+  const cardWidth = Math.max(shareCardElement?.clientWidth || 0, 1);
+  const sizeRatio = safeCount === 1
+    ? 0.34
     : safeCount === 2
-      ? { landscapeSize: 132, portraitSize: 132 }
+      ? 0.245
       : safeCount === 3
-        ? { landscapeSize: 100, portraitSize: 100 }
+        ? 0.188
         : safeCount === 4
-          ? { landscapeSize: 108, portraitSize: 108 }
-          : { landscapeSize: 96, portraitSize: 96 };
+          ? 0.17
+          : 0.158;
 
-  if (viewportWidth > 720) return base;
-
-  const mobileSizes = safeCount === 1
-    ? { landscapeSize: 94, portraitSize: 94 }
-    : safeCount === 2
-      ? { landscapeSize: 82, portraitSize: 82 }
-      : safeCount === 3
-        ? { landscapeSize: 64, portraitSize: 64 }
-        : safeCount === 4
-          ? { landscapeSize: 56, portraitSize: 56 }
-          : { landscapeSize: 56, portraitSize: 56 };
-
-  if (safeCount >= 4 && viewportHeight <= 780) {
-    return {
-      landscapeSize: Math.max(44, Math.round(mobileSizes.landscapeSize * 0.84)),
-      portraitSize: Math.max(44, Math.round(mobileSizes.portraitSize * 0.84))
-    };
-  }
-
-  return mobileSizes;
+  // Internal proportions follow panel/card size; viewport fit is handled by the overlay shell.
+  const baseSize = Math.max(44, Math.round(cardWidth * sizeRatio));
+  return { landscapeSize: baseSize, portraitSize: baseSize };
 }
 
 async function isPortraitCard(card, cache) {
