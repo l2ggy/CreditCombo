@@ -143,4 +143,4 @@
 .shareCard__qr{width:88px;height:88px;padding:var(--space-1);border-radius:var(--radius-sm);background:#fff;object-fit:contain}
 
 @media (prefers-reduced-motion:reduce){.shareOverlay__dialog{scroll-behavior:auto}}
-@media (max-width:720px){.shareOverlay{padding:var(--space-3)}.shareOverlay__dialog{width:100%;max-width:100%;padding:var(--space-4);max-height:calc(100vh - var(--space-3));border-radius:var(--radius-lg)}.shareCard{padding:var(--space-4)}.shareOverlay__actions{grid-template-columns:1fr}}
+@media (max-width:720px){.shareOverlay{padding:var(--space-3)}.shareOverlay__dialog{width:100%;max-width:100%;padding:var(--space-4);max-height:calc(100vh - var(--space-3));border-radius:var(--radius-lg)}.shareCard{padding:var(--space-4)}.shareCard__thumbs{gap:var(--space-1)}.shareCard__thumbRow{gap:var(--space-2)}.shareOverlay__actions{grid-template-columns:1fr}}

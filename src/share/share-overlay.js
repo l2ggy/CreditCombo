@@ -263,10 +263,10 @@ function thumbSizesForCount(count, viewportWidth = window.innerWidth) {
     : safeCount === 2
       ? 0.62
       : safeCount === 3
-        ? 0.68
+        ? 0.64
         : safeCount === 4
-          ? 0.66
-          : 0.64;
+          ? 0.54
+          : 0.52;
 
   return {
     landscapeSize: Math.round(base.landscapeSize * mobileScale),
