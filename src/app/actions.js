@@ -6,7 +6,7 @@ import { bindCardSearchKeyboard, createCardSearchIndex, rankCardMatches, renderC
 import { buildSearchText, scoreSearchMatch, tokenizeSearchQuery } from "../shared/search.js";
 import { escapeHtml } from "../shared/sanitize.js";
 
-export function createActions({ state, view, schema, programsMap, eligibleCards, eligibleCardIdSet, eligibleCardsById, subcategoryConfigs = {} }) {
+export function createActions({ state, view, schema, programsMap, eligibleCards, eligibleCardIdSet, eligibleCardsById, subcategoryConfigs = {}, ensureShareOverlay = null, openShareBtn = null }) {
   const { elements } = view;
   const comboCache = new Map();
   const cardSearchIndex = createCardSearchIndex(eligibleCards);
@@ -20,6 +20,31 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
   const pendingRequests = new Map();
   let shouldRenderLockedCardPicks = true;
   let hasManualOptimizationRun = false;
+  let latestShareContext = null;
+
+
+  function setShareContext(nextContext) {
+    latestShareContext = nextContext || null;
+    if (!openShareBtn) return;
+    openShareBtn.classList.toggle("hidden", !latestShareContext);
+  }
+
+
+  function buildShareContext(best, chexySummary) {
+    if (!best?.combo?.length) return null;
+    return {
+      best,
+      netAfterChexy: Number(best.net || 0) - Number(chexySummary?.chexyAdjustedAnnualSpend || 0),
+      shareUrl: window.location.href
+    };
+  }
+
+  function openShareOverlay() {
+    if (!latestShareContext || typeof ensureShareOverlay !== "function") return;
+    const overlay = ensureShareOverlay();
+    overlay.updateContext(latestShareContext);
+    overlay.open();
+  }
 
   function syncStateFromControls() {
     state.valuationMode = elements.valuationModeEl?.value === "minimum_guaranteed" ? "minimum_guaranteed" : "estimated";
@@ -342,6 +367,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
 
     if (!hasManualOptimizationRun) return;
 
+    setShareContext(null);
     elements.runBtn.disabled = true;
     view.setLoadingState(true);
 
@@ -350,6 +376,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
       elements.resultEl.classList.remove("hidden");
       elements.resultEl.classList.remove("resultEmpty");
       elements.resultEl.innerHTML = `<span class="badge bad">No result</span> No eligible cards are available for optimization.`;
+      setShareContext(null);
       elements.runBtn.disabled = false;
       return;
     }
@@ -359,6 +386,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
       elements.resultEl.classList.remove("hidden");
       elements.resultEl.classList.remove("resultEmpty");
       elements.resultEl.innerHTML = `<span class="badge bad">No result</span> No additional cards without annual fees are available.`;
+      setShareContext(null);
       elements.runBtn.disabled = false;
       return;
     }
@@ -371,6 +399,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
       elements.resultEl.classList.remove("hidden");
       elements.resultEl.classList.add("resultEmpty");
       elements.resultEl.innerHTML = `<span class="muted">Enter monthly spend in at least one category to generate card recommendations.</span>`;
+      setShareContext(null);
       elements.runBtn.disabled = false;
       return;
     }
@@ -391,6 +420,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
     if (cached) {
       view.setLoadingState(false);
       renderResult(elements.resultEl, cached, adjustedAnnualSpend, schema, state.valuationMode, chexySummary, subcategoryConfigs);
+      setShareContext(buildShareContext(cached, chexySummary));
       elements.runBtn.disabled = false;
       return;
     }
@@ -403,12 +433,14 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
       comboCache.set(key, best);
       view.setLoadingState(false);
       renderResult(elements.resultEl, best, adjustedAnnualSpend, schema, state.valuationMode, chexySummary, subcategoryConfigs);
+      setShareContext(buildShareContext(best, chexySummary));
     } catch (error) {
       if (requestId !== runTokenCounter) return;
       view.setLoadingState(false);
       elements.resultEl.classList.remove("hidden");
       elements.resultEl.classList.remove("resultEmpty");
       elements.resultEl.innerHTML = `<span class="badge bad">Error</span> ${escapeHtml(error?.message || "Failed to optimize")}`;
+      setShareContext(null);
     } finally {
       if (requestId === runTokenCounter) elements.runBtn.disabled = false;
     }
@@ -578,6 +610,10 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
     hydrateFromDeepLink,
     syncInitialUi: () => {
       if (elements.chexyFeePercentEl && !elements.chexyFeePercentEl.value) elements.chexyFeePercentEl.value = "1.75";
+      if (openShareBtn) {
+        openShareBtn.classList.add("hidden");
+        openShareBtn.addEventListener("click", openShareOverlay);
+      }
       syncStateFromControls();
       shouldRenderLockedCardPicks = true;
       updateLockedCardsUi();
