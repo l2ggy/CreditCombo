@@ -5,6 +5,7 @@ import { renderResult } from "./ui.js";
 import { renderLockedChip } from "./shared/render.js";
 import { bindCardSearchKeyboard, createCardSearchIndex, rankCardMatches, renderCardSearchOptions } from "./shared/card-search.js";
 import { formatMoneyCAD } from "./shared/format.js";
+import { createShareOverlay } from "./share/share-overlay.js";
 
 const appEl = document.getElementById("quickSetupApp");
 const QUICK_SETUP_DEFAULTS = Object.freeze({
@@ -25,9 +26,23 @@ const state = {
 };
 
 let ctx = null;
+let shareOverlay = null;
 let visibleSteps = [];
 let currentStepIndex = 0;
 
+function ensureShareOverlay() {
+  if (!shareOverlay) shareOverlay = createShareOverlay();
+  return shareOverlay;
+}
+
+function buildShareContext(best, chexySummary) {
+  if (!best?.combo?.length) return null;
+  return {
+    best,
+    netAfterChexy: Number(best.net || 0) - Number(chexySummary?.chexyAdjustedAnnualSpend || 0),
+    shareUrl: window.location.href
+  };
+}
 
 function resolveQuizMode(value) {
   return value === "current_cards" ? "current_cards" : "ideal_combo";
@@ -520,6 +535,7 @@ function renderPostQuizScreen() {
       <section class="panel resultPanel quickSetupResultShell">
         <div class="panelHeader panelHeader-result">
           <h2>Results</h2>
+          <button type="button" id="quickShareBtn" class="btn-inline shareLaunch">Share result</button>
         </div>
         <div class="divider"></div>
         <div id="result" class="quickSetupResultPanel ${isLoading ? "is-loading" : ""}"></div>
@@ -553,6 +569,14 @@ function renderPostQuizScreen() {
   } else {
     renderResult(resultPanelEl, best, payload.annualSpend, payload.schema, payload.valuationMode, chexySummary, ctx.subcategoryConfigs);
   }
+
+  appEl.querySelector("#quickShareBtn")?.addEventListener("click", () => {
+    const shareContext = buildShareContext(best, chexySummary);
+    if (!shareContext) return;
+    const overlay = ensureShareOverlay();
+    overlay.updateContext(shareContext);
+    overlay.open();
+  });
 
   appEl.querySelector("#quickOpenOptimizer").addEventListener("click", () => {
     // TODO: add country capture once country-based card eligibility is implemented.
