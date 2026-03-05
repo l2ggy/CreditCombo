@@ -125,6 +125,29 @@ export function createShareOverlay() {
       });
       thumbsEl.append(rowEl);
     });
+
+    fitThumbsToAvailableSpace();
+  }
+
+  function fitThumbsToAvailableSpace() {
+    if (thumbsEl.clientWidth <= 0 || thumbsEl.clientHeight <= 0) return;
+
+    const minThumb = 34;
+    let nextLandscape = Number.parseFloat(thumbsEl.style.getPropertyValue("--share-thumb-landscape")) || 0;
+    let nextPortrait = Number.parseFloat(thumbsEl.style.getPropertyValue("--share-thumb-portrait")) || 0;
+
+    for (let attempt = 0; attempt < 16; attempt += 1) {
+      const rowWidths = [...thumbsEl.querySelectorAll(".shareCard__thumbRow")].map((row) => row.scrollWidth);
+      const widestRow = Math.max(0, ...rowWidths);
+      const overWidth = widestRow > thumbsEl.clientWidth;
+      const overHeight = thumbsEl.scrollHeight > thumbsEl.clientHeight;
+      if (!overWidth && !overHeight) break;
+
+      nextLandscape = Math.max(minThumb, Math.floor(nextLandscape * 0.9));
+      nextPortrait = Math.max(minThumb, Math.floor(nextPortrait * 0.9));
+      thumbsEl.style.setProperty("--share-thumb-landscape", `${nextLandscape}px`);
+      thumbsEl.style.setProperty("--share-thumb-portrait", `${nextPortrait}px`);
+    }
   }
 
   function open() {
@@ -132,6 +155,7 @@ export function createShareOverlay() {
     root.setAttribute("aria-hidden", "false");
     previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+    requestAnimationFrame(() => fitThumbsToAvailableSpace());
     dialog.focus();
   }
 

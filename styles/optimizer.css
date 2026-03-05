@@ -117,13 +117,13 @@
 .shareOverlay{position:fixed;inset:0;z-index:80;display:grid;place-items:center;padding:var(--space-6)}
 .shareOverlay.hidden{display:none}
 .shareOverlay__backdrop{position:absolute;inset:0;background:color-mix(in srgb,var(--color-bg) 86%,transparent);backdrop-filter:blur(2px)}
-.shareOverlay__dialog{position:relative;z-index:1;width:fit-content;max-width:min(100%,calc(560px + (var(--space-5) * 2)));max-height:calc(100vh - var(--space-8));display:grid;gap:var(--space-4);padding:var(--space-5);border:1px solid var(--color-border);border-radius:var(--radius-xl);background:var(--color-panel);box-shadow:0 24px 64px color-mix(in srgb,#000 45%,transparent);overflow:auto}
+.shareOverlay__dialog{position:relative;z-index:1;width:fit-content;min-width:min(100%,540px);max-height:calc(100vh - var(--space-8));display:grid;gap:var(--space-4);padding:var(--space-5);border:1px solid var(--color-border);border-radius:var(--radius-xl);background:var(--color-panel);box-shadow:0 24px 64px color-mix(in srgb,#000 45%,transparent);overflow:auto}
 .shareOverlay__header{display:flex;align-items:center;justify-content:space-between;gap:var(--space-3)}
 .shareOverlay__close{min-width:auto}
 .shareOverlay__body{display:flex;justify-content:center}
 .shareOverlay__actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-3)}
 
-.shareCard{width:min(560px,100%);aspect-ratio:1/1;display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:var(--space-2);padding:var(--space-6);border-radius:var(--radius-xl);border:1px solid color-mix(in srgb,var(--color-accent) 22%,var(--color-border));background:linear-gradient(150deg,color-mix(in srgb,var(--color-panel) 80%,var(--color-accent) 20%) 0%,color-mix(in srgb,var(--color-panel) 92%,var(--color-bg) 8%) 55%,color-mix(in srgb,var(--color-brand-highlight) 16%,var(--color-panel) 84%) 100%)}
+.shareCard{width:100%;max-width:560px;min-width:min(100%,500px);aspect-ratio:1/1;display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:var(--space-2);padding:var(--space-6);border-radius:var(--radius-xl);border:1px solid color-mix(in srgb,var(--color-accent) 22%,var(--color-border));background:linear-gradient(150deg,color-mix(in srgb,var(--color-panel) 80%,var(--color-accent) 20%) 0%,color-mix(in srgb,var(--color-panel) 92%,var(--color-bg) 8%) 55%,color-mix(in srgb,var(--color-brand-highlight) 16%,var(--color-panel) 84%) 100%)}
 :root[data-theme="light"] .shareCard{background:linear-gradient(150deg,#fff 0%,#f7f9ff 58%,#e8efff 100%)}
 :root[data-theme="dark"] .shareCard{background:linear-gradient(150deg,#1d2437 0%,#151b2b 58%,#111624 100%)}
 .shareCard__summary{display:grid;align-content:start;gap:2px}
@@ -143,4 +143,4 @@
 .shareCard__qr{width:88px;height:88px;padding:var(--space-1);border-radius:var(--radius-sm);background:#fff;object-fit:contain}
 
 @media (prefers-reduced-motion:reduce){.shareOverlay__dialog{scroll-behavior:auto}}
-@media (max-width:720px){.shareOverlay{padding:var(--space-3)}.shareOverlay__dialog{width:100%;max-width:100%;padding:var(--space-4);max-height:calc(100vh - var(--space-3));border-radius:var(--radius-lg)}.shareCard{padding:var(--space-4)}.shareOverlay__actions{grid-template-columns:1fr}}
+@media (max-width:720px){.shareOverlay{padding:var(--space-3)}.shareOverlay__dialog{width:100%;min-width:0;max-width:100%;padding:var(--space-4);max-height:calc(100vh - var(--space-3));border-radius:var(--radius-lg)}.shareCard{min-width:0;padding:var(--space-4)}.shareOverlay__actions{grid-template-columns:1fr}}
