@@ -119,7 +119,7 @@ export function createShareOverlay() {
         : `row-${Math.max(1, sorted.length)}`;
     thumbsEl.dataset.layout = layout;
 
-    const { landscapeSize, portraitSize } = thumbSizesForCount(sorted.length, window.innerWidth);
+    const { landscapeSize, portraitSize } = thumbSizesForCount(sorted.length, window.innerWidth, window.innerHeight);
     thumbsEl.style.setProperty("--share-thumb-landscape", `${landscapeSize}px`);
     thumbsEl.style.setProperty("--share-thumb-portrait", `${portraitSize}px`);
 
@@ -244,7 +244,7 @@ export function createShareOverlay() {
 
 
 
-function thumbSizesForCount(count, viewportWidth = window.innerWidth) {
+function thumbSizesForCount(count, viewportWidth = window.innerWidth, viewportHeight = window.innerHeight) {
   const safeCount = Math.max(1, Number(count) || 1);
   const base = safeCount === 1
     ? { landscapeSize: 188, portraitSize: 188 }
@@ -265,10 +265,16 @@ function thumbSizesForCount(count, viewportWidth = window.innerWidth) {
       : safeCount === 3
         ? { landscapeSize: 70, portraitSize: 70 }
         : safeCount === 4
-          ? { landscapeSize: 56, portraitSize: 56 }
-          : { landscapeSize: 52, portraitSize: 52 };
+          ? { landscapeSize: 54, portraitSize: 54 }
+          : { landscapeSize: 48, portraitSize: 48 };
 
-  return mobileSizes;
+  if (safeCount < 4 || viewportHeight >= 760) return mobileSizes;
+
+  const constrainedScale = 0.86;
+  return {
+    landscapeSize: Math.round(mobileSizes.landscapeSize * constrainedScale),
+    portraitSize: Math.round(mobileSizes.portraitSize * constrainedScale)
+  };
 }
 
 async function isPortraitCard(card, cache) {
