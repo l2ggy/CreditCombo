@@ -27,6 +27,8 @@
 .quickContent > *{margin:0}
 .quickPrompt{margin:0;font-size:clamp(20px,2vw,26px);line-height:1.25}
 .quickLead{margin:0;font-size:clamp(14px,1.3vw,16px);color:var(--color-muted)}
+.quickPromptBlock{display:grid;gap:var(--space-2)}
+.quickPromptBlock--spend .quickHint{font-size:var(--font-size-sm)}
 .quickHint{margin:0;font-size:var(--font-size-sm);color:var(--color-muted)}
 .quickLabel{font-size:var(--font-size-xl)}
 .quickBigInput{font-size:clamp(20px,2.2vw,27px);padding:var(--space-5) var(--space-5)!important;border-radius:var(--radius-xl)!important}
@@ -79,3 +81,9 @@
   border-radius:var(--radius-lg);
   background:color-mix(in srgb,var(--color-panel) 84%,transparent);
 }
+
+
+.quickAnswerArea .quickDetailsToggle{justify-self:start}
+.quickAnswerArea .quickDetailsToggle summary{font-size:var(--font-size-sm);line-height:1.35;gap:var(--space-2)}
+.quickAnswerArea .quickDetailsToggle .spendControlLabel{text-decoration:underline;font-weight:500}
+.quickAnswerArea .quickDetailsPanel{margin-top:var(--space-2);margin-bottom:0;font-size:var(--font-size-sm);line-height:1.45}
