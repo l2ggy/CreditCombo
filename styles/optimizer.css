@@ -133,7 +133,7 @@
   --share-card-radius-sm:clamp(4px,1.4cqi,10px);
   --share-card-radius-xl:clamp(12px,4cqi,28px);
   --share-card-kicker-size:clamp(10px,2.8cqi,16px);
-  --share-card-headline-size:clamp(20px,6.2cqi,40px);
+  --share-card-headline-size:clamp(18px,5.6cqi,36px);
   --share-card-hero-size:clamp(34px,12.8cqi,82px);
   --share-card-meta-size:clamp(12px,3.4cqi,20px);
   --share-card-qr-size:clamp(60px,18cqi,124px);
