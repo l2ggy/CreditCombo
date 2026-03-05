@@ -52,6 +52,19 @@ function titleForCategory(cat) {
   return labels[cat] || String(cat).replace(/_/g, " ");
 }
 
+function categoryDetailsFor(cat) {
+  return String(ctx?.categoryDescriptions?.[cat] || "").trim().replace(/\s+/g, " ");
+}
+
+function escapeHtml(value) {
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 function spendSliderConfig(cat) {
   const limits = {
     grocery: 2000,
@@ -166,11 +179,16 @@ function stepSpend(cat) {
       const slider = spendSliderConfig(cat);
       const value = state.monthlySpend[cat] ?? "";
       const sliderValue = Math.min(slider.max, Math.max(slider.min, Number(value) || 0));
+      const details = categoryDetailsFor(cat);
+      const detailsMarkup = details
+        ? `<details class="spendControl" data-spend-control="more-details"><summary><span class="spendControlLabel">More details</span><span class="spendControlCaret" aria-hidden="true">▾</span></summary><div class="spendDetailsPanel muted">${escapeHtml(details)}</div></details>`
+        : "";
       contentEl.innerHTML = `
         <h2 class="quickPrompt">What is your average monthly spending on ${titleForCategory(cat)}?</h2>
         <div class="quickAnswerArea">
           <label class="quickLabel" for="quickSpendInput">Monthly amount</label>
           <p class="quickHint">Type an amount or use the slider.</p>
+          ${detailsMarkup}
           <input id="quickSpendSlider" type="range" min="${slider.min}" max="${slider.max}" step="${slider.step}" value="${sliderValue}" />
           <div class="quickSliderBounds" aria-hidden="true">
             <span>$${slider.min}</span>
