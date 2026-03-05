@@ -6,7 +6,6 @@ export function buildShareCopy({ netValue, cardCount, siteHost }) {
   const heroValue = formatMoneyCAD(Number(netValue) || 0);
   const headline = `${safeCount}-card setup that earns:`;
   const heroValueLabel = "Per year after fees. Tailored to your spend.";
-  const support = "";
   const cta = "Find your own CreditCombo";
   const urlLabel = siteHost || "creditcombo.ca";
   const nativeShareText = `${headline} ${heroValue} a year after annual fees.`;
@@ -16,7 +15,6 @@ export function buildShareCopy({ netValue, cardCount, siteHost }) {
     headline,
     heroValue,
     heroValueLabel,
-    support,
     cta,
     nativeShareText,
     urlLabel

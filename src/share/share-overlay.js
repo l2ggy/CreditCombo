@@ -22,7 +22,6 @@ export function createShareOverlay() {
             <h3 class="shareCard__headline"></h3>
             <p class="shareCard__heroValue"></p>
             <p class="shareCard__heroLabel"></p>
-            <p class="shareCard__support"></p>
           </div>
           <div class="shareCard__thumbs"></div>
           <footer class="shareCard__footer">
@@ -49,7 +48,6 @@ export function createShareOverlay() {
   const headlineEl = root.querySelector(".shareCard__headline");
   const heroValueEl = root.querySelector(".shareCard__heroValue");
   const heroLabelEl = root.querySelector(".shareCard__heroLabel");
-  const supportEl = root.querySelector(".shareCard__support");
   const thumbsEl = root.querySelector(".shareCard__thumbs");
   const ctaEl = root.querySelector(".shareCard__cta");
   const urlLabelEl = root.querySelector(".shareCard__urlLabel");
@@ -79,7 +77,7 @@ export function createShareOverlay() {
   function contextKey(value) {
     if (!value?.best) return "";
     const comboIds = (value.best.combo || []).map((card) => card.id).join(",");
-    return [comboIds, value.valuationMode, Number(value.netAfterChexy || 0).toFixed(2), value.shareUrl || ""].join("|");
+    return [comboIds, Number(value.netAfterChexy || 0).toFixed(2), value.shareUrl || ""].join("|");
   }
 
   async function applyContext() {
@@ -90,8 +88,6 @@ export function createShareOverlay() {
     headlineEl.textContent = copy.headline;
     heroValueEl.textContent = copy.heroValue;
     heroLabelEl.textContent = copy.heroValueLabel;
-    supportEl.textContent = copy.support;
-    supportEl.classList.toggle("hidden", !copy.support);
     ctaEl.textContent = copy.cta;
     urlLabelEl.textContent = copy.urlLabel;
 
