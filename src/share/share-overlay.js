@@ -64,6 +64,15 @@ export function createShareOverlay() {
   let previousOverflow = "";
   let renderTask = Promise.resolve();
   const orientationCache = new Map();
+  const cardBaseSize = 560;
+  const cardResizeObserver = typeof ResizeObserver === "function"
+    ? new ResizeObserver(() => {
+      applyCardScale();
+      fitThumbsToAvailableSpace();
+    })
+    : null;
+
+  if (cardResizeObserver) cardResizeObserver.observe(shareCard);
 
   function getShareCopy() {
     if (!context) return null;
@@ -109,10 +118,6 @@ export function createShareOverlay() {
     const sorted = cardsWithOrientation
       .sort((a, b) => Number(a.isPortrait) - Number(b.isPortrait));
 
-    const { landscapeSize, portraitSize } = thumbSizesForCount(sorted.length, window.innerWidth, window.innerHeight);
-    thumbsEl.style.setProperty("--share-thumb-landscape", `${landscapeSize}px`);
-    thumbsEl.style.setProperty("--share-thumb-portrait", `${portraitSize}px`);
-
     const rows = buildThumbRows(sorted);
     rows.forEach((row) => {
       const rowEl = document.createElement("div");
@@ -126,13 +131,24 @@ export function createShareOverlay() {
       thumbsEl.append(rowEl);
     });
 
+    applyCardScale();
+    const { landscapeSize, portraitSize } = thumbSizesForCount({
+      count: sorted.length,
+      rowCount: rows.length,
+      availableWidth: thumbsEl.clientWidth,
+      availableHeight: thumbsEl.clientHeight,
+      cardScale: getCardScale()
+    });
+    thumbsEl.style.setProperty("--share-thumb-landscape", `${landscapeSize}px`);
+    thumbsEl.style.setProperty("--share-thumb-portrait", `${portraitSize}px`);
+
     fitThumbsToAvailableSpace();
   }
 
   function fitThumbsToAvailableSpace() {
     if (thumbsEl.clientWidth <= 0 || thumbsEl.clientHeight <= 0) return;
 
-    const minThumb = 34;
+    const minThumb = Math.max(28, Math.round(34 * getCardScale()));
     let nextLandscape = Number.parseFloat(thumbsEl.style.getPropertyValue("--share-thumb-landscape")) || 0;
     let nextPortrait = Number.parseFloat(thumbsEl.style.getPropertyValue("--share-thumb-portrait")) || 0;
 
@@ -155,7 +171,10 @@ export function createShareOverlay() {
     root.setAttribute("aria-hidden", "false");
     previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    requestAnimationFrame(() => fitThumbsToAvailableSpace());
+    requestAnimationFrame(() => {
+      applyCardScale();
+      fitThumbsToAvailableSpace();
+    });
     dialog.focus();
   }
 
@@ -251,6 +270,18 @@ export function createShareOverlay() {
   });
 
   return { open, close, updateContext };
+
+  function applyCardScale() {
+    const width = shareCard.getBoundingClientRect().width;
+    if (!Number.isFinite(width) || width <= 0) return;
+    const scale = Math.max(0.66, Math.min(1, width / cardBaseSize));
+    shareCard.style.setProperty("--share-card-scale", scale.toFixed(4));
+  }
+
+  function getCardScale() {
+    const parsed = Number.parseFloat(getComputedStyle(shareCard).getPropertyValue("--share-card-scale"));
+    return Number.isFinite(parsed) && parsed > 0 ? parsed : 1;
+  }
 }
 
 function buildThumbRows(sortedCards) {
@@ -259,38 +290,24 @@ function buildThumbRows(sortedCards) {
   return [sortedCards];
 }
 
-function thumbSizesForCount(count, viewportWidth = window.innerWidth, viewportHeight = window.innerHeight) {
+function thumbSizesForCount({ count, rowCount = 1, availableWidth = 0, availableHeight = 0, cardScale = 1 }) {
   const safeCount = Math.max(1, Number(count) || 1);
-  const base = safeCount === 1
-    ? { landscapeSize: 188, portraitSize: 188 }
+  const countScale = safeCount === 1
+    ? 0.46
     : safeCount === 2
-      ? { landscapeSize: 132, portraitSize: 132 }
+      ? 0.32
       : safeCount === 3
-        ? { landscapeSize: 100, portraitSize: 100 }
+        ? 0.26
         : safeCount === 4
-          ? { landscapeSize: 108, portraitSize: 108 }
-          : { landscapeSize: 96, portraitSize: 96 };
-
-  if (viewportWidth > 720) return base;
-
-  const mobileSizes = safeCount === 1
-    ? { landscapeSize: 94, portraitSize: 94 }
-    : safeCount === 2
-      ? { landscapeSize: 82, portraitSize: 82 }
-      : safeCount === 3
-        ? { landscapeSize: 64, portraitSize: 64 }
-        : safeCount === 4
-          ? { landscapeSize: 56, portraitSize: 56 }
-          : { landscapeSize: 56, portraitSize: 56 };
-
-  if (safeCount >= 4 && viewportHeight <= 780) {
-    return {
-      landscapeSize: Math.max(44, Math.round(mobileSizes.landscapeSize * 0.84)),
-      portraitSize: Math.max(44, Math.round(mobileSizes.portraitSize * 0.84))
-    };
-  }
-
-  return mobileSizes;
+          ? 0.24
+          : 0.22;
+  const widthBound = availableWidth > 0 ? availableWidth * countScale : 96;
+  const heightBound = availableHeight > 0 ? (availableHeight / Math.max(1, rowCount)) * 0.78 : 96;
+  const panelBound = Math.min(widthBound, heightBound);
+  const baseSize = Math.max(28 * cardScale, panelBound);
+  const landscapeSize = Math.round(Math.max(30 * cardScale, baseSize));
+  const portraitSize = Math.round(Math.max(30 * cardScale, baseSize));
+  return { landscapeSize, portraitSize };
 }
 
 async function isPortraitCard(card, cache) {
