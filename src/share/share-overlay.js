@@ -69,8 +69,7 @@ export function createShareOverlay() {
   function getShareCopy() {
     if (!context) return null;
     return buildShareCopy({
-      netValue: context.netAfterChexy,
-      cardCount: context.best?.combo?.length || 0
+      netValue: context.netAfterChexy
     });
   }
 
@@ -220,10 +219,11 @@ export function createShareOverlay() {
 
     await withBusyState(nativeBtn, "Sharing…", async () => {
       const copy = getShareCopy();
+      const quickSetupUrl = getQuickSetupUrl(context.shareUrl || window.location.href);
       const payload = {
         title: "CreditCombo result",
         text: copy?.nativeShareText || "CreditCombo result",
-        url: context.shareUrl
+        url: quickSetupUrl
       };
 
       try {
