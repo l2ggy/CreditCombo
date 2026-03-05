@@ -312,6 +312,7 @@ async function elementToPngBlob(element) {
   const clone = element.cloneNode(true);
   clone.setAttribute("xmlns", "http://www.w3.org/1999/xhtml");
   inlineComputedStyles(element, clone);
+  stripThumbDecorationsForExport(clone);
   await inlineImageSources(element, clone);
 
   const serialized = new XMLSerializer().serializeToString(clone);
@@ -399,6 +400,23 @@ function applyComputedStyle(source, target) {
   const computed = window.getComputedStyle(source);
   const cssText = Array.from(computed).map((prop) => `${prop}:${computed.getPropertyValue(prop)};`).join("");
   target.setAttribute("style", cssText);
+}
+
+
+function stripThumbDecorationsForExport(cloneRoot) {
+  const thumbWrappers = [...cloneRoot.querySelectorAll(".shareCard__thumb")];
+  thumbWrappers.forEach((thumb) => {
+    thumb.style.border = "none";
+    thumb.style.boxShadow = "none";
+    thumb.style.background = "transparent";
+  });
+
+  const thumbImages = [...cloneRoot.querySelectorAll(".shareCard__thumb .thumb")];
+  thumbImages.forEach((thumb) => {
+    thumb.style.border = "none";
+    thumb.style.boxShadow = "none";
+    thumb.style.background = "transparent";
+  });
 }
 
 async function inlineImageSources(sourceRoot, targetRoot) {
