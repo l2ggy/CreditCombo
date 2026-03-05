@@ -109,7 +109,8 @@ export function createShareOverlay() {
     const sorted = cardsWithOrientation
       .sort((a, b) => Number(a.isPortrait) - Number(b.isPortrait));
 
-    const { landscapeSize, portraitSize } = thumbSizesForCount(sorted.length, window.innerWidth, window.innerHeight);
+    const cardRect = shareCard.getBoundingClientRect();
+    const { landscapeSize, portraitSize } = thumbSizesForCount(sorted.length, cardRect.width, cardRect.height);
     thumbsEl.style.setProperty("--share-thumb-landscape", `${landscapeSize}px`);
     thumbsEl.style.setProperty("--share-thumb-portrait", `${portraitSize}px`);
 
@@ -259,38 +260,27 @@ function buildThumbRows(sortedCards) {
   return [sortedCards];
 }
 
-function thumbSizesForCount(count, viewportWidth = window.innerWidth, viewportHeight = window.innerHeight) {
+function thumbSizesForCount(count, containerWidth = 560, containerHeight = 560) {
   const safeCount = Math.max(1, Number(count) || 1);
-  const base = safeCount === 1
-    ? { landscapeSize: 188, portraitSize: 188 }
+  const safeWidth = Math.max(280, Number(containerWidth) || 560);
+  const safeHeight = Math.max(280, Number(containerHeight) || 560);
+
+  const widthRatio = safeCount === 1
+    ? 0.336
     : safeCount === 2
-      ? { landscapeSize: 132, portraitSize: 132 }
+      ? 0.236
       : safeCount === 3
-        ? { landscapeSize: 100, portraitSize: 100 }
+        ? 0.179
         : safeCount === 4
-          ? { landscapeSize: 108, portraitSize: 108 }
-          : { landscapeSize: 96, portraitSize: 96 };
+          ? 0.193
+          : 0.171;
 
-  if (viewportWidth > 720) return base;
+  const heightRatioLimit = safeCount >= 4 ? 0.16 : 0.34;
+  const targetByWidth = safeWidth * widthRatio;
+  const targetByHeight = safeHeight * heightRatioLimit;
+  const nextSize = Math.max(44, Math.round(Math.min(targetByWidth, targetByHeight)));
 
-  const mobileSizes = safeCount === 1
-    ? { landscapeSize: 94, portraitSize: 94 }
-    : safeCount === 2
-      ? { landscapeSize: 82, portraitSize: 82 }
-      : safeCount === 3
-        ? { landscapeSize: 64, portraitSize: 64 }
-        : safeCount === 4
-          ? { landscapeSize: 56, portraitSize: 56 }
-          : { landscapeSize: 56, portraitSize: 56 };
-
-  if (safeCount >= 4 && viewportHeight <= 780) {
-    return {
-      landscapeSize: Math.max(44, Math.round(mobileSizes.landscapeSize * 0.84)),
-      portraitSize: Math.max(44, Math.round(mobileSizes.portraitSize * 0.84))
-    };
-  }
-
-  return mobileSizes;
+  return { landscapeSize: nextSize, portraitSize: nextSize };
 }
 
 async function isPortraitCard(card, cache) {
