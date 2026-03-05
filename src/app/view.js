@@ -9,6 +9,7 @@ export function createView() {
     issuesEl: document.getElementById("issues"),
     issuesWrapEl: document.getElementById("issuesWrap"),
     resultEl: document.getElementById("result"),
+    openShareBtn: document.getElementById("openShareBtn"),
     runBtn: document.getElementById("runBtn"),
     valuationModeEl: document.getElementById("valuationMode"),
     includeBusinessCardsEl: document.getElementById("includeBusinessCards"),
