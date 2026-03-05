@@ -90,8 +90,7 @@ export function createShareOverlay() {
     heroLabelEl.textContent = copy.heroValueLabel;
     ctaEl.textContent = copy.cta;
 
-    const shareUrl = context.shareUrl || window.location.href;
-    const quickSetupUrl = getQuickSetupUrl(shareUrl);
+    const quickSetupUrl = getQuickSetupUrl(context.shareUrl || window.location.href);
     urlLinkEl.textContent = getQuickSetupLabel(quickSetupUrl);
     urlLinkEl.href = quickSetupUrl;
 
@@ -99,7 +98,7 @@ export function createShareOverlay() {
 
     qrEl.crossOrigin = "anonymous";
     qrEl.referrerPolicy = "no-referrer";
-    qrEl.src = `${QR_ENDPOINT}${encodeURIComponent(shareUrl)}`;
+    qrEl.src = `${QR_ENDPOINT}${encodeURIComponent(quickSetupUrl)}`;
   }
 
 
