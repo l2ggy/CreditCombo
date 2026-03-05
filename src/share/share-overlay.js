@@ -133,7 +133,7 @@ export function createShareOverlay() {
     if (thumbsEl.clientWidth <= 0 || thumbsEl.clientHeight <= 0) return;
 
     const cardWidth = Math.max(1, shareCard.clientWidth || 520);
-    const minThumb = Math.max(24, Math.round(cardWidth * 0.065));
+    const minThumb = Math.max(1, Math.round(cardWidth * 0.065));
     let nextLandscape = Number.parseFloat(thumbsEl.style.getPropertyValue("--share-thumb-landscape")) || 0;
     let nextPortrait = Number.parseFloat(thumbsEl.style.getPropertyValue("--share-thumb-portrait")) || 0;
 
@@ -276,12 +276,7 @@ function thumbSizesForCount(count, shareCard) {
   const derivedSize = Math.round(cardWidth * sizeRatio);
 
   // Internal proportions follow panel/card size.
-  const nextSize = clamp(derivedSize, Math.round(cardWidth * 0.09), Math.round(cardWidth * 0.38));
-  return { landscapeSize: nextSize, portraitSize: nextSize };
-}
-
-function clamp(value, min, max) {
-  return Math.min(max, Math.max(min, value));
+  return { landscapeSize: derivedSize, portraitSize: derivedSize };
 }
 
 async function isPortraitCard(card, cache) {

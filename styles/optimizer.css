@@ -125,13 +125,13 @@
 .shareOverlay__actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-3)}
 
 .shareCard{
-  /* Internal proportions follow panel/card size; clamps keep radius/padding visually stable across viewport-driven card widths. */
-  --share-card-space-1:clamp(5px,1.1cqi,7px);
-  --share-card-space-2:clamp(8px,1.8cqi,12px);
-  --share-card-space-3:clamp(10px,2.4cqi,14px);
-  --share-card-space-4:clamp(14px,3.2cqi,18px);
-  --share-card-radius-sm:clamp(6px,1.4cqi,9px);
-  --share-card-radius-xl:clamp(14px,4cqi,20px);
+  /* Internal proportions follow panel/card size (same card-percentage occupancy on every device). */
+  --share-card-space-1:1.1cqi;
+  --share-card-space-2:1.8cqi;
+  --share-card-space-3:2.4cqi;
+  --share-card-space-4:3.2cqi;
+  --share-card-radius-sm:1.4cqi;
+  --share-card-radius-xl:4cqi;
   --share-card-kicker-size:2.8cqi;
   --share-card-headline-size:5.6cqi;
   --share-card-hero-size:12.8cqi;
