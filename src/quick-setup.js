@@ -35,11 +35,10 @@ function ensureShareOverlay() {
   return shareOverlay;
 }
 
-function buildShareContext(best, valuationMode, chexySummary) {
+function buildShareContext(best, chexySummary) {
   if (!best?.combo?.length) return null;
   return {
     best,
-    valuationMode,
     netAfterChexy: Number(best.net || 0) - Number(chexySummary?.chexyAdjustedAnnualSpend || 0),
     shareUrl: window.location.href
   };
@@ -572,7 +571,7 @@ function renderPostQuizScreen() {
   }
 
   appEl.querySelector("#quickShareBtn")?.addEventListener("click", () => {
-    const shareContext = buildShareContext(best, payload?.valuationMode, chexySummary);
+    const shareContext = buildShareContext(best, chexySummary);
     if (!shareContext) return;
     const overlay = ensureShareOverlay();
     overlay.updateContext(shareContext);

@@ -34,7 +34,6 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
     if (!best?.combo?.length) return null;
     return {
       best,
-      valuationMode: state.valuationMode,
       netAfterChexy: Number(best.net || 0) - Number(chexySummary?.chexyAdjustedAnnualSpend || 0),
       shareUrl: window.location.href
     };
