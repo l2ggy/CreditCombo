@@ -181,7 +181,7 @@ function stepSpend(cat) {
       const sliderValue = Math.min(slider.max, Math.max(slider.min, Number(value) || 0));
       const details = categoryDetailsFor(cat);
       const detailsMarkup = details
-        ? `<details class="spendControl" data-spend-control="more-details"><summary><span class="spendControlLabel">More details</span><span class="spendControlCaret" aria-hidden="true">▾</span></summary><div class="spendDetailsPanel muted">${escapeHtml(details)}</div></details>`
+        ? `<details class="spendControl quickDetailsToggle" data-spend-control="more-details"><summary><span class="spendControlLabel">More details</span><span class="spendControlCaret" aria-hidden="true">▾</span></summary><div class="spendDetailsPanel quickDetailsPanel muted">${escapeHtml(details)}</div></details>`
         : "";
       contentEl.innerHTML = `
         <h2 class="quickPrompt">What is your average monthly spending on ${titleForCategory(cat)}?</h2>
