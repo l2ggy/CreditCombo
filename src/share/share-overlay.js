@@ -69,7 +69,8 @@ export function createShareOverlay() {
   function getShareCopy() {
     if (!context) return null;
     return buildShareCopy({
-      netValue: context.netAfterChexy
+      netValue: context.netAfterChexy,
+      cardCount: context.best?.combo?.length || 0
     });
   }
 
