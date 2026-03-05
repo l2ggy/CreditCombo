@@ -83,6 +83,5 @@
 
 .quickAnswerArea .quickDetailsToggle{justify-self:start}
 .quickAnswerArea .quickDetailsToggle summary{font-size:var(--font-size-sm);line-height:1.35;gap:var(--space-2)}
-.quickAnswerArea .quickDetailsToggle .spendControlLabel{text-decoration:none;font-weight:500}
-.quickAnswerArea .quickDetailsToggle .spendControlCaret{font-size:var(--font-size-base)}
+.quickAnswerArea .quickDetailsToggle .spendControlLabel{text-decoration:underline;font-weight:500}
 .quickAnswerArea .quickDetailsPanel{margin-top:var(--space-2);margin-bottom:0;font-size:var(--font-size-sm);line-height:1.45}
