@@ -34,7 +34,22 @@ function resolveQuizMode(value) {
 }
 
 function titleForCategory(cat) {
-  return String(cat).replace(/_/g, " ");
+  const labels = {
+    grocery: "groceries",
+    dining: "dining",
+    gas: "gas",
+    transit: "transit",
+    rideshare: "rideshares",
+    streaming: "streaming",
+    digital: "digital purchases",
+    utilities: "utilities",
+    bills: "bills",
+    drugstore: "drugstore purchases",
+    entertainment: "entertainment",
+    travel: "travel",
+    other: "other purchases"
+  };
+  return labels[cat] || String(cat).replace(/_/g, " ");
 }
 
 function spendSliderConfig(cat) {
@@ -152,7 +167,7 @@ function stepSpend(cat) {
       const value = state.monthlySpend[cat] ?? "";
       const sliderValue = Math.min(slider.max, Math.max(slider.min, Number(value) || 0));
       contentEl.innerHTML = `
-        <h2 class="quickPrompt">What is your average monthly spend on ${titleForCategory(cat)}?</h2>
+        <h2 class="quickPrompt">What is your average monthly spending on ${titleForCategory(cat)}?</h2>
         <div class="quickAnswerArea">
           <label class="quickLabel" for="quickSpendInput">Monthly amount</label>
           <input id="quickSpendSlider" type="range" min="${slider.min}" max="${slider.max}" step="${slider.step}" value="${sliderValue}" />
