@@ -64,6 +64,7 @@ export function createShareOverlay() {
   let previousOverflow = "";
   let renderTask = Promise.resolve();
   const orientationCache = new Map();
+  let currentThumbCount = 0;
 
   function getShareCopy() {
     if (!context) return null;
@@ -109,9 +110,8 @@ export function createShareOverlay() {
     const sorted = cardsWithOrientation
       .sort((a, b) => Number(a.isPortrait) - Number(b.isPortrait));
 
-    const { landscapeSize, portraitSize } = thumbSizesForCount(sorted.length, shareCard);
-    thumbsEl.style.setProperty("--share-thumb-landscape", `${landscapeSize}px`);
-    thumbsEl.style.setProperty("--share-thumb-portrait", `${portraitSize}px`);
+    currentThumbCount = sorted.length;
+    syncThumbScaleFromCard();
 
     const rows = buildThumbRows(sorted);
     rows.forEach((row) => {
@@ -127,6 +127,13 @@ export function createShareOverlay() {
     });
 
     fitThumbsToAvailableSpace();
+  }
+
+  function syncThumbScaleFromCard() {
+    if (currentThumbCount <= 0 || shareCard.clientWidth <= 0) return;
+    const { landscapeSize, portraitSize } = thumbSizesForCount(currentThumbCount, shareCard);
+    thumbsEl.style.setProperty("--share-thumb-landscape", `${landscapeSize}px`);
+    thumbsEl.style.setProperty("--share-thumb-portrait", `${portraitSize}px`);
   }
 
   function fitThumbsToAvailableSpace() {
@@ -156,7 +163,10 @@ export function createShareOverlay() {
     root.setAttribute("aria-hidden", "false");
     previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    requestAnimationFrame(() => fitThumbsToAvailableSpace());
+    requestAnimationFrame(() => {
+      syncThumbScaleFromCard();
+      fitThumbsToAvailableSpace();
+    });
     dialog.focus();
   }
 
@@ -262,8 +272,7 @@ function buildThumbRows(sortedCards) {
 
 function thumbSizesForCount(count, shareCard) {
   const safeCount = Math.max(1, Number(count) || 1);
-  const fallbackCardWidth = 520;
-  const cardWidth = Math.max(1, shareCard?.clientWidth || fallbackCardWidth);
+  const cardWidth = Math.max(1, shareCard?.clientWidth || 0);
   const sizeRatio = safeCount === 1
     ? 0.34
     : safeCount === 2

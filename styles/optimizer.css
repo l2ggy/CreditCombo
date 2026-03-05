@@ -137,7 +137,8 @@
   --share-card-hero-size:12.8cqi;
   --share-card-meta-size:3.4cqi;
   --share-card-qr-size:18cqi;
-  width:100%;max-width:560px;min-width:min(100%,500px);aspect-ratio:1/1;display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:var(--share-card-space-2);padding:var(--share-card-space-4);border-radius:var(--share-card-radius-xl);border:1px solid color-mix(in srgb,var(--color-accent) 22%,var(--color-border));background:linear-gradient(150deg,color-mix(in srgb,var(--color-panel) 80%,var(--color-accent) 20%) 0%,color-mix(in srgb,var(--color-panel) 92%,var(--color-bg) 8%) 55%,color-mix(in srgb,var(--color-brand-highlight) 16%,var(--color-panel) 84%) 100%);
+  --share-card-border-size:.22cqi;
+  width:100%;max-width:560px;min-width:min(100%,500px);aspect-ratio:1/1;display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:var(--share-card-space-2);padding:var(--share-card-space-4);border-radius:var(--share-card-radius-xl);border:var(--share-card-border-size) solid color-mix(in srgb,var(--color-accent) 22%,var(--color-border));background:linear-gradient(150deg,color-mix(in srgb,var(--color-panel) 80%,var(--color-accent) 20%) 0%,color-mix(in srgb,var(--color-panel) 92%,var(--color-bg) 8%) 55%,color-mix(in srgb,var(--color-brand-highlight) 16%,var(--color-panel) 84%) 100%);
   container-type:inline-size;
 }
 :root[data-theme="light"] .shareCard{background:linear-gradient(150deg,#fff 0%,#f7f9ff 58%,#e8efff 100%)}
