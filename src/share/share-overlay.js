@@ -109,10 +109,14 @@ export function createShareOverlay() {
     const sorted = cardsWithOrientation
       .sort((a, b) => Number(a.isPortrait) - Number(b.isPortrait));
 
-    const { landscapeSize, portraitSize } = thumbSizesForCount(sorted.length, window.innerWidth, window.innerHeight);
+    const { landscapeSize, portraitSize } = thumbSizesForCount(sorted.length, {
+      cardWidth: shareCard.clientWidth,
+      cardHeight: shareCard.clientHeight
+    });
     thumbsEl.style.setProperty("--share-thumb-landscape", `${landscapeSize}px`);
     thumbsEl.style.setProperty("--share-thumb-portrait", `${portraitSize}px`);
 
+    // Panel fits viewport in CSS; this renderer only scales internals from card metrics.
     const rows = buildThumbRows(sorted);
     rows.forEach((row) => {
       const rowEl = document.createElement("div");
@@ -259,38 +263,32 @@ function buildThumbRows(sortedCards) {
   return [sortedCards];
 }
 
-function thumbSizesForCount(count, viewportWidth = window.innerWidth, viewportHeight = window.innerHeight) {
+// Internal proportions follow panel/card size: thumb sizing is derived from share-card box metrics only.
+function thumbSizesForCount(count, { cardWidth = 0, cardHeight = 0 } = {}) {
   const safeCount = Math.max(1, Number(count) || 1);
-  const base = safeCount === 1
-    ? { landscapeSize: 188, portraitSize: 188 }
+  const safeCardWidth = Math.max(1, cardWidth);
+  const safeCardHeight = Math.max(1, cardHeight);
+
+  const widthRatio = safeCount === 1
+    ? 0.336
     : safeCount === 2
-      ? { landscapeSize: 132, portraitSize: 132 }
+      ? 0.236
       : safeCount === 3
-        ? { landscapeSize: 100, portraitSize: 100 }
+        ? 0.18
         : safeCount === 4
-          ? { landscapeSize: 108, portraitSize: 108 }
-          : { landscapeSize: 96, portraitSize: 96 };
+          ? 0.193
+          : 0.172;
 
-  if (viewportWidth > 720) return base;
+  const maxHeightRatio = safeCount <= 2 ? 0.33 : 0.245;
+  const sizeFromWidth = safeCardWidth * widthRatio;
+  const sizeFromHeight = safeCardHeight * maxHeightRatio;
+  const baseSize = Math.floor(Math.min(sizeFromWidth, sizeFromHeight));
+  const clampedSize = Math.max(44, Math.min(188, baseSize));
 
-  const mobileSizes = safeCount === 1
-    ? { landscapeSize: 94, portraitSize: 94 }
-    : safeCount === 2
-      ? { landscapeSize: 82, portraitSize: 82 }
-      : safeCount === 3
-        ? { landscapeSize: 64, portraitSize: 64 }
-        : safeCount === 4
-          ? { landscapeSize: 56, portraitSize: 56 }
-          : { landscapeSize: 56, portraitSize: 56 };
-
-  if (safeCount >= 4 && viewportHeight <= 780) {
-    return {
-      landscapeSize: Math.max(44, Math.round(mobileSizes.landscapeSize * 0.84)),
-      portraitSize: Math.max(44, Math.round(mobileSizes.portraitSize * 0.84))
-    };
-  }
-
-  return mobileSizes;
+  return {
+    landscapeSize: clampedSize,
+    portraitSize: clampedSize
+  };
 }
 
 async function isPortraitCard(card, cache) {
