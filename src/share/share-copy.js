@@ -7,7 +7,7 @@ export function buildShareCopy({ netValue, cardCount }) {
   const headline = `My ${safeCount}-card CreditCombo earns me:`;
   const heroValueLabel = "Per year after fees. Tailored to my spend.";
   const cta = "Find your own CreditCombo";
-  const nativeShareText = `${headline} ${heroValue} per year after annual fees.`;
+  const nativeShareText = `My CreditCombo earns me ${heroValue} per year. Find yours:`;
 
   return {
     kicker,
