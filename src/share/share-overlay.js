@@ -27,7 +27,7 @@ export function createShareOverlay() {
           <footer class="shareCard__footer">
             <div class="shareCard__footerText">
               <p class="shareCard__cta"></p>
-              <p class="shareCard__urlRow"><span class="shareCard__urlLabel"></span></p>
+              <p class="shareCard__urlRow"><a class="shareCard__urlLink" target="_blank" rel="noopener noreferrer"></a></p>
             </div>
             <img class="shareCard__qr" alt="QR code to open this result" />
           </footer>
@@ -50,7 +50,7 @@ export function createShareOverlay() {
   const heroLabelEl = root.querySelector(".shareCard__heroLabel");
   const thumbsEl = root.querySelector(".shareCard__thumbs");
   const ctaEl = root.querySelector(".shareCard__cta");
-  const urlLabelEl = root.querySelector(".shareCard__urlLabel");
+  const urlLinkEl = root.querySelector(".shareCard__urlLink");
   const qrEl = root.querySelector(".shareCard__qr");
   const nativeBtn = root.querySelector("[data-share-native]");
   const downloadBtn = root.querySelector("[data-share-download]");
@@ -70,8 +70,7 @@ export function createShareOverlay() {
     if (!context) return null;
     return buildShareCopy({
       netValue: context.netAfterChexy,
-      cardCount: context.best?.combo?.length || 0,
-      siteHost: getHostLabel(context.shareUrl)
+      cardCount: context.best?.combo?.length || 0
     });
   }
 
@@ -90,14 +89,23 @@ export function createShareOverlay() {
     heroValueEl.textContent = copy.heroValue;
     heroLabelEl.textContent = copy.heroValueLabel;
     ctaEl.textContent = copy.cta;
-    urlLabelEl.textContent = copy.urlLabel;
+
+    const shareUrl = context.shareUrl || window.location.href;
+    const quickSetupUrl = getQuickSetupUrl(shareUrl);
+    urlLinkEl.textContent = getQuickSetupLabel(quickSetupUrl);
+    urlLinkEl.href = quickSetupUrl;
 
     await renderThumbRows(context.best.combo || []);
 
-    const shareUrl = context.shareUrl || window.location.href;
     qrEl.crossOrigin = "anonymous";
     qrEl.referrerPolicy = "no-referrer";
     qrEl.src = `${QR_ENDPOINT}${encodeURIComponent(shareUrl)}`;
+  }
+
+
+  function setThumbSizeVars(landscapeSize, portraitSize) {
+    thumbsEl.style.setProperty("--share-thumb-landscape", `${landscapeSize}px`);
+    thumbsEl.style.setProperty("--share-thumb-portrait", `${portraitSize}px`);
   }
 
   async function renderThumbRows(cards) {
@@ -111,8 +119,7 @@ export function createShareOverlay() {
       .sort((a, b) => Number(a.isPortrait) - Number(b.isPortrait));
 
     const { landscapeSize, portraitSize } = thumbSizesForCount(sorted.length, shareCard);
-    thumbsEl.style.setProperty("--share-thumb-landscape", `${landscapeSize}px`);
-    thumbsEl.style.setProperty("--share-thumb-portrait", `${portraitSize}px`);
+    setThumbSizeVars(landscapeSize, portraitSize);
 
     renderedThumbCount = sorted.length;
 
@@ -141,8 +148,7 @@ export function createShareOverlay() {
     const { landscapeSize, portraitSize } = thumbSizesForCount(liveCount, shareCard);
     let nextLandscape = landscapeSize;
     let nextPortrait = portraitSize;
-    thumbsEl.style.setProperty("--share-thumb-landscape", `${nextLandscape}px`);
-    thumbsEl.style.setProperty("--share-thumb-portrait", `${nextPortrait}px`);
+    setThumbSizeVars(nextLandscape, nextPortrait);
 
     const minThumb = Math.max(1, cardWidth * 0.065);
 
@@ -155,8 +161,7 @@ export function createShareOverlay() {
 
       nextLandscape = Math.max(minThumb, nextLandscape * 0.9);
       nextPortrait = Math.max(minThumb, nextPortrait * 0.9);
-      thumbsEl.style.setProperty("--share-thumb-landscape", `${nextLandscape}px`);
-      thumbsEl.style.setProperty("--share-thumb-portrait", `${nextPortrait}px`);
+      setThumbSizeVars(nextLandscape, nextPortrait);
     }
   }
 
@@ -303,11 +308,25 @@ async function isPortraitCard(card, cache) {
   return isPortrait;
 }
 
-function getHostLabel(url) {
+
+function getQuickSetupUrl(url) {
   try {
-    return new URL(url || window.location.href).host;
+    const next = new URL(url || window.location.href);
+    next.pathname = "/quick-setup";
+    next.search = "";
+    next.hash = "";
+    return next.toString();
   } catch {
-    return "creditcombo.ca";
+    return `${window.location.origin}/quick-setup`;
+  }
+}
+
+function getQuickSetupLabel(url) {
+  try {
+    const next = new URL(url);
+    return `${next.host}/quick-setup`;
+  } catch {
+    return "creditcombo.ca/quick-setup";
   }
 }
 
