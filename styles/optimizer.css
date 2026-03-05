@@ -117,7 +117,7 @@
 .shareOverlay{position:fixed;inset:0;z-index:80;display:grid;place-items:center;padding:var(--space-6)}
 .shareOverlay.hidden{display:none}
 .shareOverlay__backdrop{position:absolute;inset:0;background:color-mix(in srgb,var(--color-bg) 86%,transparent);backdrop-filter:blur(2px)}
-.shareOverlay__dialog{position:relative;z-index:1;width:fit-content;min-width:min(100%,540px);max-height:calc(100vh - var(--space-8));display:grid;gap:var(--space-4);padding:var(--space-5);border:1px solid var(--color-border);border-radius:var(--radius-xl);background:var(--color-panel);box-shadow:0 24px 64px color-mix(in srgb,#000 45%,transparent);overflow:auto}
+.shareOverlay__dialog{--share-panel-padding:2.2cqi;--share-panel-radius:2.6cqi;position:relative;z-index:1;width:fit-content;min-width:min(100%,540px);max-height:calc(100vh - var(--space-8));display:grid;gap:var(--space-4);padding:var(--share-panel-padding);border:1px solid var(--color-border);border-radius:var(--share-panel-radius);background:var(--color-panel);box-shadow:0 24px 64px color-mix(in srgb,#000 45%,transparent);overflow:auto;container-type:inline-size}
 .shareOverlay__header{display:flex;align-items:center;justify-content:space-between;gap:var(--space-3)}
 .shareOverlay__close{min-width:auto}
 .shareOverlay__body{display:flex;justify-content:center}
@@ -143,4 +143,4 @@
 .shareCard__qr{width:15.72cqi;height:15.72cqi;padding:var(--share-space-1);border-radius:var(--share-radius-sm);background:#fff;object-fit:contain}
 
 @media (prefers-reduced-motion:reduce){.shareOverlay__dialog{scroll-behavior:auto}}
-@media (max-width:720px){.shareOverlay{padding:var(--space-3)}.shareOverlay__dialog{width:100%;min-width:0;max-width:100%;padding:var(--space-4);max-height:calc(100vh - var(--space-3));border-radius:var(--radius-lg)}.shareCard{min-width:0}.shareOverlay__actions{grid-template-columns:1fr}}
+@media (max-width:720px){.shareOverlay{padding:var(--space-3)}.shareOverlay__dialog{width:100%;min-width:0;max-width:100%;max-height:calc(100vh - var(--space-3))}.shareCard{min-width:0}.shareOverlay__actions{grid-template-columns:1fr}}
