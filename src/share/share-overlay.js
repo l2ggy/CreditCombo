@@ -24,7 +24,7 @@ export function createShareOverlay() {
             <p class="shareCard__heroLabel"></p>
             <p class="shareCard__support"></p>
           </div>
-          <div class="shareCard__thumbs" data-layout="row-1"></div>
+          <div class="shareCard__thumbs"></div>
           <footer class="shareCard__footer">
             <div class="shareCard__footerText">
               <p class="shareCard__cta"></p>
@@ -70,7 +70,6 @@ export function createShareOverlay() {
     if (!context) return null;
     return buildShareCopy({
       netValue: context.netAfterChexy,
-      valuationMode: context.valuationMode,
       cardCount: context.best?.combo?.length || 0,
       siteHost: getHostLabel(context.shareUrl)
     });
@@ -112,22 +111,12 @@ export function createShareOverlay() {
     })));
     const sorted = cardsWithOrientation
       .sort((a, b) => Number(a.isPortrait) - Number(b.isPortrait));
-    const layout = sorted.length === 5
-      ? "rows-3-2"
-      : sorted.length === 4
-        ? "rows-2-2"
-        : `row-${Math.max(1, sorted.length)}`;
-    thumbsEl.dataset.layout = layout;
 
     const { landscapeSize, portraitSize } = thumbSizesForCount(sorted.length, window.innerWidth, window.innerHeight);
     thumbsEl.style.setProperty("--share-thumb-landscape", `${landscapeSize}px`);
     thumbsEl.style.setProperty("--share-thumb-portrait", `${portraitSize}px`);
 
-    const rows = sorted.length === 5
-      ? [sorted.slice(0, 3), sorted.slice(3, 5)]
-      : sorted.length === 4
-        ? [sorted.slice(0, 2), sorted.slice(2, 4)]
-        : [sorted];
+    const rows = buildThumbRows(sorted);
     rows.forEach((row) => {
       const rowEl = document.createElement("div");
       rowEl.className = "shareCard__thumbRow";
@@ -242,7 +231,11 @@ export function createShareOverlay() {
   return { open, close, updateContext };
 }
 
-
+function buildThumbRows(sortedCards) {
+  if (sortedCards.length === 5) return [sortedCards.slice(0, 3), sortedCards.slice(3, 5)];
+  if (sortedCards.length === 4) return [sortedCards.slice(0, 2), sortedCards.slice(2, 4)];
+  return [sortedCards];
+}
 
 function thumbSizesForCount(count, viewportWidth = window.innerWidth, viewportHeight = window.innerHeight) {
   const safeCount = Math.max(1, Number(count) || 1);

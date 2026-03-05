@@ -1,6 +1,6 @@
 import { formatMoneyCAD } from "../shared/format.js";
 
-export function buildShareCopy({ netValue, valuationMode, cardCount, siteHost }) {
+export function buildShareCopy({ netValue, cardCount, siteHost }) {
   const safeCount = Math.max(1, Number(cardCount) || 1);
   const kicker = "My optimized CreditCombo";
   const heroValue = formatMoneyCAD(Number(netValue) || 0);
