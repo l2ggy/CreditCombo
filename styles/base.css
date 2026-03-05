@@ -95,16 +95,16 @@ tbody tr:last-child td{border-bottom:none}
 .chipRemove:hover{color:var(--color-text)}
 
 .thumbWrap{width:44px;height:44px;display:inline-flex;align-items:center;justify-content:center;flex:0 0 44px}
-.thumb{display:block;aspect-ratio:var(--card-aspect-ratio);box-sizing:border-box;border:none;border-radius:var(--thumb-radius,var(--radius-card))}
+.thumb{display:block;aspect-ratio:var(--card-aspect-ratio);box-sizing:border-box;border:none;border-radius:0}
 .thumb.is-portrait{aspect-ratio:var(--card-aspect-ratio-portrait)}
-.thumb-xs{--thumb-radius:2px;height:var(--space-9);width:auto}
+.thumb-xs{height:var(--space-9);width:auto}
 .thumb-xs.is-portrait{width:var(--space-9);height:auto}
-.thumb-sm{--thumb-radius:3px;height:45px;width:auto}
+.thumb-sm{height:45px;width:auto}
 .thumb-sm.is-portrait{width:45px;height:auto}
-.thumb-md{--thumb-radius:3px;max-width:44px;max-height:44px;width:auto;height:auto}
-.thumb-lg{--thumb-radius:4px;width:100%;height:100%;padding:0;border:none}
+.thumb-md{max-width:44px;max-height:44px;width:auto;height:auto}
+.thumb-lg{width:100%;height:100%;padding:0;border:none;border-radius:0}
 .thumb-contain{object-fit:contain}
-.thumb-cover{object-fit:cover;overflow:hidden;flex:0 0 auto}
+.thumb-cover{object-fit:cover;overflow:visible;flex:0 0 auto}
 
 .textLink{position:relative;display:inline-block;color:var(--color-accent);font-weight:600;text-decoration:none}
 .textLink::after{content:"";position:absolute;left:0;bottom:-.12em;width:100%;height:1px;background:currentColor;transform:scaleX(0);transform-origin:left center;transition:transform .2s ease}
