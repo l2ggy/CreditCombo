@@ -170,6 +170,7 @@ function stepSpend(cat) {
         <h2 class="quickPrompt">What is your average monthly spending on ${titleForCategory(cat)}?</h2>
         <div class="quickAnswerArea">
           <label class="quickLabel" for="quickSpendInput">Monthly amount</label>
+          <p class="quickHint">Type an amount or use the slider.</p>
           <input id="quickSpendSlider" type="range" min="${slider.min}" max="${slider.max}" step="${slider.step}" value="${sliderValue}" />
           <div class="quickSliderBounds" aria-hidden="true">
             <span>$${slider.min}</span>
