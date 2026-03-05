@@ -156,9 +156,10 @@
 .shareCard__thumb--portrait{width:var(--share-thumb-portrait)}
 .shareCard__thumb .thumb{display:block;height:var(--share-thumb-landscape);width:auto;max-width:100%;border:none;border-radius:0;background:transparent;box-shadow:none}
 .shareCard__thumb .thumb.is-portrait{width:var(--share-thumb-portrait);height:auto}
-.shareCard__footer{display:flex;align-items:flex-end;justify-content:space-between;gap:var(--share-card-space-3);padding-top:var(--share-card-space-1);align-self:end}
+.shareCard__footer{display:grid;grid-template-columns:minmax(0,1fr) var(--share-card-qr-size);align-items:flex-end;column-gap:var(--share-card-space-3);padding-top:var(--share-card-space-1);align-self:end}
+.shareCard__footerText{min-width:0}
 .shareCard__cta{margin:0;font-size:var(--share-card-meta-size);font-weight:700}
-.shareCard__urlRow{margin:0;color:var(--color-muted);font-size:var(--share-card-meta-size);line-height:1.2}
+.shareCard__urlRow{margin:0;color:var(--color-muted);font-size:var(--share-card-meta-size);line-height:1.2;overflow-wrap:anywhere}
 .shareCard__qr{width:var(--share-card-qr-size);height:var(--share-card-qr-size);padding:var(--share-card-space-1);border-radius:var(--share-card-radius-sm);background:#fff;object-fit:contain}
 
 @media (prefers-reduced-motion:reduce){.shareOverlay__dialog{scroll-behavior:auto}}
