@@ -259,9 +259,9 @@ function buildThumbRows(sortedCards) {
   return [sortedCards];
 }
 
-function thumbSizesForCount(count, viewportWidth = window.innerWidth, viewportHeight = window.innerHeight) {
+function thumbSizesForCount(count) {
   const safeCount = Math.max(1, Number(count) || 1);
-  const base = safeCount === 1
+  return safeCount === 1
     ? { landscapeSize: 188, portraitSize: 188 }
     : safeCount === 2
       ? { landscapeSize: 132, portraitSize: 132 }
@@ -270,27 +270,6 @@ function thumbSizesForCount(count, viewportWidth = window.innerWidth, viewportHe
         : safeCount === 4
           ? { landscapeSize: 108, portraitSize: 108 }
           : { landscapeSize: 96, portraitSize: 96 };
-
-  if (viewportWidth > 720) return base;
-
-  const mobileSizes = safeCount === 1
-    ? { landscapeSize: 94, portraitSize: 94 }
-    : safeCount === 2
-      ? { landscapeSize: 82, portraitSize: 82 }
-      : safeCount === 3
-        ? { landscapeSize: 64, portraitSize: 64 }
-        : safeCount === 4
-          ? { landscapeSize: 56, portraitSize: 56 }
-          : { landscapeSize: 56, portraitSize: 56 };
-
-  if (safeCount >= 4 && viewportHeight <= 780) {
-    return {
-      landscapeSize: Math.max(44, Math.round(mobileSizes.landscapeSize * 0.84)),
-      portraitSize: Math.max(44, Math.round(mobileSizes.portraitSize * 0.84))
-    };
-  }
-
-  return mobileSizes;
 }
 
 async function isPortraitCard(card, cache) {
