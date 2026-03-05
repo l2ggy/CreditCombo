@@ -99,7 +99,7 @@ export function createShareOverlay() {
 
     qrEl.crossOrigin = "anonymous";
     qrEl.referrerPolicy = "no-referrer";
-    qrEl.src = `${QR_ENDPOINT}${encodeURIComponent(shareUrl)}`;
+    qrEl.src = `${QR_ENDPOINT}${encodeURIComponent(quickSetupUrl)}`;
   }
 
 
