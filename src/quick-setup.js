@@ -184,9 +184,11 @@ function stepSpend(cat) {
         ? `<details class="spendControl quickDetailsToggle" data-spend-control="more-details"><summary><span class="spendControlLabel">More details</span><span class="spendControlCaret" aria-hidden="true">▾</span></summary><div class="spendDetailsPanel quickDetailsPanel muted">${escapeHtml(details)}</div></details>`
         : "";
       contentEl.innerHTML = `
-        <h2 class="quickPrompt">What is your average monthly spending on ${titleForCategory(cat)}?</h2>
-        <div class="quickAnswerArea">
+        <div class="quickPromptBlock quickPromptBlock--spend">
+          <h2 class="quickPrompt">What is your average monthly spending on ${titleForCategory(cat)}?</h2>
           <p class="quickHint">Type an amount or use the slider.</p>
+        </div>
+        <div class="quickAnswerArea">
           ${detailsMarkup}
           <input id="quickSpendSlider" type="range" min="${slider.min}" max="${slider.max}" step="${slider.step}" value="${sliderValue}" />
           <div class="quickSliderBounds" aria-hidden="true">
