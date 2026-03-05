@@ -109,9 +109,9 @@ export function createShareOverlay() {
     const sorted = cardsWithOrientation
       .sort((a, b) => Number(a.isPortrait) - Number(b.isPortrait));
 
-    const { landscapeSize, portraitSize } = thumbSizesForCount(sorted.length, window.innerWidth, window.innerHeight);
-    thumbsEl.style.setProperty("--share-thumb-landscape", `${landscapeSize}px`);
-    thumbsEl.style.setProperty("--share-thumb-portrait", `${portraitSize}px`);
+    const { landscapeSize, portraitSize } = thumbSizesForCount(sorted.length);
+    thumbsEl.style.setProperty("--share-thumb-landscape", `${landscapeSize}cqi`);
+    thumbsEl.style.setProperty("--share-thumb-portrait", `${portraitSize}cqi`);
 
     const rows = buildThumbRows(sorted);
     rows.forEach((row) => {
@@ -132,7 +132,7 @@ export function createShareOverlay() {
   function fitThumbsToAvailableSpace() {
     if (thumbsEl.clientWidth <= 0 || thumbsEl.clientHeight <= 0) return;
 
-    const minThumb = 34;
+    const minThumb = 6.5;
     let nextLandscape = Number.parseFloat(thumbsEl.style.getPropertyValue("--share-thumb-landscape")) || 0;
     let nextPortrait = Number.parseFloat(thumbsEl.style.getPropertyValue("--share-thumb-portrait")) || 0;
 
@@ -143,10 +143,10 @@ export function createShareOverlay() {
       const overHeight = thumbsEl.scrollHeight > thumbsEl.clientHeight;
       if (!overWidth && !overHeight) break;
 
-      nextLandscape = Math.max(minThumb, Math.floor(nextLandscape * 0.9));
-      nextPortrait = Math.max(minThumb, Math.floor(nextPortrait * 0.9));
-      thumbsEl.style.setProperty("--share-thumb-landscape", `${nextLandscape}px`);
-      thumbsEl.style.setProperty("--share-thumb-portrait", `${nextPortrait}px`);
+      nextLandscape = Math.max(minThumb, nextLandscape * 0.9);
+      nextPortrait = Math.max(minThumb, nextPortrait * 0.9);
+      thumbsEl.style.setProperty("--share-thumb-landscape", `${nextLandscape}cqi`);
+      thumbsEl.style.setProperty("--share-thumb-portrait", `${nextPortrait}cqi`);
     }
   }
 
@@ -259,38 +259,20 @@ function buildThumbRows(sortedCards) {
   return [sortedCards];
 }
 
-function thumbSizesForCount(count, viewportWidth = window.innerWidth, viewportHeight = window.innerHeight) {
+function thumbSizesForCount(count) {
   const safeCount = Math.max(1, Number(count) || 1);
-  const base = safeCount === 1
-    ? { landscapeSize: 188, portraitSize: 188 }
+  const sizeRatioCqi = safeCount === 1
+    ? 34
     : safeCount === 2
-      ? { landscapeSize: 132, portraitSize: 132 }
+      ? 24
       : safeCount === 3
-        ? { landscapeSize: 100, portraitSize: 100 }
+        ? 19
         : safeCount === 4
-          ? { landscapeSize: 108, portraitSize: 108 }
-          : { landscapeSize: 96, portraitSize: 96 };
+          ? 20
+          : 17;
 
-  if (viewportWidth > 720) return base;
-
-  const mobileSizes = safeCount === 1
-    ? { landscapeSize: 94, portraitSize: 94 }
-    : safeCount === 2
-      ? { landscapeSize: 82, portraitSize: 82 }
-      : safeCount === 3
-        ? { landscapeSize: 64, portraitSize: 64 }
-        : safeCount === 4
-          ? { landscapeSize: 56, portraitSize: 56 }
-          : { landscapeSize: 56, portraitSize: 56 };
-
-  if (safeCount >= 4 && viewportHeight <= 780) {
-    return {
-      landscapeSize: Math.max(44, Math.round(mobileSizes.landscapeSize * 0.84)),
-      portraitSize: Math.max(44, Math.round(mobileSizes.portraitSize * 0.84))
-    };
-  }
-
-  return mobileSizes;
+  // Internal proportions follow panel/card size.
+  return { landscapeSize: sizeRatioCqi, portraitSize: sizeRatioCqi };
 }
 
 async function isPortraitCard(card, cache) {
