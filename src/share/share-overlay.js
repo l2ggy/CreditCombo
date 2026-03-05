@@ -64,6 +64,7 @@ export function createShareOverlay() {
   let cachedBlob = null;
   let cachedKey = null;
   let previousOverflow = "";
+  let renderTask = Promise.resolve();
   const orientationCache = new Map();
 
   function getShareCopy() {
@@ -151,7 +152,7 @@ export function createShareOverlay() {
       cachedBlob = null;
       cachedKey = nextKey;
     }
-    void applyContext();
+    renderTask = applyContext();
   }
 
   async function withBusyState(button, label, action) {
@@ -172,6 +173,7 @@ export function createShareOverlay() {
   }
 
   async function getPngBlob() {
+    await renderTask;
     if (cachedBlob) return cachedBlob;
     const blob = await elementToPngBlob(shareCard);
     cachedBlob = blob;
@@ -367,12 +369,20 @@ async function waitForAssets(element) {
   }
 
   const images = [...element.querySelectorAll("img")];
-  await Promise.all(images.map((img) => {
-    if (img.complete) return Promise.resolve();
-    return new Promise((resolve) => {
-      img.addEventListener("load", resolve, { once: true });
-      img.addEventListener("error", resolve, { once: true });
-    });
+  await Promise.all(images.map(async (img) => {
+    if (!img.complete) {
+      await new Promise((resolve) => {
+        img.addEventListener("load", resolve, { once: true });
+        img.addEventListener("error", resolve, { once: true });
+      });
+    }
+    if (typeof img.decode === "function") {
+      try {
+        await img.decode();
+      } catch {
+        // ignore decode errors and continue with best-effort rendering
+      }
+    }
   }));
 }
 
@@ -410,7 +420,7 @@ async function inlineImageSources(sourceRoot, targetRoot) {
     const targetImage = targetImages[idx];
     if (!targetImage) return;
 
-    const src = sourceImage.currentSrc || sourceImage.src;
+    const src = sourceImage.currentSrc || sourceImage.src || sourceImage.getAttribute("src");
     if (!src) return;
 
     try {
