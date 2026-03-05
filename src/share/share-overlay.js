@@ -133,7 +133,7 @@ export function createShareOverlay() {
     if (thumbsEl.clientWidth <= 0 || thumbsEl.clientHeight <= 0) return;
 
     const cardWidth = Math.max(1, shareCard.clientWidth || 520);
-    const minThumb = Math.max(1, Math.round(cardWidth * 0.065));
+    const minThumb = Math.max(1, cardWidth * 0.065);
     let nextLandscape = Number.parseFloat(thumbsEl.style.getPropertyValue("--share-thumb-landscape")) || 0;
     let nextPortrait = Number.parseFloat(thumbsEl.style.getPropertyValue("--share-thumb-portrait")) || 0;
 
@@ -144,8 +144,8 @@ export function createShareOverlay() {
       const overHeight = thumbsEl.scrollHeight > thumbsEl.clientHeight;
       if (!overWidth && !overHeight) break;
 
-      nextLandscape = Math.max(minThumb, Math.floor(nextLandscape * 0.9));
-      nextPortrait = Math.max(minThumb, Math.floor(nextPortrait * 0.9));
+      nextLandscape = Math.max(minThumb, nextLandscape * 0.9);
+      nextPortrait = Math.max(minThumb, nextPortrait * 0.9);
       thumbsEl.style.setProperty("--share-thumb-landscape", `${nextLandscape}px`);
       thumbsEl.style.setProperty("--share-thumb-portrait", `${nextPortrait}px`);
     }
@@ -273,7 +273,7 @@ function thumbSizesForCount(count, shareCard) {
         : safeCount === 4
           ? 0.2
           : 0.17;
-  const derivedSize = Math.round(cardWidth * sizeRatio);
+  const derivedSize = cardWidth * sizeRatio;
 
   // Internal proportions follow panel/card size.
   return { landscapeSize: derivedSize, portraitSize: derivedSize };
