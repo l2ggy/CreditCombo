@@ -64,6 +64,7 @@ export function createShareOverlay() {
   let previousOverflow = "";
   let renderTask = Promise.resolve();
   const orientationCache = new Map();
+  let renderedThumbCount = 0;
 
   function getShareCopy() {
     if (!context) return null;
@@ -109,9 +110,11 @@ export function createShareOverlay() {
     const sorted = cardsWithOrientation
       .sort((a, b) => Number(a.isPortrait) - Number(b.isPortrait));
 
-    const { landscapeSize, portraitSize } = thumbSizesForCount(sorted.length, window.innerWidth, window.innerHeight);
+    const { landscapeSize, portraitSize } = thumbSizesForCount(sorted.length, shareCard);
     thumbsEl.style.setProperty("--share-thumb-landscape", `${landscapeSize}px`);
     thumbsEl.style.setProperty("--share-thumb-portrait", `${portraitSize}px`);
+
+    renderedThumbCount = sorted.length;
 
     const rows = buildThumbRows(sorted);
     rows.forEach((row) => {
@@ -132,9 +135,16 @@ export function createShareOverlay() {
   function fitThumbsToAvailableSpace() {
     if (thumbsEl.clientWidth <= 0 || thumbsEl.clientHeight <= 0) return;
 
-    const minThumb = 34;
-    let nextLandscape = Number.parseFloat(thumbsEl.style.getPropertyValue("--share-thumb-landscape")) || 0;
-    let nextPortrait = Number.parseFloat(thumbsEl.style.getPropertyValue("--share-thumb-portrait")) || 0;
+    const cardWidth = Math.max(1, shareCard.clientWidth);
+    const liveCount = Math.max(1, renderedThumbCount || thumbsEl.querySelectorAll(".shareCard__thumb").length || 1);
+    // Internal proportions follow panel/card size.
+    const { landscapeSize, portraitSize } = thumbSizesForCount(liveCount, shareCard);
+    let nextLandscape = landscapeSize;
+    let nextPortrait = portraitSize;
+    thumbsEl.style.setProperty("--share-thumb-landscape", `${nextLandscape}px`);
+    thumbsEl.style.setProperty("--share-thumb-portrait", `${nextPortrait}px`);
+
+    const minThumb = cardWidth * 0.065;
 
     for (let attempt = 0; attempt < 16; attempt += 1) {
       const rowWidths = [...thumbsEl.querySelectorAll(".shareCard__thumbRow")].map((row) => row.scrollWidth);
@@ -143,8 +153,8 @@ export function createShareOverlay() {
       const overHeight = thumbsEl.scrollHeight > thumbsEl.clientHeight;
       if (!overWidth && !overHeight) break;
 
-      nextLandscape = Math.max(minThumb, Math.floor(nextLandscape * 0.9));
-      nextPortrait = Math.max(minThumb, Math.floor(nextPortrait * 0.9));
+      nextLandscape = Math.max(minThumb, nextLandscape * 0.9);
+      nextPortrait = Math.max(minThumb, nextPortrait * 0.9);
       thumbsEl.style.setProperty("--share-thumb-landscape", `${nextLandscape}px`);
       thumbsEl.style.setProperty("--share-thumb-portrait", `${nextPortrait}px`);
     }
@@ -259,38 +269,22 @@ function buildThumbRows(sortedCards) {
   return [sortedCards];
 }
 
-function thumbSizesForCount(count, viewportWidth = window.innerWidth, viewportHeight = window.innerHeight) {
+function thumbSizesForCount(count, shareCard) {
   const safeCount = Math.max(1, Number(count) || 1);
-  const base = safeCount === 1
-    ? { landscapeSize: 188, portraitSize: 188 }
+  const cardWidth = Math.max(1, shareCard?.clientWidth || 1);
+  const sizeRatio = safeCount === 1
+    ? 0.34
     : safeCount === 2
-      ? { landscapeSize: 132, portraitSize: 132 }
+      ? 0.24
       : safeCount === 3
-        ? { landscapeSize: 100, portraitSize: 100 }
+        ? 0.19
         : safeCount === 4
-          ? { landscapeSize: 108, portraitSize: 108 }
-          : { landscapeSize: 96, portraitSize: 96 };
+          ? 0.2
+          : 0.17;
+  const derivedSize = cardWidth * sizeRatio;
 
-  if (viewportWidth > 720) return base;
-
-  const mobileSizes = safeCount === 1
-    ? { landscapeSize: 94, portraitSize: 94 }
-    : safeCount === 2
-      ? { landscapeSize: 82, portraitSize: 82 }
-      : safeCount === 3
-        ? { landscapeSize: 64, portraitSize: 64 }
-        : safeCount === 4
-          ? { landscapeSize: 56, portraitSize: 56 }
-          : { landscapeSize: 56, portraitSize: 56 };
-
-  if (safeCount >= 4 && viewportHeight <= 780) {
-    return {
-      landscapeSize: Math.max(44, Math.round(mobileSizes.landscapeSize * 0.84)),
-      portraitSize: Math.max(44, Math.round(mobileSizes.portraitSize * 0.84))
-    };
-  }
-
-  return mobileSizes;
+  // Internal proportions follow panel/card size.
+  return { landscapeSize: derivedSize, portraitSize: derivedSize };
 }
 
 async function isPortraitCard(card, cache) {
