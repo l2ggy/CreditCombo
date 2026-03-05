@@ -535,7 +535,7 @@ function renderPostQuizScreen() {
       <section class="panel resultPanel quickSetupResultShell">
         <div class="panelHeader panelHeader-result">
           <h2>Results</h2>
-          <button type="button" id="quickShareBtn" class="btn-inline shareLaunch">Share result</button>
+          <button type="button" id="quickShareBtn" class="btn-inline shareLaunch ${isLoading ? "hidden" : ""}">Share result</button>
         </div>
         <div class="divider"></div>
         <div id="result" class="quickSetupResultPanel ${isLoading ? "is-loading" : ""}"></div>
