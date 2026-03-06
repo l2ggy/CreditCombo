@@ -12,6 +12,33 @@ const ROOT_PATH_REWRITES = {
   "/icon-512.png": "/icons/icon-512.png",
 };
 
+function withSecurityHeaders(response, { headRequest = false } = {}) {
+  const headers = new Headers(response.headers);
+  headers.set("X-Content-Type-Options", "nosniff");
+  headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
+  headers.set("X-Frame-Options", "DENY");
+  headers.set(
+    "Content-Security-Policy",
+    [
+      "default-src 'self'",
+      "base-uri 'self'",
+      "frame-ancestors 'none'",
+      "form-action 'self'",
+      "object-src 'none'",
+      "script-src 'self' 'unsafe-inline'",
+      "style-src 'self'",
+      "img-src 'self' data:",
+      "connect-src 'self'",
+    ].join("; "),
+  );
+
+  return new Response(headRequest ? null : response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers,
+  });
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
@@ -24,18 +51,14 @@ export default {
         headers: request.headers,
       });
       const assetResponse = await env.ASSETS.fetch(assetRequest);
-
-      if (request.method === "HEAD") {
-        return new Response(null, {
-          status: assetResponse.status,
-          statusText: assetResponse.statusText,
-          headers: assetResponse.headers,
-        });
-      }
-
-      return assetResponse;
+      return withSecurityHeaders(assetResponse, {
+        headRequest: request.method === "HEAD",
+      });
     }
 
-    return env.ASSETS.fetch(request);
+    const assetResponse = await env.ASSETS.fetch(request);
+    return withSecurityHeaders(assetResponse, {
+      headRequest: request.method === "HEAD",
+    });
   },
 };
