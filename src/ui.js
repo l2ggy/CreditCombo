@@ -2,6 +2,20 @@ import { formatMoneyCAD } from "./shared/format.js";
 import { escapeHtml } from "./shared/sanitize.js";
 import { renderCardThumb, renderResultCardItem } from "./shared/render.js";
 
+
+function setAnimatedText(target, text) {
+  if (!target) return;
+  const nextText = String(text);
+  const didChange = target.textContent !== nextText;
+  target.textContent = nextText;
+  if (!didChange) return;
+
+  target.classList.remove("valueChanged");
+  void target.offsetWidth;
+  target.classList.add("valueChanged");
+  window.setTimeout(() => target.classList.remove("valueChanged"), 200);
+}
+
 export function clampInt(n, lo, hi) {
   n = Math.floor(Number(n) || lo);
   return Math.max(lo, Math.min(hi, n));
@@ -215,7 +229,7 @@ export function renderResult(el, best, annualSpend, schema, valuationMode = "est
     th.textContent = label;
     const td = document.createElement("td");
 
-    td.textContent = value;
+    setAnimatedText(td, value);
 
     tr.append(th, td);
     tbody.append(tr);
@@ -226,7 +240,15 @@ export function renderResult(el, best, annualSpend, schema, valuationMode = "est
 
   const effectiveRateCallout = document.createElement("p");
   effectiveRateCallout.className = "earnRateCallout";
-  effectiveRateCallout.innerHTML = `Net value: <strong>${escapeHtml(formatMoneyCAD(netAfterChexy))}</strong> <span class="subtle">(${escapeHtml(formatPercent(effectiveEarnRate))} earn rate)</span>`;
+
+  const netLabel = document.createTextNode("Net value: ");
+  const netValueStrong = document.createElement("strong");
+  setAnimatedText(netValueStrong, formatMoneyCAD(netAfterChexy));
+  const rateSubtle = document.createElement("span");
+  rateSubtle.className = "subtle";
+  rateSubtle.textContent = `(${formatPercent(effectiveEarnRate)} earn rate)`;
+
+  effectiveRateCallout.append(netLabel, netValueStrong, " ", rateSubtle);
   resultContent.append(effectiveRateCallout);
 
   const chexyCallout = renderChexyWorthItCallout(chexySummary, grossEarnRate);

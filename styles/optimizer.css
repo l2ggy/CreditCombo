@@ -172,3 +172,19 @@ button.shareLaunch:active:not(:disabled){background:color-mix(in srgb,var(--colo
   .shareCard{min-width:0}
   .shareOverlay__actions{grid-template-columns:1fr}
 }
+
+.valueChanged{
+  color:color-mix(in srgb,var(--color-brand-highlight) 78%,var(--color-text) 22%);
+  text-shadow:0 0 8px color-mix(in srgb,var(--color-brand-highlight) 45%,transparent);
+  animation:valueChangedPulse .2s ease-out;
+  will-change:color,text-shadow;
+}
+
+@keyframes valueChangedPulse{
+  from{color:var(--color-text);text-shadow:none}
+  to{color:color-mix(in srgb,var(--color-brand-highlight) 78%,var(--color-text) 22%);text-shadow:0 0 8px color-mix(in srgb,var(--color-brand-highlight) 45%,transparent)}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .valueChanged{animation:none}
+}

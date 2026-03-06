@@ -3,6 +3,20 @@ import { buildShareCopy } from "./share-copy.js";
 
 const QR_ENDPOINT = "https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=";
 
+
+function setAnimatedText(target, text) {
+  if (!target) return;
+  const nextText = String(text);
+  const didChange = target.textContent !== nextText;
+  target.textContent = nextText;
+  if (!didChange) return;
+
+  target.classList.remove("valueChanged");
+  void target.offsetWidth;
+  target.classList.add("valueChanged");
+  window.setTimeout(() => target.classList.remove("valueChanged"), 200);
+}
+
 export function createShareOverlay() {
   const root = document.createElement("div");
   root.className = "shareOverlay hidden";
@@ -86,7 +100,7 @@ export function createShareOverlay() {
 
     kickerEl.textContent = copy.kicker;
     headlineEl.textContent = copy.headline;
-    heroValueEl.textContent = copy.heroValue;
+    setAnimatedText(heroValueEl, copy.heroValue);
     heroLabelEl.textContent = copy.heroValueLabel;
     ctaEl.textContent = copy.cta;
 

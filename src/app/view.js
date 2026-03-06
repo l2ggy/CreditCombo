@@ -1,6 +1,17 @@
 export function createView() {
   ensureChexyFeeField();
 
+  const flashChangedValue = (target, nextValue) => {
+    if (!target) return;
+    const nextText = String(nextValue);
+    const didChange = target.textContent !== nextText;
+    target.textContent = nextText;
+    if (!didChange) return;
+
+    target.classList.add("valueChanged");
+    window.setTimeout(() => target.classList.remove("valueChanged"), 200);
+  };
+
   const elements = {
     statusEl: document.getElementById("status"),
     appEl: document.getElementById("app"),
@@ -33,7 +44,7 @@ export function createView() {
   return {
     elements,
     updateKValue(value) {
-      if (elements.kValueEl) elements.kValueEl.textContent = String(value);
+      flashChangedValue(elements.kValueEl, value);
     },
     setLoadingState(isLoading) {
       elements.resultEl.classList.toggle("is-loading", isLoading);
