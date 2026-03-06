@@ -5,6 +5,7 @@ import { renderLockedChip } from "../shared/render.js";
 import { bindCardSearchKeyboard, createCardSearchIndex, rankCardMatches, renderCardSearchOptions } from "../shared/card-search.js";
 import { buildSearchText, scoreSearchMatch, tokenizeSearchQuery } from "../shared/search.js";
 import { escapeHtml } from "../shared/sanitize.js";
+import { buildShareContext } from "../share/share-context.js";
 
 export function createActions({ state, view, schema, programsMap, eligibleCards, eligibleCardIdSet, eligibleCardsById, subcategoryConfigs = {}, ensureShareOverlay = null, openShareBtn = null }) {
   const MAX_COMBO_CACHE_ENTRIES = 100;
@@ -31,15 +32,6 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
     openShareBtn.classList.toggle("hidden", !latestShareContext);
   }
 
-
-  function buildShareContext(best, chexySummary) {
-    if (!best?.combo?.length) return null;
-    return {
-      best,
-      netAfterChexy: Number(best.net || 0) - Number(chexySummary?.chexyAdjustedAnnualSpend || 0),
-      shareUrl: window.location.href
-    };
-  }
 
   function openShareOverlay() {
     if (!latestShareContext || typeof ensureShareOverlay !== "function") return;
@@ -470,7 +462,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
       if (runVersion !== uiRunVersion) return;
       view.setLoadingState(false);
       renderResult(elements.resultEl, cached, adjustedAnnualSpend, schema, state.valuationMode, chexySummary, subcategoryConfigs);
-      setShareContext(buildShareContext(cached, chexySummary));
+      setShareContext(buildShareContext(cached, chexySummary, window.location.href));
       elements.runBtn.disabled = false;
       return;
     }
@@ -481,7 +473,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
       setCachedCombo(key, best, { contextKey, k: state.k });
       view.setLoadingState(false);
       renderResult(elements.resultEl, best, adjustedAnnualSpend, schema, state.valuationMode, chexySummary, subcategoryConfigs);
-      setShareContext(buildShareContext(best, chexySummary));
+      setShareContext(buildShareContext(best, chexySummary, window.location.href));
     } catch (error) {
       if (runVersion !== uiRunVersion) return;
       view.setLoadingState(false);
