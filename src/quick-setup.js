@@ -554,7 +554,6 @@ function renderPostQuizScreen() {
       <section class="panel resultPanel quickSetupResultShell">
         <div class="panelHeader panelHeader-result">
           <h2>Results</h2>
-          <button type="button" id="quickShareBtn" class="btn-inline shareLaunch ${isLoading ? "hidden" : ""}">Share result</button>
         </div>
         <div class="divider"></div>
         <div id="result" class="quickSetupResultPanel ${isLoading ? "is-loading" : ""}"></div>
@@ -589,7 +588,8 @@ function renderPostQuizScreen() {
     renderResult(resultPanelEl, best, payload.annualSpend, payload.schema, payload.valuationMode, chexySummary, ctx.subcategoryConfigs);
   }
 
-  appEl.querySelector("#quickShareBtn")?.addEventListener("click", () => {
+  const shareBtn = resultPanelEl.querySelector("[data-share-launch]");
+  shareBtn?.addEventListener("click", () => {
     const shareContext = buildShareContext(best, chexySummary, window.location.href);
     if (!shareContext) return;
     const overlay = ensureShareOverlay();

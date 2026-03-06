@@ -40,8 +40,7 @@ async function main() {
       eligibleCardIdSet,
       eligibleCardsById,
       subcategoryConfigs,
-      ensureShareOverlay,
-      openShareBtn: elements.openShareBtn
+      ensureShareOverlay
     });
 
     actions.syncInitialUi();
