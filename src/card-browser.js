@@ -1,11 +1,12 @@
 import { loadCoreData } from "./data-service.js";
 import { formatMoneyCAD, formatMultiplier } from "./shared/format.js";
 import { formatIssuerNetwork, renderCardThumb, renderOfficialCardLink } from "./shared/render.js";
-import { buildSearchText, scoreSearchMatch, tokenizeSearchQuery } from "./shared/search.js";
+import { createCardSearchIndex, rankCardMatches } from "./shared/card-search.js";
 import { merchantPortalConfigs, subcategoryRateForCard } from "./subcategory-config.js";
 
 const state = {
   cards: [],
+  cardSearchIndex: [],
   programs: new Map(),
   subcategoryConfigs: {},
   filteredCards: []
@@ -85,31 +86,13 @@ function updateResetButtonState() {
   els.resetFiltersBtn.disabled = !hasActiveFilters();
 }
 
-function cardSearchScore(card, queryTokens) {
-  const searchText = buildSearchText([
-    card.card_name,
-    card.issuer,
-    card.network,
-    card.rewards_program,
-    ...Object.keys(card.earn_rates || {})
-  ]);
-
-  const fullScore = scoreSearchMatch(searchText, queryTokens);
-  if (fullScore < 0) return -1;
-
-  const cardNameScore = scoreSearchMatch(buildSearchText(card.card_name), queryTokens);
-  return fullScore + (cardNameScore > 0 ? cardNameScore * 3 : 0);
-}
-
-function cardMatches(card, queryTokens) {
+function cardMatches(card) {
   const issuer = els.issuerFilter.value;
   const program = els.programFilter.value;
 
   if (issuer && card.issuer !== issuer) return false;
   if (program && card.rewards_program !== program) return false;
-  if (!queryTokens.length) return true;
-
-  return cardSearchScore(card, queryTokens) >= 0;
+  return true;
 }
 
 function cardSortComparator() {
@@ -352,19 +335,16 @@ function renderBrowserCardItem(card) {
 }
 
 function renderCards() {
-  const queryTokens = tokenizeSearchQuery(els.searchInput.value);
-  const sortComparator = cardSortComparator();
+  const query = els.searchInput.value;
+  const matchedCards = query.trim()
+    ? rankCardMatches(state.cardSearchIndex, query, { limit: state.cards.length })
+    : state.cards;
 
-  const filteredCards = state.cards
-    .filter((card) => cardMatches(card, queryTokens))
-    .map((card) => ({ card, score: queryTokens.length ? cardSearchScore(card, queryTokens) : 0 }));
+  const filteredCards = matchedCards.filter(cardMatches);
 
-  filteredCards.sort((a, b) => {
-    if (queryTokens.length && b.score !== a.score) return b.score - a.score;
-    return sortComparator(a.card, b.card);
-  });
-
-  state.filteredCards = filteredCards.map(({ card }) => card);
+  state.filteredCards = query.trim()
+    ? filteredCards
+    : sortCards(filteredCards);
 
   els.summary.textContent = `Showing ${state.filteredCards.length} of ${state.cards.length} cards.`;
   updateResetButtonState();
@@ -416,6 +396,7 @@ async function init() {
     state.programs = programsMap;
     // Card browser intentionally uses the full dataset rather than optimizer-eligible subset.
     state.cards = cardsJson?.cards ?? [];
+    state.cardSearchIndex = createCardSearchIndex(state.cards);
 
     const issuers = [...new Set(state.cards.map((c) => c.issuer))].sort((a, b) => a.localeCompare(b));
     const programs = [...new Set(state.cards.map((c) => c.rewards_program))].sort((a, b) => a.localeCompare(b));
