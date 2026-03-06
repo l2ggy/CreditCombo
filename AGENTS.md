@@ -24,6 +24,10 @@ These rules apply to the entire repository unless a deeper `AGENTS.md` overrides
    - Keep changes focused and minimal.
    - Avoid duplicate logic and unnecessary new dependencies.
 
+4. **Keep wording country-agnostic for future expansion.**
+   - Prefer country-neutral wording in functionality, UI copy, and docs whenever possible.
+   - Avoid hardcoding country-specific assumptions unless they are required by current data or logic.
+
 ## Implementation guidance for agents
 - Make small, reviewable commits.
 - Preserve existing coding style and naming patterns.

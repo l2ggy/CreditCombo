@@ -36,57 +36,67 @@
     <h1 class="pageTitle">Rewards Valuation Guide</h1>
     <div class="header">
       <div>
-        <p class="subtle">How CreditCombo values rewards programs and why there are two valuation modes.</p>
+        <p class="subtle">How CreditCombo translates rewards into a comparable cash value and how to choose the right valuation mode for your setup.</p>
       </div>
     </div>
   </header>
 
   <main class="container pageStack">
-    <section class="panel">
-      <h2>How valuations work</h2>
-      <p class="subtle">
-        CreditCombo converts points into an estimated cash-equivalent value so cards from different rewards programs can be compared on the same scale.
-        Each program gets two values: an <strong>estimated value</strong> and a <strong>minimum guaranteed value</strong>.
-      </p>
+    <section class="panel valuationHero" aria-labelledby="valuation-basics-title">
+      <div class="valuationBadgeRow" role="list" aria-label="Valuation reference">
+        <span class="valuationBadge" role="listitem">Currency: configured base currency</span>
+        <span class="valuationBadge" role="listitem">Value unit: cents per point (cpp)</span>
+        <span class="valuationBadge" role="listitem">Valuations last verified: 2026-02-27</span>
+      </div>
+      <h2 id="valuation-basics-title">How CreditCombo converts rewards to cash value</h2>
+      <p class="subtle">For each rewards program, CreditCombo stores an estimated cpp value and a minimum guaranteed cpp value. Your selected mode controls which value is used to convert reward units into annual cash-equivalent value.</p>
+      <div class="valuationFormula" aria-label="Valuation formula">
+        <p class="mono">annual_value = annual_reward_units × (selected_cpp ÷ 100)</p>
+      </div>
     </section>
 
-    <section class="panel">
-      <h2>Where valuation inputs come from</h2>
+    <section class="panel" aria-labelledby="valuation-modes-title">
+      <h2 id="valuation-modes-title">Two valuation modes</h2>
+      <div class="valuationGrid" role="list" aria-label="Valuation mode definitions">
+        <article class="valuationCard" role="listitem">
+          <h3>Estimated value</h3>
+          <p>Uses the modeled midpoint for each program. This is best for users who redeem strategically, including transfer partners and higher-value travel redemptions where available.</p>
+        </article>
+        <article class="valuationCard" role="listitem">
+          <h3>Minimum guaranteed value</h3>
+          <p>Uses the conservative floor for each program. This reflects broadly accessible redemption paths such as statement credits, cashback, fixed-value travel portals, and other reliable low-variance options.</p>
+        </article>
+      </div>
+      <p class="subtle">Cashback-denominated programs are modeled at face value (1.0 cpp equivalent), so estimated and minimum values are usually the same.</p>
+    </section>
+
+    <section class="panel" aria-labelledby="valuation-sources-title">
+      <h2 id="valuation-sources-title">Where valuation inputs come from</h2>
       <ul>
-        <li>Published valuations and reward strategy benchmarks from Canadian points communities, including Prince of Travel, used as a starting point for many estimated values.</li>
-        <li>Issuer and rewards-program documentation (terms, transfer ratios, and redemption charts) used to sanity-check or adjust those estimates.</li>
-        <li>Publicly listed fallback redemption options (like statement credits, gift cards, or fixed-value travel portals) used to set conservative floors.</li>
+        <li>Published third-party points valuations are used as primary benchmarks for points programs.</li>
+        <li>Additional valuation references are used as fallback benchmarks where primary valuations are unavailable.</li>
+        <li>Program and issuer documentation are used to verify transfer mechanics, redemption structures, and fixed-value floor paths.</li>
       </ul>
-      <p class="subtle">
-        These are intended to be practical directional estimates, not promises for every redemption scenario.
-      </p>
+      <p class="subtle">These values are directional planning estimates, not guaranteed redemption outcomes for every itinerary, merchant, or booking channel.</p>
     </section>
 
-    <section class="panel">
-      <h2>Estimated value vs. minimum guaranteed value</h2>
+    <section class="panel" aria-labelledby="mode-selection-title">
+      <h2 id="mode-selection-title">How to pick a mode in practice</h2>
       <ul>
-        <li>
-          <strong>Estimated value</strong>: a realistic midpoint for users who redeem strategically (for example, transferring to partners or using high-value travel redemptions where available).
-        </li>
-        <li>
-          <strong>Minimum guaranteed value</strong>: a conservative floor based on redemption paths that are broadly and reliably available (such as straightforward cash-back-like options).
-        </li>
+        <li>Choose <strong>Estimated value</strong> if you are willing to optimize transfers and redemption timing.</li>
+        <li>Choose <strong>Minimum guaranteed value</strong> if you want a lower-bound forecast that is less sensitive to redemption strategy.</li>
+        <li>Compare both modes to understand upside range versus dependable baseline.</li>
       </ul>
-      <p class="subtle">
-        Use estimated value if you actively optimize redemptions. Use minimum guaranteed value if you want a safer, lower-bound comparison.
-      </p>
     </section>
 
-    <section class="panel">
-      <h2>Rules scope used by CreditCombo</h2>
+    <section class="panel" aria-labelledby="rules-scope-title">
+      <h2 id="rules-scope-title">What CreditCombo models today</h2>
       <ul>
-        <li>Two valuation modes are modeled: estimated points value and minimum guaranteed redemption value.</li>
-        <li>Category spend is assigned to the best card, cap overflow is rerouted to the next-best card, and residual overflow can earn at the above-cap rate.</li>
+        <li>Category spend is allocated to the highest value card first, with cap overflow rerouted to the next best eligible card.</li>
         <li>Annual fees are subtracted from gross rewards to report net annual value.</li>
+        <li>Programs marked as non-earning are excluded from optimization value contribution.</li>
       </ul>
-      <p class="subtle">
-        Not yet modeled: merchant- or portal-specific <code>special_earn_rules</code>. Also not modeled: MCC quirks and acceptance constraints, and one-time promotions or welcome bonuses.
-      </p>
+      <p class="subtle">Out of scope: unstructured merchant/portal-specific special rules, MCC edge cases, broad acceptance constraints, and one-time promotions or welcome bonuses.</p>
     </section>
   </main>
 </body>
