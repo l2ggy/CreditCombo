@@ -2,7 +2,7 @@
 
 ## 1) Repository purpose and product scope
 
-CreditCombo is a static, client-rendered web application for modeling Canadian credit-card setups using category spending inputs, card earn rates, reward-program valuation data, annual fees, and card-level constraints. It provides:
+CreditCombo is a static, client-rendered web application for modeling credit-card setups using category spending inputs, card earn rates, reward-program valuation data, annual fees, and card-level constraints. It provides:
 
 - A **manual optimizer** (`index.html`) for direct input control.
 - A **guided quick-setup flow** (`quick-setup.html`) that walks users through profile questions before running optimization.
@@ -124,7 +124,7 @@ The app is shipped as static assets and served through a lightweight Cloudflare 
   - `render.js`: shared card/program render snippets (thumb/link/display helpers).
   - `card-search.js`: card search index + ranking.
   - `search.js`: generic tokenization/scoring utilities.
-  - `format.js`: CAD/multiplier/percent-format helpers.
+  - `format.js`: currency/multiplier/percent-format helpers.
   - `sanitize.js`: HTML escaping utility.
 
 ### Sharing subsystem (`src/share/`)
@@ -239,7 +239,7 @@ Subcategories allow practical modeling of special merchant channels not represen
 
 5. **Generate/evaluate candidate combinations**
    - For each candidate combo size, compute gross reward value with cap/overflow handling.
-   - Convert earn units to CAD via selected valuation mode.
+   - Convert earn units to the configured base currency via selected valuation mode.
    - Subtract annual fees to produce net value.
 
 6. **Apply explicit Chexy cost adjustment**
@@ -279,9 +279,10 @@ Subcategories allow practical modeling of special merchant channels not represen
 
 ## Valuation guide (`valuations.html`)
 
-- Explains why two valuation modes exist.
-- Documents source philosophy and conservative floors.
-- Lists what rules are modeled and what remains out-of-scope.
+- Explains cash-equivalent conversion math used by the optimizer (`annual_reward_units × selected_cpp ÷ 100`).
+- Highlights metadata shown in UI (currency, value unit, and valuation verification date from program data).
+- Explains estimated vs minimum guaranteed valuation modes and practical mode-selection guidance.
+- Documents source philosophy, conservative floors, modeled rules, and out-of-scope items.
 
 ---
 

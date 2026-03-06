@@ -1,6 +1,6 @@
 # CreditCombo
 
-CreditCombo is a static web app that helps you build a long-term Canadian credit-card setup from your monthly spending profile.
+CreditCombo is a static web app that helps you build a long-term credit-card setup from your monthly spending profile.
 
 ## What the app does
 
@@ -10,6 +10,7 @@ CreditCombo is a static web app that helps you build a long-term Canadian credit
 - Supports two valuation modes:
   - **Estimated value**
   - **Minimum guaranteed value**
+- Includes a valuation guide (`valuations.html`) with conversion math, source methodology, and current valuation metadata.
 - Applies annual fees and reports net annual value.
 - Shows category/subcategory “which card to use” guidance.
 - Includes practical filters such as:
