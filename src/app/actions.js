@@ -17,6 +17,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
 
   let optimizeWorker = null;
   let runTokenCounter = 0;
+  let uiRunVersion = 0;
   const pendingRequests = new Map();
   let shouldRenderLockedCardPicks = true;
   let hasManualOptimizationRun = false;
@@ -358,6 +359,9 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
   }
 
   async function runOptimization({ manual = false } = {}) {
+    uiRunVersion += 1;
+    const runVersion = uiRunVersion;
+
     if (manual) hasManualOptimizationRun = true;
     syncStateFromControls();
 
@@ -418,6 +422,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
     const { key, cached, payload } = getBestComboSyncCache(additionalCards, adjustedAnnualSpend, monthlySpend, subcategorySpend, selectedLockedIds);
 
     if (cached) {
+      if (runVersion !== uiRunVersion) return;
       view.setLoadingState(false);
       renderResult(elements.resultEl, cached, adjustedAnnualSpend, schema, state.valuationMode, chexySummary, subcategoryConfigs);
       setShareContext(buildShareContext(cached, chexySummary));
@@ -425,24 +430,22 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
       return;
     }
 
-    const requestId = runTokenCounter + 1;
-
     try {
       const best = await runOptimizationInWorker(payload);
-      if (requestId !== runTokenCounter) return;
+      if (runVersion !== uiRunVersion) return;
       comboCache.set(key, best);
       view.setLoadingState(false);
       renderResult(elements.resultEl, best, adjustedAnnualSpend, schema, state.valuationMode, chexySummary, subcategoryConfigs);
       setShareContext(buildShareContext(best, chexySummary));
     } catch (error) {
-      if (requestId !== runTokenCounter) return;
+      if (runVersion !== uiRunVersion) return;
       view.setLoadingState(false);
       elements.resultEl.classList.remove("hidden");
       elements.resultEl.classList.remove("resultEmpty");
       elements.resultEl.innerHTML = `<span class="badge bad">Error</span> ${escapeHtml(error?.message || "Failed to optimize")}`;
       setShareContext(null);
     } finally {
-      if (requestId === runTokenCounter) elements.runBtn.disabled = false;
+      if (runVersion === uiRunVersion) elements.runBtn.disabled = false;
     }
   }
 
