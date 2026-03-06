@@ -10,8 +10,6 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
   const MAX_COMBO_CACHE_ENTRIES = 100;
   const { elements } = view;
   const comboCache = new Map();
-  const comboCacheMeta = new Map();
-  const comboContextIndex = new Map();
   const cardSearchIndex = createCardSearchIndex(eligibleCards);
 
   const cashbackProgramIds = new Set([...programsMap.values()]
@@ -281,54 +279,31 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
     // Lightweight LRU: touch hits so recently-used entries stay in the cache longer.
     comboCache.delete(key);
     comboCache.set(key, cached);
-    return cached;
-  }
-
-  function deleteCachedCombo(key) {
-    if (!comboCache.has(key)) return;
-    comboCache.delete(key);
-
-    const meta = comboCacheMeta.get(key);
-    comboCacheMeta.delete(key);
-    if (!meta) return;
-
-    const indexedKeys = comboContextIndex.get(meta.contextKey);
-    if (!indexedKeys) return;
-    indexedKeys.delete(key);
-    if (!indexedKeys.size) comboContextIndex.delete(meta.contextKey);
+    return cached.combo;
   }
 
   function setCachedCombo(key, combo, { contextKey, k }) {
-    if (comboCache.has(key)) deleteCachedCombo(key);
-
-    comboCache.set(key, combo);
-    comboCacheMeta.set(key, { contextKey, k });
-
-    const indexedKeys = comboContextIndex.get(contextKey) || new Set();
-    indexedKeys.add(key);
-    comboContextIndex.set(contextKey, indexedKeys);
+    if (comboCache.has(key)) comboCache.delete(key);
+    comboCache.set(key, { combo, contextKey, k });
 
     // Evict from the front to cap memory usage while preserving most-recently-used results.
     while (comboCache.size > MAX_COMBO_CACHE_ENTRIES) {
       const oldestKey = comboCache.keys().next().value;
-      deleteCachedCombo(oldestKey);
+      comboCache.delete(oldestKey);
     }
   }
 
   function getBestComboFromLargerK(contextKey, requestedK) {
-    const indexedKeys = comboContextIndex.get(contextKey);
-    if (!indexedKeys?.size) return null;
-
     let bestMatch = null;
-    for (const cacheKey of indexedKeys) {
-      const meta = comboCacheMeta.get(cacheKey);
-      if (!meta || meta.k <= requestedK) continue;
+
+    for (const [cacheKey, entry] of comboCache.entries()) {
+      if (!entry || entry.contextKey !== contextKey || entry.k <= requestedK) continue;
       const candidate = getCachedCombo(cacheKey);
       if (!candidate) continue;
 
       // A best result found at a larger k is still valid for smaller k when it uses <= requested cards.
       if ((candidate.combo?.length || 0) > requestedK) continue;
-      if (!bestMatch || meta.k < bestMatch.k) bestMatch = { k: meta.k, combo: candidate };
+      if (!bestMatch || entry.k < bestMatch.k) bestMatch = { k: entry.k, combo: candidate };
     }
 
     return bestMatch?.combo || null;
@@ -341,7 +316,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
     const excludedProgramsKey = [...state.excludedProgramIds].sort().join(",");
     const lockKey = [...lockedIds].sort().join(",");
     const additionalIdsKey = additionalCards.map((card) => card.id).sort().join(",");
-    const contextKey = serializeCacheParts([
+    const contextParts = [
       spendKey(monthlySpend),
       subcategorySpendKey(subcategorySpend),
       `chexyFee:${state.chexyFeePercent || 0}`,
@@ -352,19 +327,12 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
       excludedProgramsKey,
       lockKey,
       additionalIdsKey
-    ]);
+    ];
+    const contextKey = serializeCacheParts(contextParts);
     const key = serializeCacheParts([
-      spendKey(monthlySpend),
-      subcategorySpendKey(subcategorySpend),
-      `chexyFee:${state.chexyFeePercent || 0}`,
-      state.valuationMode,
+      ...contextParts.slice(0, 4),
       String(state.k),
-      String(maxAnnualFee),
-      includeBusinessCards,
-      excludeCashbackPrograms,
-      excludedProgramsKey,
-      lockKey,
-      additionalIdsKey
+      ...contextParts.slice(4)
     ]);
     return {
       key,
