@@ -7,6 +7,7 @@ import { buildSearchText, scoreSearchMatch, tokenizeSearchQuery } from "../share
 import { escapeHtml } from "../shared/sanitize.js";
 
 export function createActions({ state, view, schema, programsMap, eligibleCards, eligibleCardIdSet, eligibleCardsById, subcategoryConfigs = {}, ensureShareOverlay = null, openShareBtn = null }) {
+  const MAX_COMBO_CACHE_ENTRIES = 100;
   const { elements } = view;
   const comboCache = new Map();
   const cardSearchIndex = createCardSearchIndex(eligibleCards);
@@ -271,6 +272,44 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
     return keys.map((key) => `${key}:${subcategorySpend[key] || 0}`).join("|");
   }
 
+  function getCachedCombo(key) {
+    const cached = comboCache.get(key);
+    if (!cached) return null;
+
+    // Lightweight LRU: touch hits so recently-used entries stay in the cache longer.
+    comboCache.delete(key);
+    comboCache.set(key, cached);
+    return cached.combo;
+  }
+
+  function setCachedCombo(key, combo, { contextKey, k }) {
+    if (comboCache.has(key)) comboCache.delete(key);
+    comboCache.set(key, { combo, contextKey, k });
+
+    // Evict from the front to cap memory usage while preserving most-recently-used results.
+    while (comboCache.size > MAX_COMBO_CACHE_ENTRIES) {
+      const oldestKey = comboCache.keys().next().value;
+      comboCache.delete(oldestKey);
+    }
+  }
+
+  function getBestComboFromLargerK(contextKey, requestedK, lockedCardCount = 0) {
+    let bestMatch = null;
+    const maxComboSize = Math.max(0, requestedK) + Math.max(0, lockedCardCount);
+
+    for (const [cacheKey, entry] of comboCache.entries()) {
+      if (!entry || entry.contextKey !== contextKey || entry.k <= requestedK) continue;
+      const candidate = entry.combo;
+      if (!candidate) continue;
+
+      // Reuse larger-k results only when the resulting combo still fits this request's allowed card count.
+      if ((candidate.combo?.length || 0) > maxComboSize) continue;
+      if (!bestMatch || entry.k < bestMatch.k) bestMatch = { key: cacheKey, k: entry.k, combo: candidate };
+    }
+
+    return bestMatch ? getCachedCombo(bestMatch.key) : null;
+  }
+
   function getBestComboSyncCache(additionalCards, annualSpend, monthlySpend, subcategorySpend, lockedIds) {
     const maxAnnualFee = Number.isFinite(state.maxAnnualFee) ? state.maxAnnualFee : "none";
     const includeBusinessCards = state.includeBusinessCards ? "includeBusiness" : "excludeBusiness";
@@ -278,22 +317,28 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
     const excludedProgramsKey = [...state.excludedProgramIds].sort().join(",");
     const lockKey = [...lockedIds].sort().join(",");
     const additionalIdsKey = additionalCards.map((card) => card.id).sort().join(",");
-    const key = serializeCacheParts([
+    const contextParts = [
       spendKey(monthlySpend),
       subcategorySpendKey(subcategorySpend),
       `chexyFee:${state.chexyFeePercent || 0}`,
       state.valuationMode,
-      String(state.k),
       String(maxAnnualFee),
       includeBusinessCards,
       excludeCashbackPrograms,
       excludedProgramsKey,
       lockKey,
       additionalIdsKey
+    ];
+    const contextKey = serializeCacheParts(contextParts);
+    const key = serializeCacheParts([
+      ...contextParts.slice(0, 4),
+      String(state.k),
+      ...contextParts.slice(4)
     ]);
     return {
       key,
-      cached: comboCache.get(key) || null,
+      contextKey,
+      cached: getCachedCombo(key) || getBestComboFromLargerK(contextKey, state.k, lockedIds.length),
       payload: {
         cards: eligibleCards,
         programs: [...programsMap.values()],
@@ -419,7 +464,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
     const adjustedAnnualSpend = chexySummary.adjustedAnnualSpend;
 
     const selectedLockedIds = selectedLockedCardIds(state, eligibleCardIdSet);
-    const { key, cached, payload } = getBestComboSyncCache(additionalCards, adjustedAnnualSpend, monthlySpend, subcategorySpend, selectedLockedIds);
+    const { key, contextKey, cached, payload } = getBestComboSyncCache(additionalCards, adjustedAnnualSpend, monthlySpend, subcategorySpend, selectedLockedIds);
 
     if (cached) {
       if (runVersion !== uiRunVersion) return;
@@ -433,7 +478,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
     try {
       const best = await runOptimizationInWorker(payload);
       if (runVersion !== uiRunVersion) return;
-      comboCache.set(key, best);
+      setCachedCombo(key, best, { contextKey, k: state.k });
       view.setLoadingState(false);
       renderResult(elements.resultEl, best, adjustedAnnualSpend, schema, state.valuationMode, chexySummary, subcategoryConfigs);
       setShareContext(buildShareContext(best, chexySummary));
