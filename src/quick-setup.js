@@ -7,6 +7,7 @@ import { bindCardSearchKeyboard, createCardSearchIndex, rankCardMatches, renderC
 import { formatMoneyCAD } from "./shared/format.js";
 import { escapeHtml } from "./shared/sanitize.js";
 import { createShareOverlay } from "./share/share-overlay.js";
+import { buildShareContext } from "./share/share-context.js";
 
 const appEl = document.getElementById("quickSetupApp");
 const QUICK_SETUP_DEFAULTS = Object.freeze({
@@ -34,15 +35,6 @@ let currentStepIndex = 0;
 function ensureShareOverlay() {
   if (!shareOverlay) shareOverlay = createShareOverlay();
   return shareOverlay;
-}
-
-function buildShareContext(best, chexySummary) {
-  if (!best?.combo?.length) return null;
-  return {
-    best,
-    netAfterChexy: Number(best.net || 0) - Number(chexySummary?.chexyAdjustedAnnualSpend || 0),
-    shareUrl: window.location.href
-  };
 }
 
 function resolveQuizMode(value) {
@@ -598,7 +590,7 @@ function renderPostQuizScreen() {
   }
 
   appEl.querySelector("#quickShareBtn")?.addEventListener("click", () => {
-    const shareContext = buildShareContext(best, chexySummary);
+    const shareContext = buildShareContext(best, chexySummary, window.location.href);
     if (!shareContext) return;
     const overlay = ensureShareOverlay();
     overlay.updateContext(shareContext);
