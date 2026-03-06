@@ -675,6 +675,27 @@ function renderWizard() {
   actionsEl.classList.toggle("hidden", !(showBack || showNext));
 }
 
+function renderInitializationError(error) {
+  const errorMessage = error && typeof error.message === "string"
+    ? error.message
+    : "Unknown setup error";
+
+  appEl.innerHTML = `
+    <section class="panel" role="alert" aria-live="assertive">
+      <h2>Quick setup is temporarily unavailable</h2>
+      <p>We couldn't load the data needed to start this flow. Please try again in a moment.</p>
+      <p class="muted">Support details: ${escapeHtml(errorMessage)}</p>
+      <div class="quickActions">
+        <button type="button" id="quickSetupRetry" class="primary">Retry</button>
+      </div>
+    </section>
+  `;
+
+  appEl.querySelector("#quickSetupRetry")?.addEventListener("click", () => {
+    window.location.reload();
+  });
+}
+
 async function main() {
   const data = await loadOptimizerData();
   const optimizationEligibleCards = QUICK_SETUP_DEFAULTS.includeBusinessCards
@@ -691,4 +712,7 @@ async function main() {
   renderWizard();
 }
 
-main();
+main().catch((error) => {
+  console.error("Quick setup failed to initialize", error);
+  renderInitializationError(error);
+});
