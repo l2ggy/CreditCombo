@@ -5,6 +5,7 @@ import { renderResult } from "./ui.js";
 import { renderLockedChip } from "./shared/render.js";
 import { bindCardSearchKeyboard, createCardSearchIndex, rankCardMatches, renderCardSearchOptions } from "./shared/card-search.js";
 import { formatMoneyCAD } from "./shared/format.js";
+import { escapeHtml } from "./shared/sanitize.js";
 import { createShareOverlay } from "./share/share-overlay.js";
 
 const appEl = document.getElementById("quickSetupApp");
@@ -69,15 +70,6 @@ function titleForCategory(cat) {
 
 function categoryDetailsFor(cat) {
   return String(ctx?.categoryDescriptions?.[cat] || "").trim().replace(/\s+/g, " ");
-}
-
-function escapeHtml(value) {
-  return String(value)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
 }
 
 function spendSliderConfig(cat) {
