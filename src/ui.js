@@ -187,8 +187,12 @@ export function renderResult(el, best, annualSpend, schema, valuationMode = "est
   resultContent.append(comboHeading);
 
   const comboList = document.createElement("ul");
-  comboList.className = "listClean";
-  best.combo.forEach((card) => comboList.append(renderResultCardItem(card)));
+  comboList.className = "listClean resultComboList";
+  best.combo.forEach((card, index) => {
+    const item = renderResultCardItem(card);
+    if (index === 0) item.classList.add("resultTopRecommendation");
+    comboList.append(item);
+  });
   resultContent.append(comboList);
 
   const valueHeading = document.createElement("h2");

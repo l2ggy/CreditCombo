@@ -68,6 +68,9 @@
 .resultPanel #result table :is(th,td){padding:var(--space-3)}
 .resultPanel #result table th{font-weight:600;color:var(--color-muted);width:62%}
 .useHeading{margin-bottom:var(--space-3)}
+.resultComboList{display:grid;gap:var(--space-3)}
+.resultTopRecommendation{position:relative;border:1px solid color-mix(in srgb,var(--color-accent) 38%,var(--color-border));border-radius:var(--radius-md);padding:var(--space-3);background:color-mix(in srgb,var(--color-panel) 86%,var(--color-accent) 14%);animation:topRecommendationGlow 950ms ease-out 1 both}
+@keyframes topRecommendationGlow{0%{box-shadow:0 0 0 1px color-mix(in srgb,var(--color-accent) 50%,transparent),0 0 0 color-mix(in srgb,var(--color-accent) 0%,transparent),0 0 0 color-mix(in srgb,var(--color-brand-highlight) 0%,transparent)}35%{box-shadow:0 0 0 1px color-mix(in srgb,var(--color-accent) 58%,transparent),0 0 20px color-mix(in srgb,var(--color-accent) 54%,transparent),0 0 34px color-mix(in srgb,var(--color-brand-highlight) 32%,transparent)}100%{box-shadow:0 0 0 1px color-mix(in srgb,var(--color-accent) 32%,transparent),0 0 6px color-mix(in srgb,var(--color-accent) 16%,transparent),0 0 12px color-mix(in srgb,var(--color-brand-highlight) 8%,transparent)}}
 .tileGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--space-3)}
 .tile{display:flex;flex-direction:column;align-items:center;gap:var(--space-2);padding:var(--space-3);border:1px solid var(--color-border);border-radius:var(--radius-md);background:color-mix(in srgb,var(--color-panel) 75%,transparent);text-align:center}
 .tileTitle{font-size:var(--font-size-sm);line-height:var(--line-height-compact)}
@@ -105,7 +108,7 @@
 .advancedProgramPrefs{display:grid;gap:var(--space-3)}
 .advancedProgramPrefs h4{margin:0}
 
-@media (prefers-reduced-motion:reduce){.spendControlCaret,.issues summary::after,.issuesBody{transition:none}.issuesBody{transform:none}.resultPanel #result .resultContent--enter{animation:none;transform:none}}
+@media (prefers-reduced-motion:reduce){.spendControlCaret,.issues summary::after,.issuesBody{transition:none}.issuesBody{transform:none}.resultPanel #result .resultContent--enter,.resultTopRecommendation{animation:none;transform:none}}
 
 @media (max-width:900px){.layout{grid-template-columns:1fr}.spendRow{grid-template-columns:1fr;align-items:start}.spendInputWrap{grid-column:1/-1}.spendRowTop,.subcategoryItem{grid-template-columns:1fr;align-items:start;gap:var(--space-2)}.subcategoryPanel{grid-template-columns:1fr}.spendMeta{overflow:visible}.spendMetaControls{white-space:normal}.spendCat{white-space:normal;overflow:visible;text-overflow:clip}.tileGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:380px){.tileGrid{grid-template-columns:1fr}}
