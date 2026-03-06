@@ -17,7 +17,7 @@ CreditCombo is a static web app that helps you build a long-term Canadian credit
   - Excluding cashback programs
   - Excluding specific rewards programs
   - Setting a maximum annual fee
-- Includes a full card browser (`cards.html`) and shareable optimizer results, with a full-width primary share action directly under result value details.
+- Includes a full card browser (`cards.html`) and shareable optimizer results.
 
 ## Current modeling limits
 
