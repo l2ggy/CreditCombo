@@ -42,7 +42,7 @@
   </header>
 
   <main class="container pageStack">
-    <section class="panel valuationHero" aria-labelledby="valuation-basics-title">
+    <section class="panel valuationPanel valuationHero" aria-labelledby="valuation-basics-title">
       <div class="valuationBadgeRow" role="list" aria-label="Valuation reference">
         <span class="valuationBadge" role="listitem">Currency: configured base currency</span>
         <span class="valuationBadge" role="listitem">Value unit: cents per point (cpp)</span>
@@ -55,7 +55,7 @@
       </div>
     </section>
 
-    <section class="panel" aria-labelledby="valuation-modes-title">
+    <section class="panel valuationPanel" aria-labelledby="valuation-modes-title">
       <h2 id="valuation-modes-title">Two valuation modes</h2>
       <div class="valuationGrid" role="list" aria-label="Valuation mode definitions">
         <article class="valuationCard" role="listitem">
@@ -70,9 +70,9 @@
       <p class="subtle">Cashback-denominated programs are modeled at face value (1.0 cpp equivalent), so estimated and minimum values are usually the same.</p>
     </section>
 
-    <section class="panel" aria-labelledby="valuation-sources-title">
+    <section class="panel valuationPanel" aria-labelledby="valuation-sources-title">
       <h2 id="valuation-sources-title">Where valuation inputs come from</h2>
-      <ul>
+      <ul class="valuationList">
         <li>Published third-party points valuations are used as primary benchmarks for points programs.</li>
         <li>Additional valuation references are used as fallback benchmarks where primary valuations are unavailable.</li>
         <li>Program and issuer documentation are used to verify transfer mechanics, redemption structures, and fixed-value floor paths.</li>
@@ -80,18 +80,18 @@
       <p class="subtle">These values are directional planning estimates, not guaranteed redemption outcomes for every itinerary, merchant, or booking channel.</p>
     </section>
 
-    <section class="panel" aria-labelledby="mode-selection-title">
+    <section class="panel valuationPanel" aria-labelledby="mode-selection-title">
       <h2 id="mode-selection-title">How to pick a mode in practice</h2>
-      <ul>
+      <ul class="valuationList">
         <li>Choose <strong>Estimated value</strong> if you are willing to optimize transfers and redemption timing.</li>
         <li>Choose <strong>Minimum guaranteed value</strong> if you want a lower-bound forecast that is less sensitive to redemption strategy.</li>
         <li>Compare both modes to understand upside range versus dependable baseline.</li>
       </ul>
     </section>
 
-    <section class="panel" aria-labelledby="rules-scope-title">
+    <section class="panel valuationPanel" aria-labelledby="rules-scope-title">
       <h2 id="rules-scope-title">What CreditCombo models today</h2>
-      <ul>
+      <ul class="valuationList">
         <li>Category spend is allocated to the highest value card first, with cap overflow rerouted to the next best eligible card.</li>
         <li>Annual fees are subtracted from gross rewards to report net annual value.</li>
         <li>Programs marked as non-earning are excluded from optimization value contribution.</li>
