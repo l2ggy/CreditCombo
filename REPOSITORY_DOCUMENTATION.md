@@ -152,7 +152,7 @@ The app is shipped as static assets and served through a lightweight Cloudflare 
 - `base.css`: global layout and shared components.
 - `optimizer.css`: main optimizer page styling.
 - `browser.css`: card browser + valuation guide styling.
-- `quick-setup.css`: guided setup styling.
+- `quick-setup.css`: guided setup styling, including the quick-progress fill animation with a low-opacity sheen effect that respects reduced-motion preferences.
 
 ## Static assets
 
