@@ -6,9 +6,9 @@ This file defines contribution instructions for all agent work in this repositor
 These rules apply to the entire repository unless a deeper `AGENTS.md` overrides them.
 
 ## Contribution rules
-1. **Keep docs in sync with every feature change.**
-   - Any feature addition or behavior change must be documented in `REPOSITORY_DOCUMENTATION.md`.
-   - If the change is user-facing or setup-relevant, also update `README.md`.
+1. **Update docs only for significant changes.**
+   - Update `REPOSITORY_DOCUMENTATION.md` only when the change is significant enough that, if it had been made previously, it would already have warranted inclusion there.
+   - Update `README.md` only for significant user-facing or setup-relevant changes that meet the same bar.
    - Keep `README.md` minimal and high-level; put detailed material in `REPOSITORY_DOCUMENTATION.md`.
 
 2. **Card/program data quality and research workflow are mandatory.**
