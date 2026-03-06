@@ -110,9 +110,9 @@
 @media (max-width:900px){.layout{grid-template-columns:1fr}.spendRow{grid-template-columns:1fr;align-items:start}.spendInputWrap{grid-column:1/-1}.spendRowTop,.subcategoryItem{grid-template-columns:1fr;align-items:start;gap:var(--space-2)}.subcategoryPanel{grid-template-columns:1fr}.spendMeta{overflow:visible}.spendMetaControls{white-space:normal}.spendCat{white-space:normal;overflow:visible;text-overflow:clip}.tileGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:380px){.tileGrid{grid-template-columns:1fr}}
 
-.shareLaunch{width:100%;margin-top:var(--space-3);padding:var(--space-4) var(--space-6);font-size:var(--font-size-base);font-weight:700}
-.shareLaunch:hover:not(:disabled){transform:translateY(-1px)}
-.shareLaunch:active:not(:disabled){transform:translateY(.5px)}
+.shareLaunch{width:100%;margin-top:var(--space-3);padding:var(--space-4) var(--space-6);border:1px solid color-mix(in srgb,var(--color-accent) 70%,var(--color-border));border-radius:var(--radius-md);background:color-mix(in srgb,var(--color-accent) 20%,transparent);color:var(--color-text);font-size:var(--font-size-base);font-weight:700;box-shadow:0 0 0 1px color-mix(in srgb,var(--color-accent) 34%,transparent),0 0 14px color-mix(in srgb,var(--color-accent) 28%,transparent),0 0 24px color-mix(in srgb,var(--color-accent) 20%,transparent);animation:contactBtnGlowPulse 1.9s ease-in-out infinite alternate}
+.shareLaunch:hover:not(:disabled){background:color-mix(in srgb,var(--color-accent) 30%,transparent);border-color:color-mix(in srgb,var(--color-accent) 82%,var(--color-text) 18%);box-shadow:0 0 0 1px color-mix(in srgb,var(--color-accent) 46%,transparent),0 0 18px color-mix(in srgb,var(--color-accent) 36%,transparent),0 0 30px color-mix(in srgb,var(--color-accent) 26%,transparent)}
+.shareLaunch:active:not(:disabled){background:color-mix(in srgb,var(--color-accent) 40%,transparent);transform:translateY(1px);box-shadow:0 0 0 1px color-mix(in srgb,var(--color-accent) 28%,transparent),0 0 8px color-mix(in srgb,var(--color-accent) 22%,transparent)}
 
 .shareOverlay{position:fixed;inset:0;z-index:80;display:grid;place-items:center;padding:var(--space-6)}
 .shareOverlay.hidden{display:none}
