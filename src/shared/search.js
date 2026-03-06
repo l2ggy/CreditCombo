@@ -1,4 +1,4 @@
-export function normalizeSearchText(value) {
+function normalizeSearchText(value) {
   return String(value ?? "")
     .normalize("NFKD")
     .replace(/[\u0300-\u036f]/g, "")
@@ -17,7 +17,7 @@ export function tokenizeSearchQuery(query) {
   return normalized ? normalized.split(" ") : [];
 }
 
-export function tokenizeSearchText(searchText) {
+function tokenizeSearchText(searchText) {
   const normalized = normalizeSearchText(searchText);
   return normalized ? normalized.split(" ") : [];
 }
@@ -52,6 +52,3 @@ export function scoreSearchMatch(searchText, queryTokens) {
   return score;
 }
 
-export function matchesSearchTokens(searchText, queryTokens) {
-  return scoreSearchMatch(searchText, queryTokens) >= 0;
-}
