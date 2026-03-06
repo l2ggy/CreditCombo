@@ -7,7 +7,7 @@ import { buildSearchText, scoreSearchMatch, tokenizeSearchQuery } from "../share
 import { escapeHtml } from "../shared/sanitize.js";
 import { buildShareContext } from "../share/share-context.js";
 
-export function createActions({ state, view, schema, programsMap, eligibleCards, eligibleCardIdSet, eligibleCardsById, subcategoryConfigs = {}, ensureShareOverlay = null, openShareBtn = null }) {
+export function createActions({ state, view, schema, programsMap, eligibleCards, eligibleCardIdSet, eligibleCardsById, subcategoryConfigs = {}, ensureShareOverlay = null }) {
   const MAX_COMBO_CACHE_ENTRIES = 100;
   const { elements } = view;
   const comboCache = new Map();
@@ -28,8 +28,10 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
 
   function setShareContext(nextContext) {
     latestShareContext = nextContext || null;
-    if (!openShareBtn) return;
-    openShareBtn.classList.toggle("hidden", !latestShareContext);
+    if (!elements.resultEl) return;
+    const shareBtn = elements.resultEl.querySelector("[data-share-launch]");
+    if (!shareBtn) return;
+    shareBtn.classList.toggle("hidden", !latestShareContext);
   }
 
 
@@ -650,10 +652,10 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
     hydrateFromDeepLink,
     syncInitialUi: () => {
       if (elements.chexyFeePercentEl && !elements.chexyFeePercentEl.value) elements.chexyFeePercentEl.value = "1.75";
-      if (openShareBtn) {
-        openShareBtn.classList.add("hidden");
-        openShareBtn.addEventListener("click", openShareOverlay);
-      }
+      elements.resultEl?.addEventListener("click", (event) => {
+        if (!event.target.closest("[data-share-launch]")) return;
+        openShareOverlay();
+      });
       syncStateFromControls();
       shouldRenderLockedCardPicks = true;
       updateLockedCardsUi();

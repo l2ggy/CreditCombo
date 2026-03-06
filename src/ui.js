@@ -232,6 +232,13 @@ export function renderResult(el, best, annualSpend, schema, valuationMode = "est
   const chexyCallout = renderChexyWorthItCallout(chexySummary, grossEarnRate);
   if (chexyCallout) resultContent.append(chexyCallout);
 
+  const shareBtn = document.createElement("button");
+  shareBtn.type = "button";
+  shareBtn.className = "primary shareLaunch";
+  shareBtn.dataset.shareLaunch = "true";
+  shareBtn.textContent = "Share result";
+  resultContent.append(shareBtn);
+
   const divider = document.createElement("div");
   divider.className = "divider divider-tight";
   resultContent.append(divider);

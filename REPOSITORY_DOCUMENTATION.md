@@ -261,7 +261,7 @@ Subcategories allow practical modeling of special merchant channels not represen
 - Inline category descriptions.
 - Locked-card mode with card search chips.
 - Advanced filters including business cards, cashback exclusion, max annual fee, and explicit rewards-program exclusion chips.
-- Result sharing via overlay, with a large high-emphasis share CTA in both manual and quick-setup results panels.
+- Result sharing via overlay, with a full-width primary share CTA placed directly below annual value details in both manual and quick-setup results panels.
 - Deep-link hydration/serialization support for reproducible scenarios.
 
 ## Quick setup (`quick-setup.html` + `quick-setup.js`)
