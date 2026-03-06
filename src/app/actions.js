@@ -293,20 +293,21 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
     }
   }
 
-  function getBestComboFromLargerK(contextKey, requestedK) {
+  function getBestComboFromLargerK(contextKey, requestedK, lockedCardCount = 0) {
     let bestMatch = null;
+    const maxComboSize = Math.max(0, requestedK) + Math.max(0, lockedCardCount);
 
     for (const [cacheKey, entry] of comboCache.entries()) {
       if (!entry || entry.contextKey !== contextKey || entry.k <= requestedK) continue;
-      const candidate = getCachedCombo(cacheKey);
+      const candidate = entry.combo;
       if (!candidate) continue;
 
-      // A best result found at a larger k is still valid for smaller k when it uses <= requested cards.
-      if ((candidate.combo?.length || 0) > requestedK) continue;
-      if (!bestMatch || entry.k < bestMatch.k) bestMatch = { k: entry.k, combo: candidate };
+      // Reuse larger-k results only when the resulting combo still fits this request's allowed card count.
+      if ((candidate.combo?.length || 0) > maxComboSize) continue;
+      if (!bestMatch || entry.k < bestMatch.k) bestMatch = { key: cacheKey, k: entry.k, combo: candidate };
     }
 
-    return bestMatch?.combo || null;
+    return bestMatch ? getCachedCombo(bestMatch.key) : null;
   }
 
   function getBestComboSyncCache(additionalCards, annualSpend, monthlySpend, subcategorySpend, lockedIds) {
@@ -337,7 +338,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
     return {
       key,
       contextKey,
-      cached: getCachedCombo(key) || getBestComboFromLargerK(contextKey, state.k),
+      cached: getCachedCombo(key) || getBestComboFromLargerK(contextKey, state.k, lockedIds.length),
       payload: {
         cards: eligibleCards,
         programs: [...programsMap.values()],
