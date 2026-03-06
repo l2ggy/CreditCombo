@@ -155,7 +155,8 @@ function stepGoal() {
   return createSingleSelectStep({
     key: "goal",
     prompt: "What are you trying to do today?",
-    lead: "Pick one option to continue.",
+    lead: "CreditCombo picks the best combo of credit cards to maximize rewards from your spending.",
+    hint: "Pick your goal and get a simple plan in minutes.",
     options: [
       { value: "ideal_combo", label: "Find me the best possible CreditCombo" },
       { value: "current_cards", label: "Help me use my current cards better" }
