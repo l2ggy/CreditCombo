@@ -6,13 +6,14 @@
    - `python3 -m http.server 4173`
 2. Open `http://localhost:4173/ad-creative.html` in a desktop browser.
 3. Keep browser zoom at **100%**.
-4. Capture each creative variant from the fixed 1080 × 1080 canvas frame (no manual element repositioning needed).
+4. Click each variant's **Export high-res PNG** button to generate a PNG download directly from the 1080 × 1080 canvas (no manual element repositioning needed).
 
 ### Exact framing checklist
 
 - Confirm the full rounded 1080 × 1080 frame is visible and not clipped by browser UI.
-- Capture **Variant A (light)** and **Variant B (dark)** separately.
-- Export PNG files to preserve text and UI edge quality.
+- Export **Variant A (light)** and **Variant B (dark)** separately using their buttons.
+- Keep the canvas fully visible before export so any browser-specific font rendering preview matches the saved image.
+- PNG exports are generated at 2× scale for crisp paid-social uploads.
 
 ### Recommended output sizes
 

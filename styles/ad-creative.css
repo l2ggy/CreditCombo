@@ -1,4 +1,6 @@
 .adCreativePage {
+  margin: 0;
+  min-height: 100vh;
   overflow-y: auto;
   overflow-x: auto;
   padding: var(--space-10);
@@ -27,7 +29,7 @@
 .variantHeader {
   display: flex;
   justify-content: space-between;
-  align-items: baseline;
+  align-items: center;
   gap: var(--space-7);
 }
 
@@ -37,7 +39,30 @@
 }
 
 .variantHeader .subtle {
-  margin: 0;
+  margin: var(--space-2) 0 0;
+}
+
+.exportButton {
+  border: 1px solid color-mix(in srgb, var(--color-text) 20%, transparent);
+  border-radius: var(--radius-pill);
+  padding: 10px 16px;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--color-text);
+  background: color-mix(in srgb, var(--color-surface) 90%, transparent);
+  cursor: pointer;
+}
+
+.exportButton:hover,
+.exportButton:focus-visible {
+  border-color: color-mix(in srgb, var(--color-accent) 40%, transparent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 18%, transparent);
+  outline: none;
+}
+
+.exportButton:active {
+  transform: translateY(1px);
 }
 
 .creativeCanvas {
@@ -45,10 +70,10 @@
   width: 1080px;
   height: 1080px;
   border-radius: 28px;
-  padding: 96px;
+  padding: 80px 86px;
   display: grid;
   align-content: start;
-  gap: 26px;
+  gap: 22px;
   overflow: hidden;
   isolation: isolate;
   box-shadow: 0 24px 54px color-mix(in srgb, #000 24%, transparent);
@@ -104,10 +129,10 @@
   justify-self: start;
   display: inline-flex;
   align-items: center;
-  padding: 9px 16px;
+  padding: 8px 14px;
   border-radius: var(--radius-pill);
   font-weight: 700;
-  font-size: 22px;
+  font-size: 19px;
   letter-spacing: 0.01em;
   border: 1px solid color-mix(in srgb, currentColor 16%, transparent);
   background: color-mix(in srgb, #fff 80%, transparent);
@@ -120,7 +145,7 @@
 .creativeHeadline {
   margin: 0;
   max-width: 860px;
-  font-size: 58px;
+  font-size: 52px;
   line-height: 1.08;
   letter-spacing: -0.02em;
   text-wrap: balance;
@@ -129,20 +154,20 @@
 .creativeSubhead {
   margin: 0;
   max-width: 860px;
-  font-size: 30px;
-  line-height: 1.24;
+  font-size: 27px;
+  line-height: 1.2;
   color: color-mix(in srgb, currentColor 78%, transparent);
 }
 
 .resultsPanel {
-  margin-top: 8px;
-  padding: 28px;
+  margin-top: 2px;
+  padding: 24px;
   border-radius: 24px;
   border: 1px solid color-mix(in srgb, currentColor 18%, transparent);
   background: color-mix(in srgb, #fff 78%, transparent);
   backdrop-filter: blur(3px);
   display: grid;
-  gap: 18px;
+  gap: 14px;
 }
 
 .variantDark .resultsPanel {
@@ -153,13 +178,13 @@
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  gap: 12px;
+  gap: 10px;
 }
 
 .panelEyebrow,
 .panelMeta {
   margin: 0;
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 600;
   color: color-mix(in srgb, currentColor 72%, transparent);
 }
@@ -167,14 +192,14 @@
 .resultsGrid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 14px;
+  gap: 12px;
 }
 
 .resultBlock,
 .usageCue {
   border: 1px solid color-mix(in srgb, currentColor 16%, transparent);
   border-radius: 16px;
-  padding: 16px;
+  padding: 14px;
   background: color-mix(in srgb, #fff 70%, transparent);
 }
 
@@ -185,9 +210,9 @@
 
 .resultBlock h3,
 .usageCue h3 {
-  margin: 0 0 10px;
+  margin: 0 0 8px;
   color: inherit;
-  font-size: 19px;
+  font-size: 18px;
   line-height: 1.2;
 }
 
@@ -197,7 +222,7 @@
   padding: 0;
   list-style: none;
   display: grid;
-  gap: 8px;
+  gap: 7px;
 }
 
 .resultBlock li,
@@ -205,8 +230,8 @@
   display: flex;
   justify-content: space-between;
   gap: 10px;
-  font-size: 17px;
-  line-height: 1.3;
+  font-size: 16px;
+  line-height: 1.28;
 }
 
 .resultBlock li span,
@@ -225,8 +250,8 @@
 }
 
 .valueNumber {
-  margin: 4px 0 8px;
-  font-size: 46px;
+  margin: 4px 0 6px;
+  font-size: 42px;
   line-height: 1;
   font-weight: 800;
   color: var(--color-accent);
@@ -234,7 +259,7 @@
 
 .valueFootnote {
   margin: 0;
-  font-size: 15px;
+  font-size: 14px;
   line-height: 1.25;
   color: color-mix(in srgb, currentColor 68%, transparent);
 }
@@ -249,10 +274,10 @@
   justify-self: start;
   border: none;
   border-radius: var(--radius-pill);
-  padding: 18px 34px;
-  min-height: 72px;
-  min-width: 240px;
-  font-size: 32px;
+  padding: 16px 30px;
+  min-height: 64px;
+  min-width: 220px;
+  font-size: 29px;
   line-height: 1;
   font-weight: 800;
   letter-spacing: 0.01em;

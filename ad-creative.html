@@ -12,10 +12,25 @@
   <main class="creativeGallery" aria-label="Paid social ad creative templates">
     <section class="creativeVariant" aria-labelledby="variantALabel">
       <header class="variantHeader">
-        <h1 id="variantALabel">Variant A · Light Theme</h1>
-        <p class="subtle">1080 × 1080 export frame</p>
+        <div>
+          <h1 id="variantALabel">Variant A · Light Theme</h1>
+          <p class="subtle">1080 × 1080 export frame</p>
+        </div>
+        <button
+          type="button"
+          class="exportButton"
+          data-export-target="variant-a"
+          data-export-name="creditcombo-ad-creative-variant-a.png"
+        >
+          Export high-res PNG
+        </button>
       </header>
-      <article class="creativeCanvas variantLight" role="img" aria-label="Credit card planning ad creative, light theme">
+      <article
+        id="variant-a"
+        class="creativeCanvas variantLight"
+        role="img"
+        aria-label="Credit card planning ad creative, light theme"
+      >
         <p class="trustRibbon">Free • No account • No registration</p>
         <h2 class="creativeHeadline">Enter your monthly spend. Get the most rewarding long-term card setup.</h2>
         <p class="creativeSubhead">Student-built passion project for analytical credit-card enthusiasts.</p>
@@ -70,10 +85,25 @@
 
     <section class="creativeVariant" aria-labelledby="variantBLabel">
       <header class="variantHeader">
-        <h1 id="variantBLabel">Variant B · Dark Theme</h1>
-        <p class="subtle">1080 × 1080 export frame</p>
+        <div>
+          <h1 id="variantBLabel">Variant B · Dark Theme</h1>
+          <p class="subtle">1080 × 1080 export frame</p>
+        </div>
+        <button
+          type="button"
+          class="exportButton"
+          data-export-target="variant-b"
+          data-export-name="creditcombo-ad-creative-variant-b.png"
+        >
+          Export high-res PNG
+        </button>
       </header>
-      <article class="creativeCanvas variantDark" role="img" aria-label="Credit card planning ad creative, dark theme">
+      <article
+        id="variant-b"
+        class="creativeCanvas variantDark"
+        role="img"
+        aria-label="Credit card planning ad creative, dark theme"
+      >
         <p class="trustRibbon">Free • No account • No registration</p>
         <h2 class="creativeHeadline">Enter your monthly spend. Get the most rewarding long-term card setup.</h2>
         <p class="creativeSubhead">Student-built passion project for analytical credit-card enthusiasts.</p>
@@ -126,5 +156,6 @@
       </article>
     </section>
   </main>
+  <script src="./scripts/ad-creative-export.js"></script>
 </body>
 </html>
