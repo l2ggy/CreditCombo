@@ -6,6 +6,22 @@ function getSystemTheme() {
 const THEME_STORAGE_KEY = "creditcombo-theme";
 const THEME_SYSTEM_STORAGE_KEY = "creditcombo-theme-system";
 
+function applyBackgroundMotionSeed() {
+  const rootStyle = document.documentElement.style;
+  const rand = (min, max) => min + Math.random() * (max - min);
+  const pick = (items) => items[Math.floor(Math.random() * items.length)];
+
+  rootStyle.setProperty("--bg-float-a-duration", `${rand(30, 42).toFixed(2)}s`);
+  rootStyle.setProperty("--bg-float-b-duration", `${rand(34, 48).toFixed(2)}s`);
+  rootStyle.setProperty("--bg-float-a-delay", `${(-rand(0, 42)).toFixed(2)}s`);
+  rootStyle.setProperty("--bg-float-b-delay", `${(-rand(0, 48)).toFixed(2)}s`);
+  rootStyle.setProperty("--bg-float-a-direction", pick(["alternate", "alternate-reverse"]));
+  rootStyle.setProperty("--bg-float-b-direction", pick(["alternate", "alternate-reverse"]));
+  rootStyle.setProperty("--bg-float-a-rotate", `${rand(-1.4, 1.4).toFixed(2)}deg`);
+  rootStyle.setProperty("--bg-float-b-rotate", `${rand(-1.8, 1.8).toFixed(2)}deg`);
+}
+
+
 function readStoredThemePreference() {
   try {
     const storedTheme = window.localStorage.getItem(THEME_STORAGE_KEY);
@@ -66,6 +82,7 @@ const systemThemeQuery = window.matchMedia
   ? window.matchMedia("(prefers-color-scheme: dark)")
   : null;
 
+applyBackgroundMotionSeed();
 applyTheme(resolveInitialTheme());
 
 document.addEventListener("DOMContentLoaded", () => {
