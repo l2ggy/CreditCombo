@@ -32,6 +32,11 @@ These rules apply to the entire repository unless a deeper `AGENTS.md` overrides
    - Always aim for the most elegant and obvious implementation.
    - If a contribution requires code whose purpose or intent is not obvious (for example, a workaround for a bizarre or unpredictable bug), add an inline comment that explains why the code exists.
 
+6. **Suggest Google Analytics tracking for new features when appropriate.**
+   - Whenever implementing a new feature, assess whether the feature behavior is worth tracking in Google Analytics.
+   - If it is worth tracking, explicitly suggest GA integration to the operator.
+   - If the operator approves, implement the GA integration and provide detailed instructions for configuring the new integration in the Google Analytics dashboard.
+
 ## Implementation guidance for agents
 - Make small, reviewable commits.
 - Preserve existing coding style and naming patterns.
