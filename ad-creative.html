@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Paid Social Creative Template · CreditCombo</title>
+  <link rel="stylesheet" href="./styles/tokens.css" />
+  <link rel="stylesheet" href="./styles/base.css" />
+  <link rel="stylesheet" href="./styles/ad-creative.css" />
+</head>
+<body class="adCreativePage">
+  <main class="creativeGallery" aria-label="Paid social ad creative templates">
+    <section class="creativeVariant" aria-labelledby="variantALabel">
+      <header class="variantHeader">
+        <h1 id="variantALabel">Variant A · Light Theme</h1>
+        <div class="variantHeaderActions">
+          <p class="subtle">1080 × 1080 export frame</p>
+          <button type="button" class="exportButton" data-export-target="variantA" data-export-name="creditcombo-ad-creative-variant-a">Export high-res PNG</button>
+        </div>
+      </header>
+      <article id="variantA" class="creativeCanvas variantLight" role="img" aria-label="Credit card planning ad creative, light theme">
+        <p class="trustRibbon">Free • No account • No registration</p>
+        <h2 class="creativeHeadline">Enter your monthly spend. Get the most rewarding long-term card setup.</h2>
+        <p class="creativeSubhead">Student-built passion project for analytical credit-card enthusiasts.</p>
+
+        <section class="resultsPanel" aria-label="Example results dashboard">
+          <div class="panelHeaderRow">
+            <p class="panelEyebrow">Sample results dashboard</p>
+            <p class="panelMeta">Monthly profile · 7 categories</p>
+          </div>
+
+          <div class="resultsGrid">
+            <section class="resultBlock">
+              <h3>Category spend breakdown</h3>
+              <ul>
+                <li><span>Groceries</span><strong>$420</strong></li>
+                <li><span>Dining</span><strong>$260</strong></li>
+                <li><span>Travel</span><strong>$190</strong></li>
+                <li><span>Transit + fuel</span><strong>$180</strong></li>
+              </ul>
+            </section>
+
+            <section class="resultBlock">
+              <h3>Recommended 3-card setup</h3>
+              <ul>
+                <li><span>Card A</span><strong>Food + dining</strong></li>
+                <li><span>Card B</span><strong>Travel + transit</strong></li>
+                <li><span>Card C</span><strong>Everything else</strong></li>
+              </ul>
+            </section>
+
+            <section class="resultBlock resultValue">
+              <h3>Net annual value after fees</h3>
+              <p class="valueNumber">$1,164</p>
+              <p class="valueFootnote">Based on estimated points value and recurring annual fees.</p>
+            </section>
+          </div>
+
+          <section class="usageCue" aria-label="Category-by-category card usage cue">
+            <h3>Which card to use, by category</h3>
+            <ul>
+              <li><span>Groceries</span><strong>Card A</strong></li>
+              <li><span>Dining</span><strong>Card A</strong></li>
+              <li><span>Travel</span><strong>Card B</strong></li>
+              <li><span>General spend</span><strong>Card C</strong></li>
+            </ul>
+          </section>
+        </section>
+
+        <button type="button" class="ctaButton" aria-label="Try it free">Try it free</button>
+      </article>
+    </section>
+
+    <section class="creativeVariant variantDarkTheme" aria-labelledby="variantBLabel">
+      <header class="variantHeader">
+        <h1 id="variantBLabel">Variant B · Dark Theme</h1>
+        <div class="variantHeaderActions">
+          <p class="subtle">1080 × 1080 export frame</p>
+          <button type="button" class="exportButton" data-export-target="variantB" data-export-name="creditcombo-ad-creative-variant-b">Export high-res PNG</button>
+        </div>
+      </header>
+      <article id="variantB" class="creativeCanvas variantDark" role="img" aria-label="Credit card planning ad creative, dark theme">
+        <p class="trustRibbon">Free • No account • No registration</p>
+        <h2 class="creativeHeadline">Enter your monthly spend. Get the most rewarding long-term card setup.</h2>
+        <p class="creativeSubhead">Student-built passion project for analytical credit-card enthusiasts.</p>
+
+        <section class="resultsPanel" aria-label="Example results dashboard">
+          <div class="panelHeaderRow">
+            <p class="panelEyebrow">Sample results dashboard</p>
+            <p class="panelMeta">Monthly profile · 7 categories</p>
+          </div>
+
+          <div class="resultsGrid">
+            <section class="resultBlock">
+              <h3>Category spend breakdown</h3>
+              <ul>
+                <li><span>Groceries</span><strong>$420</strong></li>
+                <li><span>Dining</span><strong>$260</strong></li>
+                <li><span>Travel</span><strong>$190</strong></li>
+                <li><span>Transit + fuel</span><strong>$180</strong></li>
+              </ul>
+            </section>
+
+            <section class="resultBlock">
+              <h3>Recommended 3-card setup</h3>
+              <ul>
+                <li><span>Card A</span><strong>Food + dining</strong></li>
+                <li><span>Card B</span><strong>Travel + transit</strong></li>
+                <li><span>Card C</span><strong>Everything else</strong></li>
+              </ul>
+            </section>
+
+            <section class="resultBlock resultValue">
+              <h3>Net annual value after fees</h3>
+              <p class="valueNumber">$1,164</p>
+              <p class="valueFootnote">Based on estimated points value and recurring annual fees.</p>
+            </section>
+          </div>
+
+          <section class="usageCue" aria-label="Category-by-category card usage cue">
+            <h3>Which card to use, by category</h3>
+            <ul>
+              <li><span>Groceries</span><strong>Card A</strong></li>
+              <li><span>Dining</span><strong>Card A</strong></li>
+              <li><span>Travel</span><strong>Card B</strong></li>
+              <li><span>General spend</span><strong>Card C</strong></li>
+            </ul>
+          </section>
+        </section>
+
+        <button type="button" class="ctaButton" aria-label="Try it free">Try it free</button>
+      </article>
+    </section>
+  </main>
+
+  <script>
+    const getStylesAsText = () => {
+      const cssFragments = [];
+      for (const sheet of document.styleSheets) {
+        try {
+          if (!sheet.cssRules) {
+            continue;
+          }
+          for (const rule of sheet.cssRules) {
+            cssFragments.push(rule.cssText);
+          }
+        } catch (error) {
+          // Ignore stylesheets that the browser blocks from script access.
+        }
+      }
+      return cssFragments.join("\n");
+    };
+
+    const exportCreative = async (targetId, filenameBase) => {
+      const target = document.getElementById(targetId);
+      if (!target) {
+        return;
+      }
+
+      await document.fonts.ready;
+
+      const width = 1080;
+      const height = 1080;
+      const exportScale = 2;
+      const cssText = getStylesAsText();
+      const targetMarkup = target.outerHTML;
+      const svgMarkup = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
+          <foreignObject width="100%" height="100%">
+            <div xmlns="http://www.w3.org/1999/xhtml">
+              <style>${cssText}</style>
+              ${targetMarkup}
+            </div>
+          </foreignObject>
+        </svg>`;
+
+      const svgBlob = new Blob([svgMarkup], { type: "image/svg+xml;charset=utf-8" });
+      const svgUrl = URL.createObjectURL(svgBlob);
+
+      const image = new Image();
+      image.decoding = "async";
+
+      await new Promise((resolve, reject) => {
+        image.onload = resolve;
+        image.onerror = reject;
+        image.src = svgUrl;
+      });
+
+      const canvas = document.createElement("canvas");
+      canvas.width = width * exportScale;
+      canvas.height = height * exportScale;
+      const context = canvas.getContext("2d");
+      context.scale(exportScale, exportScale);
+      context.drawImage(image, 0, 0, width, height);
+      URL.revokeObjectURL(svgUrl);
+
+      const link = document.createElement("a");
+      link.download = `${filenameBase}-${width * exportScale}x${height * exportScale}.png`;
+      link.href = canvas.toDataURL("image/png");
+      link.click();
+    };
+
+    document.querySelectorAll(".exportButton").forEach((button) => {
+      button.addEventListener("click", async () => {
+        const targetId = button.dataset.exportTarget;
+        const filenameBase = button.dataset.exportName;
+        const originalLabel = button.textContent;
+        button.disabled = true;
+        button.textContent = "Exporting…";
+
+        try {
+          await exportCreative(targetId, filenameBase);
+          button.textContent = "Exported";
+        } catch (error) {
+          button.textContent = "Export failed";
+        }
+
+        window.setTimeout(() => {
+          button.disabled = false;
+          button.textContent = originalLabel;
+        }, 1200);
+      });
+    });
+  </script>
+</body>
+</html>
