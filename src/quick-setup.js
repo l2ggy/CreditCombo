@@ -8,6 +8,7 @@ import { formatMoneyCAD } from "./shared/format.js";
 import { escapeHtml } from "./shared/sanitize.js";
 import { createShareOverlay } from "./share/share-overlay.js";
 import { buildShareContext } from "./share/share-context.js";
+import { sessionEntryContext, trackEvent, trackPageView } from "./shared/analytics.js";
 
 const appEl = document.getElementById("quickSetupApp");
 const QUICK_SETUP_DEFAULTS = Object.freeze({
@@ -29,11 +30,18 @@ const state = {
 
 let ctx = null;
 let shareOverlay = null;
+let lastTrackedStepView = "";
 let visibleSteps = [];
 let currentStepIndex = 0;
 
 function ensureShareOverlay() {
-  if (!shareOverlay) shareOverlay = createShareOverlay();
+  if (!shareOverlay) {
+    shareOverlay = createShareOverlay({
+      onOpen: () => trackEvent("quick_setup_share_clicked", { source: "result_share_overlay" }),
+      onNativeShareSuccess: () => trackEvent("quick_setup_share_clicked", { source: "native_share_success" }),
+      onDownloadSuccess: () => trackEvent("quick_setup_share_clicked", { source: "download_success" })
+    });
+  }
   return shareOverlay;
 }
 
@@ -423,7 +431,13 @@ function goNext() {
   const step = visibleSteps[currentStepIndex];
   if (!step?.validate()) return;
 
+  trackEvent("quick_setup_step_completed", {
+    step_key: step?.key || `step_${currentStepIndex + 1}` ,
+    step_index: currentStepIndex + 1
+  });
+
   if (currentStepIndex >= visibleSteps.length - 1) {
+    trackEvent("quick_setup_completed", { mode: selectedMode() });
     showPostQuizResults();
     return;
   }
@@ -591,6 +605,7 @@ function renderPostQuizScreen() {
 
   const shareBtn = resultPanelEl.querySelector("[data-share-launch]");
   shareBtn?.addEventListener("click", () => {
+    trackEvent("quick_setup_share_clicked", { source: "share_button" });
     const shareContext = buildShareContext(best, chexySummary, window.location.href);
     if (!shareContext) return;
     const overlay = ensureShareOverlay();
@@ -599,6 +614,7 @@ function renderPostQuizScreen() {
   });
 
   appEl.querySelector("#quickOpenOptimizer").addEventListener("click", () => {
+    trackEvent("quick_setup_open_optimizer_clicked", { mode: currentMode });
     // TODO: add country capture once country-based card eligibility is implemented.
     // TODO: add credit score gating once credit-tier constraints are supported.
     // TODO: add income-based filtering once card income requirements are integrated.
@@ -612,6 +628,7 @@ function renderPostQuizScreen() {
   });
 
   appEl.querySelector("#quickEditAnswers").addEventListener("click", () => {
+    trackEvent("quick_setup_edit_answers_clicked", { mode: currentMode });
     state.view = "quiz";
     renderWizard();
   });
@@ -624,6 +641,14 @@ function renderWizard() {
   }
 
   const step = visibleSteps[currentStepIndex];
+  const stepSignature = `${step?.key || "step"}:${currentStepIndex + 1}`;
+  if (stepSignature !== lastTrackedStepView) {
+    lastTrackedStepView = stepSignature;
+    trackEvent("quick_setup_step_viewed", {
+      step_key: step?.key || `step_${currentStepIndex + 1}` ,
+      step_index: currentStepIndex + 1
+    });
+  }
 
   appEl.innerHTML = `
     <div id="quickProgress" class="quickProgress" role="progressbar">
@@ -677,11 +702,16 @@ function renderInitializationError(error) {
   `;
 
   appEl.querySelector("#quickSetupRetry")?.addEventListener("click", () => {
+    trackEvent("quick_setup_retry_clicked");
     window.location.reload();
   });
 }
 
 async function main() {
+  trackPageView("quick_setup");
+  trackEvent("session_started", sessionEntryContext());
+  trackEvent("quick_setup_started");
+
   const data = await loadOptimizerData();
   const optimizationEligibleCards = QUICK_SETUP_DEFAULTS.includeBusinessCards
     ? data.eligibleCards
