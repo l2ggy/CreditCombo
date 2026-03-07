@@ -7,6 +7,8 @@ import { readOptimizerDeepLink } from "./app/deeplink.js";
 import { escapeHtml } from "./shared/sanitize.js";
 import { createShareOverlay } from "./share/share-overlay.js";
 
+const spendInputSelector = "input[data-cat], input[data-subcategory-key]";
+
 async function main() {
   const view = createView();
   const { elements } = view;
@@ -76,9 +78,16 @@ async function main() {
 
     elements.spendTableEl.addEventListener("input", (event) => {
       const target = event.target;
-      if (!(target instanceof HTMLInputElement)) return;
-      if (!target.matches("input[data-cat], input[data-subcategory-key]")) return;
+      if (!(target instanceof HTMLInputElement) || !target.matches(spendInputSelector)) return;
       actions.runOptimization();
+    });
+
+    elements.spendTableEl.addEventListener("beforeinput", (event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLInputElement) || !target.matches(spendInputSelector)) return;
+      if (!event.data || !event.inputType.startsWith("insert")) return;
+      if (/^\d+$/.test(event.data)) return;
+      event.preventDefault();
     });
 
     elements.lockedCardSearchEl?.addEventListener("input", actions.renderLockedSearchResults);
