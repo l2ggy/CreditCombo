@@ -81,6 +81,16 @@ async function main() {
       actions.runOptimization();
     });
 
+    elements.spendTableEl.addEventListener("keydown", (event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLInputElement)) return;
+      if (!target.matches("input[data-cat], input[data-subcategory-key]")) return;
+      if (event.ctrlKey || event.metaKey || event.altKey) return;
+      if (event.key.length !== 1) return;
+      if (/^\d$/.test(event.key)) return;
+      event.preventDefault();
+    });
+
     elements.lockedCardSearchEl?.addEventListener("input", actions.renderLockedSearchResults);
 
     elements.lockedCardOptionsEl?.addEventListener("click", (event) => {
