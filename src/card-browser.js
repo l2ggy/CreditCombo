@@ -111,6 +111,10 @@ function cardSortComparator() {
   return sorters[els.sortBy.value] ?? sorters.name;
 }
 
+function sortCards(cards) {
+  return [...cards].sort(cardSortComparator());
+}
+
 function formatEarnPercentRange(multiplierRate, rewardsProgram) {
   const program = state.programs.get(rewardsProgram);
   const estimatedCentsPerPoint = Number(program?.cents_per_point);
