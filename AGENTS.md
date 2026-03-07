@@ -28,6 +28,10 @@ These rules apply to the entire repository unless a deeper `AGENTS.md` overrides
    - Prefer country-neutral wording in functionality, UI copy, and docs whenever possible.
    - Avoid hardcoding country-specific assumptions unless they are required by current data or logic.
 
+5. **Favor elegant and obvious code, and explain non-obvious intent.**
+   - Always aim for the most elegant and obvious implementation.
+   - If a contribution requires code whose purpose or intent is not obvious (for example, a workaround for a bizarre or unpredictable bug), add an inline comment that explains why the code exists.
+
 ## Implementation guidance for agents
 - Make small, reviewable commits.
 - Preserve existing coding style and naming patterns.
