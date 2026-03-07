@@ -88,10 +88,14 @@ export function renderOfficialCardLink(card, label = "Official") {
   link.rel = "noopener noreferrer";
   link.textContent = `↗ ${label}`;
   link.setAttribute("aria-label", `Open official page for ${card.card_name}`);
+  link.dataset.analyticsOfficialLink = "1";
+  link.dataset.issuer = card?.issuer || "";
+  link.dataset.cardName = card?.card_name || "";
+  link.dataset.program = card?.rewards_program || "";
   return link;
 }
 
-export function renderResultCardItem(card) {
+export function renderResultCardItem(card, options = {}) {
   const item = document.createElement("li");
   item.className = "itemRow";
   item.append(renderCardThumb(card));
@@ -120,6 +124,8 @@ export function renderResultCardItem(card) {
 
   const officialLink = renderOfficialCardLink(card);
   if (officialLink) {
+    if (options.surface) officialLink.dataset.surface = options.surface;
+    if (Number.isFinite(options.position)) officialLink.dataset.position = String(options.position);
     details.append(" · ", officialLink);
   }
 

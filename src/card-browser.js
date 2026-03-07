@@ -3,6 +3,7 @@ import { formatMoneyCAD, formatMultiplier } from "./shared/format.js";
 import { formatIssuerNetwork, renderCardThumb, renderOfficialCardLink } from "./shared/render.js";
 import { createCardSearchIndex, rankCardMatches } from "./shared/card-search.js";
 import { merchantPortalConfigs, subcategoryRateForCard } from "./subcategory-config.js";
+import { sessionEntryContext, trackEvent, trackPageView } from "./shared/analytics.js";
 
 const state = {
   cards: [],
@@ -238,7 +239,7 @@ function renderCapContent(caps) {
   return list;
 }
 
-function renderBrowserCardItem(card) {
+function renderBrowserCardItem(card, position) {
   const article = document.createElement("article");
   article.className = "panel card";
 
@@ -280,6 +281,8 @@ function renderBrowserCardItem(card) {
 
   const officialLink = renderOfficialCardLink(card);
   if (officialLink) {
+    officialLink.dataset.surface = "card_browser_list";
+    officialLink.dataset.position = String(position);
     meta.append(" · ", officialLink);
   }
 
@@ -360,34 +363,66 @@ function renderCards() {
   }
 
   const fragment = document.createDocumentFragment();
-  state.filteredCards.forEach((card) => {
-    fragment.append(renderBrowserCardItem(card));
+  state.filteredCards.forEach((card, index) => {
+    fragment.append(renderBrowserCardItem(card, index + 1));
   });
+  trackEvent("card_browser_results_rendered", { result_count: state.filteredCards.length });
   els.cardsList.append(fragment);
 }
 
 function registerEvents() {
   [els.searchInput, els.issuerFilter, els.programFilter].forEach((el) => {
-    el.addEventListener("input", renderCards);
-    el.addEventListener("change", renderCards);
+    el.addEventListener("input", () => {
+      trackEvent("card_browser_filter_changed", { filter_name: el.id, value: el.value || "" });
+      renderCards();
+    });
+    el.addEventListener("change", () => {
+      trackEvent("card_browser_filter_changed", { filter_name: el.id, value: el.value || "" });
+      renderCards();
+    });
   });
 
   els.sortBy.addEventListener("change", () => {
+    trackEvent("card_browser_sort_changed", { sort_by: els.sortBy.value });
     updateSortEarnCategoryState();
     renderCards();
   });
-  els.sortEarnCategory.addEventListener("input", renderCards);
-  els.sortEarnCategory.addEventListener("change", renderCards);
+  els.sortEarnCategory.addEventListener("input", () => {
+    trackEvent("card_browser_sort_changed", { sort_by: els.sortBy.value, earn_category: els.sortEarnCategory.value || "" });
+    renderCards();
+  });
+  els.sortEarnCategory.addEventListener("change", () => {
+    trackEvent("card_browser_sort_changed", { sort_by: els.sortBy.value, earn_category: els.sortEarnCategory.value || "" });
+    renderCards();
+  });
 
   if (els.resetFiltersBtn) {
     els.resetFiltersBtn.addEventListener("click", () => {
+      trackEvent("card_browser_reset_filters");
       resetFilters();
       renderCards();
     });
   }
+
+  els.cardsList.addEventListener("click", (event) => {
+    const target = event.target;
+    if (!(target instanceof Element)) return;
+    const link = target.closest("a[data-analytics-official-link]");
+    if (!link) return;
+    trackEvent("card_official_link_clicked", {
+      issuer: link.dataset.issuer || undefined,
+      card_name: link.dataset.cardName || undefined,
+      program: link.dataset.program || undefined,
+      surface: link.dataset.surface || "card_browser_list",
+      position: Number(link.dataset.position || 0) || undefined
+    });
+  });
 }
 
 async function init() {
+  trackPageView("card_browser");
+  trackEvent("session_started", sessionEntryContext());
+
   try {
     const { cardsJson, programsMap, subcategoryConfigs } = await loadCoreData();
 
@@ -410,6 +445,7 @@ async function init() {
     registerEvents();
     updateSortEarnCategoryState();
     renderCards();
+    trackEvent("card_browser_view_loaded", { total_cards: state.cards.length });
   } catch (error) {
     els.fatal.classList.remove("hidden");
     els.fatal.textContent = `Error loading card browser: ${error?.message || "Unknown error"}`;

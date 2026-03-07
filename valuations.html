@@ -20,6 +20,15 @@
   <link rel="stylesheet" href="./styles/base.css" />
   <link rel="stylesheet" href="./styles/browser.css" />
   <script type="module" src="./src/theme.js"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-F85DCJP3CW"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-F85DCJP3CW');
+  </script>
 </head>
 <body>
   <header class="container siteHeader">
@@ -99,5 +108,11 @@
       <p class="subtle">Out of scope: unstructured merchant/portal-specific special rules, MCC edge cases, broad acceptance constraints, and one-time promotions or welcome bonuses.</p>
     </section>
   </main>
+  <script type="module">
+    import { sessionEntryContext, trackEvent, trackPageView } from "./src/shared/analytics.js";
+
+    trackPageView("valuations");
+    trackEvent("session_started", sessionEntryContext());
+  </script>
 </body>
 </html>

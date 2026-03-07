@@ -165,7 +165,7 @@ export function renderIssues(el, issues) {
   `;
 }
 
-export function renderResult(el, best, annualSpend, schema, valuationMode = "estimated", chexySummary = null, subcategoryConfigs = {}) {
+export function renderResult(el, best, annualSpend, schema, valuationMode = "estimated", chexySummary = null, subcategoryConfigs = {}, options = {}) {
   el.classList.remove("hidden");
   el.classList.remove("resultEmpty");
   el.innerHTML = "";
@@ -188,7 +188,11 @@ export function renderResult(el, best, annualSpend, schema, valuationMode = "est
 
   const comboList = document.createElement("ul");
   comboList.className = "listClean";
-  best.combo.forEach((card) => comboList.append(renderResultCardItem(card)));
+  const surface = options.surface || "optimizer_results";
+  best.combo.forEach((card, index) => comboList.append(renderResultCardItem(card, {
+    surface,
+    position: index + 1
+  })));
   resultContent.append(comboList);
 
   const valueHeading = document.createElement("h2");

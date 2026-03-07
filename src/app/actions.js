@@ -6,6 +6,7 @@ import { bindCardSearchKeyboard, createCardSearchIndex, rankCardMatches, renderC
 import { buildSearchText, scoreSearchMatch, tokenizeSearchQuery } from "../shared/search.js";
 import { escapeHtml } from "../shared/sanitize.js";
 import { buildShareContext } from "../share/share-context.js";
+import { trackEvent } from "../shared/analytics.js";
 
 export function createActions({ state, view, schema, programsMap, eligibleCards, eligibleCardIdSet, eligibleCardsById, subcategoryConfigs = {}, ensureShareOverlay = null }) {
   const MAX_COMBO_CACHE_ENTRIES = 100;
@@ -37,6 +38,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
 
   function openShareOverlay() {
     if (!latestShareContext || typeof ensureShareOverlay !== "function") return;
+    trackEvent("optimizer_share_overlay_open");
     const overlay = ensureShareOverlay();
     overlay.updateContext(latestShareContext);
     overlay.open();
@@ -401,7 +403,10 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
     uiRunVersion += 1;
     const runVersion = uiRunVersion;
 
-    if (manual) hasManualOptimizationRun = true;
+    if (manual) {
+      hasManualOptimizationRun = true;
+      trackEvent("optimizer_manual_run_requested");
+    }
     syncStateFromControls();
 
     updateLockedCardsUi();
@@ -419,6 +424,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
       elements.resultEl.classList.remove("hidden");
       elements.resultEl.classList.remove("resultEmpty");
       elements.resultEl.innerHTML = `<span class="badge bad">No result</span> No eligible cards are available for optimization.`;
+      trackEvent("optimizer_no_result_reason", { no_result_reason: "no_eligible_cards" });
       setShareContext(null);
       elements.runBtn.disabled = false;
       return;
@@ -429,6 +435,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
       elements.resultEl.classList.remove("hidden");
       elements.resultEl.classList.remove("resultEmpty");
       elements.resultEl.innerHTML = `<span class="badge bad">No result</span> No additional cards without annual fees are available.`;
+      trackEvent("optimizer_no_result_reason", { no_result_reason: "no_additional_cards_available" });
       setShareContext(null);
       elements.runBtn.disabled = false;
       return;
@@ -442,6 +449,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
       elements.resultEl.classList.remove("hidden");
       elements.resultEl.classList.add("resultEmpty");
       elements.resultEl.innerHTML = `<span class="muted">Enter monthly spend in at least one category to generate card recommendations.</span>`;
+      trackEvent("optimizer_no_result_reason", { no_result_reason: "no_spend_entered" });
       setShareContext(null);
       elements.runBtn.disabled = false;
       return;
@@ -464,6 +472,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
       if (runVersion !== uiRunVersion) return;
       view.setLoadingState(false);
       renderResult(elements.resultEl, cached, adjustedAnnualSpend, schema, state.valuationMode, chexySummary, subcategoryConfigs);
+      trackEvent("optimizer_run_completed", { result_source: "cache", card_count: cached?.combo?.length || 0, net_value: Number(cached?.net || 0) });
       setShareContext(buildShareContext(cached, chexySummary, window.location.href));
       elements.runBtn.disabled = false;
       return;
@@ -475,6 +484,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
       setCachedCombo(key, best, { contextKey, k: state.k });
       view.setLoadingState(false);
       renderResult(elements.resultEl, best, adjustedAnnualSpend, schema, state.valuationMode, chexySummary, subcategoryConfigs);
+      trackEvent("optimizer_run_completed", { result_source: "worker", card_count: best?.combo?.length || 0, net_value: Number(best?.net || 0) });
       setShareContext(buildShareContext(best, chexySummary, window.location.href));
     } catch (error) {
       if (runVersion !== uiRunVersion) return;
@@ -482,6 +492,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
       elements.resultEl.classList.remove("hidden");
       elements.resultEl.classList.remove("resultEmpty");
       elements.resultEl.innerHTML = `<span class="badge bad">Error</span> ${escapeHtml(error?.message || "Failed to optimize")}`;
+      trackEvent("optimizer_run_failed", { error_message: error?.message || "Failed to optimize" });
       setShareContext(null);
     } finally {
       if (runVersion === uiRunVersion) elements.runBtn.disabled = false;
@@ -509,6 +520,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
 
   function setValuationMode(mode) {
     state.valuationMode = mode === "minimum_guaranteed" ? "minimum_guaranteed" : "estimated";
+    trackEvent("optimizer_setting_changed", { setting_name: "valuation_mode", setting_value: state.valuationMode });
     if (elements.valuationModeEl) elements.valuationModeEl.value = state.valuationMode;
     return runOptimization();
   }
@@ -516,11 +528,13 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
   function setK(value) {
     elements.kInput.value = String(value);
     syncStateFromControls();
+    trackEvent("optimizer_setting_changed", { setting_name: "k", setting_value: state.k });
     return runOptimization();
   }
 
   function addLockedCard(cardId) {
     state.lockedCardIds.add(cardId);
+    trackEvent("locked_card_added", { card_id: cardId });
     shouldRenderLockedCardPicks = true;
     if (elements.lockedCardSearchEl) elements.lockedCardSearchEl.value = "";
     return runOptimization();
@@ -528,6 +542,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
 
   function removeLockedCard(cardId) {
     state.lockedCardIds.delete(cardId);
+    trackEvent("locked_card_removed", { card_id: cardId });
     shouldRenderLockedCardPicks = true;
     return runOptimization();
   }
@@ -535,19 +550,30 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
   function setMaxAnnualFee(value) {
     const raw = String(value ?? "").trim();
     state.maxAnnualFee = raw === "" ? null : Math.max(0, Number(raw) || 0);
+    trackEvent("optimizer_setting_changed", { setting_name: "max_annual_fee", setting_value: state.maxAnnualFee ?? "none" });
     if (elements.maxAnnualFeeEl) elements.maxAnnualFeeEl.value = raw;
     return runOptimization();
   }
 
   function setIncludeBusinessCards(enabled) {
     state.includeBusinessCards = Boolean(enabled);
+    trackEvent("optimizer_setting_changed", { setting_name: "include_business_cards", setting_value: state.includeBusinessCards });
     if (elements.includeBusinessCardsEl) elements.includeBusinessCardsEl.checked = state.includeBusinessCards;
     return runOptimization();
   }
 
   function setExcludeCashbackPrograms(enabled) {
     state.excludeCashbackPrograms = Boolean(enabled);
+    trackEvent("optimizer_setting_changed", { setting_name: "exclude_cashback_programs", setting_value: state.excludeCashbackPrograms });
     if (elements.excludeCashbackProgramsEl) elements.excludeCashbackProgramsEl.checked = state.excludeCashbackPrograms;
+    return runOptimization();
+  }
+
+  function setChexyFeePercent(value) {
+    const raw = String(value ?? "").trim();
+    state.chexyFeePercent = raw === "" ? 0 : Math.max(0, Number(raw) || 0);
+    trackEvent("optimizer_setting_changed", { setting_name: "chexy_fee_percent", setting_value: state.chexyFeePercent });
+    if (elements.chexyFeePercentEl) elements.chexyFeePercentEl.value = raw;
     return runOptimization();
   }
 
@@ -559,17 +585,20 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
 
   function addExcludedProgram(programId) {
     setProgramExcluded(programId, true);
+    trackEvent("excluded_program_added", { program_id: programId });
     if (elements.excludedProgramSearchEl) elements.excludedProgramSearchEl.value = "";
     return runOptimization();
   }
 
   function removeExcludedProgram(programId) {
     setProgramExcluded(programId, false);
+    trackEvent("excluded_program_removed", { program_id: programId });
     return runOptimization();
   }
 
   function resetAdvancedPreferences() {
     state.maxAnnualFee = null;
+    trackEvent("advanced_preferences_reset");
     state.chexyFeePercent = 1.75;
     state.includeBusinessCards = false;
     state.excludeCashbackPrograms = false;
@@ -642,6 +671,7 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
     addLockedCard,
     removeLockedCard,
     setMaxAnnualFee,
+    setChexyFeePercent,
     setIncludeBusinessCards,
     setExcludeCashbackPrograms,
     addExcludedProgram,
@@ -652,9 +682,25 @@ export function createActions({ state, view, schema, programsMap, eligibleCards,
     hydrateFromDeepLink,
     syncInitialUi: () => {
       if (elements.chexyFeePercentEl && !elements.chexyFeePercentEl.value) elements.chexyFeePercentEl.value = "1.75";
+      trackEvent("optimizer_view_loaded");
       elements.resultEl?.addEventListener("click", (event) => {
-        if (!event.target.closest("[data-share-launch]")) return;
-        openShareOverlay();
+        const target = event.target;
+        if (!(target instanceof Element)) return;
+
+        if (target.closest("[data-share-launch]")) {
+          openShareOverlay();
+          return;
+        }
+
+        const officialLink = target.closest("a[data-analytics-official-link]");
+        if (!officialLink) return;
+        trackEvent("card_official_link_clicked", {
+          issuer: officialLink.dataset.issuer || undefined,
+          card_name: officialLink.dataset.cardName || undefined,
+          program: officialLink.dataset.program || undefined,
+          surface: officialLink.dataset.surface || "optimizer_results",
+          position: Number(officialLink.dataset.position || 0) || undefined
+        });
       });
       syncStateFromControls();
       shouldRenderLockedCardPicks = true;
