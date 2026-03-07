@@ -62,10 +62,31 @@ function applyTheme(theme) {
   themeToggle.title = `Switch to ${nextTheme} mode`;
 }
 
+
+function applyBackgroundMotionSeed() {
+  const root = document.documentElement;
+  const randomRange = (min, max) => min + Math.random() * (max - min);
+  const randomSign = () => (Math.random() < 0.5 ? -1 : 1);
+
+  root.style.setProperty("--bg-float-a-duration", `${randomRange(28, 38).toFixed(2)}s`);
+  root.style.setProperty("--bg-float-b-duration", `${randomRange(34, 46).toFixed(2)}s`);
+  root.style.setProperty("--bg-float-a-delay", `${(-1 * randomRange(0, 18)).toFixed(2)}s`);
+  root.style.setProperty("--bg-float-b-delay", `${(-1 * randomRange(0, 20)).toFixed(2)}s`);
+  root.style.setProperty("--bg-float-a-dir-x", String(randomSign()));
+  root.style.setProperty("--bg-float-b-dir-x", String(randomSign()));
+  root.style.setProperty("--bg-float-a-start-x", `${randomRange(-3.5, 3.5).toFixed(2)}vw`);
+  root.style.setProperty("--bg-float-a-start-y", `${randomRange(-2.2, 2.2).toFixed(2)}vh`);
+  root.style.setProperty("--bg-float-b-start-x", `${randomRange(-4.2, 4.2).toFixed(2)}vw`);
+  root.style.setProperty("--bg-float-b-start-y", `${randomRange(-2.8, 2.8).toFixed(2)}vh`);
+  root.style.setProperty("--bg-float-a-boost", `${randomRange(-1.2, 2.8).toFixed(2)}vh`);
+  root.style.setProperty("--bg-float-b-boost", `${randomRange(-1.8, 3.4).toFixed(2)}vh`);
+}
+
 const systemThemeQuery = window.matchMedia
   ? window.matchMedia("(prefers-color-scheme: dark)")
   : null;
 
+applyBackgroundMotionSeed();
 applyTheme(resolveInitialTheme());
 
 document.addEventListener("DOMContentLoaded", () => {
