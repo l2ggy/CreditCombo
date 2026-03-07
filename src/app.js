@@ -7,16 +7,6 @@ import { readOptimizerDeepLink } from "./app/deeplink.js";
 import { escapeHtml } from "./shared/sanitize.js";
 import { createShareOverlay } from "./share/share-overlay.js";
 
-function isSpendInput(el) {
-  return el instanceof HTMLInputElement && el.matches("input[data-cat], input[data-subcategory-key]");
-}
-
-function shouldBlockSpendKey(event) {
-  if (event.ctrlKey || event.metaKey || event.altKey) return false;
-  if (event.key.length !== 1) return false;
-  return !/^\d$/.test(event.key);
-}
-
 async function main() {
   const view = createView();
   const { elements } = view;
@@ -86,15 +76,9 @@ async function main() {
 
     elements.spendTableEl.addEventListener("input", (event) => {
       const target = event.target;
-      if (!isSpendInput(target)) return;
+      if (!(target instanceof HTMLInputElement)) return;
+      if (!target.matches("input[data-cat], input[data-subcategory-key]")) return;
       actions.runOptimization();
-    });
-
-    elements.spendTableEl.addEventListener("keydown", (event) => {
-      const target = event.target;
-      if (!isSpendInput(target)) return;
-      if (!shouldBlockSpendKey(event)) return;
-      event.preventDefault();
     });
 
     elements.lockedCardSearchEl?.addEventListener("input", actions.renderLockedSearchResults);
