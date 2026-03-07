@@ -3,7 +3,9 @@ import { buildShareCopy } from "./share-copy.js";
 
 const QR_ENDPOINT = "https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=";
 
-export function createShareOverlay() {
+export function createShareOverlay(options = {}) {
+  const { onOpen = null, onNativeShareSuccess = null, onDownloadSuccess = null } = options;
+
   const root = document.createElement("div");
   root.className = "shareOverlay hidden";
   root.setAttribute("aria-hidden", "true");
@@ -166,6 +168,7 @@ export function createShareOverlay() {
 
   function open() {
     root.classList.remove("hidden");
+    if (typeof onOpen === "function") onOpen();
     root.setAttribute("aria-hidden", "false");
     previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
@@ -237,6 +240,7 @@ export function createShareOverlay() {
       }
 
       await navigator.share(payload);
+      if (typeof onNativeShareSuccess === "function") onNativeShareSuccess();
     });
   });
 
@@ -247,6 +251,7 @@ export function createShareOverlay() {
       try {
         const blob = await getPngBlob();
         downloadBlob(blob, "creditcombo-share.png");
+        if (typeof onDownloadSuccess === "function") onDownloadSuccess();
       } catch (error) {
         console.error("Share image download failed", error);
       }

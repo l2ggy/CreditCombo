@@ -6,8 +6,12 @@ import { createView } from "./app/view.js";
 import { readOptimizerDeepLink } from "./app/deeplink.js";
 import { escapeHtml } from "./shared/sanitize.js";
 import { createShareOverlay } from "./share/share-overlay.js";
+import { sessionEntryContext, trackEvent, trackPageView } from "./shared/analytics.js";
 
 async function main() {
+  trackPageView("optimizer");
+  trackEvent("session_started", sessionEntryContext());
+
   const view = createView();
   const { elements } = view;
 
@@ -27,7 +31,12 @@ async function main() {
 
     let shareOverlay = null;
     const ensureShareOverlay = () => {
-      if (!shareOverlay) shareOverlay = createShareOverlay();
+      if (!shareOverlay) {
+        shareOverlay = createShareOverlay({
+          onNativeShareSuccess: () => trackEvent("optimizer_share_success", { method: "native_share" }),
+          onDownloadSuccess: () => trackEvent("optimizer_share_success", { method: "download_image" })
+        });
+      }
       return shareOverlay;
     };
 
@@ -71,7 +80,7 @@ async function main() {
     elements.excludeCashbackProgramsEl?.addEventListener("change", () => actions.setExcludeCashbackPrograms(elements.excludeCashbackProgramsEl.checked));
     elements.resetAdvancedPrefsBtn?.addEventListener("click", actions.resetAdvancedPreferences);
     elements.maxAnnualFeeEl?.addEventListener("input", () => actions.setMaxAnnualFee(elements.maxAnnualFeeEl.value));
-    elements.chexyFeePercentEl?.addEventListener("input", actions.runOptimization);
+    elements.chexyFeePercentEl?.addEventListener("input", () => actions.setChexyFeePercent(elements.chexyFeePercentEl.value));
     elements.enableLockedCardsEl?.addEventListener("change", actions.toggleLockedCards);
 
     elements.spendTableEl.addEventListener("beforeinput", (event) => {

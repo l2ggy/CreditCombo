@@ -25,10 +25,10 @@ function withSecurityHeaders(response, { headRequest = false } = {}) {
       "frame-ancestors 'none'",
       "form-action 'self'",
       "object-src 'none'",
-      "script-src 'self' 'unsafe-inline'",
+      "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com",
       "style-src 'self'",
-      "img-src 'self' data:",
-      "connect-src 'self'",
+      "img-src 'self' data: https://www.google-analytics.com",
+      "connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com",
     ].join("; "),
   );
 
