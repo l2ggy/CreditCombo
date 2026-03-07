@@ -66,6 +66,40 @@ const systemThemeQuery = window.matchMedia
   ? window.matchMedia("(prefers-color-scheme: dark)")
   : null;
 
+
+function randomBetween(min, max) {
+  return min + Math.random() * (max - min);
+}
+
+function randomSign() {
+  return Math.random() < 0.5 ? -1 : 1;
+}
+
+function applyBackgroundMotionSeed() {
+  const root = document.documentElement;
+
+  root.style.setProperty("--bg-float-a-duration", `${randomBetween(29, 38).toFixed(2)}s`);
+  root.style.setProperty("--bg-float-b-duration", `${randomBetween(34, 46).toFixed(2)}s`);
+  root.style.setProperty("--bg-float-a-delay", `${(-1 * randomBetween(0, 34)).toFixed(2)}s`);
+  root.style.setProperty("--bg-float-b-delay", `${(-1 * randomBetween(0, 40)).toFixed(2)}s`);
+  root.style.setProperty("--bg-float-a-direction", Math.random() < 0.5 ? "alternate" : "alternate-reverse");
+  root.style.setProperty("--bg-float-b-direction", Math.random() < 0.5 ? "alternate" : "alternate-reverse");
+
+  root.style.setProperty("--bg-float-a-origin-x", `${randomBetween(-2.2, 2.2).toFixed(2)}vw`);
+  root.style.setProperty("--bg-float-a-origin-y", `${randomBetween(-1.8, 1.8).toFixed(2)}vh`);
+  root.style.setProperty("--bg-float-b-origin-x", `${randomBetween(-2.8, 2.8).toFixed(2)}vw`);
+  root.style.setProperty("--bg-float-b-origin-y", `${randomBetween(-2.2, 2.2).toFixed(2)}vh`);
+
+  root.style.setProperty("--bg-float-a-dir-x", `${randomSign()}`);
+  root.style.setProperty("--bg-float-a-dir-y", `${randomSign()}`);
+  root.style.setProperty("--bg-float-b-dir-x", `${randomSign()}`);
+  root.style.setProperty("--bg-float-b-dir-y", `${randomSign()}`);
+
+  root.style.setProperty("--bg-float-a-scale", `${randomBetween(0.994, 1.012).toFixed(4)}`);
+  root.style.setProperty("--bg-float-b-scale", `${randomBetween(0.992, 1.014).toFixed(4)}`);
+}
+
+applyBackgroundMotionSeed();
 applyTheme(resolveInitialTheme());
 
 document.addEventListener("DOMContentLoaded", () => {
