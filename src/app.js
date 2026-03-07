@@ -74,10 +74,21 @@ async function main() {
     elements.chexyFeePercentEl?.addEventListener("input", actions.runOptimization);
     elements.enableLockedCardsEl?.addEventListener("change", actions.toggleLockedCards);
 
+    const isSpendInput = (target) => (
+      target instanceof HTMLInputElement
+      && target.matches("input[data-cat], input[data-subcategory-key]")
+    );
+
+    elements.spendTableEl.addEventListener("beforeinput", (event) => {
+      const target = event.target;
+      if (!isSpendInput(target)) return;
+      if (event.isComposing || !event.data) return;
+      if (/\D/u.test(event.data)) event.preventDefault();
+    });
+
     elements.spendTableEl.addEventListener("input", (event) => {
       const target = event.target;
-      if (!(target instanceof HTMLInputElement)) return;
-      if (!target.matches("input[data-cat], input[data-subcategory-key]")) return;
+      if (!isSpendInput(target)) return;
       actions.runOptimization();
     });
 
