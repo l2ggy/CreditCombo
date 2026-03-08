@@ -40,6 +40,7 @@
         <a class="textLink" href="./valuations.html" aria-current="page">Rewards valuation guide</a>
         <a class="textLink" href="./about.html">About</a>
       </div>
+      <div id="authSlot" class="authSlot" aria-live="polite"></div>
       <button type="button" class="themeToggle" data-theme-toggle aria-label="Switch theme" title="Switch theme">☀︎</button>
     </nav>
     <div class="divider" aria-hidden="true"></div>
@@ -109,6 +110,7 @@
       <p class="subtle">Out of scope: unstructured merchant/portal-specific special rules, MCC edge cases, broad acceptance constraints, and one-time promotions or welcome bonuses.</p>
     </section>
   </main>
+  <script type="module" src="./src/page-auth.js"></script>
   <script type="module">
     import { sessionEntryContext, trackEvent, trackPageView } from "./src/shared/analytics.js";
 

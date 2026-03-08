@@ -1,3 +1,4 @@
+import { getSession, initAuthUi, onAuthStateChange } from "./shared/auth.js";
 import { loadOptimizerData } from "./data-service.js";
 import { buildOptimizerDeepLink } from "./app/deeplink.js";
 import { annualizeMonthlySpend, chexyAdjustedAnnualSpend, findBestCombo } from "./optimizer.js";
@@ -711,6 +712,10 @@ async function main() {
   trackPageView("quick_setup");
   trackEvent("session_started", sessionEntryContext());
   trackEvent("quick_setup_started");
+
+  const authUi = initAuthUi(document.getElementById("authSlot"), { redirectTo: window.location.href.split("#")[0] });
+  authUi.update(await getSession());
+  onAuthStateChange((_, session) => authUi.update(session));
 
   const data = await loadOptimizerData();
   const optimizationEligibleCards = QUICK_SETUP_DEFAULTS.includeBusinessCards

@@ -1,3 +1,4 @@
+import { getSession, initAuthUi, onAuthStateChange } from "./shared/auth.js";
 import { loadCoreData } from "./data-service.js";
 import { formatMoneyCAD, formatMultiplier } from "./shared/format.js";
 import { formatIssuerNetwork, renderCardThumb, renderOfficialCardLink } from "./shared/render.js";
@@ -426,6 +427,10 @@ function registerEvents() {
 async function init() {
   trackPageView("card_browser");
   trackEvent("session_started", sessionEntryContext());
+
+  const authUi = initAuthUi(document.getElementById("authSlot"), { redirectTo: window.location.href.split("#")[0] });
+  authUi.update(await getSession());
+  onAuthStateChange((_, session) => authUi.update(session));
 
   try {
     const { cardsJson, programsMap, subcategoryConfigs } = await loadCoreData();

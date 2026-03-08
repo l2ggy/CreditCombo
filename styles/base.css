@@ -34,6 +34,14 @@ main.container{padding-top:var(--space-5)}
 .topNavLinks{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-6);margin-left:auto}
 .themeToggle{width:auto;padding:0;border:0;border-radius:0;background:transparent;color:var(--color-text);font-size:22px;font-weight:700;font-family:"Segoe UI Symbol","Noto Sans Symbols 2","Noto Sans Symbols","Apple Symbols",sans-serif;line-height:1;box-shadow:none}.themeToggle:hover,.themeToggle:active{background:transparent;border-color:transparent;box-shadow:none;transform:none}
 .siteBrand{color:var(--color-brand-highlight);font-size:calc(var(--font-size-2xl) + 2px);line-height:var(--line-height-tight);font-weight:700}
+
+.authSlot{display:flex;align-items:center;min-height:var(--space-8)}
+.authInlineBtn{width:auto;padding:0;border:0;border-radius:0;background:transparent;color:var(--color-accent);font:inherit;font-weight:600;box-shadow:none;cursor:pointer}
+.authInlineBtn:hover,.authInlineBtn:active{background:transparent;border-color:transparent;box-shadow:none;transform:none}
+.authUserMenu{display:inline-flex;align-items:center;gap:var(--space-3)}
+.authUserLabel{max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--color-muted);font-size:var(--font-size-sm)}
+.authAvatar{width:24px;height:24px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;object-fit:cover;border:1px solid var(--color-border);background:color-mix(in srgb,var(--color-accent) 12%,transparent);color:var(--color-text);font-size:var(--font-size-xs);font-weight:700}
+.authAvatarFallback{font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
 .header{display:flex;justify-content:space-between;align-items:flex-start;gap:var(--space-5)}
 .headerActions{display:flex;align-items:center;gap:var(--space-5)}
 
@@ -128,4 +136,4 @@ tbody tr:last-child td{border-bottom:none}
 @media (prefers-reduced-motion:reduce){body::before,body::after{animation:none}.panel{animation:none;transform:none}.contactBtn{transition:none}.contactBtn:hover,.contactBtn:focus-visible{animation:none}}
 @media (min-width:901px){.status .muted{white-space:nowrap}}
 @media (max-width:900px){.topNav{justify-content:flex-start}.header{flex-direction:column;align-items:flex-start}.headerActions{width:100%;justify-content:space-between}.footerContent{align-items:flex-start}.splitBody{grid-template-columns:1fr}}
-@media (max-width:700px){.topNav{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"brand toggle" "links links";align-items:center;column-gap:var(--space-3);row-gap:var(--space-2);width:100%}.siteBrand{grid-area:brand}.themeToggle{grid-area:toggle;justify-self:end}.topNavLinks{grid-area:links;display:flex;flex-wrap:wrap;gap:var(--space-3);margin-left:0}}
+@media (max-width:700px){.topNav{display:grid;grid-template-columns:minmax(0,1fr) auto auto;grid-template-areas:"brand auth toggle" "links links links";align-items:center;column-gap:var(--space-3);row-gap:var(--space-2);width:100%}.siteBrand{grid-area:brand}.authSlot{grid-area:auth;justify-self:end}.themeToggle{grid-area:toggle;justify-self:end}.topNavLinks{grid-area:links;display:flex;flex-wrap:wrap;gap:var(--space-3);margin-left:0}.authUserLabel{max-width:84px}}

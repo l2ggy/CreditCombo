@@ -1,3 +1,4 @@
+import { getSession, initAuthUi, onAuthStateChange } from "./shared/auth.js";
 import { loadOptimizerData } from "./data-service.js";
 import { renderIssues, renderSpendTable } from "./ui.js";
 import { createActions } from "./app/actions.js";
@@ -11,6 +12,10 @@ import { sessionEntryContext, trackEvent, trackPageView } from "./shared/analyti
 async function main() {
   trackPageView("optimizer");
   trackEvent("session_started", sessionEntryContext());
+
+  const authUi = initAuthUi(document.getElementById("authSlot"), { redirectTo: window.location.href.split("#")[0] });
+  authUi.update(await getSession());
+  onAuthStateChange((_, session) => authUi.update(session));
 
   const view = createView();
   const { elements } = view;
