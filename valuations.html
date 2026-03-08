@@ -20,6 +20,7 @@
   <link rel="stylesheet" href="./styles/base.css" />
   <link rel="stylesheet" href="./styles/browser.css" />
   <script type="module" src="./src/theme.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-F85DCJP3CW"></script>
   <script>
@@ -40,6 +41,7 @@
         <a class="textLink" href="./valuations.html" aria-current="page">Rewards valuation guide</a>
         <a class="textLink" href="./about.html">About</a>
       </div>
+      <div id="auth-controls" class="authControls" aria-live="polite"></div>
       <button type="button" class="themeToggle" data-theme-toggle aria-label="Switch theme" title="Switch theme">☀︎</button>
     </nav>
     <div class="divider" aria-hidden="true"></div>
@@ -109,11 +111,6 @@
       <p class="subtle">Out of scope: unstructured merchant/portal-specific special rules, MCC edge cases, broad acceptance constraints, and one-time promotions or welcome bonuses.</p>
     </section>
   </main>
-  <script type="module">
-    import { sessionEntryContext, trackEvent, trackPageView } from "./src/shared/analytics.js";
-
-    trackPageView("valuations");
-    trackEvent("session_started", sessionEntryContext());
-  </script>
+  <script type="module" src="./src/valuations.js"></script>
 </body>
 </html>
