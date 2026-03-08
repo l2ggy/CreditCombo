@@ -12,6 +12,127 @@ const ROOT_PATH_REWRITES = {
   "/icon-512.png": "/icons/icon-512.png",
 };
 
+function jsonResponse(payload, status = 200) {
+  return new Response(JSON.stringify(payload), {
+    status,
+    headers: {
+      "content-type": "application/json; charset=utf-8",
+      "cache-control": "no-store",
+    },
+  });
+}
+
+function extractBearerToken(request) {
+  const authorization = request.headers.get("authorization") || "";
+  const [scheme, token, ...extraParts] = authorization.trim().split(/\s+/);
+
+  if (scheme !== "Bearer" || !token || extraParts.length > 0) {
+    return null;
+  }
+
+  return token;
+}
+
+async function fetchAuthenticatedUser(token, env) {
+  if (!env?.SUPABASE_URL || !env?.SUPABASE_PUBLISHABLE_KEY) {
+    return null;
+  }
+
+  const authResponse = await fetch(`${env.SUPABASE_URL}/auth/v1/user`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      apikey: env.SUPABASE_PUBLISHABLE_KEY,
+    },
+  });
+
+  if (!authResponse.ok) {
+    return null;
+  }
+
+  const authUser = await authResponse.json();
+  return typeof authUser?.id === "string" ? authUser : null;
+}
+
+async function fetchUserEntitlement(userId, env) {
+  if (!env?.SUPABASE_URL || !env?.SUPABASE_SERVICE_ROLE_KEY) {
+    return null;
+  }
+
+  const entitlementUrl = new URL(`${env.SUPABASE_URL}/rest/v1/user_entitlements`);
+  entitlementUrl.searchParams.set("user_id", `eq.${userId}`);
+  entitlementUrl.searchParams.set("select", "user_id,premium_enabled,premium_until");
+  entitlementUrl.searchParams.set("limit", "1");
+
+  const entitlementResponse = await fetch(entitlementUrl.toString(), {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${env.SUPABASE_SERVICE_ROLE_KEY}`,
+      apikey: env.SUPABASE_SERVICE_ROLE_KEY,
+    },
+  });
+
+  if (!entitlementResponse.ok) {
+    return null;
+  }
+
+  const rows = await entitlementResponse.json();
+  return Array.isArray(rows) && rows.length > 0 ? rows[0] : null;
+}
+
+function normalizeEntitlements(userId, entitlementRow) {
+  if (!entitlementRow) {
+    return {
+      authenticated: true,
+      userId,
+      premium: false,
+      premiumUntil: null,
+      reason: "no_row",
+    };
+  }
+
+  const premiumEnabled = entitlementRow.premium_enabled === true;
+  const premiumUntil = typeof entitlementRow.premium_until === "string" ? entitlementRow.premium_until : null;
+  const premiumUntilTime = premiumUntil ? Date.parse(premiumUntil) : null;
+  const premiumExpired = premiumUntilTime !== null && Number.isFinite(premiumUntilTime) ? premiumUntilTime <= Date.now() : false;
+  const premium = premiumEnabled && !premiumExpired;
+
+  let reason = "enabled";
+  if (!premiumEnabled) {
+    reason = "disabled";
+  } else if (premiumExpired) {
+    reason = "expired";
+  }
+
+  return {
+    authenticated: true,
+    userId,
+    premium,
+    premiumUntil,
+    reason,
+  };
+}
+
+async function handleEntitlementsRequest(request, env) {
+  if (request.method !== "GET") {
+    return jsonResponse({ error: "Method not allowed" }, 405);
+  }
+
+  const accessToken = extractBearerToken(request);
+  if (!accessToken) {
+    return jsonResponse({ error: "Unauthorized" }, 401);
+  }
+
+  const authUser = await fetchAuthenticatedUser(accessToken, env);
+  if (!authUser) {
+    return jsonResponse({ error: "Unauthorized" }, 401);
+  }
+
+  const entitlementRow = await fetchUserEntitlement(authUser.id, env);
+  const normalized = normalizeEntitlements(authUser.id, entitlementRow);
+  return jsonResponse(normalized, 200);
+}
+
 function supabaseOriginFromEnv(env) {
   if (!env?.SUPABASE_URL) return "";
   try {
@@ -97,6 +218,14 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     const rewrittenPath = ROOT_PATH_REWRITES[url.pathname];
+
+    if (url.pathname === "/api/me/entitlements") {
+      const response = await handleEntitlementsRequest(request, env);
+      return withSecurityHeaders(response, {
+        headRequest: request.method === "HEAD",
+        supabaseOrigin: supabaseOriginFromEnv(env),
+      });
+    }
 
     if (rewrittenPath) {
       url.pathname = rewrittenPath;
