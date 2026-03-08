@@ -12,6 +12,115 @@ const ROOT_PATH_REWRITES = {
   "/icon-512.png": "/icons/icon-512.png",
 };
 
+function jsonResponse(status, payload) {
+  return new Response(JSON.stringify(payload), {
+    status,
+    headers: {
+      "content-type": "application/json; charset=utf-8",
+    },
+  });
+}
+
+function readBearerToken(request) {
+  const authHeader = request.headers.get("authorization") || "";
+  const match = authHeader.match(/^Bearer\s+(.+)$/i);
+  if (!match || !match[1]) return null;
+  return match[1].trim();
+}
+
+function unauthorized(message = "Unauthorized") {
+  return jsonResponse(401, {
+    error: message,
+  });
+}
+
+async function fetchAuthenticatedUser(token, env) {
+  const response = await fetch(`${env.SUPABASE_URL}/auth/v1/user`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      apikey: env.SUPABASE_PUBLISHABLE_KEY,
+    },
+  });
+
+  if (!response.ok) return null;
+
+  const body = await response.json();
+  if (!body?.id) return null;
+  return body;
+}
+
+async function fetchUserEntitlement(userId, env) {
+  const params = new URLSearchParams({
+    user_id: `eq.${userId}`,
+    select: "premium_enabled,premium_until",
+    limit: "1",
+  });
+
+  const response = await fetch(`${env.SUPABASE_URL}/rest/v1/user_entitlements?${params.toString()}`, {
+    headers: {
+      Authorization: `Bearer ${env.SUPABASE_SERVICE_ROLE_KEY}`,
+      apikey: env.SUPABASE_SERVICE_ROLE_KEY,
+    },
+  });
+
+  if (!response.ok) return null;
+
+  const rows = await response.json();
+  if (!Array.isArray(rows) || rows.length === 0) return null;
+  return rows[0];
+}
+
+function normalizeEntitlement(userId, entitlementRow) {
+  if (!entitlementRow) {
+    return {
+      authenticated: true,
+      userId,
+      premium: false,
+      premiumUntil: null,
+      reason: "no_row",
+    };
+  }
+
+  const premiumEnabled = entitlementRow.premium_enabled === true;
+  const premiumUntil = entitlementRow.premium_until || null;
+  const premiumUntilDate = premiumUntil ? new Date(premiumUntil) : null;
+  const isFutureExpiry = premiumUntilDate instanceof Date && !Number.isNaN(premiumUntilDate.getTime())
+    ? premiumUntilDate.getTime() > Date.now()
+    : false;
+
+  const premium = premiumEnabled && (premiumUntil === null || isFutureExpiry);
+
+  let reason = "disabled";
+  if (premium) {
+    reason = "enabled";
+  } else if (premiumEnabled && premiumUntil !== null) {
+    reason = "expired";
+  }
+
+  return {
+    authenticated: true,
+    userId,
+    premium,
+    premiumUntil,
+    reason,
+  };
+}
+
+async function handleEntitlements(request, env) {
+  const token = readBearerToken(request);
+  if (!token) {
+    return unauthorized("Missing or malformed bearer token");
+  }
+
+  const authUser = await fetchAuthenticatedUser(token, env);
+  if (!authUser) {
+    return unauthorized("Invalid access token");
+  }
+
+  const entitlementRow = await fetchUserEntitlement(authUser.id, env);
+  return jsonResponse(200, normalizeEntitlement(authUser.id, entitlementRow));
+}
+
 function supabaseOriginFromEnv(env) {
   if (!env?.SUPABASE_URL) return "";
   try {
@@ -97,6 +206,13 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     const rewrittenPath = ROOT_PATH_REWRITES[url.pathname];
+
+    if (url.pathname === "/api/me/entitlements" && request.method === "GET") {
+      const response = await handleEntitlements(request, env);
+      return withSecurityHeaders(response, {
+        supabaseOrigin: supabaseOriginFromEnv(env),
+      });
+    }
 
     if (rewrittenPath) {
       url.pathname = rewrittenPath;
