@@ -4,6 +4,7 @@ import { formatIssuerNetwork, renderCardThumb, renderOfficialCardLink } from "./
 import { createCardSearchIndex, rankCardMatches } from "./shared/card-search.js";
 import { merchantPortalConfigs, subcategoryRateForCard } from "./subcategory-config.js";
 import { sessionEntryContext, trackEvent, trackPageView } from "./shared/analytics.js";
+import { initAuthUi } from "./shared/auth.js";
 
 const state = {
   cards: [],
@@ -424,6 +425,7 @@ function registerEvents() {
 }
 
 async function init() {
+  initAuthUi({ mountEl: document.getElementById("auth-controls") });
   trackPageView("card_browser");
   trackEvent("session_started", sessionEntryContext());
 
