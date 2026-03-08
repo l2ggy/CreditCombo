@@ -12,31 +12,83 @@ const ROOT_PATH_REWRITES = {
   "/icon-512.png": "/icons/icon-512.png",
 };
 
-function withSecurityHeaders(response, { headRequest = false } = {}) {
+function withSecurityHeaders(response, env, { headRequest = false } = {}) {
   const headers = new Headers(response.headers);
+  const contentType = headers.get("Content-Type") || "";
+  const isHtmlResponse = contentType.includes("text/html");
+  const supabaseOrigin = parseSupabaseOrigin(env?.SUPABASE_URL);
+
   headers.set("X-Content-Type-Options", "nosniff");
   headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
   headers.set("X-Frame-Options", "DENY");
-  headers.set(
-    "Content-Security-Policy",
-    [
-      "default-src 'self'",
-      "base-uri 'self'",
-      "frame-ancestors 'none'",
-      "form-action 'self'",
-      "object-src 'none'",
-      "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com",
-      "style-src 'self'",
-      "img-src 'self' data: https://www.google-analytics.com",
-      "connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com",
-    ].join("; "),
-  );
+  headers.set("Content-Security-Policy", buildContentSecurityPolicy(supabaseOrigin));
 
-  return new Response(headRequest ? null : response.body, {
-    status: response.status,
-    statusText: response.statusText,
-    headers,
-  });
+  if (!isHtmlResponse || headRequest) {
+    return new Response(headRequest ? null : response.body, {
+      status: response.status,
+      statusText: response.statusText,
+      headers,
+    });
+  }
+
+  headers.delete("Content-Length");
+
+  return new Response(
+    injectConfigScript(response, {
+      SUPABASE_URL: typeof env?.SUPABASE_URL === "string" ? env.SUPABASE_URL : "",
+      SUPABASE_PUBLISHABLE_KEY: typeof env?.SUPABASE_PUBLISHABLE_KEY === "string" ? env.SUPABASE_PUBLISHABLE_KEY : "",
+      ENTITLEMENTS_API_ENABLED: false,
+    }),
+    {
+      status: response.status,
+      statusText: response.statusText,
+      headers,
+    },
+  );
+}
+
+function parseSupabaseOrigin(supabaseUrl) {
+  if (!supabaseUrl || typeof supabaseUrl !== "string") return null;
+  try {
+    return new URL(supabaseUrl).origin;
+  } catch {
+    return null;
+  }
+}
+
+function buildContentSecurityPolicy(supabaseOrigin) {
+  const connectSrc = [
+    "'self'",
+    "https://www.google-analytics.com",
+    "https://region1.google-analytics.com",
+  ];
+
+  if (supabaseOrigin) connectSrc.push(supabaseOrigin);
+
+  return [
+    "default-src 'self'",
+    "base-uri 'self'",
+    "frame-ancestors 'none'",
+    "form-action 'self'",
+    "object-src 'none'",
+    "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com",
+    "style-src 'self'",
+    "img-src 'self' data: https://www.google-analytics.com",
+    `connect-src ${connectSrc.join(" ")}`,
+  ].join("; ");
+}
+
+function injectConfigScript(response, config) {
+  const serializedConfig = JSON.stringify(config);
+  const configScript = `<script>window.CREDITCOMBO_CONFIG=${serializedConfig};</script>`;
+
+  return new HTMLRewriter()
+    .on("head", {
+      element(element) {
+        element.append(configScript, { html: true });
+      },
+    })
+    .transform(response).body;
 }
 
 export default {
@@ -51,13 +103,13 @@ export default {
         headers: request.headers,
       });
       const assetResponse = await env.ASSETS.fetch(assetRequest);
-      return withSecurityHeaders(assetResponse, {
+      return withSecurityHeaders(assetResponse, env, {
         headRequest: request.method === "HEAD",
       });
     }
 
     const assetResponse = await env.ASSETS.fetch(request);
-    return withSecurityHeaders(assetResponse, {
+    return withSecurityHeaders(assetResponse, env, {
       headRequest: request.method === "HEAD",
     });
   },
