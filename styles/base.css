@@ -36,6 +36,13 @@ main.container{padding-top:var(--space-5)}
 .siteBrand{color:var(--color-brand-highlight);font-size:calc(var(--font-size-2xl) + 2px);line-height:var(--line-height-tight);font-weight:700}
 .header{display:flex;justify-content:space-between;align-items:flex-start;gap:var(--space-5)}
 .headerActions{display:flex;align-items:center;gap:var(--space-5)}
+.authControls{display:inline-flex;align-items:center;justify-content:flex-end;min-height:var(--space-10)}
+.authBtn,.authLink{border:1px solid var(--color-border);background:transparent;color:var(--color-muted);font:inherit;font-size:var(--font-size-sm);line-height:1.2;padding:var(--space-2) var(--space-3);border-radius:var(--radius-md);cursor:pointer}
+.authBtn:hover,.authLink:hover{color:var(--color-text);border-color:var(--color-accent)}
+.authBtn:disabled,.authLink:disabled{opacity:.6;cursor:not-allowed}
+.authSignedIn{display:inline-flex;align-items:center;gap:var(--space-2);max-width:240px}
+.authAvatar{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border:1px solid var(--color-border);border-radius:999px;font-size:10px;color:var(--color-muted)}
+.authIdentity{font-size:var(--font-size-sm);color:var(--color-muted);max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 
 @keyframes panelEnter{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 .panel{border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-6);background:var(--color-panel);animation:panelEnter .22s ease-out both;-webkit-text-size-adjust:100%;text-size-adjust:100%}
