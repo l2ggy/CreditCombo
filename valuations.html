@@ -40,7 +40,7 @@
         <a class="textLink" href="./valuations.html" aria-current="page">Rewards valuation guide</a>
         <a class="textLink" href="./about.html">About</a>
       </div>
-      <button type="button" class="themeToggle" data-theme-toggle aria-label="Switch theme" title="Switch theme">☀︎</button>
+      <div class="topNavActions"><div id="authSlot" class="authSlot" aria-live="polite"></div><button type="button" class="themeToggle" data-theme-toggle aria-label="Switch theme" title="Switch theme">☀︎</button></div>
     </nav>
     <div class="divider" aria-hidden="true"></div>
     <h1 class="pageTitle">Rewards Valuation Guide</h1>
@@ -111,7 +111,9 @@
   </main>
   <script type="module">
     import { sessionEntryContext, trackEvent, trackPageView } from "./src/shared/analytics.js";
+    import { bootAuthShell } from "./src/page-shell.js";
 
+    bootAuthShell();
     trackPageView("valuations");
     trackEvent("session_started", sessionEntryContext());
   </script>

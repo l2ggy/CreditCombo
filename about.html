@@ -40,7 +40,7 @@
         <a class="textLink" href="./valuations.html">Rewards valuation guide</a>
         <a class="textLink" href="./about.html" aria-current="page">About</a>
       </div>
-      <button type="button" class="themeToggle" data-theme-toggle aria-label="Switch theme" title="Switch theme">☀︎</button>
+      <div class="topNavActions"><div id="authSlot" class="authSlot" aria-live="polite"></div><button type="button" class="themeToggle" data-theme-toggle aria-label="Switch theme" title="Switch theme">☀︎</button></div>
     </nav>
     <div class="divider" aria-hidden="true"></div>
     <h1 class="pageTitle">About CreditCombo</h1>
@@ -98,7 +98,9 @@
 
   <script type="module">
     import { sessionEntryContext, trackEvent, trackPageView } from "./src/shared/analytics.js";
+    import { bootAuthShell } from "./src/page-shell.js";
 
+    bootAuthShell();
     trackPageView("about");
     trackEvent("session_started", sessionEntryContext());
   </script>
