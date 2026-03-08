@@ -12,6 +12,129 @@ const ROOT_PATH_REWRITES = {
   "/icon-512.png": "/icons/icon-512.png",
 };
 
+const JSON_HEADERS = {
+  "content-type": "application/json; charset=utf-8",
+};
+
+function jsonResponse(body, status = 200) {
+  return new Response(JSON.stringify(body), {
+    status,
+    headers: JSON_HEADERS,
+  });
+}
+
+function unauthorizedResponse(message = "Unauthorized") {
+  return jsonResponse({ error: message }, 401);
+}
+
+function bearerTokenFromRequest(request) {
+  const authorizationHeader = request.headers.get("authorization");
+  if (!authorizationHeader) return null;
+
+  const match = authorizationHeader.match(/^Bearer\s+(.+)$/i);
+  const token = match?.[1]?.trim();
+  return token || null;
+}
+
+function entitlementFromRow(row) {
+  if (!row) {
+    return {
+      premium: false,
+      premiumUntil: null,
+      reason: "no_row",
+    };
+  }
+
+  const premiumEnabled = row.premium_enabled === true;
+  const premiumUntil = typeof row.premium_until === "string" ? row.premium_until : null;
+  const premiumUntilMs = premiumUntil ? Date.parse(premiumUntil) : NaN;
+  const hasValidPremiumUntil = Number.isFinite(premiumUntilMs);
+  const hasExpiredPremiumUntil = hasValidPremiumUntil && premiumUntilMs <= Date.now();
+
+  if (!premiumEnabled) {
+    return {
+      premium: false,
+      premiumUntil,
+      reason: "disabled",
+    };
+  }
+
+  if (hasExpiredPremiumUntil) {
+    return {
+      premium: false,
+      premiumUntil,
+      reason: "expired",
+    };
+  }
+
+  return {
+    premium: true,
+    premiumUntil,
+    reason: "enabled",
+  };
+}
+
+async function fetchAuthenticatedUser(request, env) {
+  const accessToken = bearerTokenFromRequest(request);
+  if (!accessToken) {
+    return { errorResponse: unauthorizedResponse("Missing or malformed bearer token") };
+  }
+
+  const authResponse = await fetch(`${env.SUPABASE_URL}/auth/v1/user`, {
+    headers: {
+      authorization: `Bearer ${accessToken}`,
+      apikey: env.SUPABASE_PUBLISHABLE_KEY,
+    },
+  });
+
+  if (!authResponse.ok) {
+    return { errorResponse: unauthorizedResponse("Invalid access token") };
+  }
+
+  const authUser = await authResponse.json();
+  if (!authUser?.id) {
+    return { errorResponse: unauthorizedResponse("Invalid access token") };
+  }
+
+  return { authUser };
+}
+
+async function handleEntitlementsRequest(request, env) {
+  if (request.method !== "GET") {
+    return jsonResponse({ error: "Method not allowed" }, 405);
+  }
+
+  const { authUser, errorResponse } = await fetchAuthenticatedUser(request, env);
+  if (errorResponse) return errorResponse;
+
+  const entitlementsUrl = new URL(`${env.SUPABASE_URL}/rest/v1/user_entitlements`);
+  entitlementsUrl.searchParams.set("user_id", `eq.${authUser.id}`);
+  entitlementsUrl.searchParams.set("select", "premium_enabled,premium_until");
+  entitlementsUrl.searchParams.set("limit", "1");
+
+  const entitlementResponse = await fetch(entitlementsUrl.toString(), {
+    headers: {
+      apikey: env.SUPABASE_PUBLISHABLE_KEY,
+      authorization: `Bearer ${env.SUPABASE_SERVICE_ROLE_KEY}`,
+    },
+  });
+
+  if (!entitlementResponse.ok) {
+    return jsonResponse({ error: "Failed to load entitlements" }, 502);
+  }
+
+  const rows = await entitlementResponse.json();
+  const normalizedEntitlement = entitlementFromRow(Array.isArray(rows) ? rows[0] : null);
+
+  return jsonResponse({
+    authenticated: true,
+    userId: authUser.id,
+    premium: normalizedEntitlement.premium,
+    premiumUntil: normalizedEntitlement.premiumUntil,
+    reason: normalizedEntitlement.reason,
+  });
+}
+
 function supabaseOriginFromEnv(env) {
   if (!env?.SUPABASE_URL) return "";
   try {
@@ -96,6 +219,11 @@ async function withResponseTransforms(response, request, env) {
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
+
+    if (url.pathname === "/api/me/entitlements") {
+      return handleEntitlementsRequest(request, env);
+    }
+
     const rewrittenPath = ROOT_PATH_REWRITES[url.pathname];
 
     if (rewrittenPath) {
