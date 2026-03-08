@@ -30,8 +30,15 @@ h3{margin:var(--space-6) 0 var(--space-4);font-size:var(--font-size-md);color:va
 main.container{padding-top:var(--space-5)}
 .header .subtle{margin:0}
 .topNav{display:flex;justify-content:flex-end;flex-wrap:wrap;align-items:center;gap:var(--space-6)}
+.siteBrand{margin-right:var(--space-2)}
 .siteHeader > .divider{--divider-margin-block:0}
 .topNavLinks{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-6);margin-left:auto}
+.authSlot{display:flex;align-items:center;min-height:var(--space-8)}
+.authUi{display:flex;align-items:center}
+.authAction{display:inline-flex;align-items:center;gap:var(--space-2);width:auto;padding:0;border:none;background:transparent;color:var(--color-text);font-size:var(--font-size-sm);font-weight:600;line-height:1.2;cursor:pointer}
+.authAction:hover{color:var(--color-accent)}
+.authAvatar{display:inline-flex;align-items:center;justify-content:center;width:var(--space-7);height:var(--space-7);border:1px solid var(--color-border);border-radius:var(--radius-pill);font-size:11px;font-weight:700;color:var(--color-text)}
+.authLabel{max-width:12ch;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .themeToggle{width:auto;padding:0;border:0;border-radius:0;background:transparent;color:var(--color-text);font-size:22px;font-weight:700;font-family:"Segoe UI Symbol","Noto Sans Symbols 2","Noto Sans Symbols","Apple Symbols",sans-serif;line-height:1;box-shadow:none}.themeToggle:hover,.themeToggle:active{background:transparent;border-color:transparent;box-shadow:none;transform:none}
 .siteBrand{color:var(--color-brand-highlight);font-size:calc(var(--font-size-2xl) + 2px);line-height:var(--line-height-tight);font-weight:700}
 .header{display:flex;justify-content:space-between;align-items:flex-start;gap:var(--space-5)}
@@ -128,4 +135,4 @@ tbody tr:last-child td{border-bottom:none}
 @media (prefers-reduced-motion:reduce){body::before,body::after{animation:none}.panel{animation:none;transform:none}.contactBtn{transition:none}.contactBtn:hover,.contactBtn:focus-visible{animation:none}}
 @media (min-width:901px){.status .muted{white-space:nowrap}}
 @media (max-width:900px){.topNav{justify-content:flex-start}.header{flex-direction:column;align-items:flex-start}.headerActions{width:100%;justify-content:space-between}.footerContent{align-items:flex-start}.splitBody{grid-template-columns:1fr}}
-@media (max-width:700px){.topNav{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"brand toggle" "links links";align-items:center;column-gap:var(--space-3);row-gap:var(--space-2);width:100%}.siteBrand{grid-area:brand}.themeToggle{grid-area:toggle;justify-self:end}.topNavLinks{grid-area:links;display:flex;flex-wrap:wrap;gap:var(--space-3);margin-left:0}}
+@media (max-width:700px){.topNav{display:grid;grid-template-columns:minmax(0,1fr) auto auto;grid-template-areas:"brand auth toggle" "links links links";align-items:center;column-gap:var(--space-3);row-gap:var(--space-2);width:100%}.siteBrand{grid-area:brand}.authSlot{grid-area:auth;justify-self:end}.themeToggle{grid-area:toggle;justify-self:end}.topNavLinks{grid-area:links;display:flex;flex-wrap:wrap;gap:var(--space-3);margin-left:0}.authLabel{max-width:9ch}}

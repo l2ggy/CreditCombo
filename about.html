@@ -40,6 +40,7 @@
         <a class="textLink" href="./valuations.html">Rewards valuation guide</a>
         <a class="textLink" href="./about.html" aria-current="page">About</a>
       </div>
+      <div class="authSlot" id="authSlot" aria-live="polite"></div>
       <button type="button" class="themeToggle" data-theme-toggle aria-label="Switch theme" title="Switch theme">☀︎</button>
     </nav>
     <div class="divider" aria-hidden="true"></div>
@@ -98,9 +99,16 @@
 
   <script type="module">
     import { sessionEntryContext, trackEvent, trackPageView } from "./src/shared/analytics.js";
+    import { initAuthUi } from "./src/shared/auth.js";
 
     trackPageView("about");
     trackEvent("session_started", sessionEntryContext());
+
+    const authSlotEl = document.getElementById("authSlot");
+    await initAuthUi(authSlotEl, {
+      redirectTo: window.location.href,
+      onAuthStateChange: () => {}
+    });
   </script>
 </body>
 </html>

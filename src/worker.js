@@ -12,6 +12,33 @@ const ROOT_PATH_REWRITES = {
   "/icon-512.png": "/icons/icon-512.png",
 };
 
+function runtimeConfigScript(env) {
+  const config = {
+    SUPABASE_URL: env.SUPABASE_URL || "",
+    SUPABASE_PUBLISHABLE_KEY: env.SUPABASE_PUBLISHABLE_KEY || "",
+  };
+  return `<script>window.RUNTIME_CONFIG=${JSON.stringify(config)};</script>`;
+}
+
+async function injectRuntimeConfigIfHtml(response, env, { headRequest = false } = {}) {
+  const contentType = response.headers.get("content-type") || "";
+  if (headRequest || !contentType.includes("text/html")) return response;
+
+  const html = await response.text();
+  const runtimeScript = runtimeConfigScript(env);
+  const updatedHtml = html.includes("</head>")
+    ? html.replace("</head>", `${runtimeScript}\n</head>`)
+    : `${runtimeScript}${html}`;
+
+  const headers = new Headers(response.headers);
+  headers.delete("content-length");
+  return new Response(updatedHtml, {
+    status: response.status,
+    statusText: response.statusText,
+    headers,
+  });
+}
+
 function withSecurityHeaders(response, { headRequest = false } = {}) {
   const headers = new Headers(response.headers);
   headers.set("X-Content-Type-Options", "nosniff");
@@ -25,10 +52,10 @@ function withSecurityHeaders(response, { headRequest = false } = {}) {
       "frame-ancestors 'none'",
       "form-action 'self'",
       "object-src 'none'",
-      "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com",
+      "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://esm.sh",
       "style-src 'self'",
       "img-src 'self' data: https://www.google-analytics.com",
-      "connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com",
+      "connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com https://*.supabase.co wss://*.supabase.co",
     ].join("; "),
   );
 
@@ -43,6 +70,7 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     const rewrittenPath = ROOT_PATH_REWRITES[url.pathname];
+    const headRequest = request.method === "HEAD";
 
     if (rewrittenPath) {
       url.pathname = rewrittenPath;
@@ -50,15 +78,13 @@ export default {
         method: "GET",
         headers: request.headers,
       });
-      const assetResponse = await env.ASSETS.fetch(assetRequest);
-      return withSecurityHeaders(assetResponse, {
-        headRequest: request.method === "HEAD",
-      });
+      const rawResponse = await env.ASSETS.fetch(assetRequest);
+      const responseWithConfig = await injectRuntimeConfigIfHtml(rawResponse, env, { headRequest });
+      return withSecurityHeaders(responseWithConfig, { headRequest });
     }
 
-    const assetResponse = await env.ASSETS.fetch(request);
-    return withSecurityHeaders(assetResponse, {
-      headRequest: request.method === "HEAD",
-    });
+    const rawResponse = await env.ASSETS.fetch(request);
+    const responseWithConfig = await injectRuntimeConfigIfHtml(rawResponse, env, { headRequest });
+    return withSecurityHeaders(responseWithConfig, { headRequest });
   },
 };

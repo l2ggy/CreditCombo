@@ -7,12 +7,18 @@ import { readOptimizerDeepLink } from "./app/deeplink.js";
 import { escapeHtml } from "./shared/sanitize.js";
 import { createShareOverlay } from "./share/share-overlay.js";
 import { sessionEntryContext, trackEvent, trackPageView } from "./shared/analytics.js";
+import { initAuthUi } from "./shared/auth.js";
 
 async function main() {
   trackPageView("optimizer");
   trackEvent("session_started", sessionEntryContext());
 
   const view = createView();
+  const authSlotEl = document.getElementById("authSlot");
+  await initAuthUi(authSlotEl, {
+    redirectTo: window.location.href,
+    onAuthStateChange: () => {}
+  });
   const { elements } = view;
 
   try {
