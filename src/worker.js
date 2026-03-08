@@ -12,6 +12,118 @@ const ROOT_PATH_REWRITES = {
   "/icon-512.png": "/icons/icon-512.png",
 };
 
+function jsonResponse(body, status = 200) {
+  return new Response(JSON.stringify(body), {
+    status,
+    headers: {
+      "content-type": "application/json; charset=utf-8",
+      "cache-control": "no-store",
+    },
+  });
+}
+
+function unauthorizedResponse(message = "Unauthorized") {
+  return jsonResponse({ error: message }, 401);
+}
+
+function extractBearerToken(request) {
+  const authorizationHeader = request.headers.get("authorization");
+  if (!authorizationHeader) return null;
+
+  const match = authorizationHeader.match(/^Bearer\s+(.+)$/i);
+  if (!match) return null;
+
+  const token = match[1].trim();
+  return token.length > 0 ? token : null;
+}
+
+function normalizeEntitlement(entitlementRow, userId) {
+  if (!entitlementRow) {
+    return {
+      authenticated: true,
+      userId,
+      premium: false,
+      premiumUntil: null,
+      reason: "no_row",
+    };
+  }
+
+  const premiumEnabled = entitlementRow.premium_enabled === true;
+  const premiumUntil = entitlementRow.premium_until ?? null;
+  const premiumUntilTimestamp = premiumUntil ? Date.parse(premiumUntil) : null;
+  const hasValidExpiryTimestamp = premiumUntilTimestamp !== null && !Number.isNaN(premiumUntilTimestamp);
+  const isExpired = hasValidExpiryTimestamp && premiumUntilTimestamp <= Date.now();
+  const premium = premiumEnabled && !isExpired;
+
+  let reason = "disabled";
+  if (premiumEnabled && isExpired) {
+    reason = "expired";
+  } else if (premium) {
+    reason = "enabled";
+  }
+
+  return {
+    authenticated: true,
+    userId,
+    premium,
+    premiumUntil,
+    reason,
+  };
+}
+
+async function validateSupabaseUserToken(token, env) {
+  const response = await fetch(`${env.SUPABASE_URL}/auth/v1/user`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      apikey: env.SUPABASE_PUBLISHABLE_KEY,
+    },
+  });
+
+  if (!response.ok) return null;
+
+  const user = await response.json();
+  if (!user?.id || typeof user.id !== "string") return null;
+
+  return user;
+}
+
+async function fetchEntitlementRow(userId, env) {
+  const query = new URLSearchParams({
+    user_id: `eq.${userId}`,
+    select: "user_id,premium_enabled,premium_until",
+    limit: "1",
+  });
+
+  const response = await fetch(`${env.SUPABASE_URL}/rest/v1/user_entitlements?${query.toString()}`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${env.SUPABASE_SERVICE_ROLE_KEY}`,
+      apikey: env.SUPABASE_SERVICE_ROLE_KEY,
+    },
+  });
+
+  if (!response.ok) return null;
+
+  const rows = await response.json();
+  return Array.isArray(rows) && rows.length > 0 ? rows[0] : null;
+}
+
+async function handleEntitlementsRequest(request, env) {
+  const token = extractBearerToken(request);
+  if (!token) {
+    return unauthorizedResponse("Missing or malformed bearer token");
+  }
+
+  const user = await validateSupabaseUserToken(token, env);
+  if (!user) {
+    return unauthorizedResponse("Invalid access token");
+  }
+
+  const entitlementRow = await fetchEntitlementRow(user.id, env);
+  return jsonResponse(normalizeEntitlement(entitlementRow, user.id));
+}
+
 function supabaseOriginFromEnv(env) {
   if (!env?.SUPABASE_URL) return "";
   try {
@@ -96,6 +208,19 @@ async function withResponseTransforms(response, request, env) {
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
+
+    if (url.pathname === "/api/me/entitlements") {
+      if (request.method !== "GET") {
+        return jsonResponse({ error: "Method Not Allowed" }, 405);
+      }
+
+      const response = await handleEntitlementsRequest(request, env);
+      return withSecurityHeaders(response, {
+        headRequest: false,
+        supabaseOrigin: supabaseOriginFromEnv(env),
+      });
+    }
+
     const rewrittenPath = ROOT_PATH_REWRITES[url.pathname];
 
     if (rewrittenPath) {
