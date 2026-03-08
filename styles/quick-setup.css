@@ -58,6 +58,20 @@
 
 .quickSliderBounds{display:flex;justify-content:space-between;font-size:var(--font-size-sm);color:var(--color-muted);margin-top:calc(-1 * var(--space-2))}
 
+@media (pointer:fine){
+  .quickAnswerArea input[type="range"]::-webkit-slider-thumb,
+  #quickK::-webkit-slider-thumb{transform:scale(1.35)}
+
+  .quickAnswerArea input[type="range"]::-moz-range-thumb,
+  #quickK::-moz-range-thumb{transform:scale(1.35)}
+}
+
+@media (pointer:coarse){
+  /* iOS keeps the native slider thumb only when we avoid custom appearance; scaling the whole control increases the draggable target while preserving native rendering. */
+  .quickAnswerArea input[type="range"],
+  #quickK{min-height:44px;transform:scaleY(1.35);transform-origin:center}
+}
+
 .quickResultsScreen{display:grid;gap:var(--space-8);align-content:start}
 .quickResultsHero{text-align:center;display:grid;gap:var(--space-3)}
 .quickResultsHero > *{margin:0}
