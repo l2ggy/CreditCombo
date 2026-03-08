@@ -40,6 +40,7 @@
         <a class="textLink" href="./valuations.html">Rewards valuation guide</a>
         <a class="textLink" href="./about.html" aria-current="page">About</a>
       </div>
+      <div id="authSlot" class="hidden" aria-live="polite"></div>
       <button type="button" class="themeToggle" data-theme-toggle aria-label="Switch theme" title="Switch theme">☀︎</button>
     </nav>
     <div class="divider" aria-hidden="true"></div>
@@ -98,7 +99,9 @@
 
   <script type="module">
     import { sessionEntryContext, trackEvent, trackPageView } from "./src/shared/analytics.js";
+    import { bootAuthUi } from "./src/shared/auth-bootstrap.js";
 
+    bootAuthUi();
     trackPageView("about");
     trackEvent("session_started", sessionEntryContext());
   </script>
