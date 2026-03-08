@@ -9,6 +9,7 @@ function inferPageType() {
   if (path.includes("quick-setup")) return "quick_setup";
   if (path.includes("cards")) return "card_browser";
   if (path.includes("valuations")) return "valuations";
+  if (path.includes("about")) return "about";
   return "unknown";
 }
 

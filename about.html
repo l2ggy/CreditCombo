@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <title>About · CreditCombo</title>
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png?v=6" />
+  <link rel="icon" href="/icons/favicon.ico?v=6" />
+  <link rel="shortcut icon" href="/icons/favicon.ico?v=6" />
+  <link rel="icon" type="image/svg+xml" href="/icons/favicon.svg?v=6" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png?v=6" />
+  <link rel="mask-icon" href="/icons/safari-pinned-tab.svg?v=6" color="#1e3a8a" />
+  <link rel="manifest" href="/icons/site.webmanifest?v=6" />
+  <meta name="theme-color" content="#1e3a8a" />
+  <link rel="stylesheet" href="./styles/tokens.css" />
+  <link rel="stylesheet" href="./styles/base.css" />
+  <link rel="stylesheet" href="./styles/browser.css" />
+  <script type="module" src="./src/theme.js"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-F85DCJP3CW"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-F85DCJP3CW');
+  </script>
+</head>
+<body>
+  <header class="container siteHeader">
+    <nav class="topNav" aria-label="Primary">
+      <span class="siteBrand">CreditCombo</span>
+      <div class="topNavLinks">
+        <a class="textLink" href="./index.html">Optimizer</a>
+        <a class="textLink" href="./cards.html">Browse all cards</a>
+        <a class="textLink" href="./valuations.html">Rewards valuation guide</a>
+        <a class="textLink" href="./about.html" aria-current="page">About</a>
+      </div>
+      <button type="button" class="themeToggle" data-theme-toggle aria-label="Switch theme" title="Switch theme">☀︎</button>
+    </nav>
+    <div class="divider" aria-hidden="true"></div>
+    <h1 class="pageTitle">About CreditCombo</h1>
+    <div class="header">
+      <div>
+        <p class="subtle">What CreditCombo does, why it exists, and how to get in touch.</p>
+      </div>
+    </div>
+  </header>
+
+  <main class="container pageStack">
+    <section class="panel valuationPanel" aria-labelledby="about-what-title">
+      <h2 id="about-what-title">What is CreditCombo?</h2>
+      <p class="subtle">CreditCombo is a rewards optimization tool that helps you estimate which combination of credit cards can return the most value from your spending profile.</p>
+      <ul class="valuationList">
+        <li>Model monthly spending categories and run a card combination optimizer.</li>
+        <li>Compare cards, rewards programs, annual fees, and category multipliers in one place.</li>
+        <li>Switch between estimated and minimum valuation modes depending on how conservatively you want to plan.</li>
+      </ul>
+    </section>
+
+    <section class="panel valuationPanel" aria-labelledby="about-maker-title">
+      <h2 id="about-maker-title">Who made it?</h2>
+      <p class="subtle">CreditCombo is built and maintained by <strong>Boris Kafidov</strong> (online as <strong>l2ggy</strong> / <strong>laggy</strong>).</p>
+      <p class="subtle">The project started as a practical way to compare card ecosystems with transparent assumptions, and has grown into a public tool for anyone trying to make better rewards decisions.</p>
+    </section>
+
+    <section class="panel valuationPanel" aria-labelledby="about-contact-title">
+      <h2 id="about-contact-title">Contact</h2>
+      <div class="aboutContactGrid">
+        <a class="aboutContactCard" href="mailto:b.kafidov@mail.utoronto.ca">
+          <span class="mono">Email</span>
+          <span>b.kafidov@mail.utoronto.ca</span>
+        </a>
+        <a class="aboutContactCard" href="https://github.com/l2ggy" target="_blank" rel="noopener noreferrer">
+          <span class="mono">GitHub</span>
+          <span>github.com/l2ggy</span>
+        </a>
+        <a class="aboutContactCard" href="https://www.linkedin.com/in/laggy/" target="_blank" rel="noopener noreferrer">
+          <span class="mono">LinkedIn</span>
+          <span>linkedin.com/in/laggy</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="panel valuationPanel" aria-labelledby="about-ack-title">
+      <h2 id="about-ack-title">Acknowledgments</h2>
+      <ul class="valuationList">
+        <li>Thanks to rewards communities, public points analysts, and issuer/program documentation that make consistent valuation work possible.</li>
+        <li>Thanks to everyone who has submitted bugs, card data corrections, and feature requests.</li>
+        <li>Thanks to friends and early users who tested rough prototypes and gave blunt feedback.</li>
+      </ul>
+    </section>
+  </main>
+
+  <script type="module">
+    import { sessionEntryContext, trackEvent, trackPageView } from "./src/shared/analytics.js";
+
+    trackPageView("about");
+    trackEvent("session_started", sessionEntryContext());
+  </script>
+</body>
+</html>
