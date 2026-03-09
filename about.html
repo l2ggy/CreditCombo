@@ -39,6 +39,7 @@
         <a class="textLink" href="./cards.html">Browse all cards</a>
         <a class="textLink" href="./valuations.html">Rewards valuation guide</a>
       </div>
+      <div id="authMount" class="authMount" aria-live="polite"></div>
       <button type="button" class="themeToggle" data-theme-toggle aria-label="Switch theme" title="Switch theme">☀︎</button>
     </nav>
     <div class="divider" aria-hidden="true"></div>
@@ -95,11 +96,6 @@
     </section>
   </main>
 
-  <script type="module">
-    import { sessionEntryContext, trackEvent, trackPageView } from "./src/shared/analytics.js";
-
-    trackPageView("about");
-    trackEvent("session_started", sessionEntryContext());
-  </script>
+  <script type="module" src="./src/about.js"></script>
 </body>
 </html>
