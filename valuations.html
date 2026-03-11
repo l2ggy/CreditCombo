@@ -39,6 +39,7 @@
         <a class="textLink" href="./cards.html">Browse all cards</a>
         <a class="textLink" href="./valuations.html" aria-current="page">Rewards valuation guide</a>
       </div>
+      <div class="authNav" data-auth-ui></div>
       <button type="button" class="themeToggle" data-theme-toggle aria-label="Switch theme" title="Switch theme">☀︎</button>
     </nav>
     <div class="divider" aria-hidden="true"></div>
@@ -110,7 +111,9 @@
   </main>
   <script type="module">
     import { sessionEntryContext, trackEvent, trackPageView } from "./src/shared/analytics.js";
+    import { initAuthUi } from "./src/shared/auth.js";
 
+    await initAuthUi();
     trackPageView("valuations");
     trackEvent("session_started", sessionEntryContext());
   </script>

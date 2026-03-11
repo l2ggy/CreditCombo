@@ -33,7 +33,8 @@ The app is shipped as static assets and served through a lightweight Cloudflare 
 ### Deployment model
 
 - `wrangler.toml` binds the whole repository as static assets via `ASSETS` and uses `src/worker.js` as request handler.
-- Worker rewrites selected root aliases (for icons + `/quick-setup`) and applies CSP/XFO/referrer hardening headers.
+- Worker classifies API/document/static requests, rewrites document aliases, injects runtime auth config into HTML responses, applies strict security headers, and enforces `Cache-Control: no-store` for document routes to avoid stale edge HTML variants.
+- Worker serves `GET /api/me/entitlements` for authenticated premium-status lookup backed by Supabase Auth and `user_entitlements`.
 
 ---
 
@@ -139,7 +140,16 @@ The app is shipped as static assets and served through a lightweight Cloudflare 
 - `theme.js`
   - Theme toggle with system preference detection and local persistence.
 - `worker.js`
-  - Cloudflare Worker request handler with route rewrites and security headers.
+  - Cloudflare Worker request handler for static assets + HTML documents + entitlements API.
+  - Injects `window.CREDITCOMBO_CONFIG` into HTML routes and adds rollout diagnostics (`X-Auth-Debug`, `window.__AUTH_CONFIG_INJECTED__`).
+
+### Auth and entitlements modules (`src/shared/`)
+
+- `auth.js`
+  - Initializes Supabase browser auth client from injected runtime config and mounts subtle nav auth controls.
+  - Exposes `getSession`, `onAuthStateChange`, `signInWithGoogle`, `signOut`, `initAuthUi`.
+- `entitlements.js`
+  - Calls `GET /api/me/entitlements` with bearer token from current session and caches responses for 60 seconds in-memory.
 
 ### Subcategory configuration logic
 

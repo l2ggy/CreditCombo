@@ -19,6 +19,8 @@ CreditCombo is a static web app that helps you build a long-term credit-card set
   - Excluding specific rewards programs
   - Setting a maximum annual fee
 - Includes a full card browser (`cards.html`) and shareable optimizer results.
+- Adds Google sign-in controls in the top navigation and keeps session state across refreshes.
+- Provides `GET /api/me/entitlements` for normalized authenticated premium-status checks.
 
 ## Current modeling limits
 
@@ -41,6 +43,16 @@ Then open the local URL printed in your terminal.
 ```bash
 npx wrangler deploy
 ```
+
+## Worker auth environment configuration
+
+For auth and entitlements in a deployed Worker environment, set these secrets:
+
+- `SUPABASE_URL`
+- `SUPABASE_PUBLISHABLE_KEY`
+- `SUPABASE_SERVICE_ROLE_KEY`
+
+The Worker injects runtime config into HTML documents and serves `/api/me/entitlements` as a token-authenticated status endpoint.
 
 ## Data files
 
