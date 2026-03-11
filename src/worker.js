@@ -1,4 +1,3 @@
-headers.set("x-auth-debug", "runtime-config-injection-v1");
 const ROOT_PATH_REWRITES = {
   "/quick-setup": "/quick-setup.html",
 
@@ -72,6 +71,7 @@ async function maybeInjectRuntimeConfig(response, env, { headRequest = false } =
 
 function withSecurityHeaders(response, env, { headRequest = false } = {}) {
   const headers = new Headers(response.headers);
+  headers.set("x-auth-debug", "runtime-config-injection-v1");
   headers.set("X-Content-Type-Options", "nosniff");
   headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
   headers.set("X-Frame-Options", "DENY");
