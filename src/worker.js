@@ -1,3 +1,4 @@
+headers.set("x-auth-debug", "runtime-config-injection-v1");
 const ROOT_PATH_REWRITES = {
   "/quick-setup": "/quick-setup.html",
 
