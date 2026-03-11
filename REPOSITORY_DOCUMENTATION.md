@@ -371,3 +371,26 @@ This enables static deployment with controlled browser security defaults without
 - Welcome bonuses and temporary promotions are not included in long-term baseline optimization.
 
 These limits are intentional for stable, comparable, long-horizon card-combo estimates rather than short-term churn optimization.
+
+---
+
+## 14) Auth bootstrap + entitlements API (stage45 rollout)
+
+- Worker route classification now explicitly separates:
+  - HTML document routes (`/`, `/index.html`, `/quick-setup`, `/cards`, `/valuations`, `/about` + `.html` forms),
+  - API route (`/api/me/entitlements`),
+  - other static assets.
+- HTML responses are fetched from `env.ASSETS`, receive runtime auth config injection, and are returned with hardened headers plus `Cache-Control: no-store` to avoid stale edge HTML variants.
+- Runtime config injection appends:
+  - `window.CREDITCOMBO_CONFIG = { SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, ENTITLEMENTS_API_ENABLED: true }`
+  - rollout marker `window.__AUTH_CONFIG_INJECTED__ = true`
+- Rollout debug header: `X-Auth-Debug: stage45-v1` is emitted for HTML documents and `/api/me/entitlements`.
+- CSP was extended to allow `https://esm.sh` for browser-side Supabase module loading, and `connect-src` is dynamically expanded with the Supabase origin when `SUPABASE_URL` parses successfully.
+- New client modules:
+  - `src/shared/auth.js` for Supabase auth client setup, session helpers, Google sign-in/sign-out, and subtle nav auth UI mounting.
+  - `src/shared/entitlements.js` for short-lived entitlement status fetch/caching from `/api/me/entitlements`.
+- `/api/me/entitlements` contract:
+  - `401` for missing/invalid bearer tokens,
+  - `500` for missing worker env configuration,
+  - `502` for backend entitlement lookup failure,
+  - normalized JSON payload with `authenticated`, `userId`, `premium`, `premiumUntil`, and `reason`.
