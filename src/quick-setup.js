@@ -9,6 +9,7 @@ import { escapeHtml } from "./shared/sanitize.js";
 import { createShareOverlay } from "./share/share-overlay.js";
 import { buildShareContext } from "./share/share-context.js";
 import { sessionEntryContext, trackEvent, trackPageView } from "./shared/analytics.js";
+import { initAuthUi } from "./shared/auth.js";
 
 const appEl = document.getElementById("quickSetupApp");
 const QUICK_SETUP_DEFAULTS = Object.freeze({
@@ -708,6 +709,7 @@ function renderInitializationError(error) {
 }
 
 async function main() {
+  initAuthUi();
   trackPageView("quick_setup");
   trackEvent("session_started", sessionEntryContext());
   trackEvent("quick_setup_started");
