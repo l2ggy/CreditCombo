@@ -7,10 +7,12 @@ import { readOptimizerDeepLink } from "./app/deeplink.js";
 import { escapeHtml } from "./shared/sanitize.js";
 import { createShareOverlay } from "./share/share-overlay.js";
 import { sessionEntryContext, trackEvent, trackPageView } from "./shared/analytics.js";
+import { initAuthUi } from "./shared/auth.js";
 
 async function main() {
   trackPageView("optimizer");
   trackEvent("session_started", sessionEntryContext());
+  await initAuthUi();
 
   const view = createView();
   const { elements } = view;
